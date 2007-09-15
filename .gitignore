@@ -1,0 +1,12 @@
+*~
+ChangeLog
+INSTALL
+Makefile.in
+Makefile
+aclocal.m4
+/autom4te.cache
+/config
+/configure
+/config.log
+/config.status
+/etc/default/vyatta
