@@ -1,0 +1,2 @@
+help: "Show OFR version information"
+run: cat $ofr_docdir/*/build.txt /dev/null

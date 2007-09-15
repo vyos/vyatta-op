@@ -1,0 +1,12 @@
+defaultdir	 = /etc/default
+default_DATA	 = etc/default/vyatta
+completiondir	 = /etc/bash_completion.d
+completion_DATA	 = etc/bash_completion.d/vyatta-op
+opdir		 = $(datadir)/vyatta-op/templates
+
+cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
+	cpio -0pd
+
+install-exec-hook:
+	mkdir -p $(DESTDIR)$(opdir)
+	cd op-templates; $(cpiop) $(DESTDIR)$(opdir)

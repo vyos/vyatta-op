@@ -1,0 +1,196 @@
+#!/bin/bash
+#
+# **** License ****
+# Version: VPL 1.0
+# 
+# The contents of this file are subject to the Vyatta Public License
+# Version 1.0 ("License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.vyatta.com/vpl
+# 
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+# the License for the specific language governing rights and limitations
+# under the License.
+# 
+# This code was originally developed by Vyatta, Inc.
+# Portions created by Vyatta are Copyright (C) 2006, 2007 Vyatta, Inc.
+# All Rights Reserved.
+# 
+# Author: Tom Grennan
+# Date: 2007
+# Description: setup bash completion for Vyatta operational commands
+# 
+# **** End License ****
+
+# first set vars per args of the "source ...vyatta-op VAR=FOO"
+_vyatta_extglob=$(shopt -p extglob)
+shopt -s extglob
+for e ; do
+    if [[ $e == *=* ]] ; then
+	eval $e
+    fi
+done
+eval $_vyatta_extglob
+unset _vyatta_extglob
+
+test -f /etc/default/vyatta && source /etc/default/vyatta
+
+: ${vyatta_op_templates:=/opt/vyatta/share/vyatta-op/templates}
+
+declare -a _vyatta_op_comp_words
+declare -a _vyatta_op_allowed
+declare _vyatta_op_node_def
+declare -x OFR_PAGER
+declare -x OFR_DEFAULT_PAGER
+
+_vyatta_op_get_node_def_field ()
+{
+    local file=$1 field=$2
+
+    sed -n '/^'"$field"':/,$ {
+# strip field name and hold rest of line
+    s/[a-z]*: *//
+    h
+    :b
+# at EOF, print hold buffer and quit
+    $ { x; p; q }
+# input next line
+    n
+# if start of another field def, print hold buf and quit
+    /^[a-z]*:/ { x; p; q }
+# add to hold buf and branch to input next line
+    H
+    bb
+    }' $file
+}
+
+_vyatta_op_set_allowed_subdirs ()
+{
+    local dir=$1
+
+    _vyatta_op_allowed=(
+	$( find ${vyatta_op_templates}$1/* -maxdepth 0 -type d -printf %f\\n ))
+}
+
+_vyatta_op_set_allowed ()
+{
+    local nullglob=$( shopt -p nullglob )
+    shopt -s nullglob
+    _vyatta_op_allowed=($(
+	    eval "$( _vyatta_op_get_node_def_field $_vyatta_op_node_def allowed )" ))
+    eval $nullglob
+}
+
+_vyatta_op_is_allowed ()
+{
+    local arg=$1 allowed
+
+    # return immediately if nothing allowed
+    [ ${#_vyatta_op_allowed[@]} -ne 0 ] || return
+    # -- is wildcard that allows anything
+    [ ${_vyatta_op_allowed[0]} == -- ] && return
+    for allowed in ${_vyatta_op_allowed[@]} ; do
+	[ "$arg" == $allowed ] && return
+    done
+    false
+}
+
+_vyatta_op_scan ()
+{
+    local -a argv=( $@ )
+    local -i i=0 argc=$#
+    local arg dir node_def
+    local -a allowed
+
+    while true ; do
+	if [ -d ${vyatta_op_templates}${dir}/node.tag ] ; then
+	    node_def=${vyatta_op_templates}${dir}/node.tag/node.def
+	    if [ ! -f $node_def ] ; then
+		echo -e \\ninvalid template, missing:  >&2
+		echo -e \\t$_vyatta_op_node_def >&2
+		return 1
+	    fi
+	    _vyatta_op_node_def=$node_def
+	    _vyatta_op_set_allowed $@
+	    [[ $i -eq $argc ]] && return 0
+	    arg=${argv[i]}; let i++
+	    if _vyatta_op_is_allowed $arg ; then
+		dir+=/node.tag
+		_vyatta_op_set_allowed_subdirs $dir
+		continue
+	    elif [[ $i -ne $argc ]] ; then
+		echo -e \\ninvalid option: $arg >&2
+		return 1
+	    fi
+	fi
+	[[ $i -eq $argc ]] && return 0
+	arg=${argv[i]}; let i++
+	node_def=${vyatta_op_templates}${dir}/${arg}/node.def
+	if [ -f $node_def ] ; then
+	    dir+=/${arg}
+	    _vyatta_op_node_def=$node_def
+	    _vyatta_op_set_allowed_subdirs $dir
+	    continue
+	elif [[ $i -ne $argc ]] ; then
+	    echo -e \\ninvalid template, missing node.\{def,tag\} >&2
+	    echo -e \\t${vyatta_op_templates}$dir/$arg >&2
+	    return 1
+	fi
+    done
+}
+
+_vyatta_op_expand ()
+{
+    local cur=${COMP_WORDS[COMP_CWORD]}
+
+    if _vyatta_op_scan "${COMP_WORDS[@]}" ; then
+	COMPREPLY=($( compgen -W "${_vyatta_op_allowed[*]}" -- $cur ))
+	_vyatta_op_comp_words=( ${COMP_WORDS[@]} )
+    fi
+}
+
+_vyatta_op_help ()
+{
+    local help
+
+    if _vyatta_op_scan ${_vyatta_op_comp_words[@]} ; then
+	eval help=$( _vyatta_op_get_node_def_field $_vyatta_op_node_def help )
+	echo -e "$help"
+    fi
+}
+
+_vyatta_op_run ()
+{
+    if _vyatta_op_scan $@ ; then
+	eval "$( _vyatta_op_get_node_def_field $_vyatta_op_node_def run )"
+    fi
+}
+
+for p in $PAGER pager most less more cat ; do
+    if type -t $p &>/dev/null ; then
+	OFR_DEFAULT_PAGER=$p
+	break
+    fi
+done
+
+: ${OFR_PAGER:=${OFR_DEFAULT_PAGER}}
+
+if [[ -d $vyatta_op_templates ]]
+then
+    for xd in ${vyatta_op_templates}/!(README|*~|*.bak|*.swp|\#*\#) ; do
+	if [ -d $xd ] ; then
+	    cmd=${xd##*/}
+	    complete -F _vyatta_op_expand -o nospace $cmd
+	    eval alias $cmd=\'_vyatta_op_run $cmd\'
+	fi
+    done
+fi
+
+bind -x '"\e?": _vyatta_op_help'
+
+shopt -s histverify
+
+###  Local Variables:
+###  mode: shell-script
+###  End:

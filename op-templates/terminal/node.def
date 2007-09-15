@@ -1,0 +1,2 @@
+help: "Set terminal page length"
+run: resize; OFR_PAGER=$OFR_DEFAULT_PAGER

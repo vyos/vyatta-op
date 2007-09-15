@@ -1,0 +1,2 @@
+help: "Show network interface information"
+run: ${ofr_bindir}/show_interfaces

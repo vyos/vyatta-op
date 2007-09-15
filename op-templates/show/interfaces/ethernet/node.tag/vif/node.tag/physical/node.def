@@ -1,0 +1,2 @@
+help: "Show given virtual network interface pseudo-physical information"
+run: ${ofr_bindir}/show_interfaces_ethernet $4 vif $6 physical

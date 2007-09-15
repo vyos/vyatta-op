@@ -1,0 +1,5 @@
+help: "Show given ethernet interface information"
+allowed: local -a array ;
+	 array=( /sys/class/net/{eth,vmnet}* ) ;
+	 echo  -n ${array[@]##*/}
+run: ${ofr_bindir}/show_interfaces_ethernet $4

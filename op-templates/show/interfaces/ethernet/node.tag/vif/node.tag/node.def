@@ -1,0 +1,5 @@
+help: "Show given virtual network interface information"
+allowed: for eth in /sys/class/net/eth${4}.* ; do
+	     echo ${eth/*eth${4}./} ;
+	 done
+run: ${ofr_bindir}/show_interfaces_ethernet $4 vif $6
