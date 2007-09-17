@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Make GIT version reference file
+
+url=$( git repo-config --get remote.origin.url )
+test -z "$url" && url=file://$PWD
+branch=$( git-branch --no-color | sed '/^\* /!d; s/^\* //' )
+sha=$( git log --pretty=oneline --no-color -n 1 | cut -c-8 )
+
+echo "${url}#${branch}-${sha}" > VERSION
