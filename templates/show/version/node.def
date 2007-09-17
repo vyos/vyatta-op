@@ -1,2 +1,2 @@
-help: "Show OFR version information"
-run: cat $ofr_docdir/*/build.txt /dev/null
+help: "Show Vyatta version information"
+run: cat /usr/share/doc/vyatta-*/VERSION /dev/null
