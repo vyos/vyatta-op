@@ -9,4 +9,4 @@ cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
 
 install-exec-hook:
 	mkdir -p $(DESTDIR)$(opdir)
-	cd op-templates; $(cpiop) $(DESTDIR)$(opdir)
+	cd templates; $(cpiop) $(DESTDIR)$(opdir)
