@@ -1,0 +1,8 @@
+The Debian Package vyatta-op
+----------------------------
+
+This package has the bash completion script for Vyatta operational
+commands and the associated base templates.
+
+
+ -- Tom Grennan <tgrennan@vyatta.com>  Mon, 17 Sep 2007

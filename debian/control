@@ -1,0 +1,12 @@
+Source: vyatta-op
+Section: net
+Priority: extra
+Maintainer: Tom Grennan <tgrennan@vyatta.com>
+Build-Depends: debhelper (>= 5), autotools-dev
+Standards-Version: 3.7.2
+
+Package: vyatta-op
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: bash operational command completion
+ Vyatta operational command bash completion script and base templates
