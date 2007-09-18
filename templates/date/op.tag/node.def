@@ -1,2 +1,0 @@
-help: "Date and time [MMDDhhmm[.ss]YYYY]"
-run: sudo date $2

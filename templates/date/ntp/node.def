@@ -1,1 +1,2 @@
-help: "Set system date and time using NTP"
+help: "Show date and time of given NTP server [default: ntp.vyatta.com]"
+run: ntpdate -q ${3-ntp.vyatta.com}
