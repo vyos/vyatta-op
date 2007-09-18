@@ -4,6 +4,14 @@ completiondir	 = /etc/bash_completion.d
 completion_DATA	 = etc/bash_completion.d/vyatta-op
 opdir		 = $(datadir)/vyatta-op/templates
 
+bin_SCRIPTS	 = scripts/show_interfaces
+bin_SCRIPTS	+= scripts/show_interfaces_ethernet
+bin_SCRIPTS	+= scripts/show_interfaces_loopback
+bin_SCRIPTS	+= scripts/show_interfaces_statistics
+bin_SCRIPTS	+= scripts/show_interfaces_summary
+bin_SCRIPTS	+= scripts/show_interfaces_system
+bin_SCRIPTS	+= scripts/show_interfaces_tunnel
+
 cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
 	cpio -0pd
 
