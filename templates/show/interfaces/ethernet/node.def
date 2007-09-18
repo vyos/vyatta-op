@@ -1,2 +1,2 @@
 help: "Show ethernet interface information"
-run: ${ofr_bindir}/show_interfaces_ethernet
+run: ${vyatta_bindir}/show_interfaces_ethernet

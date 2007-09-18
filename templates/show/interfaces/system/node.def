@@ -1,2 +1,2 @@
 help: "Show network information of all interfaces"
-run: ${ofr_bindir}/show_interfaces_system
+run: ${vyatta_bindir}/show_interfaces_system
