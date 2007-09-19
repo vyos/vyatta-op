@@ -135,23 +135,53 @@ _vyatta_op_scan ()
     done
 }
 
+_vyatta_op_help ()
+{
+    local help
+    local heading="\nPossible completions:"
+    local nullglob
+    local -a subnodes
+    local subdir
+
+    if grep -q allowed: $_vyatta_op_node_def ; then
+	eval help=$( _vyatta_op_get_node_def_field $_vyatta_op_node_def help )
+	if [ ${#_vyatta_op_allowed[@]} -ne 0 ] ; then
+	    echo -ne $heading
+	    for a in ${_vyatta_op_allowed[*]} ; do
+		printf "\n  %-12s  $help" $a
+	    done
+	else
+	    false
+	fi
+    else
+	nullglob=$( shopt -p nullglob )
+	shopt -s nullglob
+	subnodes=( ${_vyatta_op_node_def%/node.def}/*/node.def )
+	eval $nullglob
+	if [ ${#subnodes[@]} -ne 0 ] ; then
+	    echo -ne $heading
+	    for n in ${subnodes[@]} ; do
+		eval help=$( _vyatta_op_get_node_def_field $n help )
+		subdir=${n%/node.def}
+		printf "\n  %-12s  $help" ${subdir##*/}
+	    done
+	else
+	    false
+	fi
+    fi
+}
+
 _vyatta_op_expand ()
 {
     local cur=${COMP_WORDS[COMP_CWORD]}
 
     if _vyatta_op_scan "${COMP_WORDS[@]}" ; then
 	COMPREPLY=($( compgen -W "${_vyatta_op_allowed[*]}" -- $cur ))
-	_vyatta_op_comp_words=( ${COMP_WORDS[@]} )
-    fi
-}
-
-_vyatta_op_help ()
-{
-    local help
-
-    if _vyatta_op_scan ${_vyatta_op_comp_words[@]} ; then
-	eval help=$( _vyatta_op_get_node_def_field $_vyatta_op_node_def help )
-	echo -e "$help"
+	if [ "${COMP_WORDS[*]}" == "${_vyatta_op_comp_words[*]}" ] ; then
+	    _vyatta_op_help && \
+		COMPREPLY=($( compgen -W "--" -- $cur ))
+	fi
+	_vyatta_op_comp_words=( "${COMP_WORDS[@]}" )
     fi
 }
 
@@ -176,13 +206,11 @@ then
     for xd in $vyatta_op_templates/* ; do
 	if [ -d $xd ] ; then
 	    cmd=${xd##*/}
-	    complete -F _vyatta_op_expand -o nospace $cmd
+	    complete -F _vyatta_op_expand $cmd
 	    eval alias $cmd=\'_vyatta_op_run $cmd\'
 	fi
     done
 fi
-
-bind -x '"\e?": _vyatta_op_help'
 
 shopt -s histverify
 eval $_vyatta_extglob
