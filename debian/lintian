@@ -1,0 +1,9 @@
+vyatta-op: file-in-unusual-dir
+vyatta-op: dir-or-file-in-opt
+vyatta-op: shell-script-fails-syntax-check ./opt/vyatta/bin/show_interfaces
+vyatta-op: shell-script-fails-syntax-check ./opt/vyatta/bin/show_interfaces_ethernet
+vyatta-op: shell-script-fails-syntax-check ./opt/vyatta/bin/show_interfaces_loopback
+vyatta-op: shell-script-fails-syntax-check ./opt/vyatta/bin/show_interfaces_statistics
+vyatta-op: shell-script-fails-syntax-check ./opt/vyatta/bin/show_interfaces_summary
+vyatta-op: shell-script-fails-syntax-check ./opt/vyatta/bin/show_interfaces_system
+vyatta-op: shell-script-fails-syntax-check ./opt/vyatta/bin/show_interfaces_tunnel

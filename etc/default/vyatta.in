@@ -1,6 +1,5 @@
-#!/bin/bash
 
-# declare configred Vyatta shell environment variables
+# declare configured Vyatta shell environment variables
 
 # first set vars per args of the "source /etc/default/vyatta VAR=FOO"
 _vyatta_extglob=$(shopt -p extglob)
@@ -65,20 +64,20 @@ unset _vyatta_extglob
 	else
 	    declare -x -r vyatta_libdir=$vyatta_exec_prefix/lib
 	fi
-	fi
+    fi
     if test -z "$vyatta_libexecdir" ; then
 	if test -n "@libexecdir@" ; then
 	    declare -x -r vyatta_libexecdir=@libexecdir@
 	else
 	    declare -x -r vyatta_libexecdir=$vyatta_exec_prefix/libexec
-	    fi
+	fi
     fi
     if test -z "$vyatta_datadir" ; then
 	if test -n "@datadir@" ; then
 	    declare -x -r vyatta_datadir=@datadir@
 	else
 	    declare -x -r vyatta_datadir=$vyatta_datarootdir
-	    fi
+	fi
     fi
     if test -z "$vyatta_htmldir" ; then
 	if test -n "@htmldir@" ; then
@@ -86,7 +85,7 @@ unset _vyatta_extglob
 	else
 	    declare -x -r vyatta_htmldir=$vyatta_datarootdir/html
 	fi
-	fi
+    fi
     if test -z "$vyatta_infodir" ; then
 	if test -n "@infodir@" ; then
 	    declare -x -r vyatta_infodir=@infodir@
@@ -98,7 +97,7 @@ unset _vyatta_extglob
 	if test -n "@mandir@" ; then
 	    declare -x -r vyatta_htmldir=@mandir@
 	else
-		declare -x -r vyatta_htmldir=$vyatta_datarootdir/man
+	    declare -x -r vyatta_htmldir=$vyatta_datarootdir/man
 	fi
     fi
     if test -z "$vyatta_localedir" ; then
@@ -113,7 +112,7 @@ unset _vyatta_extglob
 	    declare -x -r vyatta_localstatedir=@localstatedir@
 	else
 	    declare -x -r vyatta_localstatedir=$vyatta_prefix/var
-	    fi
+	fi
     fi
     if test -z "$vyatta_sharedstatedir" ; then
 	if test -n "@sharedstatedir@" ; then

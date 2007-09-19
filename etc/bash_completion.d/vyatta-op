@@ -1,5 +1,4 @@
-#!/bin/bash
-#
+
 # **** License ****
 # Version: VPL 1.0
 # 
@@ -31,8 +30,6 @@ for e ; do
 	eval $e
     fi
 done
-eval $_vyatta_extglob
-unset _vyatta_extglob
 
 test -f /etc/default/vyatta && source /etc/default/vyatta
 
@@ -69,16 +66,14 @@ _vyatta_op_set_allowed_subdirs ()
 {
     local dir=$1
 
-    _vyatta_op_allowed=(
-	$( find ${vyatta_op_templates}$1/* -maxdepth 0 -type d -printf %f\\n ))
+    _vyatta_op_allowed=($( find ${vyatta_op_templates}$1/* -maxdepth 0 -type d -printf %f\\n ))
 }
 
 _vyatta_op_set_allowed ()
 {
     local nullglob=$( shopt -p nullglob )
     shopt -s nullglob
-    _vyatta_op_allowed=($(
-	    eval "$( _vyatta_op_get_node_def_field $_vyatta_op_node_def allowed )" ))
+    _vyatta_op_allowed=($( eval "$( _vyatta_op_get_node_def_field $_vyatta_op_node_def allowed )" ))
     eval $nullglob
 }
 
@@ -178,7 +173,7 @@ done
 
 if [[ -d $vyatta_op_templates ]]
 then
-    for xd in ${vyatta_op_templates}/!(README|*~|*.bak|*.swp|\#*\#) ; do
+    for xd in $vyatta_op_templates/* ; do
 	if [ -d $xd ] ; then
 	    cmd=${xd##*/}
 	    complete -F _vyatta_op_expand -o nospace $cmd
@@ -190,6 +185,8 @@ fi
 bind -x '"\e?": _vyatta_op_help'
 
 shopt -s histverify
+eval $_vyatta_extglob
+unset _vyatta_extglob
 
 ###  Local Variables:
 ###  mode: shell-script

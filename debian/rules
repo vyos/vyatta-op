@@ -14,7 +14,8 @@
 # from having to guess our platform (since we know it already)
 DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
-
+PACKAGE=vyatta-op
+PKGDIR=$(CURDIR)/debian/$(PACKAGE)
 
 CFLAGS = -Wall -g
 
@@ -40,11 +41,7 @@ build: build-stamp
 
 build-stamp:  config.status
 	dh_testdir
-
-	# Add here commands to compile the package.
 	$(MAKE)
-	#docbook-to-man debian/vyatta-op.sgml > vyatta-op.1
-
 	touch $@
 
 clean:
@@ -52,8 +49,7 @@ clean:
 	dh_testroot
 	rm -f build-stamp 
 
-	# Add here commands to clean up after the build process.
-	-$(MAKE) distclean
+	test -f Makefile && $(MAKE) distclean || true
 	rm -f config.sub config.guess
 
 	dh_clean 
@@ -64,9 +60,10 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 
-	# Add here commands to install the package into debian/vyatta-op.
-	$(MAKE) DESTDIR=$(CURDIR)/debian/vyatta-op install
+	$(MAKE) DESTDIR=$(PKGDIR) install
 
+	install -D --mode=0644 debian/lintian $(PKGDIR)/usr/share/lintian/overrides/$(PACKAGE)
+	install -D --mode=0644 debian/linda $(PKGDIR)/usr/share/linda/overrides/$(PACKAGE)
 
 # Build architecture-independent files here.
 binary-indep: build install

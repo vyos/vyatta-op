@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -O extglob
 # **** License ****
 # Version: VPL 1.0
 #
@@ -21,11 +21,10 @@
 #
 # **** End License ****
 
+shopt -s nullglob
+
 test -f /etc/default/vyatta && source /etc/default/vyatta
 : ${vyatta_bindir:=/opt/vyatta/bin}
-
-shopt -s extglob
-shopt -s nullglob
 
 declare progname=${0##*/}
 declare -a full_itfs=( /sys/class/net/+(eth|vmnet|lo|sit|wan)* )
