@@ -132,8 +132,8 @@ unset _vyatta_extglob
     if test -z "$vyatta_op_templates" ; then
 	declare -x -r vyatta_op_templates=$vyatta_datadir/vyatta-op/templates
     fi
-    if test -z "$vyatta_config_templates" ; then
-	declare -x -r vyatta_config_templates=$vyatta_datadir/vyatta-config/templates
+    if test -z "$vyatta_cfg_templates" ; then
+	declare -x -r vyatta_cfg_templates=$vyatta_datadir/ofr/template
     fi
     if test -z "$vyatta_configdir" ; then
 	declare -x -r vyatta_configdir=$vyatta_prefix/config
@@ -150,7 +150,7 @@ export VYATTA_ACTIVE_CONFIGURATION_DIR=${vyatta_configdir}/active
 export VYATTA_CHANGES_ONLY_DIR=${vyatta_configdir}/tmp/changes_only_$$
 export VYATTA_TEMP_CONFIG_DIR=${vyatta_configdir}/tmp/new_config_$$
 export VYATTA_CONFIG_TMP=${vyatta_configdir}/tmp/tmp_$$
-export VYATTA_CONFIG_TEMPLATE=$vyatta_config_templatesdir
+export VYATTA_CONFIG_TEMPLATE=$vyatta_cfg_templates
 export VYATTA_EDIT_LEVEL=/
 export VYATTA_TEMPLATE_LEVEL=/
 export VYATTA_TAG_NAME=node.tag
