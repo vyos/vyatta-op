@@ -22,6 +22,11 @@
 # 
 # **** End License ****
 
+# don't do this if we are going into configure mode
+if [ "$_OFR_CONFIGURE" == "ok" ]; then
+  return 0
+fi
+
 # first set vars per args of the "source ...vyatta-op VAR=FOO"
 _vyatta_extglob=$(shopt -p extglob)
 shopt -s extglob
