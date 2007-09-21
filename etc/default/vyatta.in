@@ -27,7 +27,7 @@ unset _vyatta_extglob
 	if test -n "@prefix@" ; then
 	    declare -x -r vyatta_prefix=@prefix@
 	else
-	    declare -x -r vyatta_prefix=$vyatta_prefix
+	    declare -x -r vyatta_prefix=/opt/vyatta
 	fi
     fi
     if test -z "$vyatta_exec_prefix" ; then
