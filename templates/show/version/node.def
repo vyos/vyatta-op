@@ -1,6 +1,8 @@
 help: "Show Vyatta version information"
 run: for cl in /usr/share/doc/vyatta-*/changelog.gz ; do
-         pkg=${cl%/*} ;
-	 echo -n ${pkg##*/} ;
-	 gunzip $cl | tail -n1 ;
+         dir=${cl%/*} ;
+	 pkg=${dir##*/} ;
+	 printf "  %-20s " ${pkg} ;
+	 test ${#pkg} -lt 20 || echo -ne \\n\\t ;
+	 gunzip -c $cl | tail -n1 ;
      done
