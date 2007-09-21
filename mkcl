@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# generate GNU/Debian format ChangeLog from git log
-
-if type -t git2cl &>/dev/null ; then
-   git-log --pretty --numstat --summary | git2cl > ChangeLog
-else
-   git-log --pretty=short > ChangeLog
-fi

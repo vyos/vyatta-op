@@ -19,23 +19,29 @@ PKGDIR=$(CURDIR)/debian/$(PACKAGE)
 
 CFLAGS = -Wall -g
 
+configure	 = ./configure
+configure	+= --host=$(DEB_HOST_GNU_TYPE)
+configure	+= --build=$(DEB_BUILD_GNU_TYPE)
+configure	+= --prefix=/opt/vyatta
+configure	+= --mandir=\$${prefix}/share/man
+configure	+= --infodir=\$${prefix}/share/info
+configure	+= CFLAGS="$(CFLAGS)"
+configure	+= LDFLAGS="-Wl,-z,defs"
+
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
 else
 	CFLAGS += -O2
 endif
 
+configure:
+	chmod +x debian/autogen.sh
+	debian/autogen.sh
+
 config.status: configure
 	dh_testdir
-	# Add here commands to configure the package.
-ifneq "$(wildcard /usr/share/misc/config.sub)" ""
-	cp -f /usr/share/misc/config.sub config.sub
-endif
-ifneq "$(wildcard /usr/share/misc/config.guess)" ""
-	cp -f /usr/share/misc/config.guess config.guess
-endif
-	./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/opt/vyatta --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info CFLAGS="$(CFLAGS)" LDFLAGS="-Wl,-z,defs"
-
+	rm -f config.cache
+	$(configure)
 
 build: build-stamp
 
@@ -44,14 +50,19 @@ build-stamp:  config.status
 	$(MAKE)
 	touch $@
 
-clean:
+clean: clean-patched
+
+# Clean everything up, including everything auto-generated
+# at build time that needs not to be kept around in the Debian diff
+clean-patched:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp 
-
-	test -f Makefile && $(MAKE) distclean || true
-	rm -f config.sub config.guess
-
+	if test -f Makefile ; then $(MAKE) clean distclean ; fi
+	rm -f build-stamp
+	rm -f config.status config.sub config.guess config.log
+	rm -f aclocal.m4 configure Makefile.in Makefile INSTALL
+	rm -f etc/default/vyatta
+	rm -rf config
 	dh_clean 
 
 install: build
