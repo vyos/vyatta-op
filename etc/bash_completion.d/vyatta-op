@@ -182,11 +182,15 @@ _vyatta_op_expand ()
 
     if _vyatta_op_scan "${COMP_WORDS[@]}" ; then
 	COMPREPLY=($( compgen -W "${_vyatta_op_allowed[*]}" -- $cur ))
-	if [ "${COMP_WORDS[*]}" == "${_vyatta_op_comp_words[*]}" ] ; then
+	if [[ ${#COMPREPLY[@]} -ne 0 &&
+		    "${COMP_WORDS[*]}" == "${_vyatta_op_comp_words[*]}" ]]
+	then
 	    _vyatta_op_help && \
-		COMPREPLY=($( compgen -W "--" -- $cur ))
+		COMPREPLY=($( compgen -W "== --" -- $cur ))
+	    _vyatta_op_comp_words=
+	else
+	    _vyatta_op_comp_words=( "${COMP_WORDS[@]}" )
 	fi
-	_vyatta_op_comp_words=( "${COMP_WORDS[@]}" )
     fi
 }
 
