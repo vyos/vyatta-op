@@ -43,6 +43,7 @@ test -f /etc/default/vyatta && source /etc/default/vyatta
 declare -a _vyatta_op_comp_words
 declare -a _vyatta_op_allowed
 declare _vyatta_op_node_def
+declare _vyatta_op_node_path
 declare -x OFR_PAGER
 declare -x OFR_DEFAULT_PAGER
 
@@ -175,14 +176,14 @@ _vyatta_op_scan ()
         return 1
       fi
       # return the path
-      _vyatta_op_node_def=$tpath
+      _vyatta_op_node_path=$tpath
       return 0
     fi
 
     if (( i == last_idx )); then
       # last component is an incomplete word.
       # this could be an incomplete "non-tag" node.
-      _vyatta_op_node_def=$tpath
+      _vyatta_op_node_path=$tpath
       _vyatta_op_set_allowed_subdirs ${tpath:${#vyatta_op_templates}}
       return 0
     fi
@@ -192,13 +193,13 @@ _vyatta_op_scan ()
       # if last_tag: an incomplete tag node.
       # in either case, the possible completions include any subdirs plus
       # any allowed tag values
-      _vyatta_op_node_def=${tpath%/*}
+      _vyatta_op_node_path=${tpath%/*}
       _vyatta_op_set_allowed_subdirs \
-        ${_vyatta_op_node_def:${#vyatta_op_templates}}
+        ${_vyatta_op_node_path:${#vyatta_op_templates}}
       return 0
     else
       # last component is a complete node.
-      _vyatta_op_node_def=$tpath
+      _vyatta_op_node_path=$tpath
       _vyatta_op_set_allowed_subdirs ${tpath:${#vyatta_op_templates}}
       return 0
     fi
@@ -232,24 +233,12 @@ _vyatta_op_help ()
     local -a hcomps=()
     local -a hstrs=()
 
-    if [ -f $_vyatta_op_node_def ] \
-            && grep -q allowed: $_vyatta_op_node_def ; then
-	eval help=$( _vyatta_op_get_node_def_field $_vyatta_op_node_def help )
-	if [ ${#_vyatta_op_allowed[@]} -ne 0 ] ; then
-	    for a in ${_vyatta_op_allowed[*]} ; do
-                hcomps[${#hcomps[@]}]=$a
-                hstrs[${#hstrs[@]}]=$help
-	    done
-            _vyatta_op_print_help hcomps hstrs
-	else
-	    return 1
-	fi
-    else
+    if [ -d $_vyatta_op_node_path ]; then
 	nullglob=$( shopt -p nullglob )
 	shopt -u nullglob
-        subnodes=($( ls $_vyatta_op_node_def/*/node.def 2>/dev/null | grep -v '/node.tag/node.def$' ))
+        subnodes=($( ls $_vyatta_op_node_path/*/node.def 2>/dev/null | grep -v '/node.tag/node.def$' ))
         shopt -s nullglob
-        subtag=$_vyatta_op_node_def/node.tag/node.def
+        subtag=$_vyatta_op_node_path/node.tag/node.def
         if [ -f $subtag ]; then
           allowed=($( eval "$( _vyatta_op_get_node_def_field $subtag allowed )" ))
           eval help=$( _vyatta_op_get_node_def_field $subtag help )
@@ -276,8 +265,10 @@ _vyatta_op_help ()
 	    return 1
 	fi
         _vyatta_op_print_help hcomps hstrs
+        return 0
+    else
+        return 1
     fi
-    return 0
 }
 
 _vyatta_op_expand ()
@@ -301,12 +292,13 @@ _vyatta_op_expand ()
 _vyatta_op_run ()
 {
     if _vyatta_op_scan 1 $@ ; then
-        local ndef=$_vyatta_op_node_def
-        [ -d "$ndef" ] && ndef="$ndef/node.def"
-	eval "$( _vyatta_op_get_node_def_field $ndef run )"
-    else
-        echo "Invalid command"
+        local ndef=$_vyatta_op_node_path/node.def
+        if [ -f "$ndef" ]; then
+          eval "$( _vyatta_op_get_node_def_field $ndef run )"
+          return 0
+        fi
     fi
+    echo "Invalid command"
 }
 
 for p in $PAGER pager most less more cat ; do
