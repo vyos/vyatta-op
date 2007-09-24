@@ -133,7 +133,7 @@ unset _vyatta_extglob
 	declare -x -r vyatta_op_templates=$vyatta_datadir/vyatta-op/templates
     fi
     if test -z "$vyatta_cfg_templates" ; then
-	declare -x -r vyatta_cfg_templates=$vyatta_datadir/ofr/template
+	declare -x -r vyatta_cfg_templates=$vyatta_datadir/vyatta-cfg/templates
     fi
     if test -z "$vyatta_configdir" ; then
 	declare -x -r vyatta_configdir=$vyatta_prefix/config
