@@ -71,7 +71,15 @@ _vyatta_op_set_allowed_subdirs ()
 {
     local dir=$1
 
-    _vyatta_op_allowed=($( find ${vyatta_op_templates}$1/* -maxdepth 0 -type d -printf %f\\n ))
+    _vyatta_op_allowed=($( find ${vyatta_op_templates}$1/* -maxdepth 0 -type d -printf %f\\n | grep -v '^node.tag$' ))
+    local tag_present=($( find ${vyatta_op_templates}$1/* -maxdepth 0 -type d -printf %f\\n | grep '^node.tag$' ))
+    if [ -n "$tag_present" ]; then
+      local nullglob=$( shopt -p nullglob )
+      shopt -s nullglob
+      local -a _allowed=($( eval "$( _vyatta_op_get_node_def_field ${vyatta_op_templates}$1/node.tag/node.def allowed )" ))
+      eval $nullglob
+      _vyatta_op_allowed=( "${_vyatta_op_allowed[@]}" "${_allowed[@]}" )
+    fi
 }
 
 _vyatta_op_set_allowed ()
@@ -103,90 +111,186 @@ _vyatta_op_scan ()
     local arg dir node_def
     local -a allowed
 
-    while true ; do
-	if [ -d ${vyatta_op_templates}${dir}/node.tag ] ; then
-	    node_def=${vyatta_op_templates}${dir}/node.tag/node.def
-	    if [ ! -f $node_def ] ; then
-		echo -e \\ninvalid template, missing:  >&2
-		echo -e \\t$_vyatta_op_node_def >&2
-		return 1
-	    fi
-	    _vyatta_op_node_def=$node_def
-	    _vyatta_op_set_allowed $@
-	    [[ $i -eq $argc ]] && return 0
-	    arg=${argv[i]}; let i++
-	    if _vyatta_op_is_allowed $arg ; then
-		dir+=/node.tag
-		_vyatta_op_set_allowed_subdirs $dir
-		continue
-	    elif [[ $i -ne $argc ]] ; then
-		echo -e \\ninvalid option: $arg >&2
-		return 1
-	    fi
-	fi
-	[[ $i -eq $argc ]] && return 0
-	arg=${argv[i]}; let i++
-	node_def=${vyatta_op_templates}${dir}/${arg}/node.def
-	if [ -f $node_def ] ; then
-	    dir+=/${arg}
-	    _vyatta_op_node_def=$node_def
-	    _vyatta_op_set_allowed_subdirs $dir
-	    continue
-	elif [[ $i -ne $argc ]] ; then
-	    echo -e \\ninvalid template, missing node.\{def,tag\} >&2
-	    echo -e \\t${vyatta_op_templates}$dir/$arg >&2
-	    return 1
-	fi
+    local is_run=${argv[0]}
+    argv=( "${argv[@]:1}" )
+    (( argc-- ))
+    local last_tag=0
+    local tpath=${vyatta_op_templates}
+    local end_space=0
+    if [ "${argv[argc-1]}" == "" ]; then
+      end_space=1
+      argv=( "${argv[@]:0:((argc-1))}" )
+      (( argc-- ))
+    fi
+    local last_idx
+    (( last_idx = argc - 1 ))
+    for (( i = 0; i < argc; i++ )); do
+      last_tag=0
+      arg=${argv[i]}
+      local _tpath=$tpath/$arg
+      if [ -d $_tpath ]; then
+        tpath=$_tpath
+        continue
+      fi
+      _tpath=$tpath/node.tag
+      if [ -d $_tpath ]; then
+        if (( i != last_idx || is_run )); then
+          # validate value if (not last component) OR (called from "run")
+          local ndef=$_tpath/node.def
+          if [ ! -f $ndef ]; then
+            # no template
+            break
+          fi
+          _vyatta_op_node_def=$ndef
+          _vyatta_op_set_allowed
+          if ! _vyatta_op_is_allowed $arg ; then
+            # invalid tag value.
+            # XXX probably display "allowed:"-specific help string when
+            # that is supported?
+            break
+          fi
+        fi
+        last_tag=1
+        tpath=$_tpath
+        continue
+      fi
+      break 
     done
+    
+    if (( i < last_idx )); then
+      # some component before the last is invalid. return failure.
+      return 1
+    fi
+
+    if (( i == last_idx && end_space )); then
+      # last component is a complete word and does not match template.
+      # return failure.
+      return 1
+    fi
+
+    if (( is_run )); then
+      # called from "run"
+      if (( i == last_idx )); then
+        # whole line must match
+        return 1
+      fi
+      # return the path
+      _vyatta_op_node_def=$tpath
+      return 0
+    fi
+
+    if (( i == last_idx )); then
+      # last component is an incomplete word.
+      # this could be an incomplete "non-tag" node.
+      _vyatta_op_node_def=$tpath
+      _vyatta_op_set_allowed_subdirs ${tpath:${#vyatta_op_templates}}
+      return 0
+    fi
+
+    if (( !end_space )); then
+      # if !last_tag: a complete non-tag node (without space at the end).
+      # if last_tag: an incomplete tag node.
+      # in either case, the possible completions include any subdirs plus
+      # any allowed tag values
+      _vyatta_op_node_def=${tpath%/*}
+      _vyatta_op_set_allowed_subdirs \
+        ${_vyatta_op_node_def:${#vyatta_op_templates}}
+      return 0
+    else
+      # last component is a complete node.
+      _vyatta_op_node_def=$tpath
+      _vyatta_op_set_allowed_subdirs ${tpath:${#vyatta_op_templates}}
+      return 0
+    fi
+}
+
+# $1: \@completions
+# $2: \@help_strs
+# assume the arrays are not empty
+_vyatta_op_print_help ()
+{
+  local -a comps=()
+  local -a helps=()
+
+  eval "comps=( \"\${$1[@]}\" )"
+  eval "helps=( \"\${$2[@]}\" )"
+  local idx=0
+  echo -en "\nPossible completions:"
+  for (( idx = 0 ; idx < ${#comps[@]} ; idx++ )); do
+    printf "\n  %-12s  ${helps[$idx]}" ${comps[$idx]}
+  done
 }
 
 _vyatta_op_help ()
 {
     local help
-    local heading="\nPossible completions:"
     local nullglob
     local -a subnodes
+    local -a allowed
     local subdir
+    local subtag
+    local -a hcomps=()
+    local -a hstrs=()
 
-    if grep -q allowed: $_vyatta_op_node_def ; then
+    if [ -f $_vyatta_op_node_def ] \
+            && grep -q allowed: $_vyatta_op_node_def ; then
 	eval help=$( _vyatta_op_get_node_def_field $_vyatta_op_node_def help )
 	if [ ${#_vyatta_op_allowed[@]} -ne 0 ] ; then
-	    echo -ne $heading
 	    for a in ${_vyatta_op_allowed[*]} ; do
-		printf "\n  %-12s  $help" $a
+                hcomps[${#hcomps[@]}]=$a
+                hstrs[${#hstrs[@]}]=$help
 	    done
+            _vyatta_op_print_help hcomps hstrs
 	else
-	    false
+	    return 1
 	fi
     else
 	nullglob=$( shopt -p nullglob )
-	shopt -s nullglob
-	subnodes=( ${_vyatta_op_node_def%/node.def}/*/node.def )
+	shopt -u nullglob
+        subnodes=($( ls $_vyatta_op_node_def/*/node.def 2>/dev/null | grep -v '/node.tag/node.def$' ))
+        shopt -s nullglob
+        subtag=$_vyatta_op_node_def/node.tag/node.def
+        if [ -f $subtag ]; then
+          allowed=($( eval "$( _vyatta_op_get_node_def_field $subtag allowed )" ))
+          eval help=$( _vyatta_op_get_node_def_field $subtag help )
+          if [ ${#allowed[@]} -ne 0 ] ; then
+            for a in "${allowed[@]}"; do
+              hcomps[${#hcomps[@]}]=$a
+              hstrs[${#hstrs[@]}]=$help
+            done
+          fi
+        fi
 	eval $nullglob
+
 	if [ ${#subnodes[@]} -ne 0 ] ; then
-	    echo -ne $heading
 	    for n in ${subnodes[@]} ; do
 		eval help=$( _vyatta_op_get_node_def_field $n help )
 		subdir=${n%/node.def}
-		printf "\n  %-12s  $help" ${subdir##*/}
+                hcomps[${#hcomps[@]}]=${subdir##*/}
+                hstrs[${#hstrs[@]}]=$help
 	    done
-	else
-	    false
+        fi
+        
+	if [ ${#hcomps[@]} -eq 0 ]; then
+            # no completions available
+	    return 1
 	fi
+        _vyatta_op_print_help hcomps hstrs
     fi
+    return 0
 }
 
 _vyatta_op_expand ()
 {
     local cur=${COMP_WORDS[COMP_CWORD]}
 
-    if _vyatta_op_scan "${COMP_WORDS[@]}" ; then
+    if _vyatta_op_scan 0 "${COMP_WORDS[@]}" ; then
 	COMPREPLY=($( compgen -W "${_vyatta_op_allowed[*]}" -- $cur ))
 	if [[ ${#COMPREPLY[@]} -ne 0 &&
 		    "${COMP_WORDS[*]}" == "${_vyatta_op_comp_words[*]}" ]]
 	then
 	    _vyatta_op_help && \
-		COMPREPLY=($( compgen -W "== --" -- $cur ))
+		COMPREPLY=($( compgen -W "== --" ))
 	    _vyatta_op_comp_words=
 	else
 	    _vyatta_op_comp_words=( "${COMP_WORDS[@]}" )
@@ -196,8 +300,12 @@ _vyatta_op_expand ()
 
 _vyatta_op_run ()
 {
-    if _vyatta_op_scan $@ ; then
-	eval "$( _vyatta_op_get_node_def_field $_vyatta_op_node_def run )"
+    if _vyatta_op_scan 1 $@ ; then
+        local ndef=$_vyatta_op_node_def
+        [ -d "$ndef" ] && ndef="$ndef/node.def"
+	eval "$( _vyatta_op_get_node_def_field $ndef run )"
+    else
+        echo "Invalid command"
     fi
 }
 
