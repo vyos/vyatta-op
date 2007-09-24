@@ -325,9 +325,6 @@ shopt -s histverify
 eval $_vyatta_extglob
 unset _vyatta_extglob
 
-# set default prompt
-export PS1="\u@\h> "
-
 ###  Local Variables:
 ###  mode: shell-script
 ###  End:
