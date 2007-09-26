@@ -21,9 +21,15 @@
 #
 # **** End License ****
 
-cat <<EOF
-FIXME! add vyatta show version
-EOF
+# TODO add other version info
+
+for cl in /usr/share/doc/vyatta-*/changelog.gz ; do
+  dir=${cl%/*} ;
+  pkg=${dir##*/} ;
+  printf "  %-20s " ${pkg} ;
+  test ${#pkg} -lt 20 || echo -ne \\n\\t ;
+  gunzip -c $cl | tail -n1 ;
+done
 
 ###  Local Variables:
 ###  mode: shell-script
