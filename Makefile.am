@@ -11,6 +11,7 @@ bin_SCRIPTS	+= scripts/show_interfaces_statistics
 bin_SCRIPTS	+= scripts/show_interfaces_summary
 bin_SCRIPTS	+= scripts/show_interfaces_system
 bin_SCRIPTS	+= scripts/show_interfaces_tunnel
+bin_SCRIPTS	+= scripts/show_version
 
 cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
 	cpio -0pd
