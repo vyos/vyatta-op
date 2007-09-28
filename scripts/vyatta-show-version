@@ -23,12 +23,24 @@
 
 # TODO add other version info
 
-for cl in /usr/share/doc/vyatta-*/changelog.gz ; do
-  dir=${cl%/*} ;
-  pkg=${dir##*/} ;
+shopt -s extglob
+shopt -s nullglob
+
+declare -a cls=( /usr/share/doc/vyatta-*/changelog.gz )
+declare -a cl_dirs=( ${cls[@]%/*} )
+declare -a pkgs=( ${cl_dirs[@]##*/} )
+
+dpkg -l ${pkgs[@]}
+
+cat <<EOF
+
+Source Repositories
+EOF
+
+for pkg in ${pkgs[@]} ; do
   printf "  %-20s " ${pkg} ;
   test ${#pkg} -lt 20 || echo -ne \\n\\t ;
-  gunzip -c $cl | tail -n1 ;
+  gunzip -c /usr/share/doc/$pkg/changelog.gz | tail -n1 ;
 done
 
 ###  Local Variables:

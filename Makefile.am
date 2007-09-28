@@ -5,7 +5,7 @@ completion_DATA	 = etc/bash_completion.d/vyatta-op
 opdir		 = $(datadir)/vyatta-op/templates
 
 bin_SCRIPTS	 = scripts/vyatta-show-interfaces
-bin_SCRIPTS	+= scripts/show_version
+bin_SCRIPTS	+= scripts/vyatta-show-version
 
 cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
 	cpio -0pd
