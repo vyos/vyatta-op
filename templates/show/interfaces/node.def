@@ -1,2 +1,2 @@
 help: "Show network interface information"
-run: ${vyatta_bindir}/show_interfaces
+run: ${vyatta_bindir}/vyatta-show-interfaces

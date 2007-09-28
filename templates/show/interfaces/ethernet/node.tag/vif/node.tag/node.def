@@ -2,4 +2,4 @@ help: "Show given virtual network interface information"
 allowed: for eth in /sys/class/net/eth${4}.* ; do
 	     echo ${eth/*eth${4}./} ;
 	 done
-run: ${vyatta_bindir}/show_interfaces_ethernet $4 vif $6
+run: ${vyatta_bindir}/vyatta-show-interfaces ethernet $4 vif $6
