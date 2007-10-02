@@ -218,13 +218,17 @@ _vyatta_op_print_help ()
 {
   local -a comps=()
   local -a helps=()
+  local -i taglen=12
 
   eval "comps=( \"\${$1[@]}\" )"
   eval "helps=( \"\${$2[@]}\" )"
-  local idx=0
   echo -en "\nPossible completions:"
-  for (( idx = 0 ; idx < ${#comps[@]} ; idx++ )); do
-    printf "\n  %-12s  ${helps[$idx]}" ${comps[$idx]}
+  for (( idx = 0 ; idx < ${#comps[@]} ; idx++ )) ; do
+      if [ ${#comps[idx]} -lt $taglen ] ; then
+	  printf "\n  %-${taglen}s\t${helps[idx]}" ${comps[idx]}
+      else
+	  printf "\n  %s\n\t\t${helps[idx]}" ${comps[idx]}
+      fi
   done
 }
 
