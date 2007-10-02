@@ -295,9 +295,9 @@ _vyatta_op_expand ()
 	if [[ ${#COMPREPLY[@]} -ne 0 || "$a" == '--' ]] &&
 	    [[ "${COMP_WORDS[*]}" == "${_vyatta_op_comp_words[*]}" ]]
 	then
-	    _vyatta_op_help && \
-		COMPREPLY=($( compgen -W "=_=_=_=_=_=_=_ _=_=_=_=_=_=_=" ))
-	    _vyatta_op_comp_words=
+	    _vyatta_op_help
+	    COMPREPLY=($( compgen -o nospace -W "______________ ..." ))
+	    _vyatta_op_comp_words=( )
 	else
 	    _vyatta_op_comp_words=( "${COMP_WORDS[@]}" )
 	fi
