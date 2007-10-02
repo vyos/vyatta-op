@@ -71,16 +71,22 @@ _vyatta_op_get_node_def_field ()
 _vyatta_op_set_allowed_subdirs ()
 {
     local dir=$1
+    local n=${vyatta_op_templates}/${dir}/node.tag/node.def
+    local restore_shopts=$( shopt -p extglob nullglob | tr \\n \; )
+    shopt -s extglob nullglob
 
-    _vyatta_op_allowed=($( find ${vyatta_op_templates}$1/* -maxdepth 0 -type d -printf %f\\n | grep -v '^node.tag$' ))
-    local tag_present=($( find ${vyatta_op_templates}$1/* -maxdepth 0 -type d -printf %f\\n | grep '^node.tag$' ))
-    if [ -n "$tag_present" ]; then
-      local nullglob=$( shopt -p nullglob )
-      shopt -s nullglob
-      local -a _allowed=($( eval "$( _vyatta_op_get_node_def_field ${vyatta_op_templates}$1/node.tag/node.def allowed )" ))
-      eval $nullglob
-      _vyatta_op_allowed=( "${_vyatta_op_allowed[@]}" "${_allowed[@]}" )
+    unset _vyatta_op_allowed
+    for a in ${vyatta_op_templates}/${dir}/!(node.tag) ; do
+	[[ -d $a && -f $a/node.def ]] && \
+	    _vyatta_op_allowed+=( ${a##*/} )
+    done
+
+    if [ -f $n ] ; then
+	local acmd=$( _vyatta_op_get_node_def_field $n allowed )
+	_vyatta_op_allowed+=($(	eval $acmd ))
     fi
+
+    eval $restore_shopts
 }
 
 _vyatta_op_set_allowed ()
@@ -225,38 +231,36 @@ _vyatta_op_print_help ()
 _vyatta_op_help ()
 {
     local help
-    local nullglob
     local -a subnodes
     local -a allowed
     local subdir
     local subtag
-    local -a hcomps=()
-    local -a hstrs=()
+    local -a hcomps
+    local -a hstrs
 
     if [ -d $_vyatta_op_node_path ]; then
-	nullglob=$( shopt -p nullglob )
-	shopt -u nullglob
-        subnodes=($( ls $_vyatta_op_node_path/*/node.def 2>/dev/null | grep -v '/node.tag/node.def$' ))
-        shopt -s nullglob
+	local restore_shopts=$( shopt -p extglob nullglob | tr \\n \; )
+	shopt -s extglob nullglob
+        subnodes=( $_vyatta_op_node_path/!(node.tag)/node.def )
         subtag=$_vyatta_op_node_path/node.tag/node.def
+	eval $restore_shopts
         if [ -f $subtag ]; then
           allowed=($( eval "$( _vyatta_op_get_node_def_field $subtag allowed )" ))
           eval help=$( _vyatta_op_get_node_def_field $subtag help )
           if [ ${#allowed[@]} -ne 0 ] ; then
             for a in "${allowed[@]}"; do
-              hcomps[${#hcomps[@]}]=$a
-              hstrs[${#hstrs[@]}]=$help
+              hcomps+=( "$a" )
+              hstrs+=( "$help" )
             done
           fi
         fi
-	eval $nullglob
 
 	if [ ${#subnodes[@]} -ne 0 ] ; then
 	    for n in ${subnodes[@]} ; do
 		eval help=$( _vyatta_op_get_node_def_field $n help )
 		subdir=${n%/node.def}
-                hcomps[${#hcomps[@]}]=${subdir##*/}
-                hstrs[${#hstrs[@]}]=$help
+                hcomps+=( "${subdir##*/}" )
+                hstrs+=( "$help" )
 	    done
         fi
         
@@ -274,14 +278,21 @@ _vyatta_op_help ()
 _vyatta_op_expand ()
 {
     local cur=${COMP_WORDS[COMP_CWORD]}
+    local a w
 
     if _vyatta_op_scan 0 "${COMP_WORDS[@]}" ; then
-	COMPREPLY=($( compgen -W "${_vyatta_op_allowed[*]}" -- $cur ))
-	if [[ ${#COMPREPLY[@]} -ne 0 &&
-		    "${COMP_WORDS[*]}" == "${_vyatta_op_comp_words[*]}" ]]
+	a="${_vyatta_op_allowed[*]}"
+	if [ "$a" != '--' ] ; then
+	    w=$a
+	else
+	    w=""		# donot expand wildcard
+	fi
+	COMPREPLY=($( compgen -W "$w" -- $cur ))
+	if [[ ${#COMPREPLY[@]} -ne 0 || "$a" == '--' ]] &&
+	    [[ "${COMP_WORDS[*]}" == "${_vyatta_op_comp_words[*]}" ]]
 	then
 	    _vyatta_op_help && \
-		COMPREPLY=($( compgen -W "== --" ))
+		COMPREPLY=($( compgen -W "=_=_=_=_=_=_=_ _=_=_=_=_=_=_=" ))
 	    _vyatta_op_comp_words=
 	else
 	    _vyatta_op_comp_words=( "${COMP_WORDS[@]}" )
@@ -324,6 +335,8 @@ fi
 shopt -s histverify
 eval $_vyatta_extglob
 unset _vyatta_extglob
+
+bind 'set show-all-if-ambiguous on'
 
 ###  Local Variables:
 ###  mode: shell-script
