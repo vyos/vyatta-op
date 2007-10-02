@@ -83,7 +83,7 @@ _vyatta_op_set_allowed_subdirs ()
 
     if [ -f $n ] ; then
 	local acmd=$( _vyatta_op_get_node_def_field $n allowed )
-	_vyatta_op_allowed+=($(	eval $acmd ))
+	_vyatta_op_allowed+=($(	eval "$acmd" ))
     fi
 
     eval $restore_shopts
