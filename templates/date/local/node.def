@@ -1,2 +1,0 @@
-help: "Show system date and time with local timezone"
-run: /bin/date

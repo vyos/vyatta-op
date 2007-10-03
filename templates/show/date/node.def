@@ -1,2 +1,2 @@
 help: "Show system date and time"
-run: /bin/date -u
+run: /bin/date

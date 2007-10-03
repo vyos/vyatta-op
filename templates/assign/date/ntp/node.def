@@ -1,0 +1,2 @@
+help: "Set system date and time by NTP server [default: ntp.vyatta.com]"
+run: sudo ntpdate ntp.vyatta.com

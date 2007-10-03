@@ -1,2 +1,0 @@
-help: "Synchronize system date and time with given NTP server"
-run: sudo ntpdate ${4-ntp.vyatta.com}
