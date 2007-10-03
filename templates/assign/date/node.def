@@ -1,2 +1,0 @@
-help: "Set date and time <MMDDhhmm[.ss]YYYY>"
-run: sudo /bin/date $3

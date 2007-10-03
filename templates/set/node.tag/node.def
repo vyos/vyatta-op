@@ -1,0 +1,3 @@
+help: "Bash builtin set command"
+allowed: echo -n --
+run: builtin $*

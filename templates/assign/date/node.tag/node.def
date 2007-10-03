@@ -1,3 +1,0 @@
-help: "Set date and time <MMDDhhmm[.ss]YYYY>"
-allowed: echo -n --
-run: sudo /bin/date $3
