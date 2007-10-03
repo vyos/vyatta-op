@@ -103,9 +103,9 @@ _vyatta_op_is_allowed ()
 
     # return immediately if nothing allowed
     [ ${#_vyatta_op_allowed[@]} -ne 0 ] || return
-    # -- is wildcard that allows anything
-    [ ${_vyatta_op_allowed[0]} == -- ] && return
     for allowed in ${_vyatta_op_allowed[@]} ; do
+    # -- is wildcard that allows anything
+	[ $allowed == -- ] && return
 	[ "$arg" == $allowed ] && return
     done
     false
