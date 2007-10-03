@@ -71,18 +71,18 @@ _vyatta_op_get_node_def_field ()
 _vyatta_op_set_allowed_subdirs ()
 {
     local dir=$1
-    local n=${vyatta_op_templates}/${dir}/node.tag/node.def
+    local -a sdir_ndefs sdirs
+    local tag_ndef
     local restore_shopts=$( shopt -p extglob nullglob | tr \\n \; )
     shopt -s extglob nullglob
 
-    unset _vyatta_op_allowed
-    for a in ${vyatta_op_templates}/${dir}/!(node.tag) ; do
-	[[ -d $a && -f $a/node.def ]] && \
-	    _vyatta_op_allowed+=( ${a##*/} )
-    done
+    sdir_ndefs=( ${vyatta_op_templates}/${dir}/!(node.tag)/node.def )
+    sdirs=( ${sdir_ndefs[@]%/*} )
+    _vyatta_op_allowed=( ${sdirs[@]##*/} )
 
-    if [ -f $n ] ; then
-	local acmd=$( _vyatta_op_get_node_def_field $n allowed )
+    tag_ndef=${vyatta_op_templates}/${dir}/node.tag/node.def
+    if [ -f $tag_ndef ] ; then
+	local acmd=$( _vyatta_op_get_node_def_field $tag_ndef allowed )
 	_vyatta_op_allowed+=($(	eval "$acmd" ))
     fi
 
