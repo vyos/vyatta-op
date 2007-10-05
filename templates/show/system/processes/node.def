@@ -1,2 +1,2 @@
-help: "Show system processes"
+help: Show system processes
 run: ps ax

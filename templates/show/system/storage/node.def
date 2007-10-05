@@ -1,2 +1,2 @@
-help: "Show filesystem usage"
+help: Show filesystem usage
 run: df -h -x squashfs

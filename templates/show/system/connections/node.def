@@ -1,2 +1,2 @@
-help: "Show active network connections on the system"
+help: Show active network connections on the system
 run: netstat -an

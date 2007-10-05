@@ -1,4 +1,4 @@
-help: "Show given loopback interface information"
+help: Show given loopback interface information
 allowed: local -a array ;
 	 array=( /sys/class/net/lo* ) ;
 	 echo  -n ${array[@]##*/}

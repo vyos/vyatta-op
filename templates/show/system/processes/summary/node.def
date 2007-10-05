@@ -1,2 +1,2 @@
-help: "Show summary of system processes"
+help: Show summary of system processes
 run: uptime

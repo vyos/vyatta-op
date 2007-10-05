@@ -1,4 +1,4 @@
-help: "Set terminal page length [0 will disable paging]"
+help: Set terminal page length [0 will disable paging]
 run: if [ -n "$3" ] ; then
 	if [ $3 -eq 0 ] ; then
 	   OFR_PAGER='cat -s' ;

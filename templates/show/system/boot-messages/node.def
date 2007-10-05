@@ -1,2 +1,2 @@
-help: "Show kernel boot messages"
+help: Show kernel boot messages
 run: ${OFR_PAGER:-cat -s} /var/log/dmes? /dev/null

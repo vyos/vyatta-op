@@ -225,9 +225,9 @@ _vyatta_op_print_help ()
   echo -en "\nPossible completions:"
   for (( idx = 0 ; idx < ${#comps[@]} ; idx++ )) ; do
       if [ ${#comps[idx]} -lt $taglen ] ; then
-	  printf "\n  %-${taglen}s\t%s" "${comps[idx]}" "${helps[idx]}"
+	  printf "\n  %-${taglen}s\t%b" "${comps[idx]}" "${helps[idx]}"
       else
-	  printf "\n  %s\n\t\t%s" "${comps[idx]}" "${helps[idx]}"
+	  printf "\n  %s\n\t\t%b" "${comps[idx]}" "${helps[idx]}"
       fi
   done
 }
@@ -250,7 +250,7 @@ _vyatta_op_help ()
 	eval $restore_shopts
         if [ -f $subtag ]; then
           allowed=($( eval "$( _vyatta_op_get_node_def_field $subtag allowed )" ))
-          eval help="$( _vyatta_op_get_node_def_field $subtag help )"
+          help=$( _vyatta_op_get_node_def_field $subtag help )
           if [ ${#allowed[@]} -ne 0 ] ; then
             for a in "${allowed[@]}"; do
               hcomps+=( "$a" )
@@ -261,7 +261,7 @@ _vyatta_op_help ()
 
 	if [ ${#subnodes[@]} -ne 0 ] ; then
 	    for n in ${subnodes[@]} ; do
-		eval help="$( _vyatta_op_get_node_def_field $n help )"
+		help=$( _vyatta_op_get_node_def_field $n help )
 		subdir=${n%/node.def}
                 hcomps+=( "${subdir##*/}" )
                 hstrs+=( "$help" )

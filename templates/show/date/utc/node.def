@@ -1,2 +1,2 @@
-help: "Show system date and time as Coordinated Universal Time"
+help: Show system date and time as Coordinated Universal Time
 run: /bin/date -u

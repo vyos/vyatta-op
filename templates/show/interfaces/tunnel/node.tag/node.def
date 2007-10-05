@@ -1,4 +1,4 @@
-help: "Show given tunnel interface information"
+help: Show given tunnel interface information
 allowed: local -a array ;
 	 array=( /sys/class/net/sit* ) ;
 	 echo  -n ${array[@]##*/}
