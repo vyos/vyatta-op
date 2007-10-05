@@ -83,29 +83,24 @@ _vyatta_op_set_allowed_subdirs ()
     tag_ndef=${vyatta_op_templates}/${dir}/node.tag/node.def
     if [ -f $tag_ndef ] ; then
 	local acmd=$( _vyatta_op_get_node_def_field $tag_ndef allowed )
-	_vyatta_op_allowed+=($(	eval "$acmd" ))
+	local -a a=($( eval "$acmd" ))
+	if [ ${#a[@]} -ne 0 ] ; then
+	    _vyatta_op_allowed+=( "${a[@]}" )
+	else
+	    _vyatta_op_allowed+=( "" )
+	fi
     fi
-
     eval $restore_shopts
-}
-
-_vyatta_op_set_allowed ()
-{
-    local nullglob=$( shopt -p nullglob )
-    shopt -s nullglob
-    _vyatta_op_allowed=($( eval "$( _vyatta_op_get_node_def_field $_vyatta_op_node_def allowed )" ))
-    eval $nullglob
 }
 
 _vyatta_op_is_allowed ()
 {
-    local arg=$1 allowed
+    local arg=$1
 
     # return immediately if nothing allowed
     [ ${#_vyatta_op_allowed[@]} -ne 0 ] || return
-    for allowed in ${_vyatta_op_allowed[@]} ; do
-    # -- is wildcard that allows anything
-	[ $allowed == -- ] && return
+    for allowed in "${_vyatta_op_allowed[@]}" ; do
+	[ -z "$allowed" ] && return
 	[ "$arg" == $allowed ] && return
     done
     false
@@ -146,14 +141,6 @@ _vyatta_op_scan ()
           local ndef=$_tpath/node.def
           if [ ! -f $ndef ]; then
             # no template
-            break
-          fi
-          _vyatta_op_node_def=$ndef
-          _vyatta_op_set_allowed
-          if ! _vyatta_op_is_allowed $arg ; then
-            # invalid tag value.
-            # XXX probably display "allowed:"-specific help string when
-            # that is supported?
             break
           fi
         fi
@@ -249,13 +236,17 @@ _vyatta_op_help ()
         subtag=$_vyatta_op_node_path/node.tag/node.def
 	eval $restore_shopts
         if [ -f $subtag ]; then
-          allowed=($( eval "$( _vyatta_op_get_node_def_field $subtag allowed )" ))
+	  local acmd=$( _vyatta_op_get_node_def_field $subtag allowed )
+          allowed=($( eval "$acmd" ))
           help=$( _vyatta_op_get_node_def_field $subtag help )
           if [ ${#allowed[@]} -ne 0 ] ; then
             for a in "${allowed[@]}"; do
-              hcomps+=( "$a" )
+              hcomps+=( "${a:-*}" )
               hstrs+=( "$help" )
             done
+	  else
+	      hcomps=( '*' )
+              hstrs=( "$help" )
           fi
         fi
 
@@ -282,21 +273,23 @@ _vyatta_op_help ()
 _vyatta_op_expand ()
 {
     local cur=${COMP_WORDS[COMP_CWORD]}
-    local a w
 
     if _vyatta_op_scan 0 "${COMP_WORDS[@]}" ; then
-	a="${_vyatta_op_allowed[*]}"
-	if [ "$a" != '--' ] ; then
-	    w=$a
-	else
-	    w=""		# donot expand wildcard
+	COMPREPLY=( )
+	if [ -n "${_vyatta_op_allowed[*]}" ] ; then
+	    for a in "${_vyatta_op_allowed[@]}" ; do
+		if [ -n "$a" ] ; then
+		    COMPREPLY+=($( compgen -W "$a" -- $cur ))
+		else
+		    COMPREPLY+=( "" )
+		fi
+	    done
 	fi
-	COMPREPLY=($( compgen -W "$w" -- $cur ))
-	if [[ ${#COMPREPLY[@]} -ne 0 || "$a" == '--' ]] &&
+	if [[ ${#COMPREPLY[@]} -ne 0 || -z "${_vyatta_op_allowed[*]}" ]] &&
 	    [[ "${COMP_WORDS[*]}" == "${_vyatta_op_comp_words[*]}" ]]
 	then
 	    _vyatta_op_help
-	    COMPREPLY=($( compgen -o nospace -W "______________ ..." ))
+	    COMPREPLY=( "" " " )
 	    _vyatta_op_comp_words=( )
 	else
 	    _vyatta_op_comp_words=( "${COMP_WORDS[@]}" )
