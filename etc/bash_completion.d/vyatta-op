@@ -277,13 +277,19 @@ _vyatta_op_expand ()
     if _vyatta_op_scan 0 "${COMP_WORDS[@]}" ; then
 	COMPREPLY=( )
 	if [ -n "${_vyatta_op_allowed[*]}" ] ; then
+	    local nomatch=true
+	    local joker=false
 	    for a in "${_vyatta_op_allowed[@]}" ; do
 		if [ -n "$a" ] ; then
 		    COMPREPLY+=($( compgen -W "$a" -- $cur ))
+		    [[ -n "$cur" && $a == ${cur}* ]] && \
+			nomatch=false
 		else
-		    COMPREPLY+=( "" )
+		    joker=true
 		fi
 	    done
+	    $nomatch && $joker && \
+		COMPREPLY+=( "" " " )
 	fi
 	if [[ ${#COMPREPLY[@]} -ne 0 || -z "${_vyatta_op_allowed[*]}" ]] &&
 	    [[ "${COMP_WORDS[*]}" == "${_vyatta_op_comp_words[*]}" ]]
