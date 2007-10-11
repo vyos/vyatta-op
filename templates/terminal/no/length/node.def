@@ -1,2 +1,0 @@
-help: Disable terminal paging
-run: OFR_PAGER='cat -s'
