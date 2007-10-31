@@ -28,11 +28,6 @@ test -f /etc/default/vyatta && \
 test ! -d "$vyatta_op_templates" && \
     return 0
 
-# don't do this if we are going into configure mode
-if [ "$_OFR_CONFIGURE" == "ok" ]; then
-  return 0
-fi
-
 declare _vyatta_op_last_comp
 
 # $1: label
@@ -218,6 +213,11 @@ _vyatta_op_run ()
     eval "$(_vyatta_op_get_node_def_field $tpath/node.def run)"
     eval $restore_shopts
 }
+
+# don't initialize if we are in configure mode
+if [ "$_OFR_CONFIGURE" == "ok" ]; then
+  return 0
+fi
 
 _vyatta_op_init $@
 
