@@ -1,3 +1,3 @@
 help: Show date and time of given NTP server
 allowed: sed 's/#.*//; s/^[^ \t]*[ \t]//; /^$/d' ${HOSTFILE:-/dev/null}
-run: ntpdate -q ${3:-ntp.vyatta.com}
+run: /usr/sbin/ntpdate -q ${3:-ntp.vyatta.com}

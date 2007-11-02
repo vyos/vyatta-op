@@ -1,0 +1,2 @@
+help: Show contents of master log file
+run: sudo sh -c "cat `ls /var/log/message* | sort -r` "

@@ -1,2 +1,2 @@
 help: Show date and time of network server [default: ntp.vyatta.com]
-run: ntpdate -q ntp.vyatta.com
+run: /usr/sbin/ntpdate -q ntp.vyatta.com

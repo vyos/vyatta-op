@@ -1,0 +1,2 @@
+help: Show listing of user-defined log files
+run: ls /var/log/user/
