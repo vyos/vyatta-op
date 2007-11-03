@@ -1,0 +1,4 @@
+help: Show running configuration (including default values)
+run: ${vyatta_sbindir}/xorp_tmpl_tool \
+        test ${vyatta_sbindir}/vyatta-output-config.pl -all
+     ${vyatta_sbindir}/xorp_tmpl_tool end_loading
