@@ -1,2 +1,2 @@
 help: Show kernel boot messages
-run: ${OFR_PAGER:-cat -s} /var/log/dmes? /dev/null
+run: sudo ${OFR_PAGER:-cat -s} /var/log/dmes? /dev/null
