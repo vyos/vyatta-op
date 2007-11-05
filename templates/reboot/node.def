@@ -1,0 +1,2 @@
+help: "Reboot the system"
+run: sudo /sbin/reboot
