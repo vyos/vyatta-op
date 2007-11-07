@@ -97,13 +97,20 @@ _vyatta_op_help ()
 {
     local cur=$1; shift
     local node_path=$1; shift
-    local ndef node_tag_help help
+    local ndef node_tag_help node_run help
 
     ndef=$node_path/node.tag/node.def
     [ -f $ndef ] && \
 	node_tag_help=$( _vyatta_op_get_node_def_field $ndef help )
 
+    ndef=$node_path/node.def
+    [ -f $ndef ] && \
+	node_run=$( _vyatta_op_get_node_def_field $ndef run )
+
     echo -en "\nPossible completions:"
+    if [ -z "$cur" -a -n "$node_run" ]; then
+        _vyatta_op_print_help '<Enter>' "Execute the current command"
+    fi
     for comp ; do
 	if [ -z "$comp" ] ; then
 	    _vyatta_op_print_help '*' "$node_tag_help"
