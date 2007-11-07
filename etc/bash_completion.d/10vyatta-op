@@ -207,11 +207,20 @@ _vyatta_op_run ()
 	    tpath+=/node.tag
 	else
 	    echo "Invalid command" >&2
+            eval $restore_shopts
 	    return 1
 	fi
     done
-    eval "$(_vyatta_op_get_node_def_field $tpath/node.def run)"
+    local run_cmd=$(_vyatta_op_get_node_def_field $tpath/node.def run)
+    local ret=0
+    if [ -n "$run_cmd" ]; then
+        eval "$run_cmd"
+    else
+        echo "Invalid command" >&2
+        ret=1
+    fi
     eval $restore_shopts
+    return $ret
 }
 
 # don't initialize if we are in configure mode
