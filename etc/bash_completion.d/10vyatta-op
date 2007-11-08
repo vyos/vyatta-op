@@ -223,7 +223,7 @@ _vyatta_op_run ()
     if [ -n "$run_cmd" ]; then
         eval "$run_cmd"
     else
-        echo "Invalid command" >&2
+        echo "Incomplete command" >&2
         ret=1
     fi
     eval $restore_shopts
