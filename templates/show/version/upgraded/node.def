@@ -1,0 +1,2 @@
+help: Show Vyatta version information plus upgraded packages
+run: ${vyatta_bindir}/vyatta-show-version upgraded
