@@ -43,6 +43,8 @@ _vyatta_op_debug ()
 
 _vyatta_op_init ()
 {
+    complete -F _vyatta_op_expand ''
+
     for xd in $vyatta_op_templates/* ; do
 	if [ -d $xd ] ; then
 	    cmd=${xd##*/}
@@ -160,7 +162,12 @@ _vyatta_op_compreply ()
 
 _vyatta_op_expand ()
 {
-    local cur=${COMP_WORDS[COMP_CWORD]}
+    local cur=""
+    if (( ${#COMP_WORDS[@]} > 0 )); then
+        cur=${COMP_WORDS[COMP_CWORD]}
+    else
+        (( COMP_CWORD = ${#COMP_WORDS[@]} ))
+    fi
     local node_path=$vyatta_op_templates
     local -a comps
     local restore_shopts=$( shopt -p extglob nullglob | tr \\n \; )
