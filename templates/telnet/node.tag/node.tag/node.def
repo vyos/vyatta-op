@@ -1,0 +1,3 @@
+help: telnet to <host> <port>
+allowed: 
+run: shift; ${vyatta_sbindir}/telnet $*
