@@ -83,12 +83,13 @@ _vyatta_op_get_node_def_field ()
 _vyatta_op_print_help ()
 {
     local label=$1 ; shift
-    local -i len=12
 
-    if [ ${#label} -lt $len ] ; then
-	printf "\n  %-${len}s\t%b" "$label" "$*"
+    if [ ${#label} -lt 6 ] ; then
+	echo -ne "\n  $label\t\t" $*
+    elif [ ${#label} -lt 14 ] ; then
+	echo -ne "\n  $label\t" $*
     else
-	printf "\n  %s\n\t\t%b" "$label" "$*"
+	echo -ne "\n  $label\n\t\t" $*
     fi
 }
 
