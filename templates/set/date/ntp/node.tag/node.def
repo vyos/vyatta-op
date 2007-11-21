@@ -1,3 +1,4 @@
 help: Set system date and time with given NTP server
-allowed: sed 's/#.*//; s/^[^ \t]*[ \t]//; /^$/d' ${HOSTFILE:-/dev/null}
+allowed: echo -n HOSTNAME A.B.C.D X:X::X:X ntp.vyatta.com ;
+    sed 's/#.*//; s/^[^ \t]*[ \t]//; /^$/d' ${HOSTFILE:-/dev/null}
 run: sudo ntpdate ${4:-ntp.vyatta.com}
