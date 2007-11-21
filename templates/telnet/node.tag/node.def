@@ -1,3 +1,6 @@
-help: telnet to <host>
-allowed: sed 's/#.*//; s/^[^ \t]*[ \t]//; /^$/d' ${HOSTFILE:-/dev/null}
-run: shift; ${vyatta_sbindir}/telnet $*
+help: telnet to <hostname|address>
+allowed: echo -n HOSTNAME A.B.C.D X:X::X:X ;
+    sed 's/#.*//; s/^[^ \t]*[ \t]//; /^$/d' ${HOSTFILE:-/dev/null}
+run: test -x ${vyatta_sbindir}/telnet &&
+     ${vyatta_sbindir}/telnet $2 $3 ||
+     /usr/bin/telnet $2 $3
