@@ -1,3 +1,4 @@
 help: Show date and time of given NTP server
-allowed: sed 's/#.*//; s/^[^ \t]*[ \t]//; /^$/d' ${HOSTFILE:-/dev/null}
+allowed: echo -n HOSTNAME A.B.C.D X:X::X:X ntp.vyatta.com ;
+    sed 's/#.*//; s/^[^ \t]*[ \t]//; /^$/d' ${HOSTFILE:-/dev/null}
 run: /usr/sbin/ntpdate -q ${3:-ntp.vyatta.com}
