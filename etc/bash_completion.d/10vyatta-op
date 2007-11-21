@@ -82,14 +82,16 @@ _vyatta_op_get_node_def_field ()
 # $2...: help
 _vyatta_op_print_help ()
 {
-    local label=$1 ; shift
+    local label=$1 help=$2
 
-    if [ ${#label} -lt 6 ] ; then
-	echo -ne "\n  $label\t\t" $*
+    if [ ${#help} -eq 0 ] ; then
+	echo -ne "\n  $label"
+    elif [ ${#label} -lt 6 ] ; then
+	echo -ne "\n  $label\t\t$help"
     elif [ ${#label} -lt 14 ] ; then
-	echo -ne "\n  $label\t" $*
+	echo -ne "\n  $label\t$help"
     else
-	echo -ne "\n  $label\n\t\t" $*
+	echo -ne "\n  $label\n\t\t$help"
     fi
 }
 
@@ -100,7 +102,7 @@ _vyatta_op_help ()
 {
     local cur=$1; shift
     local node_path=$1; shift
-    local ndef node_tag_help node_run help
+    local ndef node_tag_help node_run help last_help
 
     ndef=$node_path/node.tag/node.def
     [ -f $ndef ] && \
@@ -116,13 +118,24 @@ _vyatta_op_help ()
     fi
     for comp ; do
 	if [ -z "$comp" ] ; then
-	    _vyatta_op_print_help '*' "$node_tag_help"
+	    if [ "X$node_tag_help" == "X$last_help" ] ; then
+		help=""
+	    else
+		last_help=$node_tag_help
+		help=$node_tag_help
+	    fi
+	    _vyatta_op_print_help '*' "$help"
 	elif [[ -z "$cur" || $comp == ${cur}* ]] ; then
 	    ndef=$node_path/$comp/node.def
 	    if [ -f $ndef ] ; then
 		help=$( _vyatta_op_get_node_def_field $ndef help )
 	    else
 		help=$node_tag_help
+	    fi
+	    if [ "X$help" == "X$last_help" ] ; then
+		help=""
+	    else
+		last_help=$help
 	    fi
 	    _vyatta_op_print_help "$comp" "$help"
 	fi
