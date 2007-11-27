@@ -1,0 +1,170 @@
+# implement "show tech-support"
+# usage: tech-support [ save [ <filename> ] ]
+# NOTE: this file is sourced, NOT executed
+
+function header {
+    echo
+    echo ----------------
+    echo "$*"
+    echo ----------------
+}
+
+# by default send to stdout
+OUT=1
+
+DEFAULT_PATH=/opt/vyatta/etc/config/support
+
+do_rotate ()
+{
+  local count=`ls -t $DEFAULT_PATH/*.tech-support.* 2>/dev/null |wc -l`
+  if (( count >= 10 )); then
+    local dfile=`ls -t $DEFAULT_PATH/*.tech-support.* 2>/dev/null |tail -1`
+    rm -f $dfile
+    echo "Removed old tech-support output file '$dfile'"
+  fi
+}
+
+HOSTNAME=`hostname`
+CURTIME=`date +%F-%H%M%S`
+if [ "$1" == "save" ]; then
+  # "save" is specified. save output to file.
+  if [ -n "$2" ]; then
+    # "<filename>" is specified. use it as the prefix.
+    OUT="$2.$HOSTNAME.tech-support.$CURTIME"
+  else
+    OUT="$HOSTNAME.tech-support.$CURTIME"
+  fi
+  if [[ $OUT != /* ]]; then
+    # it's not absolute path. save in default path.
+    mkdir -p $DEFAULT_PATH >& /dev/null
+    OUT="$DEFAULT_PATH/$OUT"
+    do_rotate
+  fi
+  if ! touch $OUT >& /dev/null; then
+    echo "Cannot create tech-support file '$OUT'"
+    exit 1
+  fi
+  echo "Saving output to '$OUT'..."
+fi
+
+(
+export PATH=/sbin:/usr/sbin:$PATH
+
+header Current time
+date
+
+header OFR Version and Package Changes
+show version all
+
+header Installed Packages
+dpkg -l
+
+header Modules
+cat /proc/modules
+
+header Kernel messages
+dmesg
+
+header CPU Info
+cat /proc/cpuinfo
+
+header Mem Info
+cat /proc/meminfo
+
+header PCI Info
+lspci
+
+header System Info
+sudo dmidecode
+
+header Interfaces
+show interfaces
+
+header Devices
+cat /proc/devices
+
+header Partitions
+cat /proc/partitions
+
+header Mounts
+cat /proc/mounts
+
+header Diskstats
+cat /proc/diskstats
+
+header Kernel command line
+cat /proc/cmdline
+
+header Interrupts
+cat /proc/interrupts
+
+header Load Average
+cat /proc/loadavg
+
+header /opt/vyatta/etc/config/config.boot
+cat /opt/vyatta/etc/config/config.boot
+
+header Running configuration
+show configuration
+
+header \''ps -ef'\'
+ps -ef
+
+header \''df -h -x squashfs'\'
+df -h -x squashfs
+
+header \''lsof -Pi'\'
+lsof -Pi
+
+header \'free\'
+free
+
+header /etc/apt/sources.list
+cat /etc/apt/sources.list
+
+header /etc/ipsec.conf
+cat /etc/ipsec.conf
+
+header /etc/ipsec.secrets
+cat /etc/ipsec.secrets
+
+header /etc/wanpipe/wanpipe1.conf
+cat /etc/wanpipe/wanpipe1.conf
+
+header /etc/wanpipe/wanpipe2.conf
+cat /etc/wanpipe/wanpipe2.conf
+
+header \''ls -l /etc/rc?.d'\'
+ls -l /etc/rc?.d
+
+header /etc/rc.local
+cat /etc/rc.local
+
+header \''iptables -L -vn'\'
+sudo iptables -L -vn
+
+header \''iptables -t nat -L -vn'\'
+sudo iptables -t nat -L -vn
+
+header \''iptables -t mangle -L -vn'\'
+sudo iptables -t mangle -L -vn
+
+header \''iptables -t raw -L -vn'\'
+sudo iptables -t raw -L -vn
+
+header \''show ip route'\'
+show ip route
+
+header /root/.bash_history
+cat /root/.bash_history
+
+header \''show vrrp'\'
+show vrrp
+
+header "END OF TECH-SUPPORT FILE"
+) 1>&$OUT 2>&1
+
+if [ $OUT != "1" ]; then
+  echo "Done"
+fi
+
