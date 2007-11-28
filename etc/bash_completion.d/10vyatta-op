@@ -43,6 +43,13 @@ _vyatta_op_debug ()
 
 _vyatta_op_init ()
 {
+    local restore_shopts=$( shopt -p nullglob | tr \\n \; )
+    shopt -s nullglob
+    for f in ${vyatta_datadir}/vyatta-op/functions/allowed/* ; do
+	source $f
+    done
+    eval $restore_shopts
+
     complete -F _vyatta_op_expand ''
 
     for xd in $vyatta_op_templates/* ; do
@@ -147,8 +154,18 @@ _vyatta_op_help ()
 _vyatta_op_compreply ()
 {
     local cur=$1; shift
+    local -a comps justhelp
 
-    COMPREPLY=($( compgen -W "$*" -- $cur ))
+    # donot complete entries like <HOSTNAME> or <A.B.C.D>
+    for allow ; do
+	if [[ "$allow" == \<*\> ]] ; then
+	    justhelp+=( $allow )
+	else
+	    comps+=( $allow )
+	fi
+    done
+
+    COMPREPLY=($( compgen -W "${comps[*]}" -- $cur ))
 
     # if the last command line arg is empty and we have
     # an empty completion option (meaning wild card),
@@ -166,7 +183,9 @@ _vyatta_op_compreply ()
     fi
 
     if [ "${COMP_WORDS[*]}" == "$_vyatta_op_last_comp" ] ; then
-	_vyatta_op_help "$cur" "$node_path" "${comps[@]}"
+	_vyatta_op_help "$cur" "$node_path" \
+	    ${justhelp[@]} \
+	    $(printf "%s\n" ${comps[@]} | sort)
 	COMPREPLY=( "" " " )
 	_vyatta_op_last_comp=""
     else
@@ -183,7 +202,7 @@ _vyatta_op_expand ()
         (( COMP_CWORD = ${#COMP_WORDS[@]} ))
     fi
     local node_path=$vyatta_op_templates
-    local -a comps
+    local -a allowed
     local restore_shopts=$( shopt -p extglob nullglob | tr \\n \; )
     shopt -s extglob nullglob
 
@@ -204,17 +223,17 @@ _vyatta_op_expand ()
 	    local acmd=$( _vyatta_op_get_node_def_field $ndef allowed )
 	    local -a a=($( eval "$acmd" ))
 	    if [ ${#a[@]} -ne 0 ] ; then
-		comps+=( "${a[@]}" )
+		allowed+=( "${a[@]}" )
 	    else
-		comps+=( "" )
+		allowed+=( "" )
 	    fi
 	else
 	    local sdir=${ndef%/*}
-	    comps+=( ${sdir##*/} )
+	    allowed+=( ${sdir##*/} )
 	fi
     done
 
-    _vyatta_op_compreply "$cur" "${comps[@]}"
+    _vyatta_op_compreply "$cur" "${allowed[@]}"
 
     eval $restore_shopts
 }
