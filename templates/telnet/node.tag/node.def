@@ -1,6 +1,5 @@
 help: telnet to <hostname|address>
-allowed: echo -n HOSTNAME A.B.C.D X:X::X:X ;
-    sed 's/#.*//; s/^[^ \t]*[ \t]//; /^$/d' ${HOSTFILE:-/dev/null}
+allowed: vyatta-allowed-hosts
 run: test -x ${vyatta_sbindir}/telnet &&
      ${vyatta_sbindir}/telnet $2 $3 ||
      /usr/bin/telnet $2 $3
