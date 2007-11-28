@@ -1,5 +1,5 @@
 help: telnet to <hostname|address> <port|service>
-allowed: echo -n PORT SERVICE
+allowed: echo -n '<PORT>'
 run: test -x ${vyatta_sbindir}/telnet &&
      ${vyatta_sbindir}/telnet $2 $3 ||
      /usr/bin/telnet $2 $3
