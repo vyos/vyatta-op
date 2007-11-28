@@ -1,0 +1,24 @@
+#
+# utility function used by node.tag/node.def to list "allowed"
+# or expanded hosts/address
+#
+declare -a _vyatta_hosts
+declare -a _vyatta_symbolic_hosts=( '<HOSTNAME>' '<A.B.C.D>' '<X:X::X:X>' )
+declare -i _vyatta_hostfile_lastmod=0
+declare _vyatta_hostfile_sed='s/#.*//; ; s/^[^ \t]\+[ \t]\+//; s/[ \t]\+/\n/g; /^$/d'
+
+function vyatta-allowed-hosts ()
+{
+    : ${HOSTFILE:=/etc/hosts}
+    local -i curmod=$(stat --printf %Y $HOSTFILE)
+
+    if [ $curmod -ne $_vyatta_hostfile_lastmod ] ; then
+	_vyatta_hosts=( $(sed "$_vyatta_hostfile_sed" $HOSTFILE) )
+	_vyatta_hostfile_lastmod=$curmod
+    fi
+    printf "%s\n" ${_vyatta_symbolic_hosts[@]} ${_vyatta_hosts[@]} $*
+}
+
+###  Local Variables:
+###  mode: shell-script
+###  End:
