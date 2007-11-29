@@ -1,2 +1,6 @@
-help: Show date and time of network server
-run: /usr/sbin/ntpdate -q ntp.vyatta.com
+help: Show peer status of network time daemon
+run: if ps -C &>/dev/null ; then
+	ntpdc -n -c peers
+     else
+	echo NTP daemon disabled
+     fi
