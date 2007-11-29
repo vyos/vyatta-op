@@ -43,13 +43,6 @@ _vyatta_op_debug ()
 
 _vyatta_op_init ()
 {
-    local restore_shopts=$( shopt -p nullglob | tr \\n \; )
-    shopt -s nullglob
-    for f in ${vyatta_datadir}/vyatta-op/functions/allowed/* ; do
-	source $f
-    done
-    eval $restore_shopts
-
     complete -F _vyatta_op_expand ''
 
     for xd in $vyatta_op_templates/* ; do
@@ -274,6 +267,14 @@ _vyatta_op_run ()
 if [ "$_OFR_CONFIGURE" == "ok" ]; then
   return 0
 fi
+
+nullglob_save=$( shopt -p nullglob )
+shopt -s nullglob
+for f in ${vyatta_datadir}/vyatta-op/functions/allowed/* ; do
+    source $f
+done
+eval $nullglob_save
+unset nullglob_save
 
 _vyatta_op_init $@
 
