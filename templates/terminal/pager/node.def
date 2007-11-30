@@ -1,0 +1,2 @@
+help: Use default pager (less)
+run:  VYATTA_PAGER=
