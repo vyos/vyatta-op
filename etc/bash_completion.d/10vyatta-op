@@ -22,7 +22,8 @@
 # 
 # **** End License ****
 
-declare -r _vyatta_default_pager="less\
+test -z "$_vyatta_default_pager" && \
+    declare -r _vyatta_default_pager="less\
 	--QUIT-AT-EOF\
 	--quit-if-one-screen\
 	--LONG-PROMPT\
@@ -40,6 +41,8 @@ test ! -d "$vyatta_op_templates" && \
     return 0
 
 declare _vyatta_op_last_comp
+declare _vyatta_op_node_path
+declare -a _vyatta_op_noncompletions _vyatta_op_completions
 
 # $1: label
 # #2...: strings
@@ -107,19 +110,17 @@ _vyatta_op_print_help ()
 }
 
 # $1: $cur
-# $2: $node_path
-# $3...: possible completions
+# $2...: possible completions
 _vyatta_op_help ()
 {
     local cur=$1; shift
-    local node_path=$1; shift
     local ndef node_tag_help node_run help last_help
 
-    ndef=$node_path/node.tag/node.def
+    ndef=${_vyatta_op_node_path}/node.tag/node.def
     [ -f $ndef ] && \
 	node_tag_help=$( _vyatta_op_get_node_def_field $ndef help )
 
-    ndef=$node_path/node.def
+    ndef=${_vyatta_op_node_path}/node.def
     [ -f $ndef ] && \
 	node_run=$( _vyatta_op_get_node_def_field $ndef run )
 
@@ -137,7 +138,7 @@ _vyatta_op_help ()
 	    fi
 	    _vyatta_op_print_help '*' "$help"
 	elif [[ -z "$cur" || $comp == ${cur}* ]] ; then
-	    ndef=$node_path/$comp/node.def
+	    ndef=${_vyatta_op_node_path}/$comp/node.def
 	    if [ -f $ndef ] ; then
 		help=$( _vyatta_op_get_node_def_field $ndef help )
 	    else
@@ -153,25 +154,76 @@ _vyatta_op_help ()
     done
 }
 
-# $1: cur
-# $2...: comps
-_vyatta_op_compreply ()
+_vyatta_op_set_node_path ()
 {
-    local cur=$1; shift
-    local -a justhelp comps scomps
-
-    # donot complete entries like <HOSTNAME> or <A.B.C.D>
-    for allow ; do
-	if [[ "$allow" == \<*\> ]] ; then
-	    justhelp+=( $allow )
+    _vyatta_op_node_path=$vyatta_op_templates
+    for (( i=0 ; i<COMP_CWORD ; i++ )) ; do
+	if [ -f "${_vyatta_op_node_path}/${COMP_WORDS[i]}/node.def" ] ; then
+	    _vyatta_op_node_path+=/${COMP_WORDS[i]}
+	elif [ -f ${_vyatta_op_node_path}/node.tag/node.def ] ; then
+	    _vyatta_op_node_path+=/node.tag
 	else
-	    comps+=( $allow )
+	    return 1
+	fi
+    done
+}
+
+_vyatta_op_set_completions ()
+{
+    local -a allowed completions
+
+    for ndef in ${_vyatta_op_node_path}/*/node.def ; do
+	if [[ $ndef == */node.tag/node.def ]] ; then
+	    local acmd=$( _vyatta_op_get_node_def_field $ndef allowed )
+	    local -a a=($( eval "$acmd" ))
+	    if [ ${#a[@]} -ne 0 ] ; then
+		allowed+=( "${a[@]}" )
+	    else
+		allowed+=( "" )
+	    fi
+	else
+	    local sdir=${ndef%/*}
+	    allowed+=( ${sdir##*/} )
 	fi
     done
 
-    scomps=($( printf "%s\n" ${comps[@]} | sort -u ))
+    # donot complete entries like <HOSTNAME> or <A.B.C.D>
+    _vyatta_op_noncompletions=( )
+    completions=( )
+    for (( i=0 ; i<${#allowed[@]} ; i++ )) ; do
+	if [[ "${allowed[i]}" == \<*\> ]] ; then
+	    _vyatta_op_noncompletions+=( ${allowed[i]} )
+	else
+	    completions+=( ${allowed[i]} )
+	fi
+    done
 
-    COMPREPLY=($( compgen -W "${scomps[*]}" -- $cur ))
+    _vyatta_op_completions=($( printf "%s\n" ${completions[@]} | sort -u ))
+}
+
+_vyatta_op_expand ()
+{
+    local restore_shopts=$( shopt -p extglob nullglob | tr \\n \; )
+    shopt -s extglob nullglob
+    local cur=""
+
+    if (( ${#COMP_WORDS[@]} > 0 )); then
+        cur=${COMP_WORDS[COMP_CWORD]}
+    else
+        (( COMP_CWORD = ${#COMP_WORDS[@]} ))
+    fi
+
+    if [ "${COMP_WORDS[*]}" != "$_vyatta_op_last_comp" ] ; then
+	if ! _vyatta_op_set_node_path ; then
+	    echo -e \\a
+	    COMPREPLY=( "" " " )
+	    eval "$restore_shopts"
+	    return 1
+	fi
+	_vyatta_op_set_completions
+    fi
+
+    COMPREPLY=($( compgen -W "${_vyatta_op_completions[*]}" -- $cur ))
 
     # if the last command line arg is empty and we have
     # an empty completion option (meaning wild card),
@@ -189,58 +241,17 @@ _vyatta_op_compreply ()
     fi
 
     if [ "${COMP_WORDS[*]}" == "$_vyatta_op_last_comp" ] ; then
-	_vyatta_op_help "$cur" "$node_path" ${justhelp[@]} ${scomps[@]} | \
-	    eval ${VYATTA_PAGER:-cat}
+	_vyatta_op_help "$cur" \
+	    ${_vyatta_op_noncompletions[@]} \
+	    ${_vyatta_op_completions[@]} \
+	    | eval ${VYATTA_PAGER:-cat}
 	COMPREPLY=( "" " " )
 	_vyatta_op_last_comp=""
     else
 	_vyatta_op_last_comp="${COMP_WORDS[*]}"
     fi
-}
 
-_vyatta_op_expand ()
-{
-    local cur=""
-    if (( ${#COMP_WORDS[@]} > 0 )); then
-        cur=${COMP_WORDS[COMP_CWORD]}
-    else
-        (( COMP_CWORD = ${#COMP_WORDS[@]} ))
-    fi
-    local node_path=$vyatta_op_templates
-    local -a allowed
-    local restore_shopts=$( shopt -p extglob nullglob | tr \\n \; )
-    shopt -s extglob nullglob
-
-    for (( i=0 ; i<COMP_CWORD ; i++ )) ; do
-	if [ -f "$node_path/${COMP_WORDS[i]}/node.def" ] ; then
-	    node_path+=/${COMP_WORDS[i]}
-	elif [ -f $node_path/node.tag/node.def ] ; then
-	    node_path+=/node.tag
-	else
-	    echo -e \\a
-	    COMPREPLY=( "" " " )
-	    return 1
-	fi
-    done
-
-    for ndef in $node_path/*/node.def ; do
-	if [[ $ndef == */node.tag/node.def ]] ; then
-	    local acmd=$( _vyatta_op_get_node_def_field $ndef allowed )
-	    local -a a=($( eval "$acmd" ))
-	    if [ ${#a[@]} -ne 0 ] ; then
-		allowed+=( "${a[@]}" )
-	    else
-		allowed+=( "" )
-	    fi
-	else
-	    local sdir=${ndef%/*}
-	    allowed+=( ${sdir##*/} )
-	fi
-    done
-
-    _vyatta_op_compreply "$cur" "${allowed[@]}"
-
-    eval $restore_shopts
+    eval "$restore_shopts"
 }
 
 _vyatta_op_run ()
