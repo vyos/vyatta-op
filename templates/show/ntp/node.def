@@ -1,5 +1,5 @@
 help: Show peer status of network time daemon
-run: if ps -C &>/dev/null ; then
+run: if ps -C ntpd &>/dev/null ; then
 	ntpdc -n -c peers
      else
 	echo NTP daemon disabled
