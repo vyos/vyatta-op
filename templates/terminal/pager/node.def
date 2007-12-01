@@ -1,2 +1,2 @@
 help: Use default pager (less)
-run:  VYATTA_PAGER=
+run:  VYATTA_PAGER=$_vyatta_default_pager
