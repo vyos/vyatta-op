@@ -1,0 +1,2 @@
+help: Show contents of all master log files
+run: ${vyatta_bindir}/vyatta-show-log-all

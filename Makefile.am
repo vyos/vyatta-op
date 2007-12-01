@@ -11,6 +11,7 @@ alloweddir	 = $(datadir)/vyatta-op/functions/allowed
 allowed_DATA	 = functions/allowed/hosts
 
 bin_SCRIPTS	 = scripts/vyatta-show-interfaces
+bin_SCRIPTS	+= scripts/vyatta-show-log-all
 bin_SCRIPTS	+= scripts/vyatta-show-version
 
 cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \

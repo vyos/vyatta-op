@@ -1,0 +1,9 @@
+#!/bin/bash
+
+shopt -s extglob nullglob
+
+declare -a zipped_files=($( printf "%s\n" /var/log/messages*.gz | sort -r ))
+declare -a plain_files=($( printf "%s\n" /var/log/messages!(*.gz) | sort -r ))
+
+gunzip --stdout ${zipped_files[@]}
+cat ${plain_files[@]}
