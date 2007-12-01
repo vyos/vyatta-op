@@ -1,0 +1,9 @@
+#!/bin/bash
+
+shopt -s extglob nullglob
+
+declare -a zipped_files=($( printf "%s\n" /var/log/dmesg*.gz | sort -r ))
+declare -a plain_files=($( printf "%s\n" /var/log/dmesg!(*.gz) | sort -r ))
+
+[ ${#zipped_files[@]} -gt 0 ] && gunzip --stdout ${zipped_files[@]}
+[ ${#plain_files[@]} -gt 0 ] && cat ${plain_files[@]}
