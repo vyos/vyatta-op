@@ -1,2 +1,2 @@
-help: Show contents of master log file
-run: sudo cat `ls /var/log/messages* | sort -r`
+help: Show contents of current master log file
+run: cat /var/log/messages
