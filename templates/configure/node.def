@@ -1,2 +1,2 @@
 help: Enter configure mode
-run: export _OFR_CONFIGURE=ok; newgrp quaggavty ; unset _OFR_CONFIGURE
+run: export _OFR_CONFIGURE=ok; newgrp vyattacfg; unset _OFR_CONFIGURE
