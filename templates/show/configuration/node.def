@@ -1,4 +1,2 @@
 help: Show running configuration
-run: ${vyatta_sbindir}/xorp_tmpl_tool \
-        test ${vyatta_sbindir}/vyatta-output-config.pl
-     ${vyatta_sbindir}/xorp_tmpl_tool end_loading
+run: ${vyatta_sbindir}/vyatta-output-config.pl -active
