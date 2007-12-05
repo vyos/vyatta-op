@@ -18,7 +18,6 @@ bin_SCRIPTS	+= scripts/vyatta-show-version
 bin_sudo_users_SCRIPTS = scripts/vyatta-show-log
 bin_sudo_users_SCRIPTS += scripts/vyatta-show-log-all
 bin_sudo_users_SCRIPTS += scripts/vyatta-show-log-file
-bin_sudo_users_SCRIPTS += scripts/vyatta-ethtool-wrapper
 
 cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
 	cpio -0pd

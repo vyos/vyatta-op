@@ -1,0 +1,11 @@
+#!/bin/bash
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+
+if [ "$1" = "purge" ]; then
+  # remove added symlinks
+  rm -f ${bindir}/sudo-users/ethtool
+fi
+

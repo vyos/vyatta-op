@@ -12,6 +12,8 @@
 /configure
 /debian/files
 /debian/vyatta-op
+/debian/vyatta-op.postinst
+/debian/vyatta-op.postrm
 /etc/default/vyatta
 /INSTALL
 /Makefile.in
