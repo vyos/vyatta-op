@@ -6,4 +6,6 @@ bindir=@bindir@
 
 # add symlinks for sudo
 ln -sf /usr/sbin/ethtool ${bindir}/sudo-users/ethtool
+ln -sf /usr/sbin/dmidecode ${bindir}/sudo-users/dmidecode
+ln -sf /sbin/iptables ${bindir}/sudo-users/iptables
 

@@ -13,14 +13,15 @@ function header {
 OUT=1
 
 DEFAULT_PATH=/opt/vyatta/etc/config/support
+DEFAULT_GROUP=users
 
 do_rotate ()
 {
   local count=`ls -t $DEFAULT_PATH/*.tech-support.* 2>/dev/null |wc -l`
   if (( count >= 10 )); then
     local dfile=`ls -t $DEFAULT_PATH/*.tech-support.* 2>/dev/null |tail -1`
-    rm -f $dfile
-    echo "Removed old tech-support output file '$dfile'"
+    rm -f $dfile >&/dev/null \
+      && echo "Removed old tech-support output file '$dfile'"
   fi
 }
 
@@ -37,6 +38,8 @@ if [ "$1" == "save" ]; then
   if [[ $OUT != /* ]]; then
     # it's not absolute path. save in default path.
     mkdir -p $DEFAULT_PATH >& /dev/null
+    chgrp $DEFAULT_GROUP $DEFAULT_PATH >& /dev/null
+    chmod 775 $DEFAULT_PATH >& /dev/null
     OUT="$DEFAULT_PATH/$OUT"
     do_rotate
   fi
@@ -75,7 +78,7 @@ header PCI Info
 lspci
 
 header System Info
-sudo dmidecode
+sudo ${vyatta_bindir}/sudo-users/dmidecode
 
 header Interfaces
 show interfaces
@@ -141,16 +144,16 @@ header /etc/rc.local
 cat /etc/rc.local
 
 header \''iptables -L -vn'\'
-sudo iptables -L -vn
+sudo ${vyatta_bindir}/sudo-users/iptables -L -vn
 
 header \''iptables -t nat -L -vn'\'
-sudo iptables -t nat -L -vn
+sudo ${vyatta_bindir}/sudo-users/iptables -t nat -L -vn
 
 header \''iptables -t mangle -L -vn'\'
-sudo iptables -t mangle -L -vn
+sudo ${vyatta_bindir}/sudo-users/iptables -t mangle -L -vn
 
 header \''iptables -t raw -L -vn'\'
-sudo iptables -t raw -L -vn
+sudo ${vyatta_bindir}/sudo-users/iptables -t raw -L -vn
 
 header \''show ip route'\'
 show ip route
