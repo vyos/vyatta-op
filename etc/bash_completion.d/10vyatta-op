@@ -277,7 +277,7 @@ _vyatta_op_run ()
     local run_cmd=$(_vyatta_op_get_node_def_field $tpath/node.def run)
     local ret=0
     if [ -n "$run_cmd" ]; then
-	if [ "$1" == "show" ] ; then
+	if [[ -t 1 &&  "$1" == "show" ]] ; then
             ( eval "$run_cmd" ) | eval "${VYATTA_PAGER:-cat}"
 	else
             eval "$run_cmd"
