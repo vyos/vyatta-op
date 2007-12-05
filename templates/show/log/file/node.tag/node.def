@@ -2,8 +2,4 @@ help: Show contents of user-defined log file
 allowed: local -a array ;
          array=( /var/log/user/* ) ;
          echo  -n ${array[@]##*/}
-run: if [ -f /var/log/user/$4 ]; then
-	cat /var/log/user/$4;
-     else
-	echo "no such file";
-     fi
+run: sudo ${vyatta_bindir}/sudo-users/vyatta-show-log-file $4

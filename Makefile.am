@@ -3,6 +3,7 @@ default_DATA	 = etc/default/vyatta
 completiondir	 = /etc/bash_completion.d
 completion_DATA	 = etc/bash_completion.d/10vyatta-op
 opdir		 = $(datadir)/vyatta-op/templates
+bin_sudo_usersdir = $(bindir)/sudo-users
 
 funcdir		 = $(datadir)/vyatta-op/functions
 func_DATA	 = functions/tech-support
@@ -12,8 +13,12 @@ allowed_DATA	 = functions/allowed/hosts
 
 bin_SCRIPTS	 = scripts/vyatta-show-interfaces
 bin_SCRIPTS	+= scripts/vyatta-show-dmesg-all
-bin_SCRIPTS	+= scripts/vyatta-show-log-all
 bin_SCRIPTS	+= scripts/vyatta-show-version
+
+bin_sudo_users_SCRIPTS = scripts/vyatta-show-log
+bin_sudo_users_SCRIPTS += scripts/vyatta-show-log-all
+bin_sudo_users_SCRIPTS += scripts/vyatta-show-log-file
+bin_sudo_users_SCRIPTS += scripts/vyatta-ethtool-wrapper
 
 cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
 	cpio -0pd

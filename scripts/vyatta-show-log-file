@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ -f /var/log/user/$1 ]; then
+  cat /var/log/user/$1
+else
+  echo "No such log file"
+fi
+
