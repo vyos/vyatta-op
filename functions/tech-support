@@ -168,6 +168,8 @@ header "END OF TECH-SUPPORT FILE"
 ) 1>&$OUT 2>&1
 
 if [ $OUT != "1" ]; then
+  chgrp $DEFAULT_GROUP $OUT >& /dev/null
+  chmod 664 $OUT >& /dev/null
   echo "Done"
 fi
 
