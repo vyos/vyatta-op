@@ -40,7 +40,8 @@ test -f /etc/default/vyatta && \
 test ! -d "$vyatta_op_templates" && \
     return 0
 
-declare _vyatta_op_last_comp
+declare -r _vyatta_op_last_comp_init='>>>>>>LASTCOMP<<<<<<'
+declare _vyatta_op_last_comp=${_vyatta_op_last_comp_init}
 declare _vyatta_op_node_path
 declare -a _vyatta_op_noncompletions _vyatta_op_completions
 
@@ -246,7 +247,7 @@ _vyatta_op_expand ()
 	    ${_vyatta_op_completions[@]} \
 	    | eval ${VYATTA_PAGER:-cat}
 	COMPREPLY=( "" " " )
-	_vyatta_op_last_comp=""
+	_vyatta_op_last_comp=${_vyatta_op_last_comp_init}
     else
 	_vyatta_op_last_comp="${COMP_WORDS[*]}"
     fi
@@ -261,7 +262,7 @@ _vyatta_op_run ()
     local restore_shopts=$( shopt -p extglob nullglob | tr \\n \; )
     shopt -s extglob nullglob
 
-    _vyatta_op_last_comp=""
+    _vyatta_op_last_comp=${_vyatta_op_last_comp_init}
     false; estat=$?
     for arg ; do
 	if [ -f "$tpath/$arg/node.def" ] ; then
