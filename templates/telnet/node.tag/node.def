@@ -1,5 +1,9 @@
 help: telnet to <hostname|address>
 allowed: vyatta-allowed-hosts
-run: test -x ${vyatta_sbindir}/telnet &&
-     ${vyatta_sbindir}/telnet $2 $3 ||
-     /usr/bin/telnet $2 $3
+run: if [ -x /usr/bin/telnet ] ; then
+     	/usr/bin/$*
+     elif [ -x /bin/busybox ] ; then
+	/bin/busybox $*
+     else
+	echo telnet not found
+     fi
