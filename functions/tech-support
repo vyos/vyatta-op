@@ -158,8 +158,8 @@ sudo ${vyatta_bindir}/sudo-users/iptables -t raw -L -vn
 header \''show ip route'\'
 show ip route
 
-header /root/.bash_history
-cat /root/.bash_history
+header $HOME/.bash_history
+cat $HOME/.bash_history
 
 header \''show vrrp'\'
 show vrrp
