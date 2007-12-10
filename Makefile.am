@@ -12,12 +12,13 @@ alloweddir	 = $(datadir)/vyatta-op/functions/allowed
 allowed_DATA	 = functions/allowed/hosts
 
 bin_SCRIPTS	 = scripts/vyatta-show-interfaces
-bin_SCRIPTS	+= scripts/vyatta-show-dmesg-all
 bin_SCRIPTS	+= scripts/vyatta-show-version
 
 bin_sudo_users_SCRIPTS = scripts/vyatta-show-log
 bin_sudo_users_SCRIPTS += scripts/vyatta-show-log-all
 bin_sudo_users_SCRIPTS += scripts/vyatta-show-log-file
+bin_sudo_users_SCRIPTS += scripts/vyatta-show-dmesg
+bin_sudo_users_SCRIPTS += scripts/vyatta-show-dmesg-all
 
 cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
 	cpio -0pd

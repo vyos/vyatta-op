@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cat /var/log/dmes? /dev/null
+
