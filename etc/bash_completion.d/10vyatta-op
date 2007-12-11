@@ -304,8 +304,6 @@ done
 eval $nullglob_save
 unset nullglob_save
 
-alias no-more=cat
-
 _vyatta_op_init $@
 
 ###  Local Variables:

@@ -9,5 +9,9 @@ if [ "$1" = "purge" ]; then
   rm -f ${bindir}/sudo-users/ethtool
   rm -f ${bindir}/sudo-users/dmidecode
   rm -f ${bindir}/sudo-users/iptables
+  rm -f /usr/bin/count
+  rm -f /usr/bin/match
+  rm -f /usr/bin/no-match
+  rm -f /usr/bin/no-more
 fi
 
