@@ -291,6 +291,27 @@ _vyatta_op_run ()
     return $ret
 }
 
+# "pipe" functions
+count ()
+{
+  wc -l "$@"
+}
+
+match ()
+{
+  grep -E -e "$@"
+}
+
+no-match ()
+{
+  grep -E -v -e "$@"
+}
+
+no-more ()
+{
+  cat "$@"
+}
+
 # don't initialize if we are in configure mode
 if [ "$_OFR_CONFIGURE" == "ok" ]; then
   return 0

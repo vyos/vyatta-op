@@ -13,10 +13,6 @@ allowed_DATA	 = functions/allowed/hosts
 
 bin_SCRIPTS	 = scripts/vyatta-show-interfaces
 bin_SCRIPTS	+= scripts/vyatta-show-version
-bin_SCRIPTS	+= scripts/count
-bin_SCRIPTS	+= scripts/match
-bin_SCRIPTS	+= scripts/no-match
-bin_SCRIPTS	+= scripts/no-more
 
 bin_sudo_users_SCRIPTS = scripts/vyatta-show-log
 bin_sudo_users_SCRIPTS += scripts/vyatta-show-log-all
