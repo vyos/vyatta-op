@@ -44,6 +44,7 @@ declare -r _vyatta_op_last_comp_init='>>>>>>LASTCOMP<<<<<<'
 declare _vyatta_op_last_comp=${_vyatta_op_last_comp_init}
 declare _vyatta_op_node_path
 declare -a _vyatta_op_noncompletions _vyatta_op_completions
+declare -x -a _vyatta_pipe_noncompletions _vyatta_pipe_completions
 
 # $1: label
 # #2...: strings
@@ -214,6 +215,19 @@ _vyatta_op_expand ()
         (( COMP_CWORD = ${#COMP_WORDS[@]} ))
     fi
 
+    if _vyatta_pipe_completion "${COMP_WORDS[@]}"; then
+      if [ "${COMP_WORDS[*]}" == "$_vyatta_op_last_comp" ] ; then
+          _vyatta_do_pipe_help
+          COMPREPLY=( "" " " )
+          _vyatta_op_last_comp=${_vyatta_op_last_comp_init}
+      else
+          COMPREPLY=( "${_vyatta_pipe_completions[@]}" )
+          _vyatta_op_last_comp="${COMP_WORDS[*]}"
+      fi
+      eval "$restore_shopts"
+      return
+    fi
+
     if [ "${COMP_WORDS[*]}" != "$_vyatta_op_last_comp" ] ; then
 	if ! _vyatta_op_set_node_path ; then
 	    echo -e \\a
@@ -294,22 +308,91 @@ _vyatta_op_run ()
 # "pipe" functions
 count ()
 {
-  wc -l "$@"
+  wc -l
 }
 
 match ()
 {
-  grep -E -e "$@"
+  grep -E -e "$1"
 }
 
 no-match ()
 {
-  grep -E -v -e "$@"
+  grep -E -v -e "$1"
 }
 
 no-more ()
 {
-  cat "$@"
+  cat
+}
+
+# pipe command help
+# $1: command
+_vyatta_pipe_help ()
+{
+  local help="No help text available"
+  case "$1" in
+    count) help="Count the number of lines in the output";;
+    match) help="Only output lines that match specified pattern";;
+    no-match) help="Only output lines that do not match specified pattern";;
+    more) help="Paginate the output";;
+    no-more) help="Do not paginate the output";;
+    '<pattern>') help="Pattern for matching";;
+  esac
+  echo -n "$help"
+}
+
+_vyatta_do_pipe_help ()
+{
+  local help=''
+  if (( ${#_vyatta_pipe_completions[@]} + ${#_vyatta_pipe_noncompletions[@]}
+       == 0 )); then
+    return
+  fi
+  echo -en "\nPossible completions:"
+  for comp in "${_vyatta_pipe_completions[@]}" \
+              "${_vyatta_pipe_noncompletions[@]}"; do
+    _vyatta_op_print_help "$comp" "$(_vyatta_pipe_help "$comp")"
+  done
+}
+
+# pipe completion
+# $@: words
+_vyatta_pipe_completion ()
+{
+  local -a pipe_cmd=()
+  local -a all_cmds=( 'count' 'match' 'no-match' 'more' 'no-more' )
+  local found=0
+  _vyatta_pipe_completions=()
+  _vyatta_pipe_noncompletions=()
+
+  for word in "$@"; do
+    if [ "$found" == "1" -o "$word" == "|" ]; then
+      pipe_cmd+=( "$word" )
+      found=1
+    fi
+  done
+  if (( found == 0 )); then
+    return 1
+  fi
+  if (( ${#pipe_cmd[@]} == 1 )); then
+    # "|" only
+    _vyatta_pipe_completions=( "${all_cmds[@]}" )
+    return 0
+  fi
+  if (( ${#pipe_cmd[@]} == 2 )); then
+    # "|<space, chars, or space+chars>"
+    _vyatta_pipe_completions=($(compgen -W "${all_cmds[*]}" -- ${pipe_cmd[1]}))
+    return 0
+  fi
+  if (( ${#pipe_cmd[@]} == 3 )); then
+    # "|<chars or space+chars><space or space+chars>"
+    case "${pipe_cmd[1]}" in
+      match|no-match) _vyatta_pipe_noncompletions=( '<pattern>' );;
+    esac
+    return 0
+  fi
+  return 0
 }
 
 # don't initialize if we are in configure mode
