@@ -1,0 +1,2 @@
+help: Show host operating system details
+run: /bin/uname -a
