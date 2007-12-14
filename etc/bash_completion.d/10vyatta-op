@@ -31,6 +31,7 @@ test -z "$_vyatta_default_pager" && \
 	--squeeze-blank-lines\
 	--buffers=64\
 	--auto-buffers\
+	--no-init\
 	--no-lessopen"
 declare -x VYATTA_PAGER=$_vyatta_default_pager
 
