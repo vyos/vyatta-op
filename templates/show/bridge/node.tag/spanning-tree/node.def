@@ -1,0 +1,2 @@
+help: Show bridge spanning tree information"
+run: sudo brctl showstp $3
