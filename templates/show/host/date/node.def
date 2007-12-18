@@ -1,0 +1,2 @@
+help: Show host current date
+run: /bin/date

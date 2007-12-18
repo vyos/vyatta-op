@@ -1,0 +1,3 @@
+help: Lookup host information for host/ipaddres
+allowed: vyatta-allowed-hosts
+run: /usr/bin/host $4
