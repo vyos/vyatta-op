@@ -23,3 +23,5 @@ libtool
 /Makefile.in
 /Makefile
 
+/src/render_xml
+
