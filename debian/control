@@ -15,7 +15,8 @@ Depends: bash (>= 3.1),
  pciutils,
  lsof,
  coreutils (>= 5.97-5.3),
- host
+ host,
+ libsablot0
 Suggests: util-linux (>= 2.13-5),
  net-tools,
  ncurses-bin (>= 5.5-5),
