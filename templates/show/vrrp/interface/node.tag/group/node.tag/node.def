@@ -1,0 +1,3 @@
+help: Show VRRP information for interface group
+allowed: echo -n '<VRRP_GROUP>'
+run: /opt/vyatta/sbin/vyatta-show-vrrp.pl $4 $6
