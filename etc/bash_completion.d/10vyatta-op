@@ -411,6 +411,9 @@ unset nullglob_save
 
 _vyatta_op_init $@
 
+type vyatta-vtysh &>/dev/null && \
+    alias vtysh=vyatta-vtysh
+
 ###  Local Variables:
 ###  mode: shell-script
 ###  End:
