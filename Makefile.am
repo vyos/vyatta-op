@@ -20,6 +20,14 @@ bin_sudo_users_SCRIPTS += scripts/vyatta-show-log-file
 bin_sudo_users_SCRIPTS += scripts/vyatta-show-dmesg
 bin_sudo_users_SCRIPTS += scripts/vyatta-show-dmesg-all
 
+sbin_PROGRAMS = src/render_xml
+
+src_render_xml_SOURCES = src/render_xml.cc
+src_render_xml_SOURCES += src/xsl_processor.cc
+src_render_xml_SOURCES += src/xsl_processor.hh
+src_render_xml_CPPFLAGS = -I$(srcdir)/src
+src_render_xml_LDADD = -lsablot
+
 cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
 	cpio -0pd
 

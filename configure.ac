@@ -15,6 +15,13 @@ AC_CONFIG_AUX_DIR([config])
 AM_INIT_AUTOMAKE([gnu no-dist-gzip dist-bzip2 subdir-objects])
 AC_PREFIX_DEFAULT([/opt/vyatta])
 
+AC_PROG_CC
+AM_PROG_AS
+AM_PROG_CC_C_O
+AC_PROG_LIBTOOL
+AC_PROG_LEX
+AC_PROG_YACC
+
 AC_ARG_ENABLE([nostrip],
 	AC_HELP_STRING([--enable-nostrip],
 	[include -nostrip option during packaging]),

@@ -1,5 +1,9 @@
 *~
 .*.swp
+*.[oa]
+*.deps
+.dirstamp
+libtool
 /aclocal.m4
 /autom4te.cache
 /build-stamp
@@ -18,4 +22,6 @@
 /INSTALL
 /Makefile.in
 /Makefile
+
+/src/render_xml
 
