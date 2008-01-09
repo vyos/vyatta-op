@@ -122,6 +122,7 @@ _usage ()
 	$progname [ INTERFACE ]
 	$progname loopback [ INTERFACE ]
 	$progname tunnel [ INTERFACE ]
+	$progname serial [ INTERFACE ]
 	$progname system [ enabled ]
 	EOF
 }
@@ -143,7 +144,7 @@ if [ $# -gt 0 ] ; then
     if [[ $1 == --+(usage|help) ]] ; then
 	_usage
 	exit 0
-    elif [[ $1 == +(ethernet|loopback|system|tunnel) ]] ; then
+    elif [[ $1 == +(ethernet|loopback|system|tunnel|serial) ]] ; then
 	if [ $# -eq 1 ] ; then
 	    case $1 in
 		ethernet )
@@ -152,6 +153,8 @@ if [ $# -gt 0 ] ; then
 		    full_itfs=( /sys/class/net/lo* ) ;;
 		tunnel )
 		    full_itfs=( /sys/class/net/tun* ) ;;
+		serial )
+		    full_itfs=( /sys/class/net/wan* ) ;;
 	    esac
 	    itfs=( ${full_itfs[@]##*/} )
 	else
