@@ -1,2 +1,2 @@
-help: Show bridge MAC table"
+help: Show bridge MAC table
 run: sudo brctl showmacs $3
