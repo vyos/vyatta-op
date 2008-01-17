@@ -1,0 +1,3 @@
+help: Show how long the system has been up
+run: uptime
+

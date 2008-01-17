@@ -163,7 +163,11 @@ if (defined($booted) && $booted ne "") {
 } else {
     $booted="disk";
 }
-print "Booted From: $booted\n";
+print "Boot via:    $booted\n";
+my $uptime = `uptime`;
+if (defined $uptime && $uptime ne "") {
+    print "Uptime  :   $uptime\n";
+}
 if (!(-e $debsfile)) {
     exit 0;
 }
