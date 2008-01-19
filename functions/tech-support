@@ -129,7 +129,7 @@ header /etc/ipsec.conf
 cat /etc/ipsec.conf
 
 header /etc/ipsec.secrets
-cat /etc/ipsec.secrets
+sudo cat /etc/ipsec.secrets
 
 header /etc/wanpipe/wanpipe1.conf
 cat /etc/wanpipe/wanpipe1.conf
