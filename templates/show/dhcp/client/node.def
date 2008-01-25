@@ -1,0 +1,2 @@
+help: Show dhcp client information
+run: /opt/vyatta/bin/vyatta-show-dhclient.pl
