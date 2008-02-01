@@ -1,0 +1,2 @@
+help: Show kernel route table
+run: ip route list

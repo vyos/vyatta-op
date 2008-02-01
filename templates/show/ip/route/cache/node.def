@@ -1,0 +1,2 @@
+help: Show kernel route cache
+run: ip -s route list cache
