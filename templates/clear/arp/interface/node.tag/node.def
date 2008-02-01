@@ -1,0 +1,5 @@
+help: Clear ARP cache for interface
+allowed: local -a array ;
+	 array=( /sys/class/net/{eth,vmnet}* ) ;
+	 echo  -n ${array[@]##*/}
+run: sudo ip neigh flush dev $4
