@@ -204,6 +204,18 @@ _vyatta_op_set_completions ()
     _vyatta_op_completions=($( printf "%s\n" ${completions[@]} | sort -u ))
 }
 
+_vyatta_op_comprely_needs_ambiguity ()
+{
+    local -a uniq
+
+    [ ${#COMPREPLY[@]} -eq 1 ] && return
+
+    uniq=( `printf "%s\n" ${COMPREPLY[@]} | cut -c1 | sort -u` )
+
+    [ ${#uniq[@]} -eq 1 ] && return
+    false
+}
+
 _vyatta_op_expand ()
 {
     local restore_shopts=$( shopt -p extglob nullglob | tr \\n \; )
@@ -249,7 +261,7 @@ _vyatta_op_expand ()
 	    if [ -z "$comp" ] ; then
 		if [ ${#COMPREPLY[@]} -eq 0 ] ; then
 		    COMPREPLY+=( " " "" )
-		else
+		elif _vyatta_op_comprely_needs_ambiguity ; then
 		    COMPREPLY+=( " " )
 		fi
 	    fi
