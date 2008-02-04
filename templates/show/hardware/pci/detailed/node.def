@@ -1,0 +1,2 @@
+help: Show verbose system PCI bus details
+run: lspci -vvv

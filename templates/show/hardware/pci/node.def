@@ -1,0 +1,2 @@
+help: Show system PCI bus details
+run: lspci

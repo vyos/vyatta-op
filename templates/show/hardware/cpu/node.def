@@ -1,0 +1,2 @@
+help: Show system CPU details
+run: cat /proc/cpuinfo

@@ -1,0 +1,2 @@
+help: Show system RAM details
+run: cat /proc/meminfo
