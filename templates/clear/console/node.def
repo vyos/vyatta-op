@@ -1,0 +1,2 @@
+help: Clear screen
+run: /usr/bin/clear
