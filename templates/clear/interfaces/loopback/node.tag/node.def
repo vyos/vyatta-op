@@ -1,0 +1,4 @@
+help: Clear interface counters for a given interface
+allowed: local -a array ;
+	 array=( /sys/class/net/lo* ) ;
+	 echo  -n ${array[@]##*/}

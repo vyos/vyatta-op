@@ -1,0 +1,2 @@
+help: Show detailed bridge interface information
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf-type=bridge --action=show

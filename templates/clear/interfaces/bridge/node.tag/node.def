@@ -1,0 +1,4 @@
+help: Clear interface information for a given interface
+allowed: local -a array ;
+	 array=( /sys/class/net/br* ) ;
+	 echo  -n ${array[@]##*/}

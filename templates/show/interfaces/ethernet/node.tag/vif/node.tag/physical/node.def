@@ -1,2 +1,0 @@
-help: Show given virtual network interface pseudo-physical information
-run: sudo ${vyatta_bindir}/sudo-users/ethtool $4.$6

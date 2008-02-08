@@ -1,2 +1,2 @@
 help: Show ethernet interface information
-run: ${vyatta_bindir}/vyatta-show-interfaces ethernet
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf-type=ethernet --action=show-brief
