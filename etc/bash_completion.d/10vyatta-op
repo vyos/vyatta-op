@@ -35,6 +35,9 @@ test -z "$_vyatta_default_pager" && \
 	--no-lessopen"
 declare -x VYATTA_PAGER=$_vyatta_default_pager
 
+# use '?' for help
+bind '"?": possible-completions'
+
 test -f /etc/default/vyatta && \
     source /etc/default/vyatta
 
