@@ -131,12 +131,6 @@ cat /etc/ipsec.conf
 header /etc/ipsec.secrets
 sudo cat /etc/ipsec.secrets
 
-header /etc/wanpipe/wanpipe1.conf
-cat /etc/wanpipe/wanpipe1.conf
-
-header /etc/wanpipe/wanpipe2.conf
-cat /etc/wanpipe/wanpipe2.conf
-
 header \''ls -l /etc/rc?.d'\'
 ls -l /etc/rc?.d
 
@@ -163,6 +157,65 @@ cat $HOME/.bash_history
 
 header \''show vrrp'\'
 show vrrp
+
+header wanrouter hwprobe
+wanrouter hwprobe
+
+header wanrouter version
+wanrouter version
+
+header wanrouter debug
+wanrouter debug
+
+header wanrouter summary
+wanrouter summary
+
+header wanrouter status
+wanrouter status
+
+header wanrouter modules
+wanrouter modules
+
+if [ -e /etc/wanpipe/wanrouter.rc ]; then
+   header /etc/wanpipe/wanrouter.rc
+   cat /etc/wanpipe/wanrouter.rc
+fi
+
+for i in /etc/wanpipe/interfaces/* ; do
+    if [ -e $i ]; then
+       ifname=`basename $i`
+       header "wanpipemon -i $ifname -c sc"
+       wanpipemon -i $ifname -c sc
+
+       header "wanpipemon -i $ifname -c so"
+       wanpipemon -i $ifname -c so
+
+       header "wanpipemon -i $ifname -c xcv"
+       wanpipemon -i $ifname -c xcv
+
+       header "wanpipemon -i $ifname -c xru"
+       wanpipemon -i $ifname -c xru
+
+       header "wanpipemon -i $ifname -c xm"
+       wanpipemon -i $ifname -c xm
+
+       header "wanpipemon -i $ifname -c xl"
+       wanpipemon -i $ifname -c xl
+
+       header "wanpipemon -i $ifname -c Ta"
+       wanpipemon -i $ifname -c Ta
+   fi
+done
+
+for i in /etc/wanpipe/wanpipe*.conf ; do
+    if [ -e $i ]; then
+       header $i
+       cat $i
+    fi
+done
+
+header wanrouter conflog
+wanrouter conflog
 
 header "END OF TECH-SUPPORT FILE"
 ) 1>&$OUT 2>&1
