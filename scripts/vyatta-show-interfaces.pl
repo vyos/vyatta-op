@@ -243,7 +243,7 @@ sub run_show_intf {
 	# todo: handle counter wrap
 	printf("    %10s %10s %10s %10s %10s %10s\n", "RX:  bytes", "packets",
 	       "errors", "dropped", "overrun", "mcast");
-	printf("    %10d %10d %10d %10d %10d %10d\n", 
+	printf("    %10u %10u %10u %10d %10u %10u\n", 
 	       $stats{'rx_bytes'} - $clear{'rx_bytes'},
 	       $stats{'rx_packets'} - $clear{'rx_packets'}, 
 	       $stats{'rx_errors'} - $clear{'rx_errors'}, , 
@@ -252,7 +252,7 @@ sub run_show_intf {
 	       $stats{'multicast'} - $clear{'multicast'});
 	printf("    %10s %10s %10s %10s %10s %10s\n", "TX:  bytes", "packets",
 	       "errors", "dropped", "carrier", "collisions");
-	printf("    %10d %10d %10d %10d %10d %10d\n\n", 
+	printf("    %10u %10u %10u %10u %10u %10u\n\n", 
 	       $stats{'tx_bytes'} - $clear{'tx_bytes'},
 	       $stats{'tx_packets'} - $clear{'tx_packets'}, 
 	       $stats{'tx_errors'} - $clear{'tx_errors'}, 
