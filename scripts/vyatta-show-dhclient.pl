@@ -71,7 +71,7 @@ sub dhclient_parse_vars {
     $var_list{'last_update'} = $line;
     while ($line = <FD>) {
 	chomp $line;
-	if ($line =~ m/(\w+)=\'([a-zA-Z0-9.]+)\'/) {
+	if ($line =~ m/(\w+)=\'([\w\s.]+)\'/) {
 	    my $var = $1;
 	    my $val = $2;
 	    $var_list{$var} = $val;
