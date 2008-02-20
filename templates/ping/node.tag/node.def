@@ -1,0 +1,8 @@
+#
+# Operational mode front-end for "ping" command
+#
+
+allowed:
+	vyatta-allowed-hosts
+
+run:	/bin/ping $2
