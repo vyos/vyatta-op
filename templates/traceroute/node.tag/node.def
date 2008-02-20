@@ -1,0 +1,8 @@
+#
+# Operational mode template for the "traceroute" command
+#
+
+allowed:
+	vyatta-allowed-hosts
+
+run:	/usr/sbin/traceroute $2
