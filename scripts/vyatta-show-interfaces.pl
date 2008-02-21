@@ -216,6 +216,26 @@ sub get_intf_for_type {
     return @list;
 }
 
+# This function assumes 32-bit counters.  
+sub get_counter_val {
+    my ($clear, $now) = @_;
+
+    return $now if $clear == 0;
+
+    my $value;
+    if ($clear > $now) {
+	#
+	# The counter has rolled.  If the counter has rolled
+	# multiple times since the clear value, then this math
+	# is meaningless.
+	#
+	$value = (4294967296 - $clear) + $now;
+    } else {
+	$value = $now - $clear;
+    }
+    return $value;
+}
+
 
 #
 # The "action" routines
@@ -240,25 +260,27 @@ sub run_show_intf {
 	}
 	print "\n";
 	my %stats = get_intf_stats($intf);
-	# todo: handle counter wrap
 	printf("    %10s %10s %10s %10s %10s %10s\n", "RX:  bytes", "packets",
 	       "errors", "dropped", "overrun", "mcast");
 	printf("    %10u %10u %10u %10d %10u %10u\n", 
-	       $stats{'rx_bytes'} - $clear{'rx_bytes'},
-	       $stats{'rx_packets'} - $clear{'rx_packets'}, 
-	       $stats{'rx_errors'} - $clear{'rx_errors'}, , 
-	       $stats{'rx_dropped'} -  $clear{'rx_dropped'},
-	       $stats{'rx_over_errors'} - $clear{'rx_over_errors'},
-	       $stats{'multicast'} - $clear{'multicast'});
+	       get_counter_val($clear{'rx_bytes'}, $stats{'rx_bytes'}),
+	       get_counter_val($clear{'rx_packets'}, $stats{'rx_packets'}),
+	       get_counter_val($clear{'rx_errors'}, $stats{'rx_errors'}),
+	       get_counter_val($clear{'rx_dropped'}, $stats{'rx_dropped'}),
+	       get_counter_val($clear{'rx_over_errors'}, 
+			       $stats{'rx_over_errors'}),
+	       get_counter_val($clear{'multicast'}, $stats{'multicast'}));
+
 	printf("    %10s %10s %10s %10s %10s %10s\n", "TX:  bytes", "packets",
 	       "errors", "dropped", "carrier", "collisions");
 	printf("    %10u %10u %10u %10u %10u %10u\n\n", 
-	       $stats{'tx_bytes'} - $clear{'tx_bytes'},
-	       $stats{'tx_packets'} - $clear{'tx_packets'}, 
-	       $stats{'tx_errors'} - $clear{'tx_errors'}, 
-	       $stats{'tx_dropped'} - $clear{'tx_dropped'},
-	       $stats{'tx_carrier_errors'} - $clear{'tx_carrier_errors'}, 
-	       $stats{'collisions'} - $clear{'collisions'});
+	       get_counter_val($clear{'tx_bytes'}, $stats{'tx_bytes'}),
+	       get_counter_val($clear{'tx_packets'}, $stats{'tx_packets'}),
+	       get_counter_val($clear{'tx_errors'}, $stats{'tx_errors'}),
+	       get_counter_val($clear{'tx_dropped'}, $stats{'tx_dropped'}),
+	       get_counter_val($clear{'tx_carrier_errors'}, 
+			       $stats{'tx_carrier_errors'}),
+	       get_counter_val($clear{'collisions'}, $stats{'collisions'}));
     }
 }
 
