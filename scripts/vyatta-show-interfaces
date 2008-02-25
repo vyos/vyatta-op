@@ -110,7 +110,7 @@ _show_itf_physical ()
 {
     if type -t ethtool &>/dev/null ; then
         for eth ; do
-            sudo ethtool $eth
+            ethtool $eth
             echo
         done
     fi
