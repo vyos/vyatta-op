@@ -2,4 +2,4 @@ help: Show bridge information for a given bridge
 allowed: local -a array ;
 	 array=( /sys/class/net/br* ) ;
 	 echo  -n ${array[@]##*/}
-run: /usr/sbin/brctl show $3
+run: sudo brctl show $3
