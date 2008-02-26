@@ -78,13 +78,7 @@ header PCI Info
 lspci
 
 header System Info
-find -L /sys/class/dmi/id -type f  2>/dev/null | \
-      while read f; do 
-    	if [ -r $f ]; then 
-            echo -n "  $(basename $f): "
-	    cat $f
-	fi
-      done
+sudo ${vyatta_bindir}/sudo-users/dmidecode
 
 header Interfaces
 show interfaces
@@ -134,10 +128,8 @@ cat /etc/apt/sources.list
 header /etc/ipsec.conf
 cat /etc/ipsec.conf
 
-if [ -r /etc/ipsec.secrets ]; then
-    header /etc/ipsec.secrets
-    cat /etc/ipsec.secrets
-fi
+header /etc/ipsec.secrets
+sudo cat /etc/ipsec.secrets
 
 header \''ls -l /etc/rc?.d'\'
 ls -l /etc/rc?.d
@@ -146,16 +138,16 @@ header /etc/rc.local
 cat /etc/rc.local
 
 header \''iptables -L -vn'\'
-/sbin/iptables -L -vn
+sudo ${vyatta_bindir}/sudo-users/iptables -L -vn
 
 header \''iptables -t nat -L -vn'\'
-/sbin/iptables -t nat -L -vn
+sudo ${vyatta_bindir}/sudo-users/iptables -t nat -L -vn
 
 header \''iptables -t mangle -L -vn'\'
-/sbin/iptables -t mangle -L -vn
+sudo ${vyatta_bindir}/sudo-users/iptables -t mangle -L -vn
 
 header \''iptables -t raw -L -vn'\'
-/sbin/iptables -t raw -L -vn
+sudo ${vyatta_bindir}/sudo-users/iptables -t raw -L -vn
 
 header \''show ip route'\'
 show ip route
