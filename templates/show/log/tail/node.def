@@ -1,0 +1,2 @@
+help: Show last lines of messages file
+run: tail -f /var/log/messages
