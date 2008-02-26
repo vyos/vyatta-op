@@ -1,3 +1,56 @@
+vyatta-op (0.2) unstable; urgency=low
+
+  vc4.0.0
+  [ Mark O'Brien ]
+
+
+  [ An-Cheng Huang ]
+  * fix for bug 2587: add "identify" command under "show interfaces
+    ethernet".
+  * bind '?' to "possible-completions" for help
+
+  [ Bob Gilligan ]
+  * Teach the vyatta-show-interfaces script about PPPOE interfaces.
+  * Bugfix: 2634
+  * Bugfix: 2712
+
+  [ Mark O'Brien ]
+  * Added "clear console" command to clear screen.
+
+  [ Stephen Hemminger ]
+  * running brctl doesn't need root privledges
+  * no longer need sudo for ethtool
+  * no need for sudo when using ethtool
+  * remove usage of sudo in tech-support script
+  * remove unneeded install steps
+  * Revert "remove unneeded install steps"
+  * Revert "remove usage of sudo in tech-support script"
+  * Revert "no need for sudo when using ethtool"
+  * Revert "no longer need sudo for ethtool"
+  * Revert "running brctl doesn't need root privledges"
+
+  [ Stig Thormodsrud ]
+  * add 'show dhcp client leases'
+  * fix 'show vrrp interface <>'
+  * - Add "show ip route forward"
+  * Change 'show dhcp client' to 'show dhcp client leases'
+  * Add 'clear arp <address|interface>' bug 2702
+  * Fix 2710: Missing hardware commands
+  * - Fix bug 776: need "clear interface" command to clear counters
+  * Add "clear dhcp client process".
+  * Fix "show dhcp client leases" so that it will parse multiple name
+    servers.
+  * Change printf to use "u" instead of "d". Still need to handle 32 bit
+    counter roll.
+  * Handle 32 bit counter roll in "show interfaces".
+
+  [ Tom Grennan ]
+  * fix (or at least improve) bug 2519
+
+  [ Mark O'Brien ]
+
+ -- Mark O'Brien <mobrien@vyatta.com>  Mon, 25 Feb 2008 17:39:32 -0800
+
 vyatta-op (0.1) unstable; urgency=low
 
   * Initial Release.
