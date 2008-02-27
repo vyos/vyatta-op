@@ -1,2 +1,2 @@
 help: Restart the dhcp client process
-run: sudo /opt/vyatta/sbin/vyatta-interfaces.pl --restart-dhclient
+run: sudo ${vyatta_bindir}/sudo-users/vyatta-interfaces.pl --restart-dhclient
