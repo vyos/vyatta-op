@@ -1,2 +1,2 @@
 help: Clear all loopback interface counters
-run: sudo ${vyatta_bindir}/vyatta-show-interfaces.pl --action=clear --intf-type=$3
+run: sudo ${vyatta_bindir}/sudo-users/vyatta-show-interfaces.pl --action=clear --intf-type="$3"

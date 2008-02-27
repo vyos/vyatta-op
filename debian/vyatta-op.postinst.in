@@ -8,4 +8,6 @@ bindir=@bindir@
 ln -sf /usr/sbin/ethtool ${bindir}/sudo-users/ethtool
 ln -sf /usr/sbin/dmidecode ${bindir}/sudo-users/dmidecode
 ln -sf /sbin/iptables ${bindir}/sudo-users/iptables
-
+ln -sf /bin/ip ${bindir}/sudo-users/ip
+ln -sf /opt/vyatta/bin/vyatta-show-interfaces.pl ${bindir}/sudo-users/vyatta-show-interfaces.pl
+ln -sf /opt/vyatta/sbin/vyatta-interfaces.pl ${bindir}/sudo-users/vyatta-interfaces.pl

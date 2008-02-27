@@ -1,2 +1,2 @@
 help: Flush the kernel route cache
-run: sudo ip route flush cache
+run: sudo ${vyatta_bindir}/sudo-users/ip route flush cache
