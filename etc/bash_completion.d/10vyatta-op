@@ -35,8 +35,26 @@ test -z "$_vyatta_default_pager" && \
 	--no-lessopen"
 declare -x VYATTA_PAGER=$_vyatta_default_pager
 
-# use '?' for help
-bind '"?": possible-completions'
+_vyatta_op_do_key_bindings ()
+{
+  # if vbash
+  #   use '?' for help
+  #   use ' ' for completion
+  if [ "$SHELL" == "/bin/vbash" ]; then
+    if [ -f $HOME/.vyatta_key_query_help_disable ]; then
+      bind '"?": self-insert'
+    else
+      bind '"?": possible-completions'
+    fi
+    if [ -f $HOME/.vyatta_key_space_complete_disable ]; then
+      bind '" ": self-insert'
+    else
+      bind '" ": complete'
+    fi
+  fi
+}
+
+_vyatta_op_do_key_bindings
 
 test -f /etc/default/vyatta && \
     source /etc/default/vyatta

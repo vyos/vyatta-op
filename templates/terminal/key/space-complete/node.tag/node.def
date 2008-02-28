@@ -1,0 +1,9 @@
+help: Enable/disable space-completion (default enabled)
+allowed: echo -n 'enable' 'disable'
+run: if [ "$4" == 'disable' ]; then
+       touch $HOME/.vyatta_key_space_complete_disable
+       bind '" ": self-insert'
+     else
+       rm -f $HOME/.vyatta_key_space_complete_disable
+       bind '" ": complete'
+     fi
