@@ -1,9 +1,0 @@
-help: Enable/disable getting help using question mark (default enabled)
-allowed: echo -n 'enable' 'disable'
-run: if [ "$4" == 'disable' ]; then
-       touch $HOME/.vyatta_key_query_help_disable
-       bind '"?": self-insert'
-     else
-       rm -f $HOME/.vyatta_key_query_help_disable
-       bind '"?": possible-completions'
-     fi
