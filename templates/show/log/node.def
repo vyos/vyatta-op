@@ -1,2 +1,2 @@
 help: Show contents of current master log file
-run: sudo ${vyatta_bindir}/sudo-users/vyatta-show-log
+run: ${vyatta_bindir}/vyatta-show-log

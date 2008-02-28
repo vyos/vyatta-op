@@ -1,2 +1,2 @@
 help: Show all kernel boot messages
-run: sudo ${vyatta_bindir}/sudo-users/vyatta-show-dmesg-all
+run: ${vyatta_bindir}/vyatta-show-dmesg-all

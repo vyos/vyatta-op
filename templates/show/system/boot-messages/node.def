@@ -1,2 +1,2 @@
 help: Show most recent kernel boot messages
-run: sudo ${vyatta_bindir}/sudo-users/vyatta-show-dmesg
+run: ${vyatta_bindir}/vyatta-show-dmesg
