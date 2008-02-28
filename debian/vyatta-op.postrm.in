@@ -7,7 +7,6 @@ bindir=@bindir@
 if [ "$1" = "purge" ]; then
   # remove added symlinks
   rm -f ${bindir}/sudo-users/ethtool
-  rm -f ${bindir}/sudo-users/dmidecode
   rm -f ${bindir}/sudo-users/iptables
 fi
 

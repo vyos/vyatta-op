@@ -20,6 +20,7 @@ bin_SCRIPTS	+= scripts/vyatta-show-log-all
 bin_SCRIPTS	+= scripts/vyatta-show-log-file
 bin_SCRIPTS	+= scripts/vyatta-show-dmesg
 bin_SCRIPTS	+= scripts/vyatta-show-dmesg-all
+bin_SCRIPTS	+= scripts/vyatta-show-dmi
 
 bin_sudo_users_SCRIPTS = scripts/vyatta-identify-interface.pl
 
