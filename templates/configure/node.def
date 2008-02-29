@@ -1,2 +1,3 @@
 help: Enter configure mode
 run: export _OFR_CONFIGURE=ok; newgrp vyattacfg; unset _OFR_CONFIGURE
+     _vyatta_op_do_key_bindings
