@@ -1,2 +1,2 @@
 help: Show bridge MAC table
-run: brctl showmacs $3
+run: brctl showmacs "$3"
