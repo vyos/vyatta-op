@@ -2,4 +2,4 @@ help: Show given loopback interface information
 allowed: local -a array ;
 	 array=( /sys/class/net/lo* ) ;
 	 echo  -n ${array[@]##*/}
-run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf=$4
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf="$4"

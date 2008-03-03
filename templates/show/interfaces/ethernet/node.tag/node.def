@@ -6,4 +6,4 @@ allowed: for dev in /sys/class/net/*;
                  fi
             fi
          done
-run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf=$4
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf="$4"

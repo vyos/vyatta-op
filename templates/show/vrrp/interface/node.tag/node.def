@@ -2,4 +2,4 @@ help: Show VRRP information for interface
 allowed: local -a array ;
          array=( /sys/class/net/eth* ) ;
          echo  -n ${array[@]##*/}
-run: /opt/vyatta/sbin/vyatta-show-vrrp.pl $4
+run: /opt/vyatta/sbin/vyatta-show-vrrp.pl "$4"
