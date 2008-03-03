@@ -5,8 +5,5 @@ exec_prefix=@exec_prefix@
 bindir=@bindir@
 
 # add symlinks for sudo
-ln -sf /usr/sbin/ethtool ${bindir}/sudo-users/ethtool
-ln -sf /sbin/iptables ${bindir}/sudo-users/iptables
-ln -sf /bin/ip ${bindir}/sudo-users/ip
 ln -sf /opt/vyatta/bin/vyatta-show-interfaces.pl ${bindir}/sudo-users/vyatta-show-interfaces.pl
 ln -sf /opt/vyatta/sbin/vyatta-interfaces.pl ${bindir}/sudo-users/vyatta-interfaces.pl
