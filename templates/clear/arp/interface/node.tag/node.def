@@ -2,4 +2,4 @@ help: Clear ARP cache for interface
 allowed: local -a array ;
 	 array=( /sys/class/net/{eth,vmnet}* ) ;
 	 echo  -n ${array[@]##*/}
-run: sudo ${vyatta_bindir}/sudo-users/ip neigh flush dev "$4"
+run: sudo /sbin/ip neigh flush dev "$4"

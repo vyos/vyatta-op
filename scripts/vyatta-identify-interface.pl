@@ -44,7 +44,7 @@ if ($cpid == 0) {
   # child
   print "Interface $intf should be blinking now.\n";
   print "Press Enter to stop...\n";
-  exec("ethtool -p $intf");
+  exec("/usr/sbin/ethtool -p $intf");
   # not reachable
   exit 0;
 } else {
