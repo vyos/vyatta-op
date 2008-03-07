@@ -65,7 +65,10 @@ dpkg -l
 header Modules
 cat /proc/modules
 
-header Kernel messages
+header "Kernel messages at boot time (/var/log/dmesg)"
+cat /var/log/dmesg
+
+header "Recent Kernel messages (dmesg)"
 dmesg
 
 header CPU Info
