@@ -22,7 +22,8 @@ bin_SCRIPTS	+= scripts/vyatta-show-dmesg
 bin_SCRIPTS	+= scripts/vyatta-show-dmesg-all
 bin_SCRIPTS	+= scripts/vyatta-show-dmi
 
-bin_sudo_users_SCRIPTS = scripts/vyatta-identify-interface.pl
+bin_sudo_users_SCRIPTS      = scripts/vyatta-identify-interface.pl
+bin_sudo_users_SCRIPTS     += scripts/vyatta-delete-log-file.sh
 
 cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
 	cpio -0pd
