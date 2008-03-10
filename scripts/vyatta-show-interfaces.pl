@@ -27,6 +27,7 @@ use lib "/opt/vyatta/share/perl5/";
 use VyattaConfig;
 use Getopt::Long;
 use POSIX;
+use NetAddr::IP;
 
 use strict;
 use warnings;
@@ -154,11 +155,15 @@ sub get_ipaddr {
     my $intf = shift;
     
     my @addr_list = ();
-    my @lines = `ip addr show $intf | grep 'inet '`;
+    my @lines = `ip addr show $intf | grep 'inet' | grep -iv 'fe80'`;
     foreach my $line (@lines) {
-	if ($line =~ m/inet (\d+\.\d+\.\d+\.\d+)\/(\d+)/) {
-	    push @addr_list, "$1/$2";
-	}
+	(my $inet, my $addr, my $remainder) = split(' ', $line, 3);
+	my $ip = new NetAddr::IP($addr);
+	if ($ip->version() == 6) {
+	    push @addr_list, $ip->short() . '/' . $ip->masklen();
+	} else {
+	    push @addr_list, $ip->cidr();
+ 	}
     }
     chomp  @addr_list;
     return @addr_list;
