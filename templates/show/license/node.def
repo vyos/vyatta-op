@@ -1,0 +1,2 @@
+help: Show Vyatta license information
+run:  cat ${vyatta_sysconfdir}/LICENSE
