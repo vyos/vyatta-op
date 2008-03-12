@@ -1,2 +1,0 @@
-help: Format and prepare a floppy to save the config.boot file
-run: sudo /opt/vyatta/bin/init-floppy
