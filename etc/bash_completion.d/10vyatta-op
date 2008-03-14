@@ -22,7 +22,6 @@
 test -z "$_vyatta_default_pager" && \
     declare -r _vyatta_default_pager="less\
 	--QUIT-AT-EOF\
-	--quit-on-intr\
 	--quit-if-one-screen\
 	--LONG-PROMPT\
 	--RAW-CONTROL-CHARS\
@@ -286,7 +285,7 @@ _vyatta_op_expand ()
 	_vyatta_op_help "$cur" \
 	    ${_vyatta_op_noncompletions[@]} \
 	    ${_vyatta_op_completions[@]} \
-	    | ${VYATTA_PAGER:-cat}
+	    | eval ${VYATTA_PAGER:-cat}
 	COMPREPLY=( "" " " )
 	_vyatta_op_last_comp=${_vyatta_op_last_comp_init}
     else
@@ -320,9 +319,9 @@ _vyatta_op_run ()
     local ret=0
     if [ -n "$run_cmd" ]; then
 	if [[ -t 1 &&  "$1" == "show" ]] ; then
-            $run_cmd | ${VYATTA_PAGER:-cat}
+            ( eval "$run_cmd" ) | eval "${VYATTA_PAGER:-cat}"
 	else
-            $run_cmd
+            eval "$run_cmd"
 	fi
     else
         echo "Incomplete command" >&2
