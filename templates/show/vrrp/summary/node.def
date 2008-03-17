@@ -1,0 +1,3 @@
+help: Show VRRP summary
+run: /opt/vyatta/sbin/vyatta-show-vrrp.pl "$3"
+
