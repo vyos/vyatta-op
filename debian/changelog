@@ -1,3 +1,70 @@
+vyatta-op (0.3) unstable; urgency=low
+
+  3.0.1
+  [ Mark O'Brien ]
+
+
+  [ An-Cheng Huang ]
+  * * fix for bug 2771: bind space to completion for vbash users.
+  * Revert "* fix for bug 2771: bind space to completion for vbash
+    users."
+  * fix for bug 2911: check log file name
+  * add quoting for inline scripts in templates
+  * show commands don't need sudo
+  * revert sudo removal for "identify" command since the kernel change
+  * partial fix for bug 2771: change default for root and add command
+    for
+
+  [ Bob Gilligan ]
+  * Bugfix: 2879
+
+  [ Christopher LILJENSTOLPE ]
+  * Fix 2965: IPv6 Interface information not shown in show interfaces
+
+  [ Justin Fletcher ]
+  * Follow log file through log rotation
+
+  [ Mohit Mehta ]
+  * Fix Bug 2707 Missing from Glendale
+  * Fix Bug 2707 Missing from Glendale
+  * Fix Bug 2707 Missing from Glendale
+  * Fix Bug 2863 "show bridge" prompts for sudo password
+  * Fix Bug 2707 Missing from Glendale
+
+  [ Stephen Hemminger ]
+  * add command to show end of log file
+  * bridge status commands don't need sudo
+  * no need for sudo to read log messages
+  * use sysfs rather dmidecode to look at hardware information
+  * remove root requirement
+  * Use hardcoded path to ethtool
+  * don't use sudo-users for ip commands
+  * no longer need sudo-users links for commands
+  * tech-support is a shell script
+  * Add show license command
+  * Update license from VPL 1.0 to GPLv2
+  * remove init-floppy
+  * Fix this a different way.
+  * Move init-floppy to /opt/vyatta/sbin
+  * don't run commands in subshell
+  * Need to run commands via eval
+  * Better fix for interrupted shell commands problem.
+
+  [ Stig Thormodsrud ]
+  * Fix operator permissions for "clear arp" and "clear ip route cache".
+  * Fix operator permissions for "clear interface counters" and "clear
+    dhcp client process"
+  * Add quotes to user entered parameters
+  * Add quotes around user input
+
+  [ rbalocca ]
+  * Remove postrm from configure.ac, since it was deleted
+  * Fix syntax error in control file + add a missing dependency: "less"
+
+  [ Mark O'Brien ]
+
+ -- Mark O'Brien <mobrien@vyatta.com>  Tue, 18 Mar 2008 19:05:07 -0700
+
 vyatta-op (0.2) unstable; urgency=low
 
   vc4.0.0
