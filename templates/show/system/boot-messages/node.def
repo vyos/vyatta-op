@@ -1,2 +1,2 @@
 help: Show most recent kernel boot messages
-run: ${vyatta_bindir}/vyatta-show-dmesg
+run: less $_vyatta_less_options /var/log/dmesg

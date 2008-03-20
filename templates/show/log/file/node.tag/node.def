@@ -1,5 +1,5 @@
 help: Show contents of user-defined log file
 allowed: local -a array ;
          array=( /var/log/user/* ) ;
-         echo  -n ${array[@]##*/}
-run: ${vyatta_bindir}/vyatta-show-log-file "$4"
+         [ ${#array[@]} -gt 0 ] && echo  -n ${array[@]##*/} || echo -n none
+run: less $_vyatta_less_options -- /var/log/user/$4

@@ -1,2 +1,2 @@
 help: Show contents of current master log file
-run: ${vyatta_bindir}/vyatta-show-log
+run: less $_vyatta_less_options /var/log/messages

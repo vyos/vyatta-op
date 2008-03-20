@@ -1,2 +1,2 @@
 help: Show contents of all master log files
-run: ${vyatta_bindir}/vyatta-show-log-all
+run: less $_vyatta_less_options -- `printf "%s\n" /var/log/messages* | sort -nr`
