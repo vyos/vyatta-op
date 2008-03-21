@@ -1,2 +1,4 @@
 help: Show Vyatta license information
-run:  cat ${vyatta_sysconfdir}/LICENSE
+run:  less $_vyatta_less_options \
+	--prompt=".license, page %dt of %D" \
+	-- ${vyatta_sysconfdir}/LICENSE

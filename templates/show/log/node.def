@@ -1,2 +1,4 @@
 help: Show contents of current master log file
-run: less $_vyatta_less_options /var/log/messages
+run: less $_vyatta_less_options \
+	--prompt=".log, page %dt of %D" \
+	-- /var/log/messages

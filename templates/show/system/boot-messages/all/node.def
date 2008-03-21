@@ -1,2 +1,4 @@
 help: Show all kernel boot messages
-run: less $_vyatta_less_options -- `printf "%s\n" /var/log/dmesg* | sort -nr`
+run: less $_vyatta_less_options \
+	--prompt=".boot-messages?m, file %i of %m., page %dt of %D" \
+	-- `printf "%s\n" /var/log/dmesg* | sort -nr`

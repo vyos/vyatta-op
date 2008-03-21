@@ -1,2 +1,4 @@
 help: Show most recent kernel boot messages
-run: less $_vyatta_less_options /var/log/dmesg
+run: less $_vyatta_less_options \
+	--prompt=".boot-messages, page %dt of %D" \
+	-- /var/log/dmesg

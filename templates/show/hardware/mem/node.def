@@ -1,2 +1,4 @@
 help: Show system RAM details
-run: cat /proc/meminfo
+run: less $_vyatta_less_options \
+	--prompt=".mem info" \
+	-- /proc/meminfo
