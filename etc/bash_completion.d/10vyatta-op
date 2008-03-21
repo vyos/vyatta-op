@@ -23,12 +23,11 @@ test -z "$_vyatta_less_options" && \
     declare -r _vyatta_less_options="\
 	--QUIT-AT-EOF\
 	--quit-if-one-screen\
-	--LONG-PROMPT\
 	--RAW-CONTROL-CHARS\
 	--squeeze-blank-lines\
 	--no-init"
 test -z "$_vyatta_default_pager" && \
-    declare -r _vyatta_default_pager="less
+    declare -r _vyatta_default_pager="less \
 	--buffers=64\
 	--auto-buffers\
 	--no-lessopen\
