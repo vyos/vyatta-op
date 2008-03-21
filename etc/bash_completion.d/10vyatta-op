@@ -424,16 +424,15 @@ _vyatta_pipe_completion ()
   return 0
 }
 
-vtysh ()
-{
-    if [ -S /var/run/vyatta/quagga/zebra.vty ] ; then
-	vyatta-vtysh "$@"
-    elif [ ! -S /var/run/quagga/zebra.vty ] ; then
-	/usr/bin/vtysh "$@"
-    else
-	echo "Can't connect with zebra daemon"
-    fi
-}
+if [ -S /var/run/vyatta/quagga/zebra.vty ] ; then
+    declare -x -r _vyatta_vtysh=vyatta-vtysh
+elif [ ! -S /var/run/quagga/zebra.vty ] ; then
+    declare -x -r _vyatta_vtysh=/usr/bin/vtysh
+else
+    declare -x -r _vyatta_vtysh="echo \"Can't connect with zebra daemon to run: vtysh \""
+fi
+
+alias vtysh=$_vyatta_vtysh
 
 # don't initialize if we are in configure mode
 if [ "$_OFR_CONFIGURE" == "ok" ]; then
