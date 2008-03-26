@@ -5,4 +5,9 @@
 allowed:
 	vyatta-allowed-hosts
 
-run:	/usr/sbin/traceroute $2
+run: if /usr/bin/host $2 &>/dev/null
+     then
+        /usr/bin/traceroute $2
+     else
+        echo Cannot identify $2
+     fi
