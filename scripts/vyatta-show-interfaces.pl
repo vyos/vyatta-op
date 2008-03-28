@@ -335,6 +335,39 @@ sub run_reset_intf {
     }
 }
 
+sub alphanum_split {
+    my ($str) = @_;
+    my @list = split m/(?=(?<=\D)\d|(?<=\d)\D)/, $str;
+    return @list;
+}
+
+sub natural_order {
+    my ($a, $b) = @_;
+    my @a = alphanum_split($a);
+    my @b = alphanum_split($b);
+  
+    while (@a && @b) {
+	my $a_seg = shift @a;
+	my $b_seg = shift @b;
+	my $val;
+	if (($a_seg =~ /\d/) && ($b_seg =~ /\d/)) {
+	    $val = $a_seg <=> $b_seg;
+	} else {
+	    $val = $a_seg cmp $b_seg;
+	}
+	if ($val != 0) {
+	    return $val;
+	}
+    }
+    return @a <=> @b;
+}
+
+sub intf_sort {
+    my @a = @_;
+    my @new_a = sort { natural_order($a,$b) } @a;
+    return @new_a;
+}
+
 
 #
 # main
@@ -368,6 +401,8 @@ if (defined $intf) {
 if (! defined $action) {
     $action = 'show';
 } 
+
+@intf_list = intf_sort(@intf_list);
 
 my $func;
 if (defined $action_hash{$action}) {
