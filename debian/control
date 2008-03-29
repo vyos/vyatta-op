@@ -16,7 +16,7 @@ Depends: sed (>= 4.1.5),
  lsof,
  coreutils (>= 5.97-5.3),
  host,
- vyatta-bash,
+ vyatta-bash | bash (>= 3.1),
  less
 Suggests: util-linux (>= 2.13-5),
  net-tools,
