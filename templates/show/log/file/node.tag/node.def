@@ -1,4 +1,4 @@
-help: Show contents of user-defined log file
+help: Show contents of the specified user-defined log file
 allowed: local -a array ;
          array=( /var/log/user/* ) ;
          [ ${#array[@]} -gt 0 ] && echo  -n ${array[@]##*/} || echo -n none

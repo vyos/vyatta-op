@@ -1,2 +1,2 @@
-help: Clear all Ethernet interface counters
+help: Clear all ethernet interface counters
 run: sudo ${vyatta_bindir}/sudo-users/vyatta-show-interfaces.pl --action=clear --intf-type="$3"

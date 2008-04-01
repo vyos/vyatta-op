@@ -1,2 +1,2 @@
-help: "Reboot the system"
+help: Reboot the system
 run: sudo /sbin/reboot

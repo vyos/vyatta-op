@@ -1,2 +1,2 @@
-help: Show tunnel interface information
+help: Show detailed tunnel interface information
 run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf-type=tunnel --action=show

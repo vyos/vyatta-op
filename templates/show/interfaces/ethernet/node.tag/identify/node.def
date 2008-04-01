@@ -1,2 +1,2 @@
-help: Visually identify the specified Ethernet interface
+help: Visually identify the specified ethernet interface
 run: sudo ${vyatta_bindir}/sudo-users/vyatta-identify-interface.pl "$4"

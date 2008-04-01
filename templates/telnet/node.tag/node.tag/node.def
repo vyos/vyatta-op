@@ -1,4 +1,4 @@
-help: telnet to <hostname|address> <port|service>
+help: Telnet to <hostname|address> <port|service>
 allowed: echo -n '<PORT>'
 run: if [ -x /usr/bin/telnet ] ; then
      	/usr/bin/$*

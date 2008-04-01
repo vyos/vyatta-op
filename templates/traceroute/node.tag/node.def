@@ -2,6 +2,7 @@
 # Operational mode template for the "traceroute" command
 #
 
+help:   Track network path to specified remote node
 allowed:
 	vyatta-allowed-hosts
 

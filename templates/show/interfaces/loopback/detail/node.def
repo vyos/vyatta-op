@@ -1,2 +1,2 @@
-help: Show loopback interface information
+help: Show detailed loopback interface information
 run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf-type=loopback
