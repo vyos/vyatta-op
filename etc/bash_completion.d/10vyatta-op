@@ -321,7 +321,7 @@ _vyatta_op_run ()
     local ret=0
     if [ -n "$run_cmd" ]; then
 	if [[ -t 1 &&  "$1" == "show" && \
-	    ! $run_cmd =~ ^\(LESSOPEN=\|less\|pager\|tail\).* ]] ; then
+	    ! $run_cmd =~ ^\(LESSOPEN=\|less\|pager\|tail\|/opt/vyatta/bin/vyatta-tshark-interface-port.pl\).* ]] ; then
             eval "($run_cmd) | ${VYATTA_PAGER:-cat}"
 	else
             eval "$run_cmd"
