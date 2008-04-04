@@ -1,5 +1,5 @@
-help: Telnet to <hostname|address> <port|service>
-allowed: echo -n '<PORT>'
+help: Telnet to <hostname|IPv4 address> <port|service>
+allowed: echo -n '<0-65535>'
 run: if [ -x /usr/bin/telnet ] ; then
      	/usr/bin/$*
      elif [ -x /bin/busybox ] ; then

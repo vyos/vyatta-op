@@ -1,4 +1,4 @@
-help: Show given bridge interface information
+help: Show specified bridge interface information
 allowed: local -a array ;
 	 array=( /sys/class/net/br* ) ;
 	 echo  -n ${array[@]##*/}

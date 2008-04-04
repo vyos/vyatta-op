@@ -1,2 +1,2 @@
-help: Show detail information of all interfaces
+help: Show detailed information of all interfaces
 run: ${vyatta_bindir}/vyatta-show-interfaces.pl --action=show

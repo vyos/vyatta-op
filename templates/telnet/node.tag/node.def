@@ -1,4 +1,4 @@
-help: Telnet to <hostname|address>
+help: Telnet to <hostname|IPv4 address>
 allowed: vyatta-allowed-hosts
 run: if [ -x /usr/bin/telnet ] ; then
      	/usr/bin/$*

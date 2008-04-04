@@ -1,3 +1,3 @@
-help: Clear ARP cache for address
-allowed: echo -n '<ip_address>'
+help: Clear ARP cache for an IPv4 address
+allowed: echo -n '<x.x.x.x>'
 run: sudo /sbin/ip neigh flush to "$4"

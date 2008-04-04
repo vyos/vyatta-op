@@ -1,4 +1,4 @@
-help: Show VRRP information for interface
+help: Show VRRP information for specified interface
 allowed: local -a array ;
          array=( /sys/class/net/eth* ) ;
          echo  -n ${array[@]##*/}

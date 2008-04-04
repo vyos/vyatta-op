@@ -1,1 +1,1 @@
-help: Telnet to <host>
+help: Telnet to <hostname|IPv4 address>

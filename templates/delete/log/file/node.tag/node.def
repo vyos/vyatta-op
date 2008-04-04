@@ -1,2 +1,2 @@
-help: Delete a specified log file
+help: Delete the specified log file
 run: sudo ${vyatta_bindir}/sudo-users/vyatta-delete-log-file.sh "$4"

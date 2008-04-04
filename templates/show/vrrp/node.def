@@ -1,2 +1,2 @@
-help: Show VRRP information
+help: Show Virtual Router Redundancy Protocol (VRRP) information
 run: /opt/vyatta/sbin/vyatta-show-vrrp.pl

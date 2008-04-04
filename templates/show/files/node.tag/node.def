@@ -1,2 +1,2 @@
-help: Show files in directory
+help: Show files in the specified directory
 run: ls -lh $3

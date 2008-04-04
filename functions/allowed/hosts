@@ -3,7 +3,7 @@
 # or expanded hosts/address
 #
 declare -a _vyatta_hosts
-declare -a _vyatta_symbolic_hosts=( '<HOSTNAME>' '<A.B.C.D>' '<X:X::X:X>' )
+declare -a _vyatta_symbolic_hosts=( '<hostname>' '<x.x.x.x>' )
 declare -i _vyatta_hostfile_lastmod=0
 declare _vyatta_hostfile_sed='s/#.*//; ; s/^[^ \t]\+[ \t]\+//; s/[ \t]\+/\n/g; /^$/d'
 
@@ -16,7 +16,7 @@ function vyatta-allowed-hosts ()
 	_vyatta_hosts=( $(sed "$_vyatta_hostfile_sed" $HOSTFILE) )
 	_vyatta_hostfile_lastmod=$curmod
     fi
-    printf "%s\n" ${_vyatta_symbolic_hosts[@]} ${_vyatta_hosts[@]} $*
+    printf "%s\n" ${_vyatta_symbolic_hosts[@]}  # ${_vyatta_hosts[@]} $* 	# commenting this untill ipv6 is supported
 }
 
 ###  Local Variables:

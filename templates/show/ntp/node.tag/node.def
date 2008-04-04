@@ -1,4 +1,4 @@
-help: Show date and time of given NTP server
+help: Show date and time of specified NTP server
 allowed: vyatta-allowed-hosts ntp.vyatta.com ;
 	 sed -n 's/^server[ \t]\+//p' /etc/ntp.conf
 run: /usr/sbin/ntpdate -q ${3:-ntp.vyatta.com}

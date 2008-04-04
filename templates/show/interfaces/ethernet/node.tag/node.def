@@ -1,4 +1,4 @@
-help: Show given ethernet interface information
+help: Show specified ethernet interface information
 allowed: for dev in /sys/class/net/*; 
          do if [[ -L $dev/device ]]
             then if [[ $(cat $dev/type) -eq 1 ]]
