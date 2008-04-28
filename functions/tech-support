@@ -163,6 +163,9 @@ cat $HOME/.bash_history
 header \''show vrrp'\'
 show vrrp
 
+header \''last -ix'\'
+last -ix
+
 header wanrouter hwprobe
 wanrouter hwprobe
 
