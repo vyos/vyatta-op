@@ -42,6 +42,7 @@ my %intf_hash = (
     bridge    => 'br',
     loopback  => 'lo',
     pppoe     => 'pppoe',
+    pppoa     => 'pppoa',
     adsl      => 'adsl',
     multilink => 'ml',
     );

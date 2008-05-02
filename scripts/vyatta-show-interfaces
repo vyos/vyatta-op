@@ -22,7 +22,7 @@ shopt -s extglob
 shopt -s nullglob
 
 declare progname=${0##*/}
-declare -a full_itfs=( /sys/class/net/+(eth|vmnet|lo|tun|wan|pppoe|adsl)* )
+declare -a full_itfs=( /sys/class/net/+(eth|vmnet|lo|tun|wan|pppoe|pppoa|adsl)* )
 declare -a itfs
 declare _do_show=_show_itf_stats
 
@@ -121,6 +121,7 @@ _usage ()
 	$progname tunnel [ INTERFACE ]
 	$progname serial [ INTERFACE ]
 	$progname pppoe [ INTERFACE ]
+	$progname pppoa [ INTERFACE ]
 	$progname adsl [ INTERFACE ]
 	$progname system [ enabled ]
 	EOF
@@ -129,7 +130,7 @@ _usage ()
 _add_itfs ()
 {
     for itf ; do
-	if [[ $itf != +(eth|vmnet|lo|tun|wan|pppoe|adsl)* ]] ; then
+	if [[ $itf != +(eth|vmnet|lo|tun|wan|pppoe|pppoa|adsl)* ]] ; then
 	    _error 2 \""$itf"\" is not an interface name\!
 	elif [ ! -d /sys/class/net/$itf ] ; then
 	    _error 2 $itf: no such interface\!
@@ -143,7 +144,7 @@ if [ $# -gt 0 ] ; then
     if [[ $1 == --+(usage|help) ]] ; then
 	_usage
 	exit 0
-    elif [[ $1 == +(ethernet|loopback|system|tunnel|serial|pppoe|adsl) ]] ; then
+    elif [[ $1 == +(ethernet|loopback|system|tunnel|serial|pppoe|pppoa|adsl) ]] ; then
 	if [ $# -eq 1 ] ; then
 	    case $1 in
 		ethernet )
@@ -156,6 +157,8 @@ if [ $# -gt 0 ] ; then
 		    full_itfs=( /sys/class/net/wan* ) ;;
 		pppoe )
 		    full_itfs=( /sys/class/net/pppoe* ) ;;
+		pppoa )
+		    full_itfs=( /sys/class/net/pppoa* ) ;;
 		adsl )
 		    full_itfs=( /sys/class/net/adsl* ) ;;
 	    esac
