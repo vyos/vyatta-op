@@ -38,7 +38,7 @@ sub dhclient_get_lease_files {
     my @lease_files;
     my $LS;
     if ($intf eq "all") {
-	my $file = "dhclient_eth";
+	my $file = "dhclient_";
 	open($LS,"ls $lease_dir |grep '^$file.*\_lease\$' | sort |");
     } else {
 	my $file = "dhclient_$intf";
