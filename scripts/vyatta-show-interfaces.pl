@@ -107,12 +107,23 @@ sub get_intf_description {
     }
 }
 
+sub get_sysfs_value {
+    my ($intf, $name) = @_;
+
+    open (my $statf, '<', "/sys/class/net/$intf/$name")
+	or die "Can't open statistics file /sys/class/net/$intf/$name";
+
+    my $value = <$statf>;
+    close $statf;
+    return $value;
+}
+
 sub get_intf_stats {
     my $intf = shift;
     
     my %stats = ();
     foreach my $var (@rx_stat_vars, @tx_stat_vars) {
-	$stats{$var} = `cat /sys/class/net/$intf/statistics/$var`;
+	$stats{$var} = get_sysfs_value($intf, "statistics/$var");
     }
     return %stats;
 }
@@ -176,8 +187,8 @@ sub get_state_link {
 
     my $IFF_UP = 0x1;
     my ($state, $link);
-    my $flags = `cat /sys/class/net/$intf/flags 2> /dev/null`;
-    my $carrier = `cat /sys/class/net/$intf/carrier 2> /dev/null`;
+    my $flags = get_sysfs_value($intf, 'flags');
+    my $carrier = get_sysfs_value($intf, 'carrier');
     chomp $flags; chomp $carrier;
     my $hex_flags = hex($flags);
     if ($hex_flags & $IFF_UP) {
