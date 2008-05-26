@@ -1,0 +1,6 @@
+help: Restart the VRRP process
+run: if [ -e /etc/keepalived/keepalived.conf ] && [ -n  "`grep vyatta /etc/keepalived/keepalived.conf `" ] ; then
+        sudo /opt/vyatta/sbin/vyatta-keepalived.pl --vrrp-action clear
+     else
+        echo VRRP not configured
+     fi
