@@ -1,0 +1,3 @@
+help: Reboot the system at a future time
+allowed: echo -n '<HH:MM>' '<MMDDYY>' '<midnight>' '<noon>'
+run: sudo /opt/vyatta/bin/sudo-users/vyatta-reboot.pl --action reboot_at --at_time "$3"

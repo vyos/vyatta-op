@@ -1,0 +1,2 @@
+help: Cancel a pending reboot
+run: sudo /opt/vyatta/bin/sudo-users/vyatta-reboot.pl --action reboot_cancel

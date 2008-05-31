@@ -1,0 +1,2 @@
+help: Show scheduled reboot
+run: sudo /opt/vyatta/bin/sudo-users/vyatta-reboot.pl --action show_reboot
