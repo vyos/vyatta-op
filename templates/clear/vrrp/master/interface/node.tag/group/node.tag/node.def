@@ -1,0 +1,3 @@
+help: clear VRRP master for specified interface and group
+allowed: echo -n '<VRRP_GROUP>'
+run: sudo /opt/vyatta/bin/sudo-users/vyatta-clear-vrrp.pl --vrrp-action clear_master --intf "$5" --group "$7"
