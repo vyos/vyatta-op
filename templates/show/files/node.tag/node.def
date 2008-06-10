@@ -1,2 +1,3 @@
 help: Show files in the specified directory
-run: ls -lh $3
+allowed: echo -n *
+run: ls -lh "$3"
