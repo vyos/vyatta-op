@@ -77,7 +77,7 @@ if (! defined $action) {
 } 
 
 openlog($0, "", LOG_USER);
-my $login = getlogin();
+my $login = getlogin() || getpwuid($<) || "unknown";
 
 #
 # reboot
