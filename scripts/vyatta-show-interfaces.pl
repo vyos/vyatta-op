@@ -114,6 +114,7 @@ sub get_sysfs_value {
 	or die "Can't open statistics file /sys/class/net/$intf/$name";
 
     my $value = <$statf>;
+    chomp $value if defined $value;
     close $statf;
     return $value;
 }
@@ -187,13 +188,11 @@ sub get_state_link {
     my $state;
     my $link = 'down';
     my $flags = get_sysfs_value($intf, 'flags');
-    chomp $flags;
 
     my $hex_flags = hex($flags);
     if ($hex_flags & 0x1) {	  # IFF_UP
 	$state = 'up'; 
 	my $carrier = get_sysfs_value($intf, 'carrier');
-	chomp $carrier;
 	if ($carrier eq '1') {
 	    $link = "up"; 
 	}
