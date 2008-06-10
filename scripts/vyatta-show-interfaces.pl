@@ -184,23 +184,23 @@ sub get_ipaddr {
 
 sub get_state_link {
     my $intf = shift;
-
-    my $IFF_UP = 0x1;
-    my ($state, $link);
+    my $state;
+    my $link = 'down';
     my $flags = get_sysfs_value($intf, 'flags');
-    my $carrier = get_sysfs_value($intf, 'carrier');
-    chomp $flags; chomp $carrier;
+    chomp $flags;
+
     my $hex_flags = hex($flags);
-    if ($hex_flags & $IFF_UP) {
-	$state = "up"; 
+    if ($hex_flags & 0x1) {	  # IFF_UP
+	$state = 'up'; 
+	my $carrier = get_sysfs_value($intf, 'carrier');
+	chomp $carrier;
+	if ($carrier eq '1') {
+	    $link = "up"; 
+	}
     } else {
 	$state = "admin down";
     }
-    if ($carrier eq "1") {
-	$link = "up"; 
-    } else {
-	$link = "down";
-    }
+
     return ($state, $link);
 }
 
