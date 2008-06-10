@@ -1,2 +1,2 @@
 help: Show Virtual Router Redundancy Protocol (VRRP) information
-run: sudo /opt/vyatta/sbin/vyatta-show-vrrp.pl
+run: sudo /opt/vyatta/bin/sudo-users/vyatta-show-vrrp.pl
