@@ -1,0 +1,4 @@
+help: Release DHCP IP address lease for specified interface
+run:
+       IFNAME=${4}
+       /opt/vyatta/sbin/vyatta-interfaces.pl --op-command dhcp-release --dev $IFNAME
