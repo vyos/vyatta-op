@@ -6,5 +6,4 @@ allowed:
 
 run:
        IFNAME=${4}
-       /opt/vyatta/sbin/vyatta-interfaces.pl --op-command dhcp-renew --dev $IFNAME
-
+       sudo /opt/vyatta/bin/sudo-users/vyatta-interfaces.pl --op-command "dhcp-renew" --dev "$IFNAME"
