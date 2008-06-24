@@ -12,7 +12,7 @@ run:
            /usr/bin/traceroute $2
            echo
        else
-           if cat /etc/resolv.conf | grep -q nameserver
+           if cat /etc/resolv.conf 2> /dev/null | grep -q nameserver
              then
                  if /usr/bin/host $2 &> /dev/null
                    then
