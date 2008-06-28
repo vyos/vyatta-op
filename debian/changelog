@@ -1,3 +1,30 @@
+vyatta-op (0.11) unstable; urgency=low
+
+	  3.1.1
+  [ Mark O'Brien ]
+
+
+  [ Mohit Mehta ]
+  * Fix Bug 1059 Feature Request: integrate 'tcpdump' and 'tethereal'
+    into Vyatta CLI
+  * Bug 3385 incomplete command 'run' in configure mode produces backend
+    error to user
+  * Fix Bug 3378 user "vyatta" got "permission denied" after executing
+    "renew dhcp ..." and/or "release dhcp ..."
+
+  [ rbalocca ]
+  * Output was sometimes missing important white space
+
+  [ Mohit Mehta ]
+  * added code for allowed values for op-mode dhcp release/renew lease
+    commands
+  * Fix bug 3059 Operator Level commands for DHCP client
+  * deleting op-command 'clear dhcp client process' as its handling
+
+  [ Mark O'Brien ]
+
+ -- Mark O'Brien <mobrien@firebolt.vyatta.com>  Sat, 28 Jun 2008 11:22:25 -0700
+
 vyatta-op (0.10) unstable; urgency=low
 
 	  3.1.0
