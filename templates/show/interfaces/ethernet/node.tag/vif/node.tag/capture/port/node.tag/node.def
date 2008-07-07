@@ -1,0 +1,3 @@
+help: Show captured traffic on specified ethernet virtual interface port
+run: /opt/vyatta/bin/vyatta-tshark-interface-port.pl "$4.$6" "$9" 0
+allowed: echo -n '<1-65535>'

@@ -84,7 +84,7 @@ sub read_pkg_file {
 sub show_added {
     for my $name (sort keys %$rHoH_now_debs) {
 	if (!$rHoH_base_debs->{$name}) {
-	    printf("Aii %-25s%-25s\n", 
+	    printf("Aii %-25s %-25s\n", 
 		   $name, $rHoH_now_debs->{$name}->{'version'});
 	}
     }
@@ -93,7 +93,7 @@ sub show_added {
 sub show_deleted {
     for my $name (sort keys %$rHoH_base_debs) {
 	if (!$rHoH_now_debs->{$name}) {
-	    printf("X   %-25s%-25s\n", 
+	    printf("X   %-25s %-25s\n", 
 		   $name, $rHoH_base_debs->{$name}->{'version'});
 	}
     }
@@ -117,7 +117,7 @@ sub show_upgraded_downgraded {
 	    if ($ver_base ne $ver_now) {
 		$cmd = "dpkg --compare-versions \"$ver_base\" $op \"$ver_now\"";
 		if (!system($cmd)) {
-		    printf("%sii %-25s%-20s (baseline: %s)\n", 
+		    printf("%sii %-25s %-20s (baseline: %s)\n", 
 			   $symbol, $name, $ver_now, $ver_base);
 		}
             }

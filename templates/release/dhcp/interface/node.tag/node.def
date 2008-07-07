@@ -1,0 +1,9 @@
+help: Release DHCP IP address lease for specified interface
+allowed:
+         local -a array ;
+         array=( /var/lib/dhcp3/eth* ) ;
+         echo  -n ${array[@]##*/}
+
+run:
+       IFNAME=${4}
+       sudo /opt/vyatta/bin/sudo-users/vyatta-interfaces.pl --op-command "dhcp-release" --dev "$IFNAME"

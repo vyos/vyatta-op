@@ -28,11 +28,38 @@ use lib "/opt/vyatta/share/perl5/";
 use strict;
 use warnings;
 
+sub check_if_interface_is_tsharkable {
+    my $interface = shift;
+    
+    my @grep_tshark_interfaces = `sudo /usr/bin/tshark -D | grep $interface`;
+    my $any_interface;
+
+    for my $count (0 .. $#grep_tshark_interfaces) {
+     my @temp = split(/ /,$grep_tshark_interfaces[$count]);
+     chomp $temp[1];
+     $grep_tshark_interfaces[$count] = $temp[1];
+    }
+    
+    my $exact_match = 0;
+    for my $count (0 .. $#grep_tshark_interfaces) {
+        if ($grep_tshark_interfaces[$count] eq $interface) {
+            $exact_match = 1;
+            $any_interface = $grep_tshark_interfaces[$count];
+        }
+    }
+    if ($exact_match == 0 || $any_interface eq 'any') {
+        print "Unable to capture traffic on $interface\n";
+        exit 1;
+    }
+}
+
 #
 # main
 #
 
 my $intf = $ARGV[0];
+
+check_if_interface_is_tsharkable($intf);
 
 if ($#ARGV > 0){
     my $port = $ARGV[1];
@@ -43,9 +70,11 @@ if ($#ARGV > 0){
     } else {
            if (($port > 0) and ($port < 65536)){
               if ($not_port == 0){
-                 exec "sudo /usr/bin/tshark -n -i $intf port $port";
+                 print "Capturing traffic on $intf port $port ...\n";
+                 exec "sudo /usr/bin/tshark -n -i $intf port $port 2> /dev/null";
               } else {
-                 exec "sudo /usr/bin/tshark -n -i $intf not port $port";
+                 print "Capturing traffic on $intf excluding port $port ...\n";
+                 exec "sudo /usr/bin/tshark -n -i $intf not port $port 2> /dev/null";
               }
            } else {
                 print "Invalid port number. Allowed values: <1-65535>\n";
@@ -54,7 +83,8 @@ if ($#ARGV > 0){
 
     }
 } else {
-       exec "sudo /usr/bin/tshark -n -i $intf";
+       print "Capturing traffic on $intf ...\n";
+       exec "sudo /usr/bin/tshark -n -i $intf 2> /dev/null";
 }
 
 exit 0;

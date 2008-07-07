@@ -1,3 +1,76 @@
+vyatta-op (0.10) unstable; urgency=low
+
+	  3.1.0
+  [ Mark O'Brien ]
+
+
+  [ Stephen Hemminger ]
+  * Do chomp in accessor routine for sysfs
+  * add completions for show files
+
+  [ Stig Thormodsrud ]
+  * Add sanity check if getlogin() fails.
+
+  [ Stephen Hemminger ]
+  * Fix use of invalid variable
+
+  [ Stig Thormodsrud ]
+  * Fix 3328: operator can't issue "show vrrp"
+  * Fix 787: Add command to force vrrp state transition to backup.
+  * Fix 88: Feature Request: Reboot Command (add confirmation)
+  * Fix 2705: Add "clear vrrp process" command.
+  * Fix 3155: setting the third vrrp member with the highest priority
+    doesn't change (update) the backup
+
+  [ rbalocca ]
+  * Ignore derived files
+
+  [ Stephen Hemminger ]
+  * Use perl to read sysfs directly
+
+  [ rbalocca ]
+  * Convert to our method of changelog creation
+
+  [ Stig Thormodsrud ]
+  * Fix 3233: dhcp client doesn't work on bridge interface
+
+  [ Bob Gilligan ]
+  * Bugfix: 3228
+  * Bugfix: 2858
+  * Enable display of info about ADSL interfaces.
+
+  [ Mohit Mehta ]
+  * Fix Bug 3069 Help strings should be standardized
+  * Fix Bug 3069 Help strings should be standardized
+  * Fix Bug 3069 Help strings should be standardized
+  * Fix Bug 1059 Feature Request: integrate 'tcpdump' and 'tethereal'
+    into Vyatta CLI
+  * Fix Bug 3069 Help strings should be standardized
+
+  [ Stig Thormodsrud ]
+  * Fix 3062: "Show interfaces" displays interfaces in lexicographic,
+    not numeric, order
+
+  [ Mohit Mehta ]
+  * Fix Bug 2871 Internal errors reported with traceroute
+
+  [ Tom Grennan ]
+  * record selected vtysh (vyatta-quagga vs quagga) in exported shell
+    variable
+  * donot pipe through VYATTA_PAGER if run_cmd begins with LESSOPEN,
+    less, pager, or tail
+  * use less prompt to display the "show" content
+  * fix typo in bug fix 3017
+  * this is an architecture independent package
+  * fix bug 3017
+
+  [ Mohit Mehta ]
+  * Fix Bug 802 VRRP - add "show vrrp summary" command (TC 3.2.5.7.2)
+
+  [ Mark O'Brien ]
+
+ -- Mark O'Brien <mobrien@firebolt.vyatta.com>  Tue, 17 Jun 2008 09:27:18 -0700
+
 vyatta-op (0.9) unstable; urgency=low
 
   3.0.5
