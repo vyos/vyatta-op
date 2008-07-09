@@ -434,11 +434,6 @@ fi
 
 alias vtysh=$_vyatta_vtysh
 
-# don't initialize if we are in configure mode
-if [ "$_OFR_CONFIGURE" == "ok" ]; then
-  return 0
-fi
-
 nullglob_save=$( shopt -p nullglob )
 shopt -s nullglob
 for f in ${vyatta_datadir}/vyatta-op/functions/allowed/* ; do
@@ -446,6 +441,11 @@ for f in ${vyatta_datadir}/vyatta-op/functions/allowed/* ; do
 done
 eval $nullglob_save
 unset nullglob_save
+
+# don't initialize if we are in configure mode
+if [ "$_OFR_CONFIGURE" == "ok" ]; then
+  return 0
+fi
 
 _vyatta_op_init $@
 
