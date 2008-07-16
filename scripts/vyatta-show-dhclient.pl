@@ -122,7 +122,14 @@ sub dhclient_show_lease {
 	}
     }
     print "subnet mask: $new_subnet_mask\n" if defined $new_subnet_mask;
-    print "domain name: $new_domain_name\n" if defined $new_domain_name;
+    if (defined $new_domain_name) {
+      print "domain name: $new_domain_name";
+      if (`grep domain /etc/resolv.conf 2> /dev/null`) {
+        print "\t[overridden by domain-name set using CLI]\n";
+      } else {
+        print "\n";
+      }
+    }
     print "router     : $new_routers\n" if defined $new_routers;
     print "name server: $new_domain_name_servers\n" if 
 	defined $new_domain_name_servers;
