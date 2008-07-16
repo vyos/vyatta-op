@@ -45,6 +45,7 @@ my %intf_hash = (
     pppoa     => 'pppoa',
     adsl      => 'adsl',
     multilink => 'ml',
+    openvpn   => 'vtun',
     );
 
 #
