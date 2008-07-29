@@ -1,0 +1,4 @@
+#
+# Operational mode template for the "traceroute" command
+#
+help: Track network path to <hostname|IPv6 address>

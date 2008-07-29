@@ -1,0 +1,3 @@
+help: Flush the kernel IPv6 route cache for a given route
+allowed: echo -n '<h:h:h:h:h:h:h:h | h:h:h:h:h:h:h:h/x>'
+run: sudo /sbin/ip -f inet6 route flush cache "$5"

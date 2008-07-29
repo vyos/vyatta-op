@@ -1,0 +1,2 @@
+help: Show kernel IPv6 route table
+run: ip -f inet6 route list

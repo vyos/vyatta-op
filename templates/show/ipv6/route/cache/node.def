@@ -1,0 +1,2 @@
+help: Show kernel IPv6 route cache
+run: ip -s -f inet6 route list cache

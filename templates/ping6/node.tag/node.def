@@ -1,0 +1,9 @@
+#
+# Operational mode front-end for "ping" command
+#
+
+help:   Send IPv6 ICMP echo request to specified <hostname|IPv6 address>
+allowed:
+	vyatta-allowed-hosts
+
+run:	/bin/ping6 $2
