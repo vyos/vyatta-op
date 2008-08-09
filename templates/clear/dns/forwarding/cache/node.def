@@ -1,0 +1,8 @@
+help: Clear DNS forwarding cache
+run:
+        if ps ax | grep dnsmasq | grep -v grep > /dev/null
+        then
+            kill -1 `pidof dnsmasq`
+        else
+            echo "DNS forwarding not configured"
+        fi
