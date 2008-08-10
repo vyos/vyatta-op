@@ -67,7 +67,7 @@ sub get_nameserver_stats {
     $show_stats_output .= "Nameserver statistics\n";
     $show_stats_output .= "---------------------\n";
 
-    my @grepped_lines = `grep 'server' $dnsmasq_log`;
+    my @grepped_lines = `grep ': server' $dnsmasq_log`;
 
     foreach my $lines (@grepped_lines) {
             my @each_line = split(/\s+/, $lines);
@@ -86,6 +86,127 @@ sub get_nameserver_stats {
 
 sub print_stats {
     print $show_stats_output;
+}
+
+sub get_dns_nameservers {
+    my $vyatta_config = new VyattaConfig;
+
+    $vyatta_config->setLevel("service dns forwarding");
+    my $use_system_nameservers = $vyatta_config->exists("system");
+    my @use_dhcp_nameservers = $vyatta_config->returnValues("dhcp");
+    my @use_nameservers = $vyatta_config->returnValues("name-server");
+    my @resolv_conf_nameservers = `grep "^nameserver" /etc/resolv.conf`;
+    my @dnsmasq_conf_nameservers = `grep "server=" /etc/dnsmasq.conf`;
+    my @dnsmasq_running = `ps ax | grep dnsmasq | grep -v grep`;
+
+    if (!(defined $use_system_nameservers) && (@use_dhcp_nameservers == 0) && (@use_nameservers == 0)) {
+
+       # no specific nameservers specified under DNS forwarding, so dnsmasq is getting nameservers from /etc/resolv.conf
+
+       if (! @resolv_conf_nameservers > 0){
+           $show_nameservers_output .= "No DNS servers present to forward queries to.\n";
+           if (! @dnsmasq_running > 0){
+               $show_nameservers_output .= "DNS forwarding has not been configured either.\n";
+           }
+       } else {
+            if (! @dnsmasq_running > 0){
+               $show_nameservers_output .= "\n***DNS forwarding has not been configured***\n\n";
+            }
+            $show_nameservers_output .=    "----------------------\n";
+            if ( @dnsmasq_running > 0){
+               $show_nameservers_output .= "  Active Nameservers\n";
+            } else {
+              $show_nameservers_output .=  " Inactive Nameservers\n";
+            }
+            $show_nameservers_output .= "----------------------\n";
+            foreach my $line (@resolv_conf_nameservers) {
+               my @split_line = split(/\s+/, $line);
+               my $nameserver = $split_line[1];
+               my $nameserver_via = "system";
+               if (@split_line > 2) {
+                  my @dhclient_resolv_files = `ls /etc/resolv.conf.dhclient-new-*`;
+                  foreach my $each_dhcp_resolv_conf (@dhclient_resolv_files) {
+                        my @ns_dhclient_resolv=`grep "$nameserver\$" $each_dhcp_resolv_conf`;
+                        if ( @ns_dhclient_resolv > 0) {
+                            my @dhclient_file_array = split(/-/, $each_dhcp_resolv_conf);
+                            $nameserver_via = $dhclient_file_array[2];
+                            chomp $nameserver_via;
+                            $nameserver_via = 'dhcp ' . $nameserver_via;
+                     }
+                  }
+               }
+               $show_nameservers_output .= "$nameserver available via '$nameserver_via'\n";
+            }
+      }
+      $show_nameservers_output .= "\n";
+    } else {
+
+        # nameservers specified under DNS forwarding, so dnsmasq getting nameservers from /etc/dnsmasq.conf
+
+	my @active_nameservers;
+        my $active_nameserver_count = 0;
+        $show_nameservers_output .= "----------------------\n";
+        $show_nameservers_output .= "  Active Nameservers\n";
+        $show_nameservers_output .= "----------------------\n";
+	foreach my $line (@dnsmasq_conf_nameservers) {
+	        my @split_line = split(/=/, $line);
+		my @nameserver_array = split(/\s+/, $split_line[1]);
+                my $nameserver = $nameserver_array[0];
+		$active_nameservers[$active_nameserver_count] = $nameserver;
+		$active_nameserver_count++;
+                my $nameserver_via = $nameserver_array[2];
+                if (@nameserver_array > 3){
+		   my $dhcp_interface = $nameserver_array[3];
+	           $show_nameservers_output .= "$nameserver available via '$nameserver_via $dhcp_interface'\n";
+                 } else {
+ 		   $show_nameservers_output .= "$nameserver available via '$nameserver_via'\n";
+ 		}
+        }
+
+	# then you need to get nameservers from /etc/resolv.conf that are not in dnsmasq.conf to show them as inactive
+
+        my $active_dnsmasq_nameserver;
+	my $output_inactive_nameservers = 0;
+	foreach my $resolv_conf_line (@resolv_conf_nameservers) {
+               my @resolv_conf_split_line = split(/\s+/, $resolv_conf_line);
+               my $resolv_conf_nameserver = $resolv_conf_split_line[1];
+	       $active_dnsmasq_nameserver = 0;
+	       my $resolv_nameserver_via = "system";
+	       foreach my $dnsmasq_nameserver (@active_nameservers) {
+		       if ($dnsmasq_nameserver eq $resolv_conf_nameserver) {
+			   $active_dnsmasq_nameserver = 1;
+		       }
+	       }
+	       if ($active_dnsmasq_nameserver == 0) {
+                 if ($output_inactive_nameservers == 0){
+                     $output_inactive_nameservers = 1;
+                     $show_nameservers_output .= "\n----------------------\n";
+                     $show_nameservers_output .= " Inactive Nameservers\n";
+                     $show_nameservers_output .= "----------------------\n";
+                 }
+                 if (@resolv_conf_split_line > 2) {
+                     my @dhclient_resolv_files = `ls /etc/resolv.conf.dhclient-new-*`;
+                     foreach my $each_dhcp_resolv_conf (@dhclient_resolv_files) {
+                        chomp $each_dhcp_resolv_conf;
+                        my @ns_dhclient_resolv=`grep "$resolv_conf_nameserver\$" $each_dhcp_resolv_conf`;
+                        if ( @ns_dhclient_resolv > 0) {
+                            my @dhclient_file_array = split(/-/, $each_dhcp_resolv_conf);
+			    $resolv_nameserver_via = $dhclient_file_array[2];
+                            chomp $resolv_nameserver_via;
+                            $resolv_nameserver_via = 'dhcp ' . $resolv_nameserver_via;
+                        }
+                     }
+                  }
+
+		  $show_nameservers_output .= "$resolv_conf_nameserver available via '$resolv_nameserver_via'\n";
+	       }
+	}
+    $show_nameservers_output .= "\n";
+    }
+}
+
+sub print_nameservers {
+    print $show_nameservers_output;
 }
 
 #
@@ -109,7 +230,8 @@ if (defined $show_statistics) {
 }
 
 if (defined $show_nameservers) {
-
+    get_dns_nameservers;
+    print_nameservers;
 }
 
 exit 0;
