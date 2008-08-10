@@ -92,9 +92,10 @@ sub get_dns_nameservers {
     my $vyatta_config = new VyattaConfig;
 
     $vyatta_config->setLevel("service dns forwarding");
-    my $use_system_nameservers = $vyatta_config->exists("system");
-    my @use_dhcp_nameservers = $vyatta_config->returnValues("dhcp");
-    my @use_nameservers = $vyatta_config->returnValues("name-server");
+    $vyatta_config->{_active_dir_base} = "/opt/vyatta/config/active/";
+    my $use_system_nameservers = $vyatta_config->existsOrig("system");
+    my @use_dhcp_nameservers = $vyatta_config->returnOrigValues("dhcp");
+    my @use_nameservers = $vyatta_config->returnOrigValues("name-server");
     my @resolv_conf_nameservers = `grep "^nameserver" /etc/resolv.conf`;
     my @dnsmasq_conf_nameservers = `grep "server=" /etc/dnsmasq.conf`;
     my @dnsmasq_running = `ps ax | grep dnsmasq | grep -v grep`;
