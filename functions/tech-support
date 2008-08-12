@@ -225,6 +225,9 @@ done
 header wanrouter conflog
 wanrouter conflog
 
+header /var/log/messages
+tail -n 250 /var/log/messages
+
 header "END OF TECH-SUPPORT FILE"
 ) 1>&$OUT 2>&1
 

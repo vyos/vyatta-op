@@ -1,3 +1,63 @@
+vyatta-op (0.12) unstable; urgency=low
+
+	  3.1.2
+  [ Mark O'Brien ]
+
+
+  [ Mohit Mehta ]
+  * better detection of whether domain-name set using CLI is overriding
+  * => display text saying the domain-name received from dhcp-server
+
+  [ An-Cheng Huang ]
+  * fix for bug 3451: add messages output
+
+  [ Stephen Hemminger ]
+  * Turn on paging of tail when showing count lines
+  * Show files completion
+
+  [ Mohit Mehta ]
+  * prevents showing backend error to user on traceroute when name-
+    server not set
+  * Fix Bug 2871 Internal errors reported with traceroute
+
+  [ An-Cheng Huang ]
+  * fix for bug 3414: make op mode functions available in config mode.
+
+  [ Mohit Mehta ]
+  * Fix Bug 1059 Feature Request: integrate 'tcpdump' and 'tethereal'
+    into Vyatta CLI
+
+  [ Mark O'Brien ]
+
+ -- Mark O'Brien <mobrien@firebolt.vyatta.com>  Wed, 23 Jul 2008 21:36:10 -0700
+
+vyatta-op (0.11) unstable; urgency=low
+
+	  3.1.1
+  [ Mark O'Brien ]
+
+
+  [ Mohit Mehta ]
+  * Fix Bug 1059 Feature Request: integrate 'tcpdump' and 'tethereal'
+    into Vyatta CLI
+  * Bug 3385 incomplete command 'run' in configure mode produces backend
+    error to user
+  * Fix Bug 3378 user "vyatta" got "permission denied" after executing
+    "renew dhcp ..." and/or "release dhcp ..."
+
+  [ rbalocca ]
+  * Output was sometimes missing important white space
+
+  [ Mohit Mehta ]
+  * added code for allowed values for op-mode dhcp release/renew lease
+    commands
+  * Fix bug 3059 Operator Level commands for DHCP client
+  * deleting op-command 'clear dhcp client process' as its handling
+
+  [ Mark O'Brien ]
+
+ -- Mark O'Brien <mobrien@firebolt.vyatta.com>  Sat, 28 Jun 2008 11:22:25 -0700
+
 vyatta-op (0.10) unstable; urgency=low
 
 	  3.1.0
