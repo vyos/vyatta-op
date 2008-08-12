@@ -64,8 +64,8 @@ sub get_cache_stats {
 sub get_nameserver_stats {
 
     $show_stats_output .= "\n---------------------\n";
-    $show_stats_output .= "Nameserver statistics\n";
-    $show_stats_output .= "---------------------\n";
+    $show_stats_output .=   "Nameserver statistics\n";
+    $show_stats_output .=   "---------------------\n";
 
     my @grepped_lines = `grep ': server' $dnsmasq_log`;
 
@@ -111,15 +111,15 @@ sub get_dns_nameservers {
            }
        } else {
             if (! @dnsmasq_running > 0){
-               $show_nameservers_output .= "\n***DNS forwarding has not been configured***\n\n";
+               $show_nameservers_output .= "\n**DNS forwarding has not been configured**\n\n";
             }
-            $show_nameservers_output .=    "----------------------\n";
+            $show_nameservers_output .=    "-----------------------------------------------\n";
             if ( @dnsmasq_running > 0){
-               $show_nameservers_output .= "  Active Nameservers\n";
+               $show_nameservers_output .= "   Nameservers configured for DNS forwarding\n";
             } else {
-              $show_nameservers_output .=  " Inactive Nameservers\n";
+              $show_nameservers_output .=  " Nameservers NOT configured for DNS forwarding\n";
             }
-            $show_nameservers_output .= "----------------------\n";
+            $show_nameservers_output .=    "-----------------------------------------------\n";
             foreach my $line (@resolv_conf_nameservers) {
                my @split_line = split(/\s+/, $line);
                my $nameserver = $split_line[1];
@@ -146,9 +146,9 @@ sub get_dns_nameservers {
 
 	my @active_nameservers;
         my $active_nameserver_count = 0;
-        $show_nameservers_output .= "----------------------\n";
-        $show_nameservers_output .= "  Active Nameservers\n";
-        $show_nameservers_output .= "----------------------\n";
+        $show_nameservers_output .= "-----------------------------------------------\n";
+        $show_nameservers_output .= "   Nameservers configured for DNS forwarding\n";
+        $show_nameservers_output .= "-----------------------------------------------\n";
 	foreach my $line (@dnsmasq_conf_nameservers) {
 	        my @split_line = split(/=/, $line);
 		my @nameserver_array = split(/\s+/, $split_line[1]);
@@ -181,9 +181,9 @@ sub get_dns_nameservers {
 	       if ($active_dnsmasq_nameserver == 0) {
                  if ($output_inactive_nameservers == 0){
                      $output_inactive_nameservers = 1;
-                     $show_nameservers_output .= "\n----------------------\n";
-                     $show_nameservers_output .= " Inactive Nameservers\n";
-                     $show_nameservers_output .= "----------------------\n";
+                     $show_nameservers_output .= "\n-----------------------------------------------\n";
+                     $show_nameservers_output .=   " Nameservers NOT configured for DNS forwarding\n";
+                     $show_nameservers_output .=   "-----------------------------------------------\n";
                  }
                  if (@resolv_conf_split_line > 2) {
                      my @dhclient_resolv_files = `ls /etc/resolv.conf.dhclient-new-*`;
