@@ -1,7 +1,7 @@
 help: Renew DHCP IP address lease for specified interface
 allowed:
          local -a array ;
-         array=( /var/lib/dhcp3/eth* ) ;
+         array=( /var/lib/dhcp3/eth* /var/lib/dhcp3/br* ) ;
          echo  -n ${array[@]##*/}
 
 run:
