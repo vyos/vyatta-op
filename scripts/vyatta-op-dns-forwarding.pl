@@ -213,14 +213,19 @@ sub print_nameservers {
 #
 # main
 #
-my ($clear_cache, $show_statistics, $show_nameservers);
+my ($clear_cache, $clear_process, $show_statistics, $show_nameservers);
 
 GetOptions("clear-cache!"               => \$clear_cache,
+           "clear-process!"             => \$clear_process,
            "show-statistics!"           => \$show_statistics,
            "show-nameservers!"          => \$show_nameservers);
 
 if (defined $clear_cache) {
     system("kill -1 `pidof dnsmasq`");
+}
+
+if (defined $clear_process) {
+     system("/etc/init.d/dnsmasq restart >&/dev/null");
 }
 
 if (defined $show_statistics) {
