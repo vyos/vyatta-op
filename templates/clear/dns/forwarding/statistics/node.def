@@ -1,8 +1,8 @@
-help: Clear DNS forwarding process
+help: Clear DNS forwarding statistics
 run:
         if ps ax | grep dnsmasq | grep -v grep > /dev/null
         then
-            sudo /opt/vyatta/bin/sudo-users/vyatta-op-dns-forwarding.pl --clear-process
+            sudo /opt/vyatta/bin/sudo-users/vyatta-op-dns-forwarding.pl --clear-statistics
         else
             echo "DNS forwarding not configured"
         fi
