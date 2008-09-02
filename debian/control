@@ -7,6 +7,7 @@ Standards-Version: 3.7.2
 
 Package: vyatta-op
 Architecture: all
+Pre-depends: ssmtp
 Depends: sed (>= 4.1.5),
  ethtool,
  traceroute,
@@ -19,7 +20,6 @@ Depends: sed (>= 4.1.5),
  vyatta-bash | bash (>= 3.1),
  less,
  libio-prompt-perl,
- ssmtp,
  at
 Suggests: util-linux (>= 2.13-5),
  net-tools,
