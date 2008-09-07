@@ -1,0 +1,3 @@
+help: Show Dynamic DNS status
+run:
+       sudo /opt/vyatta/bin/sudo-users/vyatta-op-dynamic-dns.pl --show-status
