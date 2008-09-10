@@ -1,0 +1,6 @@
+help:  Name of RAID set to add object to
+
+allowed:
+	local -a array ; 
+	array=`cat /proc/partitions | grep md | awk '{ print $4 }'`
+	echo -n $array

@@ -1,0 +1,12 @@
+help: Show disk drive formatting
+
+run:
+	disk_dev=$3
+	valid_disks=`cat /proc/partitions | awk '{ if ($4!="name") { print $4 } }' | egrep -v "[0-9]"`
+	is_a_disk=`echo $valid_disks | grep $disk_dev`
+	
+	if [ -z "$is_a_disk" ]; then
+	    echo "$disk_dev is not a disk device"
+	else
+	    fdisk -l /dev/${disk_dev}
+	fi

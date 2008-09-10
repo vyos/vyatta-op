@@ -1,0 +1,16 @@
+help:  RAID set name
+
+allowed:
+	local -a raid_sets ; 
+	raid_sets=`cat /proc/partitions | grep md | awk '{ print $4 }'`
+	echo -n $raid_sets
+
+run:
+	raid_set_name=$3
+	raid_sets=`cat /proc/partitions | grep md | awk '{ print $4 }'`
+	valid_set=`echo $raid_sets | grep $raid_set_name`
+	if [ -z $valid_set ]; then
+	    echo "$raid_set_name is not a RAID set"
+	else
+	    mdadm --detail /dev/${raid_set_name}
+	fi

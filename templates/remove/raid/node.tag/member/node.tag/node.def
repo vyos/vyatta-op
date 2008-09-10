@@ -1,0 +1,35 @@
+help: Name of RAID set member to remove
+
+allowed:
+        raid_set=${COMP_WORDS[2]}
+	membership=`cat /proc/mdstat | grep $raid_set | sed -e 's/\[.\]//g' | awk '{ print $5 " " $6 }'`
+        membership=`echo $membership | sed -e 's/(F)//g'`
+	echo "$membership"
+
+run:
+	raid_set=$3
+	member_to_remove=$5
+	membership=`cat /proc/mdstat | grep $raid_set | sed -e 's/\[.\]//g' | awk '{ print $5 " " $6 }'`
+	num_members=`echo $membership | wc -w`
+	is_in=`echo $membership | grep $member_to_remove`
+
+	if [ -z "$membership" ]; then
+	    echo "$raid_set is not a RAID set"
+	elif [ -z "$is_in" ]; then
+	    echo "$member_to_remove is not a member of RAID set $raid_set"
+	    echo "actual members are:  $membership"
+	elif [ "$num_members" -eq "1" ]; then
+	    echo "Can't remove last member of a RAID set"
+	else
+            echo "removing member $member from RAID set $raid_set"
+	    mdadm /dev/$raid_set --fail /dev/$member_to_remove
+	    if [ $? -ne 0 ]; then
+		echo "Unable to mark member as failed"
+	    else
+		sleep 1
+		mdadm /dev/$raid_set --remove /dev/$member_to_remove
+		if [ $? -ne 0 ]; then
+		    echo "Unable to remove member from RAID set"
+		fi
+	    fi
+	fi
