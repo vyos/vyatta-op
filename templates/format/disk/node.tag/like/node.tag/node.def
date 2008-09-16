@@ -1,0 +1,59 @@
+help:  Name of disk drive to partition it like
+
+allowed:
+	local -a disks ;
+	proto_disk=${COMP_WORDS[2]}
+        disks=`cat /proc/partitions | awk '{ if ($4!="name") { print $4 } }' | egrep -v "[0-9]"`
+	disks=`echo $disks | sed -e s/$proto_disk//g`
+	echo -n $disks
+
+run:
+	proto_disk=$5
+	format_disk=$3
+	backup_dir=/var/log/vyatta
+	eligible_format_disks=`cat /proc/partitions | awk '{ if ($4!="name") { print $4 } }' | egrep -v "[0-9]"`
+	eligible_proto_disks=`echo $eligible_format_disks | sed -e s/$format_disk//g`
+	proto_eligible=`echo $eligible_proto_disks | grep $proto_disk`
+	format_eligible=`echo $eligible_format_disks | grep $format_disk`
+	busy_check=`sfdisk -R /dev/$format_disk 2>&1`
+
+	if [ $proto_disk = $format_disk ]; then
+	    echo "The two disk drives must be different."
+	elif [ ! -b /dev/$proto_disk ]; then
+	    echo "Device /dev/$proto_disk does not exist"
+	elif [ ! -b /dev/$format_disk ]; then
+	    echo "Device /dev/$format_disk does not exist"
+	elif [ -z "$format_eligible" ]; then
+	    echo "Device $format_disk can not be formatted"
+	elif [ -z "$proto_eligible" ]; then
+	    echo "Device $proto_disk can not be used as a prototype for $format_disk"
+	elif [ -n "$busy_check" ]; then
+	    echo "Disk device $format_disk is busy.  Can't format it now."
+	else
+	    echo "This will re-format disk $format_disk so that it has the same disk"
+	    echo "partion sizes and offsets as $proto_disk.  This will not copy"
+	    echo "data from $proto_disk to $format_disk.  But this will erase all"
+	    echo "data on $format_disk."
+	    echo
+	    echo -n "Do you wish to proceed (yes, NO)? "
+	    read response
+	    if [ "$response" = "yes" ]; then
+		echo "OK.  Re-formating disk drive $format_disk..."
+		echo "Making backup copy of partitions..."
+		sfdisk -d /dev/$format_disk > $backup_dir/backup_$format_disk.`date +%F-%R`
+		sleep 1
+		partitions=`cat /proc/partitions | grep $format_disk'[0-9]' | awk '{ print $4 }' | sed 's/[a-z]//g'`
+		if [ -n "$partitions" ]; then
+		    echo -n "Deleting old partitions..."
+		    for part in $partitions ; do
+			parted /dev/$format_disk rm $part
+		    done
+		    echo ""
+		fi
+		echo "Creating new partitions on $format_disk based on $proto_disk..."
+		sfdisk -d /dev/$proto_disk | sfdisk --force /dev/$format_disk
+		echo "Done."
+	    else
+		echo "OK. Disk drive $format_drive will not be re-formated."
+	    fi
+	fi

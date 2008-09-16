@@ -333,7 +333,7 @@ sub run_clear_intf {
 	print $FILE $clear_file_magic, "\n", time(), "\n";
 	my ($var, $val);
 	while (($var, $val) = each (%stats)) {
-	    print $FILE $var, ",", $val;
+	    print $FILE $var, ",", $val, "\n";
 	}
 	close($FILE);
     }

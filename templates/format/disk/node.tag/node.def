@@ -1,0 +1,6 @@
+help:  Disk drive name
+
+allowed:
+        local -a array ;
+        array=`cat /proc/partitions | awk '{ if ($4!="name") { print $4 } }' | egrep -v "[0-9]"`
+        echo -n $array

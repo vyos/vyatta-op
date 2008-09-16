@@ -1,0 +1,8 @@
+help: Show DNS forwarding statistics
+run:
+        if ps ax | grep dnsmasq | grep -v grep > /dev/null
+        then
+            sudo /opt/vyatta/bin/sudo-users/vyatta-op-dns-forwarding.pl --show-statistics
+        else
+            echo "DNS forwarding not configured"
+        fi

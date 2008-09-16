@@ -1,0 +1,6 @@
+help: Update Dynamic DNS for specified interface
+allowed:
+        sudo /opt/vyatta/bin/sudo-users/vyatta-op-dynamic-dns.pl --show-interfaces
+run:
+       IFNAME=${5}
+       sudo /opt/vyatta/bin/sudo-users/vyatta-op-dynamic-dns.pl --update-ddns --interface "$IFNAME"

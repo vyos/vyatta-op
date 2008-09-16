@@ -7,3 +7,6 @@ bindir=@bindir@
 # add symlinks for sudo
 ln -sf /opt/vyatta/bin/vyatta-show-interfaces.pl ${bindir}/sudo-users/vyatta-show-interfaces.pl
 ln -sf /opt/vyatta/sbin/vyatta-interfaces.pl ${bindir}/sudo-users/vyatta-interfaces.pl
+
+# rm symlink for sendmail that was added by ssmtp package
+rm -f /usr/sbin/sendmail
