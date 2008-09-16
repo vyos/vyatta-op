@@ -1,0 +1,5 @@
+help: Show specified virtual network interface (vif) information
+allowed: local -a array ;
+         array=( /sys/class/net/${COMP_WORDS[3]}.* ) ;
+	 echo  -n ${array[@]##*.}
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf="$4.$6"

@@ -17,6 +17,7 @@ bin_SCRIPTS	+= scripts/vyatta-show-version
 bin_SCRIPTS     += scripts/vyatta-show-dhclient.pl
 bin_SCRIPTS	+= scripts/vyatta-show-dmi
 bin_SCRIPTS	+= scripts/vyatta-tshark-interface-port.pl
+bin_SCRIPTS	+= scripts/vyatta-show-bonding.pl
 
 bin_sudo_users_SCRIPTS      = scripts/vyatta-identify-interface.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-delete-log-file.sh
