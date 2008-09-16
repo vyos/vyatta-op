@@ -1,0 +1,4 @@
+help: Show physical device statistics for specified ethernet interface
+allowed: ""
+run: ethtool -S "$4"
+
