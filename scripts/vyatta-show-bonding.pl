@@ -76,7 +76,8 @@ sub show_brief {
         $mode =~ s/ [0-9]+$//;
         my ( $state, $link ) = get_state_link($intf);
         my $slaves = get_sysfs_value( $intf, "bonding/slaves" );
-        printf $format, $intf, $mode, $state, $link, $slaves;
+        printf $format, $intf, $mode, $state, $link, 
+		$slaves ? $slaves : '';
     }
 }
 
