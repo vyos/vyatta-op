@@ -223,11 +223,16 @@ sub is_valid_intf_type {
 }
 
 sub get_intf_for_type {
-    my $intf_type = shift;
+    my $type = shift;
+    my $sysnet = "/sys/class/net";
+    my $prefix = $type ? $intf_hash{$type} : '[^.]+';
 
-    my $intf_prefix = $intf_hash{$intf_type};
-    my @list = `cd /sys/class/net; ls -d $intf_prefix\* 2> /dev/null`;
-    chomp @list;
+    opendir (my $dir, $sysnet)	or die "can't open $sysnet";
+    my @list = grep { /^$prefix/ && -d "$sysnet/$_" } readdir($dir);
+    closedir $dir;
+    print join(', ', @list);
+    print "\n";
+
     return @list;
 }
 
@@ -403,12 +408,8 @@ if (defined $intf) {
     }
     @intf_list = get_intf_for_type($intf_type);
 } else {
-    #
     # get all interfaces
-    #
-    foreach my $type (sort(keys (%intf_hash))) {
-	push @intf_list, get_intf_for_type($type);
-    }
+    @intf_list = get_intf_for_type();
 }
 
 if (! defined $action) {
