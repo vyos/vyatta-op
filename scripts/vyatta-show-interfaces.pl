@@ -230,8 +230,6 @@ sub get_intf_for_type {
     opendir (my $dir, $sysnet)	or die "can't open $sysnet";
     my @list = grep { /^$prefix/ && -d "$sysnet/$_" } readdir($dir);
     closedir $dir;
-    print join(', ', @list);
-    print "\n";
 
     return @list;
 }
