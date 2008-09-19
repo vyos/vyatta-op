@@ -30,42 +30,51 @@ use strict;
 use warnings;
 
 sub print_ddns_stats {
-    my $ddclient_cache_files = '/var/cache/ddclient/*';
-    my @all_cached_entries = `grep "^atime" $ddclient_cache_files 2>/dev/null`;
-    if (@all_cached_entries > 0){
-       foreach my $each_entry (@all_cached_entries) {
-            my $interface = undef;
-            if (`ls $ddclient_cache_files | wc -l` == 1) {
-                my $interface_file = `ls $ddclient_cache_files`;
-                my @split_on_cache = split(/.cache/, $interface_file);
-                my @interface_split = split(/_/, $split_on_cache[1]);
-                $interface = $interface_split[1];
-            } else {
-                  my @split_on_cache = split(/.cache:/, $each_entry);
-                  my @interface_split = split(/_/, $split_on_cache[0]);
-                  $interface=$interface_split[1];
-            }
-            print "interface    : $interface\n";
-            my @split_on_ip = split(/ip=/, $each_entry);
-            if (@split_on_ip > 1){
-               my @ip = split(/,/, $split_on_ip[1]);
-               print "ip address   : $ip[0]\n";
-            }
-            my @split_on_host = split(/host=/, $each_entry);
-            my @host = split(/,/, $split_on_host[1]);
-            print "host-name    : $host[0]\n";
-            my @split_on_atime = split(/atime=/, $each_entry);
-            my @atime = split(/,/, $split_on_atime[1]);
-            my $prettytime = scalar(localtime($atime[0]));
-            print "last update  : $prettytime\n";
-            my @split_on_status = split(/status=/, $each_entry);
-            my @status = split(/,/, $split_on_status[1]);
-            print "update-status: $status[0]\n";
-            print "\n";
+    my $ddclient_cache_dir = '/var/cache/ddclient';
+    my @ddns_interfaces = get_ddns_interfaces();
+
+    if (@ddns_interfaces > 0){
+     foreach my $configuredinterface (@ddns_interfaces) {
+       my $no_ip = `ip addr show dev $configuredinterface 2>/dev/null | grep "inet "`;
+       my @all_cached_entries = `grep "^atime" $ddclient_cache_dir/ddclient_$configuredinterface.cache 2>/dev/null`;
+       if (@all_cached_entries > 0) {
+        foreach my $each_entry (@all_cached_entries) {
+         print "interface    : $configuredinterface";
+         if ($no_ip eq ""){
+          print " [ Currently no IP address ]";
+         }
+         print "\n";
+         my @split_on_ip = split(/ip=/, $each_entry);
+         if (@split_on_ip > 1){
+          my @ip = split(/,/, $split_on_ip[1]);
+          print "ip address   : $ip[0]\n";
+         }
+         my @split_on_host = split(/host=/, $each_entry);
+         my @host = split(/,/, $split_on_host[1]);
+         print "host-name    : $host[0]\n";
+         my @split_on_atime = split(/atime=/, $each_entry);
+         my @atime = split(/,/, $split_on_atime[1]);
+         my $prettytime = scalar(localtime($atime[0]));
+         print "last update  : $prettytime\n";
+         my @split_on_status = split(/status=/, $each_entry);
+         my @status = split(/,/, $split_on_status[1]);
+         print "update-status: $status[0]\n";
+         print "\n";
+        }
+       } else {
+         print "interface    : $configuredinterface";
+         if ($no_ip eq ""){
+          print " [ Currently no IP address ]";
+         } else {
+          print " \n[ Status will be updated within 60 seconds ]";
+         }
+         print "\n\n";
        }
+     }
     } else {
            print "Dynamic DNS not configured\n";
     }
+    print "\n";
 }
 
 sub get_ddns_interfaces {
