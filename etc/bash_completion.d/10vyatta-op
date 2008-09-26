@@ -21,7 +21,7 @@
 
 test -z "$_vyatta_less_options" && \
     declare -r _vyatta_less_options="\
-	--QUIT-AT-EOF\
+	--quit-at-eof\
 	--quit-if-one-screen\
 	--RAW-CONTROL-CHARS\
 	--squeeze-blank-lines\
