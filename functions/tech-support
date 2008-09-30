@@ -196,30 +196,32 @@ if [ -e /etc/wanpipe/wanrouter.rc ]; then
    cat /etc/wanpipe/wanrouter.rc
 fi
 
-for i in /etc/wanpipe/interfaces/* ; do
-    if [ -e $i ]; then
-       ifname=`basename $i`
-       header "wanpipemon -i $ifname -c sc"
-       wanpipemon -i $ifname -c sc
+wanifs=( /sys/class/net/wan* )
+wanifs=`echo -n ${wanifs[@]##*/}`
 
-       header "wanpipemon -i $ifname -c so"
-       wanpipemon -i $ifname -c so
+echo "wanifs are $wanifs"
 
-       header "wanpipemon -i $ifname -c xcv"
-       wanpipemon -i $ifname -c xcv
+for ifname in $wanifs ; do
+    header "wanpipemon -i $ifname -c sc"
+    sudo wanpipemon -i $ifname -c sc
 
-       header "wanpipemon -i $ifname -c xru"
-       wanpipemon -i $ifname -c xru
+    header "wanpipemon -i $ifname -c so"
+    sudo wanpipemon -i $ifname -c so
 
-       header "wanpipemon -i $ifname -c xm"
-       wanpipemon -i $ifname -c xm
+    header "wanpipemon -i $ifname -c xcv"
+    sudo wanpipemon -i $ifname -c xcv
 
-       header "wanpipemon -i $ifname -c xl"
-       wanpipemon -i $ifname -c xl
+    header "wanpipemon -i $ifname -c xru"
+    sudo wanpipemon -i $ifname -c xru
 
-       header "wanpipemon -i $ifname -c Ta"
-       wanpipemon -i $ifname -c Ta
-   fi
+    header "wanpipemon -i $ifname -c xm"
+    sudo wanpipemon -i $ifname -c xm
+
+    header "wanpipemon -i $ifname -c xl"
+    sudo wanpipemon -i $ifname -c xl
+
+    header "wanpipemon -i $ifname -c Ta"
+    sudo wanpipemon -i $ifname -c Ta
 done
 
 for i in /etc/wanpipe/wanpipe*.conf ; do
