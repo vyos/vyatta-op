@@ -92,6 +92,13 @@ cat /proc/devices
 header Partitions
 cat /proc/partitions
 
+disks=`cat /proc/partitions | awk '{ if ($4!="name") { print $4 } }' | egrep -v "[0-9]$" | egrep -v "^$"`
+
+for disk in $disks; do
+    header "Partitioning for disk $disk"
+    fdisk -l /dev/$disk
+done
+
 header Mounts
 cat /proc/mounts
 
