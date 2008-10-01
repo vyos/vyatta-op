@@ -161,8 +161,39 @@ sudo /sbin/iptables -t mangle -L -vn
 header \''iptables -t raw -L -vn'\'
 sudo /sbin/iptables -t raw -L -vn
 
-header \''show ip route'\'
-show ip route
+function show_route_limit ()
+{
+   NUM=$(show $1 route $2 | wc -l)
+   # subtract 3 lines of header
+   [ $NUM -gt 3 ] &&  NUM=$[$NUM - 3]
+   OUTPUT=$(echo show $1 route $2 \(total $NUM\))
+   CMD="show $1 route $2"
+   if [ $3 -eq 0 ]
+   then
+      header $OUTPUT
+      vtysh -c "$CMD"
+   else
+      header "$OUTPUT- limit $3"
+      vtysh -c "$CMD" | head -n $3
+   fi
+}
+
+#
+# show all connected/static, limit the output others and include a total
+#
+show_route_limit ip connected 0
+show_route_limit ip static    0
+show_route_limit ip rip  500
+show_route_limit ip ospf 500
+show_route_limit ip bgp  500
+show_route_limit ip ''   500
+
+show_route_limit ipv6 connected 0
+show_route_limit ipv6 static    0
+show_route_limit ipv6 ripng 500
+show_route_limit ipv6 ospf6 500
+show_route_limit ipv6 bgp   500
+show_route_limit ipv6 ''    500
 
 header $HOME/.bash_history
 cat $HOME/.bash_history
