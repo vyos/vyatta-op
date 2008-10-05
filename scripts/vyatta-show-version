@@ -154,7 +154,7 @@ my %options = (
 print(&echo_file($versionfile));
 print(&echo_file($buildfile));
 
-my $booted = `grep '^unionfs.*/filesystem.squashfs' /proc/mounts`;
+my $booted = `grep -e '^unionfs.*/filesystem.squashfs' -e '^aufs.*/filesystem.squashfs' /proc/mounts`;
 if (defined($booted) && $booted ne "") {
     $booted="livecd";
 } else {
