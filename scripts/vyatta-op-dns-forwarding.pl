@@ -210,6 +210,26 @@ sub print_nameservers {
     print $show_nameservers_output;
 }
 
+sub wait_for_write {
+
+    my $last_size = (stat($dnsmasq_log))[7];
+    my $cnt=0;
+    while(1) {
+        system("usleep 10000");         # sleep for 0.01 second
+        my $curr_size = (stat($dnsmasq_log))[7];
+        if( $curr_size == $last_size ) {
+            # Not modified
+            $cnt++;
+            last if($cnt > 1);
+        } else {
+            # Modified\n
+            $cnt=0;
+        }
+        $last_size = $curr_size;
+    }
+
+}
+
 #
 # main
 #
@@ -229,7 +249,8 @@ if (defined $clear_all) {
 }
 
 if (defined $show_statistics) {
-    system("echo > /var/log/dnsmasq.log; kill -10 `pidof dnsmasq`");
+    system("echo > $dnsmasq_log; kill -10 `pidof dnsmasq`");
+    wait_for_write;
     get_cache_stats;
     get_nameserver_stats;
     print_stats;
