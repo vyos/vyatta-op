@@ -24,6 +24,7 @@ bin_sudo_users_SCRIPTS     += scripts/vyatta-delete-log-file.sh
 bin_sudo_users_SCRIPTS	   += scripts/vyatta-reboot.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-op-dns-forwarding.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-op-dynamic-dns.pl
+bin_sudo_users_SCRIPTS     += scripts/vyatta-show-saved-config
 
 cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
 	cpio -0pd

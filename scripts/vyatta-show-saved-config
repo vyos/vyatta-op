@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cat /opt/vyatta/etc/config/config.boot
