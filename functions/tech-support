@@ -115,7 +115,7 @@ header Load Average
 cat /proc/loadavg
 
 header /opt/vyatta/etc/config/config.boot
-sudo ${vyatta_bindir}/sudo-users/vyatta-show-saved-config
+cat /opt/vyatta/etc/config/config.boot
 
 header Running configuration
 show configuration
