@@ -34,5 +34,16 @@ run:
 	    if [ $? -ne 0 ]; then
 		echo "Unable to add member to RAID set"
 	    fi
+
+	    mounted_on=`mount | grep "^/dev/${raid_set}" | awk '{ print $3 }'`
+	    if [ "$mounted_on" = "/" ]; then
+	       	echo
+		echo "Warning: RAID set ${raid_set} holds the root filesystem."
+		echo "To make the new disk bootable, the boot program will be"
+		echo "updated after the RAID rebuild process completes.  Do"
+		echo "not reboot the system until the rebuild has finished."
+		echo "You may run \"show raid ${raid_set}\" to monitor the"
+		echo "status of the rebuild."
+	    fi
 	fi
 
