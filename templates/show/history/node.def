@@ -1,0 +1,2 @@
+help: show command history
+run: history | ${VYATTA_PAGER:-cat}
