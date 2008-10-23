@@ -1,0 +1,2 @@
+help: show UDP socket information without resolving names
+run: ss -u -a -n

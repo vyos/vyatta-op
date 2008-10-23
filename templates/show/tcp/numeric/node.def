@@ -1,0 +1,2 @@
+help: show TCP connection without resolving names
+run: ss -t -n
