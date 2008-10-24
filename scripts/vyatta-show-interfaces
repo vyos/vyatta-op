@@ -105,12 +105,10 @@ _show_itf_stats ()
 
 _show_itf_physical ()
 {
-    if type -t ethtool &>/dev/null ; then
-        for eth ; do
-            sudo ethtool $eth
-            echo
-        done
-    fi
+    for eth ; do
+        sudo /usr/sbin/ethtool $eth
+        echo
+    done
 }
 
 _usage ()
