@@ -1,0 +1,2 @@
+help: Show peripherals connected to the USB bus
+run: lsusb
