@@ -20,14 +20,16 @@ run:
 	    echo "actual members are:  $membership"
 	elif [ "$num_members" -eq "1" ]; then
 	    echo "Can't remove last member of a RAID set"
+	elif [ ! -r /dev/$raid_set ]; then
+	    echo "Must be admin or root to remove RAID set member"
 	else
             echo "removing member $member from RAID set $raid_set"
-	    mdadm /dev/$raid_set --fail /dev/$member_to_remove
+	    sudo /sbin/mdadm /dev/$raid_set --fail /dev/$member_to_remove
 	    if [ $? -ne 0 ]; then
 		echo "Unable to mark member as failed"
 	    else
 		sleep 1
-		mdadm /dev/$raid_set --remove /dev/$member_to_remove
+		sudo /sbin/mdadm /dev/$raid_set --remove /dev/$member_to_remove
 		if [ $? -ne 0 ]; then
 		    echo "Unable to remove member from RAID set"
 		fi

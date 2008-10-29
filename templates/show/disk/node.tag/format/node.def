@@ -7,6 +7,8 @@ run:
 	
 	if [ -z "$is_a_disk" ]; then
 	    echo "$disk_dev is not a disk device"
+	elif [ ! -r /dev/${disk_dev} ]; then
+	    echo "Must be admin or root to display disk formating"
 	else
-	    fdisk -l /dev/${disk_dev}
+	    /sbin/fdisk -l /dev/${disk_dev}
 	fi
