@@ -28,9 +28,11 @@ run:
 	    echo "actual members are:  $membership"
 	elif [ -z "$valid_partition" ]; then
 	    echo "$member_to_add is not a valid disk partition"
+	elif [ ! -r /dev/$raid_set ]; then
+            echo "Must be admin or root to add RAID set member"
 	else
             echo "adding member $member_to_add to RAID set $raid_set"
-	    mdadm /dev/$raid_set --add /dev/$member_to_add
+	    sudo /sbin/mdadm /dev/$raid_set --add /dev/$member_to_add
 	    if [ $? -ne 0 ]; then
 		echo "Unable to add member to RAID set"
 	    fi
