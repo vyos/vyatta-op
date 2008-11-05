@@ -1,2 +1,2 @@
 help: show command history
-run: HISTTIMEFORMAT='%FT%T%z ' history
+run: history
