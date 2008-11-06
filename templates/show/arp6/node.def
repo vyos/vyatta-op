@@ -1,2 +1,0 @@
-help: Show IPv6 Address Resolution Protocol (ARP) information
-run: /bin/ip -f inet6 neigh list
