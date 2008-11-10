@@ -95,10 +95,10 @@ sub show {
 
         foreach my $slave (@slaves) {
             printf $format, '    ' . $slave,
-              get_sysfs_value( $intf, "statistics/rx_bytes" ),
-              get_sysfs_value( $intf, "statistics/rx_packets" ),
-              get_sysfs_value( $intf, "statistics/tx_bytes" ),
-              get_sysfs_value( $intf, "statistics/tx_packets" );
+              get_sysfs_value( $slave, "statistics/rx_bytes" ),
+              get_sysfs_value( $slave, "statistics/rx_packets" ),
+              get_sysfs_value( $slave, "statistics/tx_bytes" ),
+              get_sysfs_value( $slave, "statistics/tx_packets" );
         }
     }
 }
