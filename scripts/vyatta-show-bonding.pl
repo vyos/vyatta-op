@@ -71,7 +71,7 @@ sub show_brief {
     my $format     = "%-12s %-10s %-8s %-6s %s\n";
 
     printf $format, 'Interface', 'Mode', 'State', 'Link', 'Slaves';
-    foreach my $intf (@interfaces) {
+    foreach my $intf (sort @interfaces) {
         my $mode = get_sysfs_value( $intf, "bonding/mode" );
         $mode =~ s/ [0-9]+$//;
         my ( $state, $link ) = get_state_link($intf);
@@ -86,14 +86,14 @@ sub show {
     my $format     = "%-16s %-10s %-10s  %-10s %-10s\n";
 
     printf $format, "Interface", "RX: bytes", "packets", "TX: bytes", "packets";
-    foreach my $intf (@interfaces) {
+    foreach my $intf (sort @interfaces) {
         my @slaves = split( / /, get_sysfs_value( $intf, "bonding/slaves" ) );
         printf $format, $intf, get_sysfs_value( $intf, "statistics/rx_bytes" ),
           get_sysfs_value( $intf, "statistics/rx_packets" ),
           get_sysfs_value( $intf, "statistics/tx_bytes" ),
           get_sysfs_value( $intf, "statistics/tx_packets" );
 
-        foreach my $slave (@slaves) {
+        foreach my $slave (sort @slaves) {
             printf $format, '    ' . $slave,
               get_sysfs_value( $slave, "statistics/rx_bytes" ),
               get_sysfs_value( $slave, "statistics/rx_packets" ),
