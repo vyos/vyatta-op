@@ -1,5 +1,5 @@
-help: Clear IPv6 ARP cache for interface
+help: Clear IPv6 ND cache for interface
 allowed: local -a array ;
 	 array=( /sys/class/net/{eth,vmnet}* ) ;
 	 echo  -n ${array[@]##*/}
-run: sudo /sbin/ip -f inet6 neigh flush dev "$4"
+run: sudo /sbin/ip -f inet6 neigh flush dev "$5"
