@@ -46,6 +46,7 @@ my %intf_hash = (
     adsl      => 'adsl',
     multilink => 'ml',
     openvpn   => 'vtun',
+    wirelessmodem => 'wlm',
     );
 
 #

@@ -125,7 +125,7 @@ sub get_dns_nameservers {
                my $nameserver = $split_line[1];
                my $nameserver_via = "system";
                if (@split_line > 2) {
-                  my @dhclient_resolv_files = `ls /etc/resolv.conf.dhclient-new-*`;
+                  my @dhclient_resolv_files = `ls /etc/resolv.conf.dhclient-new-* 2>/dev/null`;
                   foreach my $each_dhcp_resolv_conf (@dhclient_resolv_files) {
                         my @ns_dhclient_resolv=`grep "$nameserver\$" $each_dhcp_resolv_conf`;
                         if ( @ns_dhclient_resolv > 0) {
@@ -134,6 +134,20 @@ sub get_dns_nameservers {
                             chomp $nameserver_via;
                             $nameserver_via = 'dhcp ' . $nameserver_via;
                      }
+                  }
+                  # check here if nameserver_via is still system, if yes then search /etc/ppp/resolv-interface.conf
+                  if ($nameserver_via eq "system") {
+                    my @ppp_resolv_files = `ls /etc/ppp/resolv-*conf 2>/dev/null`;
+                    foreach my $each_ppp_resolv_conf (@ppp_resolv_files) {
+                      my @ns_ppp_resolv=`grep "$nameserver\$" $each_ppp_resolv_conf`;
+                      if ( @ns_ppp_resolv > 0) {
+                        my @ppp_file_array = split(/-/, $each_ppp_resolv_conf);
+                        @ppp_file_array = split(/\./, $ppp_file_array[1]);
+                        $nameserver_via = $ppp_file_array[0];
+                        chomp $nameserver_via;
+                        $nameserver_via = 'ppp ' . $nameserver_via;
+                      }
+                    }
                   }
                }
                $show_nameservers_output .= "$nameserver available via '$nameserver_via'\n";
@@ -186,7 +200,7 @@ sub get_dns_nameservers {
                      $show_nameservers_output .=   "-----------------------------------------------\n";
                  }
                  if (@resolv_conf_split_line > 2) {
-                     my @dhclient_resolv_files = `ls /etc/resolv.conf.dhclient-new-*`;
+                     my @dhclient_resolv_files = `ls /etc/resolv.conf.dhclient-new-* 2>/dev/null`;
                      foreach my $each_dhcp_resolv_conf (@dhclient_resolv_files) {
                         chomp $each_dhcp_resolv_conf;
                         my @ns_dhclient_resolv=`grep "$resolv_conf_nameserver\$" $each_dhcp_resolv_conf`;
@@ -196,6 +210,20 @@ sub get_dns_nameservers {
                             chomp $resolv_nameserver_via;
                             $resolv_nameserver_via = 'dhcp ' . $resolv_nameserver_via;
                         }
+                     }
+                     # check here if resolv_nameserver_via is still system, if yes then search /etc/ppp/resolv-interface.conf
+                     if ($resolv_nameserver_via eq "system") {
+                       my @ppp_resolv_files = `ls /etc/ppp/resolv-*conf 2>/dev/null`;
+                       foreach my $each_ppp_resolv_conf (@ppp_resolv_files) {
+                         my @ns_ppp_resolv=`grep "$resolv_conf_nameserver\$" $each_ppp_resolv_conf`;
+                         if ( @ns_ppp_resolv > 0) {
+                           my @ppp_file_array = split(/-/, $each_ppp_resolv_conf);
+                           @ppp_file_array = split(/\./, $ppp_file_array[1]);
+                           $resolv_nameserver_via = $ppp_file_array[0];
+                           chomp $resolv_nameserver_via;
+                           $resolv_nameserver_via = 'ppp ' . $resolv_nameserver_via;
+                         }
+                       }
                      }
                   }
 
