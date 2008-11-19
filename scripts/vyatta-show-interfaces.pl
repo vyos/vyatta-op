@@ -25,6 +25,7 @@
 
 use lib "/opt/vyatta/share/perl5/";
 use VyattaConfig;
+use VyattaMisc;
 use Getopt::Long;
 use POSIX;
 use NetAddr::IP;
@@ -109,24 +110,12 @@ sub get_intf_description {
     }
 }
 
-sub get_sysfs_value {
-    my ($intf, $name) = @_;
-
-    open (my $statf, '<', "/sys/class/net/$intf/$name")
-	or die "Can't open statistics file /sys/class/net/$intf/$name";
-
-    my $value = <$statf>;
-    chomp $value if defined $value;
-    close $statf;
-    return $value;
-}
-
 sub get_intf_stats {
     my $intf = shift;
     
     my %stats = ();
     foreach my $var (@rx_stat_vars, @tx_stat_vars) {
-	$stats{$var} = get_sysfs_value($intf, "statistics/$var");
+	$stats{$var} = VyattaMisc::get_sysfs_value($intf, "statistics/$var");
     }
     return %stats;
 }
@@ -189,12 +178,12 @@ sub get_state_link {
     my $intf = shift;
     my $state;
     my $link = 'down';
-    my $flags = get_sysfs_value($intf, 'flags');
+    my $flags = VyattaMisc::get_sysfs_value($intf, 'flags');
 
     my $hex_flags = hex($flags);
     if ($hex_flags & 0x1) {	  # IFF_UP
 	$state = 'up'; 
-	my $carrier = get_sysfs_value($intf, 'carrier');
+	my $carrier = VyattaMisc::get_sysfs_value($intf, 'carrier');
 	if ($carrier eq '1') {
 	    $link = "up"; 
 	}
