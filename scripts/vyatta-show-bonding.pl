@@ -66,14 +66,25 @@ sub get_state_link {
     return ( $state, $link );
 }
 
+my @modes = (	"round-robin",
+	"active-backup",
+	"xor-hash",
+	"broadcast",
+	"802.3ad",
+	"transmit-load-balance",
+	"adaptive-load-balance"
+);
+
 sub show_brief {
     my @interfaces = @_;
-    my $format     = "%-12s %-10s %-8s %-6s %s\n";
+    my $format     = "%-12s %-22s %-8s %-6s %s\n";
 
     printf $format, 'Interface', 'Mode', 'State', 'Link', 'Slaves';
     foreach my $intf (sort @interfaces) {
         my $mode = get_sysfs_value( $intf, "bonding/mode" );
-        $mode =~ s/ [0-9]+$//;
+        my ( $name, $num ) =  split (/ /, $mode);
+	$mode = $modes[$num] ? $modes[$num] : $name;
+
         my ( $state, $link ) = get_state_link($intf);
         my $slaves = get_sysfs_value( $intf, "bonding/slaves" );
         printf $format, $intf, $mode, $state, $link, 
