@@ -25,7 +25,7 @@
 
 use lib "/opt/vyatta/share/perl5/";
 use Getopt::Long;
-use VyattaConfig;
+use Vyatta::Config;
 use strict;
 use warnings;
 
@@ -79,7 +79,7 @@ sub print_ddns_stats {
 
 sub get_ddns_interfaces {
 
-    my $vyatta_config = new VyattaConfig;
+    my $vyatta_config = new Vyatta::Config;
     $vyatta_config->setLevel("service dns dynamic");
     $vyatta_config->{_active_dir_base} = "/opt/vyatta/config/active/";
     my @ddns_interfaces = $vyatta_config->listOrigNodes("interface");
