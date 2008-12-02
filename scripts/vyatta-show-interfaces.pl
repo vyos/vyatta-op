@@ -24,8 +24,8 @@
 #
 
 use lib "/opt/vyatta/share/perl5/";
-use VyattaConfig;
-use VyattaMisc;
+use Vyatta::Config;
+use Vyatta::Misc;
 use Getopt::Long;
 use POSIX;
 use NetAddr::IP;
@@ -94,7 +94,7 @@ sub get_intf_description {
     if (!defined $intf_type) {
 	return "";
     }
-    my $config = new VyattaConfig; 
+    my $config = new Vyatta::Config; 
     my $path;
     if ($intf =~ m/([a-zA-Z]+\d+)\.(\d+)/) {
 	$path = "interfaces $intf_type $1 vif $2";
@@ -115,7 +115,7 @@ sub get_intf_stats {
     
     my %stats = ();
     foreach my $var (@rx_stat_vars, @tx_stat_vars) {
-	$stats{$var} = VyattaMisc::get_sysfs_value($intf, "statistics/$var");
+	$stats{$var} = get_sysfs_value($intf, "statistics/$var");
     }
     return %stats;
 }
@@ -178,12 +178,12 @@ sub get_state_link {
     my $intf = shift;
     my $state;
     my $link = 'down';
-    my $flags = VyattaMisc::get_sysfs_value($intf, 'flags');
+    my $flags = get_sysfs_value($intf, 'flags');
 
     my $hex_flags = hex($flags);
     if ($hex_flags & 0x1) {	  # IFF_UP
 	$state = 'up'; 
-	my $carrier = VyattaMisc::get_sysfs_value($intf, 'carrier');
+	my $carrier = get_sysfs_value($intf, 'carrier');
 	if ($carrier eq '1') {
 	    $link = "up"; 
 	}
