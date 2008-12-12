@@ -1,0 +1,2 @@
+help: Show network interface counters
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --action=show-count
