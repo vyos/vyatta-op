@@ -1,3 +1,47 @@
+vyatta-op (0.13.1) unstable; urgency=low
+
+  [ Stephen Hemminger ]
+  * Add commands to display open sockets
+  * Need full path to ss command
+
+  [ An-Cheng Huang ]
+  * correct package dependency
+
+  [ Mohit Mehta ]
+  * add bond interfaces to list of allowed interfaces for dhcp
+    release/renew
+
+  [ An-Cheng Huang ]
+  * add support for development build
+
+  [ Mohit Mehta ]
+  * make changes for submodule moved to VyattaMisc
+
+  [ Stephen Hemminger ]
+  * Decode bonding modes
+  * Convert to Vyatta::
+
+  [ Stig Thormodsrud ]
+  * "show interfaces" broken.  Use new perl hierarchy.
+
+  [ Stephen Hemminger ]
+  * Get rid of reference to OFR
+
+  [ Stig Thormodsrud ]
+  * Add option to show counters for multiple interfaces.
+
+  [ An-Cheng Huang ]
+  * update maintainer information
+  * "files" file should be removed before package build
+
+  [ Mohit Mehta ]
+  * Fix Bug 4022 dynamic dns config fails during system boot if
+    interface does not exist
+
+  [ An-Cheng Huang ]
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Thu, 08 Jan 2009 09:42:49 -0800
+
 vyatta-op (0.13) unstable; urgency=low
 
 	  3.2.0
