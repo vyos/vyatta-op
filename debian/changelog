@@ -1,3 +1,16 @@
+vyatta-op (0.13.0+islavista1) unstable; urgency=low
+
+  [ Rick Balocca ]
+  * Remove all references to OFR
+
+  [ Mohit Mehta ]
+  * Fix Bug 4022 dynamic dns config fails during system boot if
+    interface does not exist
+
+  [ An-Cheng Huang ]
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Mon, 12 Jan 2009 16:50:55 -0800
+
 vyatta-op (0.13) unstable; urgency=low
 
 	  3.2.0
