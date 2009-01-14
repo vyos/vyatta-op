@@ -1,3 +1,10 @@
+vyatta-op (0.13.2) unstable; urgency=low
+
+  [ Justin Fletcher ]
+  * Move tcp and udp commands under system/connections
+
+ -- An-Cheng Huang <ancheng@build-vm.localdomain>  Tue, 13 Jan 2009 18:15:06 -0800
+
 vyatta-op (0.13.1) unstable; urgency=low
 
   [ Stephen Hemminger ]
