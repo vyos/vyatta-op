@@ -35,12 +35,15 @@ sub print_ddns_stats {
 
     if (@ddns_interfaces > 0){
      foreach my $configuredinterface (@ddns_interfaces) {
+       my $no_interface = `ip addr show dev $configuredinterface 2>/dev/null`;
        my $no_ip = `ip addr show dev $configuredinterface 2>/dev/null | grep "inet "`;
        my @all_cached_entries = `grep "^atime" $ddclient_cache_dir/ddclient_$configuredinterface.cache 2>/dev/null`;
        if (@all_cached_entries > 0) {
         foreach my $each_entry (@all_cached_entries) {
          print "interface    : $configuredinterface";
-         if ($no_ip eq ""){
+         if ($no_interface eq ""){
+          print " [ Interface does not exist ]";
+         } elsif ($no_ip eq ""){
           print " [ Currently no IP address ]";
          }
          print "\n";
@@ -63,7 +66,9 @@ sub print_ddns_stats {
         }
        } else {
          print "interface    : $configuredinterface";
-         if ($no_ip eq ""){
+         if ($no_interface eq ""){
+          print " [ Interface does not exist ]";
+         } elsif ($no_ip eq ""){
           print " [ Currently no IP address ]";
          } else {
           print " \n[ Status will be updated within 60 seconds ]";

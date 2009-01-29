@@ -56,6 +56,7 @@ my %intf_hash = (
 my %action_hash = (
     'show'       => \&run_show_intf,
     'show-brief' => \&run_show_intf_brief,
+    'show-count' => \&run_show_counters,
     'clear'      => \&run_clear_intf,
     'reset'      => \&run_reset_intf,
     );
@@ -309,6 +310,25 @@ sub run_show_intf_brief {
 		printf($format, $intf, $ip, $state, $link, $description);
 	    }
 	}
+    }
+}
+
+sub run_show_counters {
+    my @intfs = @_;
+
+    my $format = "%-12s %10s %10s     %10s %10s\n";
+    printf($format, "Interface","Rx Packets","Rx Bytes","Tx Packets","Tx Bytes");
+    foreach my $intf (@intfs) {
+	my ($state, $link) = get_state_link($intf);
+	next if $state ne 'up';
+	my %clear = get_clear_stats($intf);
+	my %stats = get_intf_stats($intf);
+	printf($format, $intf,  
+	       get_counter_val($clear{rx_packets}, $stats{rx_packets}),
+	       get_counter_val($clear{rx_bytes},   $stats{rx_bytes}),
+	       get_counter_val($clear{tx_packets}, $stats{tx_packets}),
+	       get_counter_val($clear{tx_bytes},   $stats{tx_bytes})
+	    );
     }
 }
 
