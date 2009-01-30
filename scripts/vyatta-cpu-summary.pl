@@ -31,7 +31,9 @@ while (<$cpuinfo>) {
 }
 close $cpuinfo;
 
-print "CPU       ", join( "       \n", keys %models ), "\n";
-print "Packages  ", scalar keys %packages, "\n";
-print "Cores     ", scalar keys %cores,    "\n";
-print "Threads   ", $cpu, "\n";
+print "Processors ", $cpu, "\n";
+print "Packages   ", scalar keys %packages, "\n" if (%packages);
+print "Cores      ", scalar keys %cores,    "\n" if (%cores);
+
+# Handle any attempt to run different CPU models 
+print "Model      ", join( "       \n", keys %models ), "\n";
