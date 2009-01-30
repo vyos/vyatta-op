@@ -1,8 +1,10 @@
 vyatta-op (0.13.3) unstable; urgency=low
 
   * New show system cpu
+  * Move 'show system cpu' to 'show hardware cpu summary'
+  * Change name of cpu summary script and rearrange
 
- -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Thu, 29 Jan 2009 14:59:45 -0800
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Thu, 29 Jan 2009 16:34:26 -0800
 
 vyatta-op (0.13.2) unstable; urgency=low
 
