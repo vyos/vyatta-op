@@ -1,2 +1,0 @@
-help: Show CPU's on system
-run:  ${vyatta_datadir}/vyatta-op/functions/cpu-info 

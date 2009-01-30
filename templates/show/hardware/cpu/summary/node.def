@@ -1,0 +1,2 @@
+help: Show CPU's on system
+run:  ${vyatta_datadir}/vyatta-op/bin/vyatta-cpu-summary.pl
