@@ -1,3 +1,9 @@
+vyatta-op (0.13.4) unstable; urgency=low
+
+  * Fix CPU summary
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Fri, 30 Jan 2009 11:05:18 -0800
+
 vyatta-op (0.13.3) unstable; urgency=low
 
   * New show system cpu
