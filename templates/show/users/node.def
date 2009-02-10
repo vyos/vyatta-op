@@ -1,2 +1,2 @@
 help: Show user information
-run: who
+run: who -H
