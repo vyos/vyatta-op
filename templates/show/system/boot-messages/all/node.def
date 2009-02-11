@@ -1,4 +1,5 @@
 help: Show all kernel boot messages
-run: less $_vyatta_less_options \
+run: LESSOPEN="/usr/bin/lesspipe %s" LESSCLOSE="/usr/bin/lesspipe %s %s" \
+     less $_vyatta_less_options \
 	--prompt=".boot-messages?m, file %i of %m., page %dt of %D" \
 	-- `printf "%s\n" /var/log/dmesg* | sort -nr`
