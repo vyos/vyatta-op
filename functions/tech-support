@@ -126,8 +126,8 @@ ps -ef
 header \''df -h -x squashfs'\'
 df -h -x squashfs
 
-header \''lsof -Pi'\'
-sudo lsof -Pi
+header \''lsof -Pin'\'
+sudo lsof -Pin
 
 header \'free\'
 free
