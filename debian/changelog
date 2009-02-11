@@ -1,3 +1,17 @@
+vyatta-op (0.13.5) unstable; urgency=low
+
+  [ Mohit Mehta ]
+  * Fix Bug 4120 Extraneous <value> item at top of Operation tree
+
+  [ Stephen Hemminger ]
+  * Add heading to 'show users'
+
+  [ Bob Gilligan ]
+  * Explicitly use the shell builtin "test" command since "test" is now
+    a
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Wed, 11 Feb 2009 09:41:40 -0800
+
 vyatta-op (0.13.4) unstable; urgency=low
 
   * Fix CPU summary
