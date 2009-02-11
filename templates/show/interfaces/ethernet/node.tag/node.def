@@ -1,9 +1,3 @@
 help: Show specified ethernet interface information
-allowed: for dev in /sys/class/net/*; 
-         do if [[ -L $dev/device ]]
-            then if [[ $(cat $dev/type) -eq 1 ]]
-                 then echo -n ${dev##*/} " "
-                 fi
-            fi
-         done
+allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show ethernet
 run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf="$4"

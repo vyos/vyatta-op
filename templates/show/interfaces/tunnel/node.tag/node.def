@@ -1,5 +1,3 @@
 help: Show specified tunnel interface information
-allowed: local -a array ;
-	 array=( /sys/class/net/tun* ) ;
-	 echo  -n ${array[@]##*/}
+allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show tunnel
 run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf="$4"
