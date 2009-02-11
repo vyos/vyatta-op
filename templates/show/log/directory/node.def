@@ -1,2 +1,4 @@
 help: Show listing of user-defined log files
-run: builtin test -d /var/log/user && ls /var/log/user/
+run: if [ -d /var/log/user ]
+     then ls /var/log/user
+     fi

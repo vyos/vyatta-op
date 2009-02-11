@@ -1,0 +1,4 @@
+help: Show listing of authorization attempts
+run: less $_vyatta_less_options \
+	--prompt=".log, page %dt of %D" \
+	-- /var/log/auth.log
