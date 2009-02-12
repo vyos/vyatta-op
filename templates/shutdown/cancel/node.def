@@ -1,0 +1,2 @@
+help: Cancel a pending shutdown
+run: sudo /sbin/shutown -c

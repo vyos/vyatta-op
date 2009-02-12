@@ -1,0 +1,2 @@
+help: Shutdown the system
+run: sudo /sbin/shutdown -h now
