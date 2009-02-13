@@ -25,6 +25,7 @@
 
 use lib "/opt/vyatta/share/perl5/";
 use Vyatta::Config;
+use Vyatta::Interface;
 use Vyatta::Misc;
 use Getopt::Long;
 use POSIX;
@@ -32,23 +33,6 @@ use NetAddr::IP;
 
 use strict;
 use warnings;
-
-#
-# valid interfaces
-#
-my %intf_hash = (
-    ethernet  => 'eth',
-    serial    => 'wan',
-    tunnel    => 'tun',
-    bridge    => 'br',
-    loopback  => 'lo',
-    pppoe     => 'pppoe',
-    pppoa     => 'pppoa',
-    adsl      => 'adsl',
-    multilink => 'ml',
-    openvpn   => 'vtun',
-    wirelessmodem => 'wlm',
-    );
 
 #
 # valid actions
@@ -70,45 +54,15 @@ my @rx_stat_vars =
 my @tx_stat_vars = 
     qw/tx_bytes tx_packets tx_errors tx_dropped tx_carrier_errors collisions/;
 
-sub get_intf_type {
-    my $intf = shift;
-
-    my $base;
-    if ($intf =~ m/([a-zA-Z]+)\d*/) {
-	$base = $1;
-    } else {
-	die "unknown intf type [$intf]\n";
-    }
-    
-    foreach my $intf_type (keys(%intf_hash)) {
-	if ($intf_hash{$intf_type} eq $base) {
-	    return $intf_type;
-	}
-    }
-    return undef;
-}
 
 sub get_intf_description {
-    my $intf = shift;
+    my $name = shift;
+    my $intf = Vyatta::Interface($name);
+    return "" unless $intf;
 
-    my $intf_type = get_intf_type($intf);
-    if (!defined $intf_type) {
-	return "";
-    }
-    my $config = new Vyatta::Config; 
-    my $path;
-    if ($intf =~ m/([a-zA-Z]+\d+)\.(\d+)/) {
-	$path = "interfaces $intf_type $1 vif $2";
-    } else {
-	$path = "interfaces $intf_type $intf";
-    }
-    $config->setLevel($path);
-    my $description = $config->returnOrigValue("description"); 
-    if (defined $description) {
-	return $description;
-    } else {
-	return "";
-    }
+    my $description = $intf->description();
+    return "" unless $description;
+    return $description;
 }
 
 sub get_intf_stats {
@@ -205,21 +159,23 @@ sub is_valid_intf {
 }
 
 sub is_valid_intf_type {
-    my $intf_type = shift;
+    my $name = shift;
     
-    if (defined $intf_hash{$intf_type}) {
-	return 1;
-    }
-    return 0;
+    return new Vyatta::Interface($name);
 }
 
 sub get_intf_for_type {
     my $type = shift;
     my $sysnet = "/sys/class/net";
-    my $prefix = $type ? $intf_hash{$type} : '[^.]+';
+    my @list = ();
 
     opendir (my $dir, $sysnet)	or die "can't open $sysnet";
-    my @list = grep { /^$prefix/ && -d "$sysnet/$_" } readdir($dir);
+    while (my $name = readdir($dir)) {
+	my $intf = new Vyatta::Interface($name);
+	next unless $intf;
+
+	push @list, $name if ($type eq $intf->type());
+    }
     closedir $dir;
 
     return @list;
@@ -406,14 +362,13 @@ GetOptions("intf-type=s" => \$intf_type,
 );
 
 if (defined $intf) {
-    if (!is_valid_intf($intf)) {
-	die "Invalid interface [$intf]\n";
-    }
+    die "Invalid interface [$intf]\n" 
+	unless is_valid_intf($intf);
+
     push @intf_list, $intf;
 } elsif (defined $intf_type) {
-    if (!is_valid_intf_type($intf_type)) {
-	die "Invalid interface type [$intf_type]\n";
-    }
+    die "Invalid interface type [$intf_type]\n"
+	unless is_valid_intf_type($intf_type);
     @intf_list = get_intf_for_type($intf_type);
 } else {
     # get all interfaces
