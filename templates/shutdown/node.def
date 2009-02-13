@@ -1,2 +1,3 @@
 help: Shutdown the system
-run: sudo /sbin/shutdown -h now
+run: ${vyatta_bindir}/yesno "Proceed with shutdown? [confirm] " \
+     && sudo /sbin/shutdown -h now

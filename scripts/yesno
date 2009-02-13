@@ -1,0 +1,20 @@
+#! /bin/bash
+# Usage: yesno prompt...
+
+if [ $# -eq 0 ]
+then prompt="yes or no: "
+else prompt="$*"
+fi
+
+while true
+do
+    read -p "$prompt" || exit 1
+    case "$REPLY" in
+    y*|Y*)	exit 0;;
+    n*|n*)	exit 1;;
+    *)		echo "Answer yes or no please";;
+    esac
+done
+
+
+    
