@@ -1,6 +1,8 @@
 #! /usr/bin/perl
 # implement "show cpu-info"
 
+use strict;
+
 open my $cpuinfo, '<', '/proc/cpuinfo'
   or die "Can't open /proc/cpuinfo : $!";
 
