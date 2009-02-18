@@ -343,7 +343,7 @@ sub usage {
     print "  NAME = ", join(' | ', get_intf_for_type()), "\n";
     print "  TYPE = ", join(' | ', Vyatta::Interface::interface_types()), "\n";
     print "  ACTION = ", join(' | ', keys %action_hash), "\n";
-    exit 0;
+    exit 1;
 }
 
 #
@@ -376,7 +376,8 @@ my $func;
 if (defined $action_hash{$action}) {
     $func = $action_hash{$action};
 } else {
-    die "Invalid action [$action]\n";
+    print "Invalid action [$action]\n";
+    usage();
 }
 
 #
