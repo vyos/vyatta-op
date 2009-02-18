@@ -1,3 +1,12 @@
+vyatta-op (0.13.7) unstable; urgency=low
+
+  * Prompt before immediate shutdown
+  * Put delayed shutdown in background to allow for other commands.
+  * Enable strict in cpu summary
+  * Use common Vyatta:: library
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Tue, 17 Feb 2009 17:04:34 -0800
+
 vyatta-op (0.13.6) unstable; urgency=low
 
   * Change show log directory to use 'if'
