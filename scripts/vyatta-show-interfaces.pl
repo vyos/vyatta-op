@@ -57,7 +57,7 @@ my @tx_stat_vars =
 
 sub get_intf_description {
     my $name = shift;
-    my $intf = Vyatta::Interface($name);
+    my $intf = new Vyatta::Interface($name);
     return "" unless $intf;
 
     my $description = $intf->description();
@@ -90,7 +90,7 @@ sub get_clear_stats {
    }
    my $FILE;
    my $filename = get_intf_statsfile($intf);
-   if (!open($FILE, "<", $filename)) {
+   if (!open($FILE, '<', $filename)) {
        return %stats;
    }
 
@@ -112,21 +112,10 @@ sub get_clear_stats {
 }
 
 sub get_ipaddr {
-    my $intf = shift;
+    my $name = shift;
     
-    my @addr_list = ();
-    my @lines = `ip addr show $intf | grep 'inet' | grep -iv 'fe80'`;
-    foreach my $line (@lines) {
-	(my $inet, my $addr, my $remainder) = split(' ', $line, 3);
-	my $ip = new NetAddr::IP($addr);
-	if ($ip->version() == 6) {
-	    push @addr_list, $ip->short() . '/' . $ip->masklen();
-	} else {
-	    push @addr_list, $ip->cidr();
- 	}
-    }
-    chomp  @addr_list;
-    return @addr_list;
+    # Skip IPV6 default Link-local
+    return grep { !/^fe80/ } Vyatta::Misc::getIP($name);
 }
 
 sub get_state_link {
@@ -150,33 +139,32 @@ sub get_state_link {
 }
 
 sub is_valid_intf {
-    my ($intf) = @_;
-
-    if (-e "/sys/class/net/$intf") {
-	return 1;
-    } 
-    return 0;
-}
-
-sub is_valid_intf_type {
     my $name = shift;
-    
-    return new Vyatta::Interface($name);
+    return unless $name;
+
+    my $intf = new Vyatta::Interface($name);
+    return unless $intf;
+
+    return $intf->exists();
 }
 
 sub get_intf_for_type {
     my $type = shift;
+
     my $sysnet = "/sys/class/net";
-    my @list = ();
-
     opendir (my $dir, $sysnet)	or die "can't open $sysnet";
-    while (my $name = readdir($dir)) {
-	my $intf = new Vyatta::Interface($name);
-	next unless $intf;
-
-	push @list, $name if ($type eq $intf->type());
-    }
+    my @interfaces = grep { !/^\./ } readdir($dir);
     closedir $dir;
+
+    my @list = ();
+    foreach my $name (@interfaces) {
+	if ($type) {
+	    my $intf = new Vyatta::Interface($name);
+	    next unless $intf;				# unknown type
+	    next if ($type ne $intf->type());
+	}
+	push @list, $name;
+    }
 
     return @list;
 }
@@ -350,34 +338,37 @@ sub intf_sort {
     return @new_a;
 }
 
+sub usage {
+    print "Usage: $0 [intf=NAME|intf-type=TYPE] action=ACTION\n";
+    print "  NAME = ", join(' | ', get_intf_for_type()), "\n";
+    print "  TYPE = ", join(' | ', Vyatta::Interface::interface_types()), "\n";
+    print "  ACTION = ", join(' | ', keys %action_hash), "\n";
+    exit 0;
+}
 
 #
 # main
 #
 my @intf_list = ();
-my ($intf_type, $intf, $action);
+my ($intf_type, $intf);
+my $action = 'show';
+
 GetOptions("intf-type=s" => \$intf_type,
 	   "intf=s"      => \$intf,
 	   "action=s"    => \$action,
-);
+) or usage();
 
-if (defined $intf) {
+if ($intf) {
     die "Invalid interface [$intf]\n" 
 	unless is_valid_intf($intf);
 
     push @intf_list, $intf;
-} elsif (defined $intf_type) {
-    die "Invalid interface type [$intf_type]\n"
-	unless is_valid_intf_type($intf_type);
+} elsif ($intf_type) {
     @intf_list = get_intf_for_type($intf_type);
 } else {
     # get all interfaces
     @intf_list = get_intf_for_type();
 }
-
-if (! defined $action) {
-    $action = 'show';
-} 
 
 @intf_list = intf_sort(@intf_list);
 
