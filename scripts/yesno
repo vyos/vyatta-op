@@ -1,14 +1,26 @@
 #! /bin/bash
 # Usage: yesno prompt...
 
+default=
+if [ $1 == "-y" ]
+then default='y'; shift
+fi
+
 if [ $# -eq 0 ]
 then prompt="yes or no: "
 else prompt="$*"
 fi
 
+if [ ! -z $default ]; then
+    prompt+="[y]"
+fi
+
 while true
 do
     read -p "$prompt" || exit 1
+    if [ -z "$REPLY" -a ! -z $default ]
+    then REPLY=$default
+    fi
     case "$REPLY" in
     y*|Y*)	exit 0;;
     n*|n*)	exit 1;;
