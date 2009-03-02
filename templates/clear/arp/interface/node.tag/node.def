@@ -1,5 +1,3 @@
 help: Clear ARP cache for interface
-allowed: local -a array ;
-	 array=( /sys/class/net/{eth,vmnet}* ) ;
-	 echo  -n ${array[@]##*/}
+allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show all
 run: sudo /sbin/ip neigh flush dev "$4"
