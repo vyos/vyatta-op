@@ -1,3 +1,14 @@
+vyatta-op (0.13.9) unstable; urgency=low
+
+  * Use new --vif option to find allowed interfaces
+  * Add default option to yesno for shutdown
+  * Fix out of date stuff in README
+  * Fix expansion of bonding VIF
+  * Use show-interface to allow clear on all interface types
+  * Use getInterfaces in vyatta-show-interfaces.pl
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Mon, 02 Mar 2009 17:21:27 -0800
+
 vyatta-op (0.13.8) unstable; urgency=low
 
   * Fix problems with new show-interfaces.pl
