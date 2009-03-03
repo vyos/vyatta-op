@@ -150,12 +150,7 @@ sub is_valid_intf {
 
 sub get_intf_for_type {
     my $type = shift;
-
-    my $sysnet = "/sys/class/net";
-    opendir (my $dir, $sysnet)	or die "can't open $sysnet";
-    my @interfaces = grep { !/^\./ } readdir($dir);
-    closedir $dir;
-
+    my @interfaces = getInterfaces();
     my @list = ();
     foreach my $name (@interfaces) {
 	if ($type) {
