@@ -1,3 +1,9 @@
+vyatta-op (0.13.10) unstable; urgency=low
+
+  * Fix broken path in 'show arp <intf>'.
+
+ -- Stig Thormodsrud <stig@io.vyatta.com>  Thu, 05 Mar 2009 15:09:17 -0800
+
 vyatta-op (0.13.9) unstable; urgency=low
 
   * Use new --vif option to find allowed interfaces
