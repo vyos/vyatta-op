@@ -1,3 +1,3 @@
 help: Show Address Resolution Protocol (ARP) for a specific interface
 allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show ethernet
-run: /usr/bin/arp -e -n -i "$3"
+run: /usr/sbin/arp -e -n -i "$3"
