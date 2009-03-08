@@ -11,10 +11,6 @@ then prompt="yes or no: "
 else prompt="$*"
 fi
 
-if [ ! -z $default ]; then
-    prompt+="[y]"
-fi
-
 while true
 do
     read -p "$prompt" || exit 1
