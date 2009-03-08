@@ -1,3 +1,9 @@
+vyatta-op (0.13.11) unstable; urgency=low
+
+  * Remove [y] from prompt
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Sun, 08 Mar 2009 14:12:48 -0700
+
 vyatta-op (0.13.10) unstable; urgency=low
 
   * Fix broken path in 'show arp <intf>'.
