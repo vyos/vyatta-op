@@ -1,5 +1,3 @@
 help: Show VRRP information for specified interface
-allowed: local -a array ;
-         array=( /sys/class/net/eth* ) ;
-         echo  -n ${array[@]##*/}
+allowed: /opt/vyatta/sbin/vyatta-keepalived.pl --vrrp-action=list-vrrp-intf
 run: sudo /opt/vyatta/bin/sudo-users/vyatta-show-vrrp.pl "$4"
