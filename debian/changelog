@@ -1,3 +1,10 @@
+vyatta-op (0.13.12) unstable; urgency=low
+
+  [ Stig Thormodsrud ]
+  * Fix 4183: no auto completion for 'clear vrrp interfaces <> group ?'.
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Mon, 09 Mar 2009 19:44:29 -0700
+
 vyatta-op (0.13.11) unstable; urgency=low
 
   * Remove [y] from prompt
