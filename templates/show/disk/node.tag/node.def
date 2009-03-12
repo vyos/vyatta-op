@@ -1,7 +1,4 @@
 help:  Disk device name
+allowed: awk 'NR > 2 && $4 !~ /[0-9]$/ { print $4 }' </proc/partitions
 
-allowed:
-	local -a array ; 
-	array=`cat /proc/partitions | awk '{ if ($4!="name") { print $4 } }' | egrep -v "[0-9]"`
-	echo -n $array
 
