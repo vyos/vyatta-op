@@ -1,3 +1,5 @@
 help: Shutdown the system at a future time
 allowed: echo -n '<HH:MM>' '<MMDDYY>' '+MM'
-run: sudo /sbin/shutdown -h $3 &
+run: if /opt/vyatta/bin/vyatta-gettime.pl $3 >/tmp/shutdown.at
+     then sudo /sbin/shutdown -h $3 &
+     fi
