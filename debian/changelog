@@ -1,3 +1,13 @@
+vyatta-op (0.13.14) unstable; urgency=low
+
+  * Add show shutdown
+  * fix email in changelog
+  * Add dependency on perl libtimedate
+  * Fix formatting of output
+  * Use nohup to avoid extra messages
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Thu, 12 Mar 2009 11:10:53 -0700
+
 vyatta-op (0.13.13) unstable; urgency=low
 
   * Fix typo in shutdown cancel
