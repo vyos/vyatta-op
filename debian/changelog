@@ -63,7 +63,7 @@ vyatta-op (0.13.6) unstable; urgency=low
   * Use lesspipe to unzip log files
   * Add shutdown command to CLI
 
- -- Stephen Hemminger <shemminger@debian>  Thu, 12 Feb 2009 14:58:54 -0800
+ -- Stephen Hemminger <shemminger@vyatta.com>  Thu, 12 Feb 2009 14:58:54 -0800
 
 vyatta-op (0.13.5) unstable; urgency=low
 
