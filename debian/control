@@ -21,7 +21,8 @@ Depends: sed (>= 4.1.5),
  less,
  libio-prompt-perl,
  at,
- net-tools
+ net-tools,
+ libtimedate-perl
 Suggests: util-linux (>= 2.13-5),
  ncurses-bin (>= 5.5-5),
 Description: bash operational command completion
