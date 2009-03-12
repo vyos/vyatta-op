@@ -1,0 +1,8 @@
+help: Show scheduled shutdown
+run: if [ -f /var/run/shutdown.pid ]
+     then if [ -r /tmp/shutdown.at ]
+	  then echo -n "Shutdown pending at"; cat /tmp/shutdown.at
+	  else echo "Shutdown pending"
+	  fi
+     else echo "No shutdown pending"
+     fi
