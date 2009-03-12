@@ -1,6 +1,7 @@
 help: Show disk drive formatting
-run: dev=/dev/$3
-     if [ ! -b $dev ]
-     then echo "$3 is not a disk device"; exit 1
+run: disk_dev="/dev/$3"
+     if [ ! -b "$disk_dev" ]
+     then echo "$3 is not a disk device"
+          exit 1
      fi
-     /sbin/fdisk -l /dev/${disk_dev}
+     /sbin/fdisk -l "$disk_dev"
