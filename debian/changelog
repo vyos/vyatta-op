@@ -1,3 +1,9 @@
+vyatta-op (0.13.15) unstable; urgency=low
+
+  * Fix shutdown at to return to prompt
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Thu, 19 Mar 2009 15:38:27 -0700
+
 vyatta-op (0.13.14) unstable; urgency=low
 
   * Add show shutdown
