@@ -1,5 +1,6 @@
 help: Shutdown the system at a future time
 allowed: echo -n '<HH:MM>' '<MMDDYY>' '+MM'
 run: if /opt/vyatta/bin/vyatta-gettime.pl $3 >/tmp/shutdown.at
-     then nohup sudo /sbin/shutdown -h $3 </dev/null >/dev/null 2>&1
+     then (sudo /sbin/shutdown -h $3 &
+           disown %?sudo ) >/dev/null 2>&1
      fi
