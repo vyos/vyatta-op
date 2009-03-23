@@ -148,6 +148,8 @@ unset _vyatta_extglob
 
 [ -r /etc/default/vyatta-cfg ] && source /etc/default/vyatta-cfg
 
+[ -r /etc/default/vyatta-local-env ] && source /etc/default/vyatta-local-env
+
 ###  Local Variables:
 ###  mode: shell-script
 ###  End:
