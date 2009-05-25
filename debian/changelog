@@ -1,3 +1,10 @@
+vyatta-op (0.13.17) unstable; urgency=low
+
+  [ Conny Brunnkvist ]
+  * Add "show configuration files".
+
+ -- Stig Thormodsrud <stig@vyatta.com>  Mon, 25 May 2009 13:01:09 -0700
+
 vyatta-op (0.13.16) unstable; urgency=low
 
   * add local env hook
