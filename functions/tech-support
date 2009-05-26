@@ -84,7 +84,7 @@ header System Info
 ${vyatta_bindir}/vyatta-show-dmi
 
 header Interfaces
-show interfaces
+show interfaces detail
 
 header Devices
 cat /proc/devices
