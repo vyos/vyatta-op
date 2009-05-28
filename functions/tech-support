@@ -78,7 +78,7 @@ header Mem Info
 cat /proc/meminfo
 
 header PCI Info
-lspci
+sudo lspci -vvx
 
 header System Info
 ${vyatta_bindir}/vyatta-show-dmi
