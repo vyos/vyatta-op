@@ -1,3 +1,10 @@
+vyatta-op (0.13.18) unstable; urgency=low
+
+  * Show more detail about interfaces in show tech-support
+  * Make tech-support show more PCI info
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Thu, 28 May 2009 14:17:44 -0700
+
 vyatta-op (0.13.17) unstable; urgency=low
 
   [ Conny Brunnkvist ]
