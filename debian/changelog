@@ -1,3 +1,10 @@
+vyatta-op (0.13.18+jenner3) unstable; urgency=low
+
+  * Revert "Fix completion for vif"
+  * Fix completion for VIF
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Mon, 01 Jun 2009 11:21:18 -0700
+
 vyatta-op (0.13.18+jenner2) unstable; urgency=low
 
   * Add 'show interfaces pseudo-ethernet'
