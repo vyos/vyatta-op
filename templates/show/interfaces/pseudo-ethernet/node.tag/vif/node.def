@@ -1,0 +1,4 @@
+help: Show specified virtual network interface (vif) information
+run: tput setaf ${COLOR_RED:-1} ;
+     echo error: need to supply vif # ;
+     tput op 

@@ -1,0 +1,2 @@
+help: Show detailed pseudo ethernet interface information
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf-type=pseudo-ethernet --action=show
