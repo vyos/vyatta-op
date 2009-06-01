@@ -1,0 +1,2 @@
+help: Show summary of specified virtual network interface (vif) information
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf="$4.$6" --action=show-brief
