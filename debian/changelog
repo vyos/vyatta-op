@@ -1,3 +1,10 @@
+vyatta-op (0.13.18+jenner5) unstable; urgency=low
+
+  * Add ethtool output to show tech-support
+  * Remove show tech-support bug related to interfaces
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Wed, 03 Jun 2009 12:26:07 -0700
+
 vyatta-op (0.13.18+jenner4) unstable; urgency=low
 
   * Ignore ntp.conf server options
