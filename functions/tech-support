@@ -84,7 +84,14 @@ header System Info
 ${vyatta_bindir}/vyatta-show-dmi
 
 header Interfaces
+show interfaces
+echo
 show interfaces detail
+
+for eth in $(/opt/vyatta/sbin/vyatta-interfaces.pl --show=ethernet)
+do header "Ethtool statistics for $eth"
+   sudo ethtool -S $eth
+done
 
 header Devices
 cat /proc/devices
