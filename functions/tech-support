@@ -85,10 +85,11 @@ ${vyatta_bindir}/vyatta-show-dmi
 
 header Interfaces
 show interfaces
-echo
-show interfaces detail
 
-for eth in $(/opt/vyatta/sbin/vyatta-interfaces.pl --show=ethernet)
+header Interface statistics
+ip -s link show
+
+for eth in $(cd /sys/class/net; echo eth*)
 do header "Ethtool statistics for $eth"
    sudo ethtool -S $eth
 done
