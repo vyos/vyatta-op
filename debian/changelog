@@ -1,3 +1,10 @@
+vyatta-op (0.13.18+jenner4) unstable; urgency=low
+
+  * Ignore ntp.conf server options
+  * Add ethtool output to show tech-support
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Wed, 03 Jun 2009 10:24:06 -0700
+
 vyatta-op (0.13.18+jenner3) unstable; urgency=low
 
   * Revert "Fix completion for vif"
