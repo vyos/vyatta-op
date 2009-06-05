@@ -4,4 +4,4 @@ run: disk_dev="/dev/$3"
      then echo "$3 is not a disk device"
           exit 1
      fi
-     /sbin/fdisk -l "$disk_dev"
+     sudo /sbin/fdisk -l "$disk_dev"
