@@ -1,3 +1,9 @@
+vyatta-op (0.13.18+jenner6) unstable; urgency=low
+
+  * Add operator to show disk format
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Fri, 05 Jun 2009 13:48:27 -0700
+
 vyatta-op (0.13.18+jenner5) unstable; urgency=low
 
   * Add ethtool output to show tech-support
