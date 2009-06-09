@@ -81,6 +81,9 @@ sub show_brief {
 
     printf $format, 'Interface', 'Mode', 'State', 'Link', 'Slaves';
     foreach my $intf (sort @interfaces) {
+	die "Invalid bonding interface: $intf\n"
+	    unless (-d "/sys/class/net/$intf/bonding" );
+
         my $mode = get_sysfs_value( $intf, "bonding/mode" );
         my ( $name, $num ) =  split (/ /, $mode);
 	$mode = $modes[$num] ? $modes[$num] : $name;
@@ -98,6 +101,9 @@ sub show {
 
     printf $format, "Interface", "RX: bytes", "packets", "TX: bytes", "packets";
     foreach my $intf (sort @interfaces) {
+	die "Invalid bonding interface: $intf\n"
+	    unless (-d "/sys/class/net/$intf/bonding" );
+
         my @slaves = split( / /, get_sysfs_value( $intf, "bonding/slaves" ) );
         printf $format, $intf, get_sysfs_value( $intf, "statistics/rx_bytes" ),
           get_sysfs_value( $intf, "statistics/rx_packets" ),
