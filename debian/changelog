@@ -1,3 +1,9 @@
+vyatta-op (0.13.18+jenner8) unstable; urgency=low
+
+  * Change vyatta-op dependency from ssmtp to mail-transport-agent.
+
+ -- Stig Thormodsrud <stig@vyatta.com>  Mon, 06 Jul 2009 10:30:49 -0700
+
 vyatta-op (0.13.18+jenner7) unstable; urgency=low
 
   * Fix handling of invalid bonding name
