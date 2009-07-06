@@ -104,13 +104,15 @@ sub show {
 	die "Invalid bonding interface: $intf\n"
 	    unless (-d "/sys/class/net/$intf/bonding" );
 
-        my @slaves = split( / /, get_sysfs_value( $intf, "bonding/slaves" ) );
+	my $slaves = get_sysfs_value( $intf, "bonding/slaves" );
+	next unless $slaves;
+
         printf $format, $intf, get_sysfs_value( $intf, "statistics/rx_bytes" ),
           get_sysfs_value( $intf, "statistics/rx_packets" ),
           get_sysfs_value( $intf, "statistics/tx_bytes" ),
           get_sysfs_value( $intf, "statistics/tx_packets" );
 
-        foreach my $slave (sort @slaves) {
+        foreach my $slave (sort split( / /, $slaves)) {
             printf $format, '    ' . $slave,
               get_sysfs_value( $slave, "statistics/rx_bytes" ),
               get_sysfs_value( $slave, "statistics/rx_packets" ),
