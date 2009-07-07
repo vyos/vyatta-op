@@ -1,0 +1,2 @@
+help: Show bonding interface information
+run: ${vyatta_bindir}/vyatta-show-bonding.pl --brief
