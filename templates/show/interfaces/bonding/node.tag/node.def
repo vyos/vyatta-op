@@ -1,0 +1,3 @@
+help: Show specified bonding interface information
+allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show bonding
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf="$4"
