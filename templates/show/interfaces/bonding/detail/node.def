@@ -1,0 +1,2 @@
+help: Show detailed bonding interface information
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf-type=bonding --action=show
