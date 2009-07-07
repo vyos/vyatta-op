@@ -22,7 +22,11 @@
 #
 # **** End License ****
 #
+
+use lib "/opt/vyatta/share/perl5/";
 use Getopt::Long;
+use Vyatta::Misc;
+use Vyatta::Interface;
 
 use strict;
 use warnings;
@@ -31,18 +35,6 @@ sub usage {
     print "Usage: $0 --brief\n";
     print "       $0 interface(s)\n";
     exit 1;
-}
-
-sub get_sysfs_value {
-    my ( $intf, $name ) = @_;
-
-    open( my $statf, '<', "/sys/class/net/$intf/$name" )
-      or die "Can't open file /sys/class/net/$intf/$name";
-
-    my $value = <$statf>;
-    chomp $value if defined $value;
-    close $statf;
-    return $value;
 }
 
 sub get_state_link {
@@ -76,7 +68,7 @@ my @modes = (	"round-robin",
 );
 
 sub show_brief {
-    my @interfaces = @_;
+    my @interfaces = grep { /^bond[\d]+$/ } getInterfaces();
     my $format     = "%-12s %-22s %-8s %-6s %s\n";
 
     printf $format, 'Interface', 'Mode', 'State', 'Link', 'Slaves';
@@ -93,6 +85,7 @@ sub show_brief {
         printf $format, $intf, $mode, $state, $link, 
 		$slaves ? $slaves : '';
     }
+    exit 0;
 }
 
 sub show {
@@ -125,25 +118,6 @@ sub show {
 my $brief;
 GetOptions( 'brief' => \$brief, ) or usage();
 
-my @bond_intf = ();
+show_brief() if ($brief);
+show(@ARGV);
 
-if ( $#ARGV == -1 ) {
-    my $sysfs = '/sys/class/net';
-    opendir( my $sysdir, $sysfs ) || die "can't opendir $sysfs";
-    foreach my $intf ( readdir($sysdir) ) {
-        if ( -d "$sysfs/$intf/bonding" ) {
-            unshift @bond_intf, $intf;
-        }
-    }
-    close $sysdir;
-}
-else {
-    @bond_intf = @ARGV;
-}
-
-if ($brief) {
-    show_brief(@bond_intf);
-}
-else {
-    show(@bond_intf);
-}
