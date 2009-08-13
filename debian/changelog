@@ -1,3 +1,25 @@
+vyatta-op (0.13.20) unstable; urgency=low
+
+  [ Stig Thormodsrud ]
+  * Change vyatta-op dependency from ssmtp to mail-transport-agent.
+
+  [ Stephen Hemminger ]
+  * Add 'show interfaces pseudo-ethernet'
+  * Fix completion for VIF
+  * Ignore ntp.conf server options
+  * Add ethtool output to show tech-support
+  * Remove show tech-support bug related to interfaces
+  * Add operator to show disk format
+  * Fix handling of invalid bonding name
+  * Fix error message from show bonding
+  * Cleanup show bonding script
+  * Make bonding operational mode consistent with ethernet
+  * Remove pseudo-ethernet vif templates
+  * Add missing template for 'show interfaces bonding bondX'
+  * Remove bogus statistics template
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Wed, 12 Aug 2009 22:06:40 -0700
+
 vyatta-op (0.13.19) unstable; urgency=low
 
   * UNRELEASED
