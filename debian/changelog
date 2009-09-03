@@ -1,3 +1,13 @@
+vyatta-op (0.13.21) unstable; urgency=low
+
+  [ Stephen Hemminger ]
+  * remove unwanted allowed tag
+
+  [ slioch ]
+  * now supports quoted values for op mode commands
+
+ -- slioch <slioch@eng-140.vyatta.com>  Thu, 03 Sep 2009 11:03:41 -0700
+
 vyatta-op (0.13.20) unstable; urgency=low
 
   [ Stig Thormodsrud ]
