@@ -1,0 +1,2 @@
+help: Show information about non-Vyatta accounts
+run: sudo /opt/vyatta/bin/show-users.pl other
