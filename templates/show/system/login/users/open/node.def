@@ -1,2 +1,0 @@
-help: Show information about open accounts (no password)
-run: sudo /opt/vyatta/bin/show-users.pl open

@@ -1,2 +1,2 @@
 help: Show user account information
-run: sudo /opt/vyatta/bin/show-users.pl color
+run: sudo /opt/vyatta/bin/show-users.pl

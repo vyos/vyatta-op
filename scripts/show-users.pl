@@ -21,8 +21,8 @@
 # **** End License ****
 
 use lib "/opt/vyatta/share/perl5";
-use Term::ANSIColor;
 use Vyatta::Config;
+use IO::Seekable;
 
 use strict;
 use warnings;
@@ -33,74 +33,98 @@ sub usage {
     exit 1;
 }
 
-my %pw;
-setpwent();
-while ( my ($u, $p) = getpwent()) {
-    $pw{$u} = $p;
-}
-endpwent();
+use constant {
+    VYATTA	=> 0x1,
+    OTHER	=> 0x2,
+    LOCKED	=> 0x4,
+};
 
+my %filters = (
+    'vyatta'	=> VYATTA,
+    'other'	=> OTHER,
+    'locked'	=> OTHER|LOCKED,
+    'all'	=> VYATTA|OTHER|LOCKED,
+);
+
+my $filter = 0;
+for (@ARGV) {
+    my $mask = $filters{$_};
+    unless ($mask) {
+	warn "Unknown type $_\n";
+	usage();
+    }
+    $filter |= $mask;
+}
+# Default is everything but locked accounts
+$filter |= VYATTA|OTHER if ($filter == 0);
+
+# Read list of Vyatta users
 my $cfg = new Vyatta::Config;
 $cfg->setLevel('system login user');
 $cfg->{_active_dir_base} = '/opt/vyatta/config/active/';
 my %vuser = map { $_ => 1 } $cfg->listOrigNodes();
 
-sub locked {
-    return grep { length($pw{$_}) == 1 } @_;
-}
+# Setup to access lastlog
+open (my $lastlog, '<', "/var/log/lastlog")
+    or die "can't open /var/log/lastlog:$!";
+# Magic values based on binary format of last log
+# See /usr/include/bits/utm.h
+my $typedef = 'L Z32 Z256';
+my $reclen = length(pack($typedef));
 
-sub nopasswd {
-    return grep { length($pw{$_}) == 0 } @_;
-}
+sub lastlog {
+    my $uid = shift;
 
-sub all {
-    return @_;
-}
+    sysseek($lastlog, $uid * $reclen, SEEK_SET)
+	or die "seek failed: $!";
 
-sub vyatta {
-    return grep { $vuser{$_} } @_;
-}
-
-sub other {
-    return grep { length($pw{$_}) > 1 && ! defined($vuser{$_}) } @_;
-}
-
-sub login_color {
-    my $u = shift;
-    my $p = $pw{$u};
-    my $c;
-
-    if (length($p) == 0) {
-	$c = 'blink red';	# open no password!
-    } elsif ($vuser{$u}) {
-	$c = 'green';		# vyatta user
-    } elsif (length($p) == 1) {
-	$c = 'blue';		# locked account
-    } else {
-	$c = 'yellow';		# non vyatta account
+    my ($rec, $line, $host, $time);
+    if (sysread($lastlog, $rec, $reclen) == $reclen) {
+	my ($time, $line, $host) = unpack($typedef, $rec);
+	return scalar(localtime($time)), $line, $host
+	    if ($time != 0);
     }
-    return color($c) . $u . color('reset');
+
+    return ("never logged in", "", "");
 }
 
-# show non-locked accounts in color
-sub colorize {
-    return map { login_color($_) } grep { length($pw{$_}) != 1 } @_;
-}
 
-my %filters = (
-    'all'	=> \&all,
-    'vyatta'	=> \&vyatta,
-    'locked'	=> \&locked,
-    'open'	=> \&nopasswd,
-    'other'	=> \&other,
-    'color'	=> \&colorize,
-);
+# Walk password file
+# Note: this only works as root
+my %users;
+setpwent();
+while ( my ($u, $p, $uid) = getpwent()) {
+    my $l = length($p);
+    my $status;
+    my $flag = 0;
 
-for (@ARGV) {
-    my $func = $filters{$_};
-    unless ($func) {
-	warn "Unknown type $_\n";
-	usage();
+    my $type = defined($vuser{$u}) ? 'vyatta' : 'other';
+    if ($type eq 'vyatta') {
+	$flag |= VYATTA;
+    } elsif ($l != 1) {
+	$flag |= OTHER;
     }
-    print join("\n", sort($func->(keys %pw))), "\n";
+
+    # only works as root, otherwise shadow file is inaccessible
+    if ($l == 0) {
+	$type .= '!';
+    } if ($l == 1) {
+	$flag |= LOCKED;
+	$type .= '-';
+    }
+
+    next if (($flag & $filter) == 0);
+
+    my ($time, $line, $host) = lastlog($uid);
+    # fields to printf
+    $users{$u} = [ $type, $line, $host, $time ];
+}
+endpwent();
+close $lastlog;
+
+my $fmt =    "%-15s %-7s %-8s %-19s %s\n";
+printf $fmt, "Username","Type","Tty", "From","Last login";
+
+foreach my $u (sort keys %users) {
+    printf $fmt, $u, @{$users{$u}};
 }
