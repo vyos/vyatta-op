@@ -1,3 +1,11 @@
+vyatta-op (0.13.24) unstable; urgency=low
+
+  * add .merge-branch-exclude
+  * add install-image op commands
+  * add op commands for installed images
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Wed, 04 Nov 2009 15:32:46 -0800
+
 vyatta-op (0.13.23) unstable; urgency=low
 
   * Decolorize show system login users
