@@ -1,3 +1,9 @@
+vyatta-op (0.13.25) unstable; urgency=low
+
+  * move generic interface op commands to vyatta-op
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Mon, 09 Nov 2009 11:51:05 -0800
+
 vyatta-op (0.13.24) unstable; urgency=low
 
   * add .merge-branch-exclude
