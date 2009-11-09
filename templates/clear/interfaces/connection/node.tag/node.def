@@ -1,0 +1,53 @@
+help:  Bring datalink layer connection down and back up
+
+allowed: local -a array ;
+         array=( /etc/ppp/peers/pppoe* /etc/ppp/peers/pppoa* /etc/ppp/peers/wan* /etc/ppp/peers/wlm* ) ;
+         echo  -n ${array[@]##*/}
+
+run: (	
+	IFNAME=${4}
+	LOGFILE=/var/log/vyatta/ppp_${IFNAME}.log
+        if [ ! -e /etc/ppp/peers/$IFNAME ]; then
+            echo "Invalid interface: $IFNAME"
+	    builtin exit 1
+	fi
+
+	# Serial PPP interfaces are started with "pon", which
+        # lingers around as a watchdog process.  Sometimes
+        # multiple "pon" scripts are running.  So we need to kill
+        # all pon scripts relating to this interface before
+        # before killing the pppd process.
+        if [ "${IFNAME::3}" = "wan" ]; then
+            PON_PIDS=` ps -C pon -f | grep $IFNAME | awk '{print $2}'`
+            if [ -n "$PON_PIDS" ]; then
+                echo "Killing pon pids: $PON_PIDS"
+                for PID in $PON_PIDS ; do
+                    kill -HUP $PID
+                done
+	    fi
+	fi
+
+        if [ -d /sys/class/net/${IFNAME} ]; then
+	    # interface is up, lets bring it down...
+            echo "Bringing interface $IFNAME down..."
+	    echo "`date`: User $USER stopping PPP daemon for $IFNAME by clear command" >> $LOGFILE
+            sudo /sbin/poff $IFNAME
+        elif [ ! -z "`ps -C pppd -f | grep $IFNAME `" ]; then
+            # Connection is in the process of being established
+	    echo "Stopping connection establishment for interface ${IFNAME}..."
+	    echo "`date`: User $USER stopping PPP daemon for $IFNAME by clear command" >> $LOGFILE
+            sudo /sbin/poff $IFNAME
+	fi
+	
+	# now PPP layer should be down
+        echo "Bringing interface $IFNAME back up..."
+	echo "`date`: User $USER starting PPP daemon for $IFNAME by clear command" >> $LOGFILE
+        if [ "${IFNAME::3}" = "wan" ]; then
+	    # Serial interfaces are started with "pon"
+            (umask 0; sudo /usr/sbin/pon $IFNAME > \
+                /dev/null 2>&1 & )
+        else
+            ( umask 0; sudo /usr/sbin/pppd call $IFNAME > \
+		/tmp/${IFNAME}.log 2>&1 & )
+	fi
+)

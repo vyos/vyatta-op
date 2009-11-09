@@ -1,0 +1,34 @@
+help: Bring connection-oriented interface down
+
+allowed: local -a array ;
+         array=( /etc/ppp/peers/pppoe* /etc/ppp/peers/pppoa* /etc/ppp/peers/wan* /etc/ppp/peers/wlm* ) ;
+         echo  -n ${array[@]##*/}
+
+run:
+	IFNAME=${3}
+	LOGFILE=/var/log/vyatta/ppp_${IFNAME}.log
+        if [ ! -e /etc/ppp/peers/${IFNAME} ]; then
+                echo "Invalid interface: $IFNAME"
+        elif [  -z "`ps -C pppd -f | grep $IFNAME`" ]; then
+                echo "Interface $IFNAME: Connection is already down"
+	else 
+		# Serial PPP interfaces are started with "pon", which
+	        # lingers around as a watchdog process.  Sometimes
+	        # multiple "pon" scripts are running.  So we need to kill
+	        # all pon scripts relating to this interface before
+	        # before killing the pppd process
+		if [ "${IFNAME::3}" = "wan" ]; then
+		    PON_PIDS=` ps -C pon -f | grep $IFNAME | awk '{print $2}'`
+		    if [ -n "$PON_PIDS" ]; then
+			echo "killing pon pids: $PON_PIDS"
+			for PID in $PON_PIDS ; do
+			    kill -HUP $PID
+			done
+		    fi
+		fi
+
+                echo "Bringing interface $IFNAME down..."
+		echo "`date`: User $USER stopping PPP daemon for $IFNAME by disconnect command" >> $LOGFILE
+                sudo /sbin/poff $IFNAME
+	fi
+
