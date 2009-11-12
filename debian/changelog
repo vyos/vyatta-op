@@ -1,3 +1,9 @@
+vyatta-op (0.13.27) unstable; urgency=low
+
+  * add op command for image removal
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Wed, 11 Nov 2009 18:19:24 -0800
+
 vyatta-op (0.13.26) unstable; urgency=low
 
   * Prevent problems on upgrade for files moved from vyatta-serial to
