@@ -4,6 +4,4 @@ allowed:
          array=( /var/lib/dhcp3/eth* /var/lib/dhcp3/br* /var/lib/dhcp3/bond* ) ;
          echo  -n ${array[@]##*/}
 
-run:
-       IFNAME=${4}
-       sudo /opt/vyatta/bin/sudo-users/vyatta-interfaces.pl --op-command "dhcp-release" --dev "$IFNAME"
+run: sudo /opt/vyatta/bin/sudo-users/vyatta-interfaces.pl --dhcp release --dev "$4"
