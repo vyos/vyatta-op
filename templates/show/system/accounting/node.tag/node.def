@@ -1,0 +1,2 @@
+help: Show accounting information for a specified user
+run: lastcomm --user "$4"
