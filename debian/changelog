@@ -1,3 +1,36 @@
+vyatta-op (0.13.28) unstable; urgency=low
+
+  * Use new cleaner command arguments
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Wed, 16 Dec 2009 12:06:35 -0800
+
+vyatta-op (0.13.27) unstable; urgency=low
+
+  * add op command for image removal
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Wed, 11 Nov 2009 18:19:24 -0800
+
+vyatta-op (0.13.26) unstable; urgency=low
+
+  * Prevent problems on upgrade for files moved from vyatta-serial to
+    this package
+
+ -- Mohit Mehta <mohit.mehta@vyatta.com>  Mon, 09 Nov 2009 16:06:49 -0800
+
+vyatta-op (0.13.25) unstable; urgency=low
+
+  * move generic interface op commands to vyatta-op
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Mon, 09 Nov 2009 11:51:05 -0800
+
+vyatta-op (0.13.24) unstable; urgency=low
+
+  * add .merge-branch-exclude
+  * add install-image op commands
+  * add op commands for installed images
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Wed, 04 Nov 2009 15:32:46 -0800
+
 vyatta-op (0.13.23) unstable; urgency=low
 
   * Decolorize show system login users

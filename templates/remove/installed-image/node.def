@@ -1,0 +1,2 @@
+help: Remove an installed image from the system
+run: sudo /opt/vyatta/bin/vyatta-boot-image.pl --delete

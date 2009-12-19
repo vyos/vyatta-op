@@ -1,0 +1,3 @@
+help: The new system image file to be installed
+allowed: echo -n '<ISO_image_file>'
+run: sudo /opt/vyatta/sbin/install-image "$2"

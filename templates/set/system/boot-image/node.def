@@ -1,0 +1,2 @@
+help: Set the system default boot image
+run: sudo /opt/vyatta/bin/vyatta-boot-image.pl --select

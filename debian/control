@@ -24,6 +24,7 @@ Depends: sed (>= 4.1.5),
  at,
  net-tools,
  libtimedate-perl
+Replaces: vyatta-serial
 Suggests: util-linux (>= 2.13-5),
  ncurses-bin (>= 5.5-5),
 Description: bash operational command completion

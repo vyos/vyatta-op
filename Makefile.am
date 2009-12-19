@@ -22,6 +22,7 @@ bin_SCRIPTS	+= scripts/vyatta-cpu-summary.pl
 bin_SCRIPTS	+= scripts/yesno
 bin_SCRIPTS     += scripts/vyatta-gettime.pl
 bin_SCRIPTS     += scripts/show-users.pl
+bin_SCRIPTS     += scripts/vyatta-boot-image.pl
 
 bin_sudo_users_SCRIPTS      = scripts/vyatta-identify-interface.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-delete-log-file.sh
