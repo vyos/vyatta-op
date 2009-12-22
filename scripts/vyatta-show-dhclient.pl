@@ -34,13 +34,14 @@ sub dhclient_get_lease_files {
     my ($intf) = @_;
     my @lease_files;
 
-    if ($intf eq "all") {
-	opendir(my $dh, $lease_dir) or die "Can't open $lease_dir: $!";
-	@lease_files = grep { /^dhclient_.*_lease$/ } readdir($dh);
-	closedir $dh;
-    } else {
-	my $file = 'dhclient_'. $intf . '_lease';
-	@lease_files = ( $file ) if -f "$lease_dir/$file";
+    if ( $intf eq "all" ) {
+        opendir( my $dh, $lease_dir ) or die "Can't open $lease_dir: $!";
+        @lease_files = grep { /^dhclient_.*_lease$/ } readdir($dh);
+        closedir $dh;
+    }
+    else {
+        my $file = 'dhclient_' . $intf . '_lease';
+        @lease_files = ($file) if -f "$lease_dir/$file";
     }
 
     return @lease_files;
@@ -49,8 +50,8 @@ sub dhclient_get_lease_files {
 sub dhclient_parse_vars {
     my $file = shift;
 
-    open (my $f, '<', "$lease_dir/$file")
-	or return;
+    open( my $f, '<', "$lease_dir/$file" )
+      or return;
 
     my %var_list;
     my $line;
@@ -58,13 +59,13 @@ sub dhclient_parse_vars {
     chomp $line;
     $var_list{'last_update'} = $line;
 
-    while ($line = <$f>) {
-	chomp $line;
-	if ($line =~ m/(\w+)=\'([\w\s.]+)\'/) {
-	    my $var = $1;
-	    my $val = $2;
-	    $var_list{$var} = $val;
-	}
+    while ( $line = <$f> ) {
+        chomp $line;
+        if ( $line =~ m/(\w+)=\'([\w\s.]+)\'/ ) {
+            my $var = $1;
+            my $val = $2;
+            $var_list{$var} = $val;
+        }
     }
     close $f;
 
@@ -73,12 +74,12 @@ sub dhclient_parse_vars {
 
 # Get current domain (if any) defined in resolv.conf
 sub resolve_domain {
-    open (my $rc, '<', '/etc/resolv.conf')
-	or return;
+    open( my $rc, '<', '/etc/resolv.conf' )
+      or return;
 
     while (<$rc>) {
-	next unless m/^domain (\S+)/;
-	return $1;
+        next unless m/^domain (\S+)/;
+        return $1;
     }
 }
 
@@ -87,73 +88,76 @@ sub dhclient_show_lease {
 
     my %var_list = dhclient_parse_vars($file);
 
-    my $last_update                = $var_list{'last_update'};
-    my $reason                     = $var_list{'reason'};
-    my $interface                  = $var_list{'interface'};
-    my $new_expiry                 = $var_list{'new_expiry'};
-    my $new_dhcp_lease_time        = $var_list{'new_dhcp_lease_time'};
-    my $new_ip_address             = $var_list{'new_ip_address'};
-    my $new_broadcast_address      = $var_list{'new_broadcast_address'};
-    my $new_subnet_mask            = $var_list{'new_subnet_mask'};
-    my $new_domain_name            = $var_list{'new_domain_name'};
-    my $new_network_number         = $var_list{'new_network_number'};
-    my $new_domain_name_servers    = $var_list{'new_domain_name_servers'};
-    my $new_routers                = $var_list{'new_routers'};
-    my $new_dhcp_server_identifier = $var_list{'new_dhcp_server_identifier'};
-    my $new_dhcp_message_type      = $var_list{'new_dhcp_message_type'};
-
-    my $new_expiry_str;
-    if (defined $new_expiry) {
-	$new_expiry_str = strftime("%a %b %d %R:%S %Z %Y",
-				   localtime($new_expiry));
-    }
-
+    my $interface = $var_list{'interface'};
     print "interface  : $interface\n" if defined $interface;
-    if (defined $new_ip_address) {
-	print "ip address : $new_ip_address\t";
-	my $ip_active = `ip addr list $interface`;
-	if ($ip_active =~ m/$new_ip_address/) {
-	    print "[Active]\n";
-	} else {
-	    print "[Inactive]\n";
-	}
+
+    my $new_ip_address = $var_list{'new_ip_address'};
+    if ($new_ip_address) {
+        print "ip address : $new_ip_address\t";
+        my $ip_active = `ip addr list $interface`;
+        if ( $ip_active =~ m/$new_ip_address/ ) {
+            print "[Active]\n";
+        }
+        else {
+            print "[Inactive]\n";
+        }
     }
+
+    my $new_subnet_mask = $var_list{'new_subnet_mask'};
     print "subnet mask: $new_subnet_mask\n" if defined $new_subnet_mask;
+
+    my $new_domain_name = $var_list{'new_domain_name'};
     if ($new_domain_name) {
-	print "domain name: $new_domain_name";
-	my $cur_domain = resolve_doman();
-	print "\t[overridden by domain-name set using CLI]"
-	    if (defined $cur_domain && $cur_domain ne $new_domain_name);
+        print "domain name: $new_domain_name";
+        my $cur_domain = resolve_doman();
+        print "\t[overridden by domain-name set using CLI]"
+          if ( defined $cur_domain && $cur_domain ne $new_domain_name );
         print "\n";
     }
 
+    my $new_routers = $var_list{'new_routers'};
     print "router     : $new_routers\n" if defined $new_routers;
-    print "name server: $new_domain_name_servers\n" if
-	defined $new_domain_name_servers;
-    print "dhcp server: $new_dhcp_server_identifier\n" if
-	defined $new_dhcp_server_identifier;
+
+    my $new_domain_name_servers = $var_list{'new_domain_name_servers'};
+    print "name server: $new_domain_name_servers\n"
+      if defined $new_domain_name_servers;
+
+    my $new_dhcp_server_identifier = $var_list{'new_dhcp_server_identifier'};
+    print "dhcp server: $new_dhcp_server_identifier\n"
+      if defined $new_dhcp_server_identifier;
+
+    my $new_dhcp_lease_time = $var_list{'new_dhcp_lease_time'};
     print "lease time : $new_dhcp_lease_time\n" if defined $new_dhcp_lease_time;
-    print "last update: $last_update\n" if defined $last_update;
+
+    my $last_update = $var_list{'last_update'};
+    print "last update: $last_update\n"    if defined $last_update;
+
+    my $new_expiry = $var_list{'new_expiry'};
+    my $new_expiry_str;
+    if ($new_expiry) {
+        $new_expiry_str =
+          strftime( "%a %b %d %R:%S %Z %Y", localtime($new_expiry) );
+    }
+
     print "expiry     : $new_expiry_str\n" if defined $new_expiry_str;
+
+    my $reason = $var_list{'reason'};
     print "reason     : $reason\n" if defined $reason;
     print "\n";
 }
-
 
 #
 # main
 #
 
 my $intf = 'all';
-if ($#ARGV >= 0) {
+if ( $#ARGV >= 0 ) {
     $intf = $ARGV[0];
 }
 
 my @dhclient_files = dhclient_get_lease_files($intf);
-foreach my $file (sort @dhclient_files) {
+foreach my $file ( sort @dhclient_files ) {
     dhclient_show_lease($file);
 }
 
 exit 0;
-
-#end of file
