@@ -91,12 +91,6 @@ sub dhclient_show_lease {
     my $new_dhcp_server_identifier = $var_list{'new_dhcp_server_identifier'};
     my $new_dhcp_message_type      = $var_list{'new_dhcp_message_type'};
 
-    my $old_ip_address          = $var_list{'old_ip_address'};
-    my $old_subnet_mask         = $var_list{'old_subnet_mask'};
-    my $old_domain_name         = $var_list{'old_domain_name'};
-    my $old_domain_name_servers = $var_list{'old_domain_name_servers'};
-    my $old_routers             = $var_list{'old_routers'};
-
     my $new_expiry_str;
     if (defined $new_expiry) {
 	$new_expiry_str = strftime("%a %b %d %R:%S %Z %Y",
