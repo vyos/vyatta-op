@@ -71,6 +71,17 @@ sub dhclient_parse_vars {
     return %var_list;
 }
 
+# Get current domain (if any) defined in resolv.conf
+sub resolve_domain {
+    open (my $rc, '<', '/etc/resolv.conf')
+	or return;
+
+    while (<$rc>) {
+	next unless m/^domain (\S+)/;
+	return $1;
+    }
+}
+
 sub dhclient_show_lease {
     my ($file) = @_;
 
@@ -108,27 +119,14 @@ sub dhclient_show_lease {
 	}
     }
     print "subnet mask: $new_subnet_mask\n" if defined $new_subnet_mask;
-    if (defined $new_domain_name) {
-      print "domain name: $new_domain_name";
-      my $cli_domain_overrides = 0;
-      my $if_domain_exists = `grep domain /etc/resolv.conf 2> /dev/null | wc -l`;
-      if ($if_domain_exists > 0) {
-        my @domain = `grep domain /etc/resolv.conf`;
-        for my $each_domain_text_found (@domain) {
-               my @domain_text_split = split(/\t/, $each_domain_text_found, 2);
-               my $domain_at_start_of_line = $domain_text_split[0];
-               chomp $domain_at_start_of_line;
-               if ($domain_at_start_of_line eq "domain") {
-                   $cli_domain_overrides = 1;
-               }
-        }
-      }
-      if ($cli_domain_overrides == 1) {
-        print "\t[overridden by domain-name set using CLI]\n";
-      } else {
+    if ($new_domain_name) {
+	print "domain name: $new_domain_name";
+	my $cur_domain = resolve_doman();
+	print "\t[overridden by domain-name set using CLI]"
+	    if (defined $cur_domain && $cur_domain ne $new_domain_name);
         print "\n";
-      }
     }
+
     print "router     : $new_routers\n" if defined $new_routers;
     print "name server: $new_domain_name_servers\n" if
 	defined $new_domain_name_servers;
