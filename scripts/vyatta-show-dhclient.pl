@@ -1,25 +1,25 @@
 #!/usr/bin/perl
 #
 # Module: vyatta-show-dhclient.pl
-# 
+#
 # **** License ****
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 2 as
 # published by the Free Software Foundation.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
-# 
+#
 # This code was originally developed by Vyatta, Inc.
 # Portions created by Vyatta are Copyright (C) 2007 Vyatta, Inc.
 # All Rights Reserved.
-# 
+#
 # Author: Stig Thormodsrud
 # Date: January 2008
 # Description: Script to display dhcp client lease info
-# 
+#
 # **** End License ****
 #
 
@@ -30,51 +30,43 @@ use warnings;
 
 my $lease_dir = '/var/lib/dhcp3';
 
-
 sub dhclient_get_lease_files {
     my ($intf) = @_;
-
-    # todo: fix sorting for ethX > 9
     my @lease_files;
-    my $LS;
+
     if ($intf eq "all") {
-	my $file = "dhclient_";
-	open($LS,"ls $lease_dir |grep '^$file.*\_lease\$' | sort |");
+	opendir(my $dh, $lease_dir) or die "Can't open $lease_dir: $!";
+	@lease_files = grep { /^dhclient_.*_lease$/ } readdir($dh);
+	closedir $dh;
     } else {
-	my $file = "dhclient_$intf";
-	open($LS,"ls $lease_dir |grep '^$file\_lease\$' | sort |");
+	my $file = 'dhclient_'. $intf . '_lease';
+	@lease_files = ( $file ) if -f "$lease_dir/$file";
     }
-    @lease_files = <$LS>;
-    close($LS);
-    foreach my $i (0 .. $#lease_files) {
-	$lease_files[$i] = "$lease_dir/$lease_files[$i]";
-    }
-    chomp  @lease_files;
+
     return @lease_files;
 }
 
 sub dhclient_parse_vars {
-    my ($file) = @_;
+    my $file = shift;
+
+    open (my $f, '<', "$lease_dir/$file")
+	or return;
 
     my %var_list;
-    if ( !(-f $file)) {
-	return %var_list;
-    }
-	
-    open(FD, "<$file");
     my $line;
-    $line = <FD>;
+    $line = <$f>;
     chomp $line;
     $var_list{'last_update'} = $line;
-    while ($line = <FD>) {
+
+    while ($line = <$f>) {
 	chomp $line;
 	if ($line =~ m/(\w+)=\'([\w\s.]+)\'/) {
 	    my $var = $1;
 	    my $val = $2;
 	    $var_list{$var} = $val;
-	} 
+	}
     }
-    close(FD);
+    close $f;
 
     return %var_list;
 }
@@ -107,7 +99,7 @@ sub dhclient_show_lease {
 
     my $new_expiry_str;
     if (defined $new_expiry) {
-	$new_expiry_str = strftime("%a %b %d %R:%S %Z %Y", 
+	$new_expiry_str = strftime("%a %b %d %R:%S %Z %Y",
 				   localtime($new_expiry));
     }
 
@@ -144,9 +136,9 @@ sub dhclient_show_lease {
       }
     }
     print "router     : $new_routers\n" if defined $new_routers;
-    print "name server: $new_domain_name_servers\n" if 
+    print "name server: $new_domain_name_servers\n" if
 	defined $new_domain_name_servers;
-    print "dhcp server: $new_dhcp_server_identifier\n" if 
+    print "dhcp server: $new_dhcp_server_identifier\n" if
 	defined $new_dhcp_server_identifier;
     print "lease time : $new_dhcp_lease_time\n" if defined $new_dhcp_lease_time;
     print "last update: $last_update\n" if defined $last_update;
@@ -166,7 +158,7 @@ if ($#ARGV >= 0) {
 }
 
 my @dhclient_files = dhclient_get_lease_files($intf);
-foreach my $file (@dhclient_files) {
+foreach my $file (sort @dhclient_files) {
     dhclient_show_lease($file);
 }
 
