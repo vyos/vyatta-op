@@ -10,6 +10,7 @@ my $UNION_GRUB_CFG = "$UNION_BOOT/grub/grub.cfg";
 my $VER_FILE = '/opt/vyatta/etc/version';
 my $OLD_IMG_VER_STR = 'Old non-image installation';
 my $OLD_GRUB_CFG = '/boot/grub/grub.cfg';
+my $DISK_BOOT = '/boot';
 my $grub_cfg;
 
 # this function parses the grub config file and returns a hash reference
@@ -267,6 +268,8 @@ sub curVer {
 sub doDelete {
   my ($bdx) = @_;
   my $del_ver = ${$bentries}[$resp]->{'ver'};
+  my $boot_dir;
+
   print "Are you sure you want to delete the\n\"$del_ver\" image? ";
   print '(Yes/No) [No]: ';
   my $resp = <STDIN>;
@@ -292,7 +295,14 @@ before deleting. Exiting...
 EOF
     exit 1;
   }
-  if (! -d "$UNION_BOOT/$del_ver") {
+
+  if (-d $UNION_BOOT) {
+    $boot_dir = $UNION_BOOT;
+  } elsif (-d $DISK_BOOT) {
+    $boot_dir = $DISK_BOOT;
+  }
+
+  if (! -d "$boot_dir/$del_ver") {
     print "Cannot find the target image. Exiting...\n";
     exit 1;
   }
@@ -303,7 +313,7 @@ EOF
     print "$err. Exiting...\n";
     exit 1;
   }
-  system("rm -rf '$UNION_BOOT/$del_ver'");
+  system("rm -rf '$boot_dir/$del_ver'");
   if ($? >> 8) {
     print "Error deleting the image. Exiting...\n";
     exit 1;
