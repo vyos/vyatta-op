@@ -1,3 +1,9 @@
+vyatta-op (0.13.32) unstable; urgency=low
+
+  * Fix deletion of image from disk-based image.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Wed, 23 Dec 2009 11:22:40 -0800
+
 vyatta-op (0.13.31) unstable; urgency=low
 
   * Allow displaying and switching to disk-based installations.
