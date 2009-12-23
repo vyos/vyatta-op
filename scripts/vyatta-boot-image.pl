@@ -9,12 +9,14 @@ my $UNION_BOOT = '/live/image/boot';
 my $UNION_GRUB_CFG = "$UNION_BOOT/grub/grub.cfg";
 my $VER_FILE = '/opt/vyatta/etc/version';
 my $OLD_IMG_VER_STR = 'Old non-image installation';
+my $OLD_GRUB_CFG = '/boot/grub/grub.cfg';
+my $grub_cfg;
 
 # this function parses the grub config file and returns a hash reference
 # of the parsed data.
 sub parseGrubCfg {
   my $fd = undef;
-  return undef if (!open($fd, '<', $UNION_GRUB_CFG));
+  return undef if (!open($fd, '<', $grub_cfg));
 
   my %ghash = ();
   my @entries = ();
@@ -69,7 +71,7 @@ sub deleteGrubEntries {
   my ($del_ver) = @_;
 
   my $rfd = undef;
-  return 'Cannot delete GRUB entries' if (!open($rfd, '<', $UNION_GRUB_CFG));
+  return 'Cannot delete GRUB entries' if (!open($rfd, '<', $grub_cfg));
   my ($wfd, $tfile) = mkstemp('/tmp/boot-image.XXXXXX');
 
   my @entry = ();
@@ -106,10 +108,10 @@ sub deleteGrubEntries {
   close($wfd);
   close($rfd);
 
-  my $p = (stat($UNION_GRUB_CFG))[2];
+  my $p = (stat($grub_cfg))[2];
   return 'Failed to modify GRUB configuration'
     if (!defined($p) || !chmod(($p & 07777), $tfile));
-  system("mv $tfile $UNION_GRUB_CFG");
+  system("mv $tfile $grub_cfg");
   return 'Failed to delete GRUB entries' if ($? >> 8);
   return undef;
 }
@@ -157,6 +159,17 @@ GetOptions(
   'delete' => \$del,
   'select' => \$sel
 );
+
+
+if (-e $UNION_GRUB_CFG) {
+    $grub_cfg = $UNION_GRUB_CFG;
+} elsif (-e $OLD_GRUB_CFG) {
+    $grub_cfg = $OLD_GRUB_CFG;
+} else {
+    print "Can not open Grub config file\n";
+    exit 1;
+}
+
 
 my $gref = parseGrubCfg();
 if (!defined($gref)) {
@@ -226,7 +239,7 @@ sub doSelect {
   my ($bdx) = @_;
   my $new_idx = ${$bentries}[$resp]->{'idx'};
   my $new_ver = ${$bentries}[$resp]->{'ver'};
-  system("sed -i 's/^set default=.*\$/set default=$new_idx/' $UNION_GRUB_CFG");
+  system("sed -i 's/^set default=.*\$/set default=$new_idx/' $grub_cfg");
   if ($? >> 8) {
     print "Failed to set the default boot image. Exiting...\n";
     exit 1;
