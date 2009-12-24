@@ -1,3 +1,9 @@
+vyatta-op (0.13.33) unstable; urgency=low
+
+  * Add help text for install-image URL mode.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Wed, 23 Dec 2009 16:39:19 -0800
+
 vyatta-op (0.13.32) unstable; urgency=low
 
   * Fix deletion of image from disk-based image.
