@@ -109,7 +109,7 @@ sub dhclient_show_lease {
     my $new_domain_name = $var_list{'new_domain_name'};
     if ($new_domain_name) {
         print "domain name: $new_domain_name";
-        my $cur_domain = resolve_doman();
+        my $cur_domain = resolve_domain();
         print "\t[overridden by domain-name set using CLI]"
           if ( defined $cur_domain && $cur_domain ne $new_domain_name );
         print "\n";
