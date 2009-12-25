@@ -1,3 +1,9 @@
+vyatta-op (0.13.34) unstable; urgency=low
+
+  * Fix typo in show dhcp client lease script
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Fri, 25 Dec 2009 15:22:26 -0800
+
 vyatta-op (0.13.33) unstable; urgency=low
 
   * Add help text for install-image URL mode.
