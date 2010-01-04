@@ -158,7 +158,12 @@ my $booted = `grep -e '^unionfs.*/filesystem.squashfs' -e '^aufs.*/filesystem.sq
 if (defined($booted) && $booted ne "") {
     $booted="livecd";
 } else {
-    $booted="disk";
+    my $image_boot = `grep -e '^unionfs / unionfs.*squashfs=ro' /proc/mounts`;
+    if ($image_boot ne "") {
+	$booted="image";
+    } else {
+	$booted="disk";
+    }
 }
 print "Boot via :    $booted\n";
 my $uptime = `uptime`;
