@@ -1,3 +1,9 @@
+vyatta-op (0.13.35) unstable; urgency=low
+
+  * Indicate when system was booted via image.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Mon, 04 Jan 2010 14:29:13 -0800
+
 vyatta-op (0.13.34) unstable; urgency=low
 
   * Fix typo in show dhcp client lease script
