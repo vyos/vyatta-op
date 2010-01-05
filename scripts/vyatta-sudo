@@ -1,0 +1,21 @@
+#! /usr/bin/perl
+#
+
+# Look if user is in sudo group
+use strict;
+use warnings;
+
+sub isadmin {
+    my $gid = getgrnam("sudo");
+    return unless $gid;
+
+    # is $gid in list of current groups
+    return grep { $_ eq $gid } split / /, $(;
+}
+
+die "Missing command arguement\n" unless @ARGV;
+
+exec ('sudo', @ARGV ) if (isadmin());
+
+print "This account is not authorized to run this command\n";
+exit 1;
