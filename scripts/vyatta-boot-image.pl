@@ -8,7 +8,7 @@ use File::Temp qw/ :mktemp /;
 my $UNION_BOOT = '/live/image/boot';
 my $UNION_GRUB_CFG = "$UNION_BOOT/grub/grub.cfg";
 my $VER_FILE = '/opt/vyatta/etc/version';
-my $OLD_IMG_VER_STR = 'Old non-image installation';
+my $OLD_IMG_VER_STR = 'Old-non-image-installation';
 my $OLD_GRUB_CFG = '/boot/grub/grub.cfg';
 my $DISK_BOOT = '/boot';
 my $grub_cfg;
@@ -93,11 +93,15 @@ sub deleteGrubEntries {
         $ver = 0;
         @entry = ();
       } else {
-        if (/^\s+linux \/boot\/([^\/ ]+)\/.* boot=live /) {
-          # kernel line
-          $ver = $1;
-        }
-        push @entry, $_;
+	  if (/^\s+linux/) {
+	      if (/^\s+linux \/boot\/([^\/ ]+)\/.* boot=live /) {
+		  # kernel line
+		  $ver = $1;
+	      } else {
+		  $ver = $OLD_IMG_VER_STR;
+	      }
+	  }
+	  push @entry, $_;
       }
     } elsif (/^menuentry /) {
       $in_entry = 1;
@@ -126,8 +130,6 @@ sub getBootList {
   my @list = ();
   foreach (@{$entries}) {
     my ($ver, $term) = ($_->{'ver'}, $_->{'term'});
-    # don't list non-image entry if deleting
-    next if (defined($delete) && $ver eq $OLD_IMG_VER_STR);
     # don't list default entry if deleting
     next if (defined($delete) && $ver eq $dver);
 
@@ -265,6 +267,29 @@ sub curVer {
   return $ver;
 }
 
+sub del_non_image_files {
+    my $logfile="/var/log/vyatta/disk-image-del-";
+    $logfile .= `date +%F-%T`;
+    system("touch $logfile");
+    system("echo Deleting disk-based system files at: `date` >> $logfile");
+    system("echo Run by: `whoami` >> $logfile");
+
+    my @entries=</live/image/*>;
+    my $entry;
+    foreach $entry (@entries) {
+	if ($entry eq "/live/image/boot") {
+	    print "Skipping $entry.\n";
+	} else {
+	    print "Deleting $entry...";
+	    system ("echo deleting $entry >> $logfile");
+	    system ("rm -rf $entry >> $logfile 2>&1");
+	    print "\n";
+	}
+    }
+    system ("echo done at: `date` >> $logfile");
+}
+
+
 sub doDelete {
   my ($bdx) = @_;
   my $del_ver = ${$bentries}[$resp]->{'ver'};
@@ -302,21 +327,26 @@ EOF
     $boot_dir = $DISK_BOOT;
   }
 
-  if (! -d "$boot_dir/$del_ver") {
+  if (($del_ver ne $OLD_IMG_VER_STR) && (! -d "$boot_dir/$del_ver")) {
     print "Cannot find the target image. Exiting...\n";
     exit 1;
   }
 
-  print "Deleting the \"$del_ver\" image...";
+  print "Deleting the \"$del_ver\" image...\n";
   my $err = deleteGrubEntries($del_ver);
   if (defined($err)) {
     print "$err. Exiting...\n";
     exit 1;
   }
-  system("rm -rf '$boot_dir/$del_ver'");
-  if ($? >> 8) {
-    print "Error deleting the image. Exiting...\n";
-    exit 1;
+
+  if ($del_ver eq $OLD_IMG_VER_STR) {
+      del_non_image_files();
+  } else {
+    system("rm -rf '$boot_dir/$del_ver'");
+    if ($? >> 8) {
+      print "Error deleting the image. Exiting...\n";
+      exit 1;
+    }
   }
 
   print "Done\n";
