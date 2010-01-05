@@ -1,3 +1,9 @@
+vyatta-op (0.13.36) unstable; urgency=low
+
+  * Don't allow operator to run show system login users
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Mon, 04 Jan 2010 16:51:26 -0800
+
 vyatta-op (0.13.35) unstable; urgency=low
 
   * Indicate when system was booted via image.
