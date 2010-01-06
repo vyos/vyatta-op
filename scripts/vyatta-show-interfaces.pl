@@ -24,7 +24,7 @@
 #
 
 use lib "/opt/vyatta/share/perl5/";
-use Vyatta::Config;
+
 use Vyatta::Interface;
 use Vyatta::Misc;
 use Getopt::Long;
