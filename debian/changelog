@@ -1,3 +1,9 @@
+vyatta-op (0.13.39) unstable; urgency=low
+
+  * Handle various conditions and cleanup.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Wed, 06 Jan 2010 11:50:32 -0800
+
 vyatta-op (0.13.38) unstable; urgency=low
 
   * Show interfaces no longer uses Vyatta::Config
