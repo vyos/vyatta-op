@@ -1,3 +1,9 @@
+vyatta-op (0.13.40) unstable; urgency=low
+
+  * Change operational mode commands to match those in design document.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Fri, 08 Jan 2010 17:41:23 -0800
+
 vyatta-op (0.13.39) unstable; urgency=low
 
   * Handle various conditions and cleanup.
