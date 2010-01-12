@@ -1,0 +1,10 @@
+help: Default boot image name
+
+allowed:
+	local -a images ;
+	images=`/opt/vyatta/bin/vyatta-boot-image.pl --list`
+	echo -n $images
+
+run:
+	image=$5
+	sudo /opt/vyatta/bin/vyatta-boot-image.pl --select $image
