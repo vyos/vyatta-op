@@ -1,2 +1,2 @@
-help: Show accounting information for a specified user
-run: lastcomm --user "$4"
+help: Show system command accounting information for user
+run: lastcomm --user $4
