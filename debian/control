@@ -20,7 +20,6 @@ Depends: sed (>= 4.1.5),
  less,
  libio-prompt-perl,
  mail-transport-agent,
- acct,
  at,
  net-tools,
  libtimedate-perl
