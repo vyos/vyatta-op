@@ -2,4 +2,4 @@ help: File name or URL of system image file to be installed
 
 allowed: echo -n '<ISO_file> <ISO_URL>'
 
-run: sudo /opt/vyatta/sbin/install-image "$2"
+run: sudo /opt/vyatta/sbin/install-image "$4"
