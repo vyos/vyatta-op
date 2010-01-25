@@ -286,21 +286,19 @@ sub select_by_name {
 # Returns the version string of the currently running system.
 #
 sub curVer {
-    my ($fd, $ver) = (undef, undef);
+    my $vers = `awk '{print \$1}' /proc/cmdline`;
 
-    my $image_boot = `grep -e '^unionfs / unionfs.*squashfs=ro' /proc/mounts`;
-    if ($image_boot ne "") {
-	open($fd, '<', $VER_FILE) or return undef;
-	while (<$fd>) {
-	    next if (!(/^Version\s+:\s+(\S+)$/));
-	    $ver = $1;
-	    last;
-	}
-	close($fd);
-    } else {
-	$ver = $OLD_IMG_VER_STR;
+    # In an image-booted system, the image name is the directory name
+    # directory under "/boot" in the pathname of the kernel we booted.
+    $vers =~ s/BOOT_IMAGE=\/boot\///;
+    $vers =~ s/\/?vmlinuz.*\n$//;
+
+    # In a non-image system, the kernel resides directly under "/boot".
+    # No second-level directory means that $vers will be null.
+    if ($vers eq "") {
+	$vers = $OLD_IMG_VER_STR;
     }
-    return $ver;
+    return $vers;
 }
 
 # Deletes all of the files belonging to the disk-based non-image

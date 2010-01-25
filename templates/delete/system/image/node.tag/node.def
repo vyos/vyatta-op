@@ -1,4 +1,4 @@
-help: Default boot image name
+help: Name of image image to delete
 
 allowed:
 	local -a images ;
