@@ -1,3 +1,9 @@
+vyatta-op (0.13.44) unstable; urgency=low
+
+  * Re-factor image installation commands.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Mon, 25 Jan 2010 11:36:48 -0800
+
 vyatta-op (0.13.43) unstable; urgency=low
 
   * Remove system accounting
