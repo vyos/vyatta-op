@@ -1,3 +1,9 @@
+vyatta-op (0.13.45) unstable; urgency=low
+
+  * Bugfix 5238: Prevent the running image from being deleted
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Mon, 25 Jan 2010 15:49:00 -0800
+
 vyatta-op (0.13.44) unstable; urgency=low
 
   * Re-factor image installation commands.
