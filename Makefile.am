@@ -22,6 +22,7 @@ bin_SCRIPTS	+= scripts/vyatta-cpu-summary.pl
 bin_SCRIPTS	+= scripts/yesno
 bin_SCRIPTS     += scripts/vyatta-gettime.pl
 bin_SCRIPTS     += scripts/show-users.pl
+bin_SCRIPTS     += scripts/show-dhcp-leases.pl
 bin_SCRIPTS     += scripts/vyatta-boot-image.pl
 bin_SCRIPTS	+= scripts/vyatta-sudo
 bin_SCRIPTS	+= scripts/vyatta-show-snmp.pl
