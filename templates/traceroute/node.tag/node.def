@@ -3,7 +3,7 @@
 #
 
 help:   Track network path to specified <hostname|IPv4 address>
-allowed: echo "<hostname> <x.x.x.x>"
+allowed: echo -n '<hostname> <x.x.x.x>'
 
 run:
      if /opt/vyatta/sbin/vyatta-validate-type.pl -q ipv4 $2
