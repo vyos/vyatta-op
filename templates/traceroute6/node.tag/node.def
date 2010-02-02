@@ -3,8 +3,7 @@
 #
 
 help:   Track network path to specified <hostname|IPv6 address>
-allowed:
-	vyatta-allowed-hosts
+allowed: echo "<hostname> <x:x:x:x:x>"
 
 run:
      if /opt/vyatta/sbin/vyatta-validate-type.pl -q ipv6 $2

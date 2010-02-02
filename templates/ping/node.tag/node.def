@@ -3,7 +3,6 @@
 #
 
 help:   Send ICMP echo request to specified <hostname|IPv4 address>
-allowed:
-	vyatta-allowed-hosts
+allowed: echo "<hostname> <x.x.x.x>"
 
 run:	/bin/ping $2

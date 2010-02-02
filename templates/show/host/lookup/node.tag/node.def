@@ -1,3 +1,8 @@
-help: Lookup host information for specified <hostname|IPv4 address>
-allowed: vyatta-allowed-hosts
+help: Lookup host information for specified name or address
+allowed: echo "<hostname> <x.x.x.x> <y:y:y:y:y>"
+comp_help: Possible completions
+    <hostname>  	host name (static or DNS)
+    <x.x.x.x>   	IPv4 address
+    <y:y:y:y:y:y>	IPv6 address
+
 run: /usr/bin/host $4
