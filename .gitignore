@@ -17,6 +17,7 @@ libtool
 /debian/vyatta-op
 /debian/vyatta-op.postinst
 /debian/vyatta-op.postrm
+/debian/vyatta-op.substvars
 /debian/vyatta-op.debhelper.log
 /etc/default/vyatta
 /INSTALL
