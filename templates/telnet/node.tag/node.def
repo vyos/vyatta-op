@@ -1,9 +1,5 @@
 help: Telnet to host
 allowed: echo "<hostname> <x.x.x.x> <y:y:y:y:y>"
-comp_help: Possible completions
-    <hostname>  	host name (static or DNS)
-    <x.x.x.x>   	IPv4 address
-    <y:y:y:y:y:y>	IPv6 address
 
 run: if [ -x /usr/bin/telnet ] ; then
      	/usr/bin/$*
