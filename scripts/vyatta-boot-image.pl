@@ -219,6 +219,10 @@ sub doSelect {
 	      last;
 	  }
       }
+      if (!defined($new_idx)) {
+	  print "Version $new_ver not found.\n";
+	  exit 1;
+      }
   } else {
       $new_idx = $ {$bentries}[$resp]->{'idx'};
       $new_ver = $ {$bentries}[$resp]->{'ver'};
