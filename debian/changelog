@@ -1,3 +1,9 @@
+vyatta-op (0.13.48) unstable; urgency=low
+
+  * Bugfix 2539:  Validate input when user specifies image name.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Tue, 02 Feb 2010 12:07:37 -0800
+
 vyatta-op (0.13.47) unstable; urgency=low
 
   * Merge branch 'kenwood' of 192.168.100.1:git/vyatta-op into kenwood
