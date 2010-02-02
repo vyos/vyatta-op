@@ -1,3 +1,12 @@
+vyatta-op (0.13.47) unstable; urgency=low
+
+  * Merge branch 'kenwood' of 192.168.100.1:git/vyatta-op into kenwood
+  * Fix completion string
+  * Ignore subst vars file
+  * Fix allowed strings for hostname/ipaddress
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Tue, 02 Feb 2010 10:46:07 -0800
+
 vyatta-op (0.13.46) unstable; urgency=low
 
   * Expand all possible interfaces with leases for renew
