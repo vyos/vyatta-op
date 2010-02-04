@@ -1,3 +1,11 @@
+vyatta-op (0.13.49) unstable; urgency=low
+
+  * Fix bug 4115 'clear nat translations' does not clear nat
+    translations
+  * clear expect table as well
+
+ -- Mohit Mehta <mohit.mehta@vyatta.com>  Wed, 03 Feb 2010 18:26:56 -0800
+
 vyatta-op (0.13.48) unstable; urgency=low
 
   * Bugfix 2539:  Validate input when user specifies image name.
