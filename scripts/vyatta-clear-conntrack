@@ -55,11 +55,12 @@ get_response () {
 response=''
 while [ -z "$response" ]
 do
-  echo -ne "\nThis will clear all currently tracked connections. Continue? (Y/N) [N]: "
+  echo -ne "\nThis will clear all currently tracked and expected connections. Continue? (Y/N) [N]: "
   response=$(get_response "N" "Y N")
   if [ "$response" == "n" ]; then
     exit 1
   else
     sudo /usr/sbin/conntrack -F
+    sudo /usr/sbin/conntrack -F expect
   fi
 done
