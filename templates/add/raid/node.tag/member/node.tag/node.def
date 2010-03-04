@@ -37,8 +37,15 @@ run:
 		echo "Unable to add member to RAID set"
 	    fi
 
+	    mounted_on_root=0
 	    mounted_on=`mount | grep "^/dev/${raid_set}" | awk '{ print $3 }'`
-	    if [ "$mounted_on" = "/" ]; then
+	    for dir in $mounted_on ; do
+		if [ "$dir" = "/" -o "$dir" = "/live/image" ]; then
+		    mounted_on_root=1
+		fi
+	    done
+
+	    if [ $mounted_on_root -eq 1 ]; then
 	       	echo
 		echo "Warning: RAID set ${raid_set} holds the root filesystem."
 		echo "To make the new disk bootable, the boot program will be"
