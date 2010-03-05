@@ -1,3 +1,10 @@
+vyatta-op (0.13.49+kenwood2) unstable; urgency=low
+
+  * Bugfix 5404: Handle RAID resynchronization on image-installed
+    systems.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Thu, 04 Mar 2010 16:03:22 -0800
+
 vyatta-op (0.13.49+kenwood1) unstable; urgency=low
 
   * UNRELEASED
