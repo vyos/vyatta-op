@@ -1,3 +1,9 @@
+vyatta-op (0.13.52) unstable; urgency=low
+
+  * Bugfix 5394: Move colon characters to their proper locations.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Thu, 04 Mar 2010 16:37:51 -0800
+
 vyatta-op (0.13.51) unstable; urgency=low
 
   * Bugfix 5404: Handle RAID resynchronization on image-installed
