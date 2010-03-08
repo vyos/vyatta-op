@@ -429,9 +429,7 @@ _vyatta_pipe_completion ()
   return 0
 }
 
-if [ -S /var/run/vyatta/quagga/zebra.vty ] ; then
-    declare -x -r _vyatta_vtysh=vyatta-vtysh
-elif [ ! -S /var/run/quagga/zebra.vty ] ; then
+if [ ! -S /var/run/quagga/zebra.vty ] ; then
     declare -x -r _vyatta_vtysh=/usr/bin/vtysh
 else
     declare -x -r _vyatta_vtysh="echo \"Can't connect with zebra daemon to run: vtysh \""
