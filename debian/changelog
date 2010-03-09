@@ -1,3 +1,9 @@
+vyatta-op (0.13.54) unstable; urgency=low
+
+  * Depends on recent version of quagga
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Mon, 08 Mar 2010 16:48:32 -0800
+
 vyatta-op (0.13.53) unstable; urgency=low
 
   * Change vyatta-vtysh to vtysh
