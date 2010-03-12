@@ -88,26 +88,29 @@ sub get_clear_stats {
    foreach my $var (@rx_stat_vars, @tx_stat_vars) {
        $stats{$var} = 0;
    }
-   my $FILE;
-   my $filename = get_intf_statsfile($intf);
-   if (!open($FILE, '<', $filename)) {
-       return %stats;
-   }
 
-   my $magic = <$FILE>; chomp $magic;
+   my $filename = get_intf_statsfile($intf);
+
+   open (my $f, '<', $filename)
+    or return %stats;
+
+   my $magic = <$f>;
+   chomp $magic;
    if ($magic ne $clear_file_magic) {
        print "bad magic [$intf]\n";
        return %stats;
    }
-   my $timestamp = <$FILE>; chomp $timestamp;
+
+   my $timestamp = <$f>;
+   chomp $timestamp;
    $stats{'timestamp'} = $timestamp;
-   my ($var, $val);
-   while (<$FILE>) {
+
+   while (<$f>) {
        chop;
-       ($var, $val) = split(/,/);
+       my ($var, $val) = split(/,/);
        $stats{$var} = $val;
    }
-   close($FILE);
+   close($f);
    return %stats;
 }
 
@@ -276,18 +279,21 @@ sub run_clear_intf {
 
     foreach my $intf (@intfs) {
 	my %stats = get_intf_stats($intf);
-	my $FILE;
 	my $filename = get_intf_statsfile($intf);
-	if (!open($FILE, ">", $filename)) {
-	    die "Couldn't open $filename [$!]\n";
-	}
+
+	mkdir $clear_stats_dir unless ( -d $clear_stats_dir );
+
+	open(my $f, '>', $filename)
+	    or die "Couldn't open $filename [$!]\n";
+
 	print "Clearing $intf\n";
-	print $FILE $clear_file_magic, "\n", time(), "\n";
-	my ($var, $val);
-	while (($var, $val) = each (%stats)) {
-	    print $FILE $var, ",", $val, "\n";
+	print $f $clear_file_magic, "\n", time(), "\n";
+
+	while (my ($var, $val) = each (%stats)) {
+	    print $f $var, ",", $val, "\n";
 	}
-	close($FILE);
+
+	close($f);
     }
 }
 
