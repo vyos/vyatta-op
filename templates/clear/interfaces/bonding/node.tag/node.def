@@ -1,0 +1,4 @@
+help: Clear interface information for a given bonding interface
+allowed: local -a array ;
+	 array=( /sys/class/net/bond* ) ;
+	 echo  -n ${array[@]##*/}
