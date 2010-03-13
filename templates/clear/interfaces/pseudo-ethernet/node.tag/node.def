@@ -1,0 +1,4 @@
+help: Clear interface information for a given pseudo-ethernet interface
+allowed: local -a array ;
+	 array=( /sys/class/net/peth* ) ;
+	 echo  -n ${array[@]##*/}
