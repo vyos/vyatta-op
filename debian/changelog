@@ -1,3 +1,11 @@
+vyatta-op (0.13.55) unstable; urgency=low
+
+  * Don't give error if /var/run/vyatta doesn't exist  yet
+  * Add clear interfaces bonding
+  * Add clear interfaces pseudo-ethernet
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Mon, 15 Mar 2010 10:28:46 -0700
+
 vyatta-op (0.13.54) unstable; urgency=low
 
   * Depends on recent version of quagga
