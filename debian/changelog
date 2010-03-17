@@ -1,3 +1,9 @@
+vyatta-op (0.13.56) unstable; urgency=low
+
+  * Add "reboot now" to prevent confirmation prompt.
+
+ -- Stig Thormodsrud <stig@vyatta.com>  Tue, 16 Mar 2010 20:20:39 -0700
+
 vyatta-op (0.13.55) unstable; urgency=low
 
   * Don't give error if /var/run/vyatta doesn't exist  yet
