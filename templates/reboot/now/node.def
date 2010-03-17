@@ -1,0 +1,2 @@
+help: Reboot the system without confirmation
+run: sudo /opt/vyatta/bin/sudo-users/vyatta-reboot.pl --action reboot --now

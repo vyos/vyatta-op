@@ -63,13 +63,30 @@ sub is_reboot_pending {
     }
 }
 
+sub do_reboot {
+    my $login = shift;
+
+    syslog("warning", "Reboot now requested by $login");
+    exec("sudo /sbin/reboot");
+}
+
+sub cancel_reboot {
+    my ($login, $time) = @_;
+
+    my $job = `cat $reboot_job_file`;
+    chomp $job;
+    system("atrm $job");
+    system("rm $reboot_job_file");
+    syslog("warning", "Reboot scheduled for [$time] - CANCELED by $login");
+}
 
 #
 # main
 #
-my ($action, $at_time);
+my ($action, $at_time, $now);
 GetOptions("action=s"  => \$action,
 	   "at_time=s" => \$at_time,
+           "now!"      => \$now,
 );
 
 if (! defined $action) {
@@ -86,16 +103,24 @@ if ($action eq "reboot") {
 
     my ($rc, $time) = is_reboot_pending();
     if ($rc) {
-	print "Reboot already scheduled for [$time]\n";
-	exit 1;
+        if (defined $now) {
+            cancel_reboot($login, $time);
+            do_reboot($login);
+        } else {
+            print "Reboot already scheduled for [$time]\n";
+            exit 1;
+        }
     }
 
-    if (prompt("Proceed with reboot? [confirm]", -y1d=>"y")) {
-	syslog("warning", "Reboot now requested by $login");
-	exec("sudo /sbin/reboot");
+    if (defined $now) {
+        do_reboot($login);
     } else {
-	print "Reboot canceled\n";
-	exit 1;
+        if (prompt("Proceed with reboot? [confirm]", -y1d=>"y")) {
+            do_reboot($login);
+        } else {
+            print "Reboot canceled\n";
+            exit 1;
+        }
     }
 }
 
@@ -158,12 +183,8 @@ if ($action eq "reboot_cancel") {
 	print "No reboot currently scheduled\n";
 	exit 1;
     }
-    my $job = `cat $reboot_job_file`;
-    chomp $job;
-    system("atrm $job");
-    system("rm $reboot_job_file");
+    cancel_reboot($login, $time);
     print "Reboot canceled\n";
-    syslog("warning", "Reboot scheduled for [$time] - CANCELED by $login");
     exit 0;
 }
 
