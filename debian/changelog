@@ -1,3 +1,9 @@
+vyatta-op (0.13.59) unstable; urgency=low
+
+  * Add Input Functional Block device support
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Thu, 15 Apr 2010 13:53:22 -0700
+
 vyatta-op (0.13.58) unstable; urgency=low
 
   * Use new interface_description function
