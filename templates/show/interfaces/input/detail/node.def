@@ -1,0 +1,2 @@
+help: Show detailed input functional block interface information
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf-type=input --action=show
