@@ -1,3 +1,9 @@
+vyatta-op (0.13.60) unstable; urgency=low
+
+  * Bugfix 5549: Use proper prompt string when deleting image.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Mon, 26 Apr 2010 12:26:53 -0700
+
 vyatta-op (0.13.59) unstable; urgency=low
 
   * Add Input Functional Block device support
