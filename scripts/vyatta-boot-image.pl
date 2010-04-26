@@ -489,7 +489,7 @@ exit 0 if (defined($show) || (!defined($sel) && !defined($del))); # show-only
 # for doing select
 my $prompt_msg = 'Select the default boot image: ';
 my $error_msg = 'Invalid selection. Default is not changed.';
-if ($del) {
+if (defined ($del)) {
   # doing delete
   $prompt_msg = 'Select the image to delete: ';
   $error_msg = 'Invalid selection. Nothing is deleted.';
