@@ -1,3 +1,9 @@
+vyatta-op (0.13.61) unstable; urgency=low
+
+  * Added an op-mode command to rename a system image.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Fri, 30 Apr 2010 15:54:37 -0700
+
 vyatta-op (0.13.60) unstable; urgency=low
 
   * Bugfix 5549: Use proper prompt string when deleting image.
