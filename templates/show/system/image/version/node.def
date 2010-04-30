@@ -1,0 +1,2 @@
+help: Show installed Vyatta images with Vyatta version number
+run: /opt/vyatta/bin/vyatta-boot-image.pl --show --show_vers

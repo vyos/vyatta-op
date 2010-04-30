@@ -23,6 +23,7 @@ bin_SCRIPTS     += scripts/show-dhcp-leases.pl
 bin_SCRIPTS     += scripts/vyatta-boot-image.pl
 bin_SCRIPTS	+= scripts/vyatta-sudo
 bin_SCRIPTS	+= scripts/vyatta-show-snmp.pl
+bin_SCRIPTS	+= scripts/rename-image.pl
 
 bin_sudo_users_SCRIPTS      = scripts/vyatta-identify-interface.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-delete-log-file.sh
