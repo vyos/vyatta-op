@@ -60,6 +60,17 @@ if (("$new_name" eq "Old-non-image-installation") ||
     exit 1;
 }
 
+my $cmdline=`cat /proc/cmdline`;
+my $cur_name;
+($cur_name, undef) = split(' ', $cmdline);
+$cur_name =~ s/BOOT_IMAGE=\/boot\///;
+$cur_name =~ s/\/vmlinuz.*//;
+
+if ($old_name eq $cur_name) {
+    printf("Can't re-name the running image.\n");
+    exit 1;
+}
+
 if (-e "$image_path/$new_name") {
     printf("New name $new_name already exists.\n");
     exit 1;
