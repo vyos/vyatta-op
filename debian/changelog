@@ -1,3 +1,9 @@
+vyatta-op (0.13.64) unstable; urgency=low
+
+  * Don't allow the currently running image to be renamed.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Thu, 20 May 2010 10:47:05 -0700
+
 vyatta-op (0.13.63) unstable; urgency=low
 
   * UNRELEASED
