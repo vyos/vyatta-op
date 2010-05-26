@@ -1,0 +1,10 @@
+help: Renew a DHCPv6 lease on an interface
+
+allowed:
+    local -a array
+    array=( /var/lib/dhcp3/dhclient_v6_*.conf )
+    tail=${array[@]#/var/lib/dhcp3/dhclient_v6_}
+    ifnames=${tail[@]%.conf}
+    echo -n ${ifnames[@]}
+
+run: sudo /opt/vyatta/sbin/vyatta-dhcpv6-client.pl --renew --ifname "$4"
