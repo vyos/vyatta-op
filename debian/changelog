@@ -1,3 +1,9 @@
+vyatta-op (0.13.65) unstable; urgency=low
+
+  * Move DHCPv6 client op-mode commands to this package.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Wed, 26 May 2010 16:35:33 -0700
+
 vyatta-op (0.13.64) unstable; urgency=low
 
   * Don't allow the currently running image to be renamed.
