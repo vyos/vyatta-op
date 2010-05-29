@@ -57,10 +57,8 @@ my @tx_stat_vars =
 
 sub get_intf_description {
     my $name = shift;
-    my $intf = new Vyatta::Interface($name);
-    return "" unless $intf;
+    my $description = interface_description($name);
 
-    my $description = $intf->description();
     return "" unless $description;
     return $description;
 }

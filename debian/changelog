@@ -1,3 +1,51 @@
+vyatta-op (0.13.65) unstable; urgency=low
+
+  * Move DHCPv6 client op-mode commands to this package.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Wed, 26 May 2010 16:35:33 -0700
+
+vyatta-op (0.13.64) unstable; urgency=low
+
+  * Don't allow the currently running image to be renamed.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Thu, 20 May 2010 10:47:05 -0700
+
+vyatta-op (0.13.63) unstable; urgency=low
+
+  * UNRELEASED
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Fri, 30 Apr 2010 17:51:27 -0700
+
+vyatta-op (0.13.62) unstable; urgency=low
+
+  * Add "show system image storage" op mode command.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Fri, 30 Apr 2010 17:50:24 -0700
+
+vyatta-op (0.13.61) unstable; urgency=low
+
+  * Added an op-mode command to rename a system image.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Fri, 30 Apr 2010 15:54:37 -0700
+
+vyatta-op (0.13.60) unstable; urgency=low
+
+  * Bugfix 5549: Use proper prompt string when deleting image.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Mon, 26 Apr 2010 12:26:53 -0700
+
+vyatta-op (0.13.59) unstable; urgency=low
+
+  * Add Input Functional Block device support
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Thu, 15 Apr 2010 13:53:22 -0700
+
+vyatta-op (0.13.58) unstable; urgency=low
+
+  * Use new interface_description function
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Mon, 29 Mar 2010 16:15:45 -0700
+
 vyatta-op (0.13.57) unstable; urgency=low
 
   * Remove old vtysh alias

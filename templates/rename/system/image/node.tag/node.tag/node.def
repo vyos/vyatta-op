@@ -1,0 +1,7 @@
+help: New name for system image.
+
+run:
+        old=$4
+	new=$5
+        sudo /opt/vyatta/bin/rename-image.pl --old_name $old --new_name $new
+

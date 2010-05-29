@@ -1,0 +1,3 @@
+help: Show disk space utilization of system images
+
+run: /opt/vyatta/bin/show-image-storage.pl
