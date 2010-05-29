@@ -1,0 +1,2 @@
+help: Show running configuration as set commands
+run: ${vyatta_sbindir}/vyatta-config-gen-sets.pl
