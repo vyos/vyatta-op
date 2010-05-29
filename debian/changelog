@@ -1,3 +1,9 @@
+vyatta-op (0.13.66) unstable; urgency=low
+
+  * Add cli for vyatta-config-gen-sets.pl
+
+ -- Stig Thormodsrud <stig@vyatta.com>  Fri, 28 May 2010 17:43:49 -0700
+
 vyatta-op (0.13.65) unstable; urgency=low
 
   * Move DHCPv6 client op-mode commands to this package.
