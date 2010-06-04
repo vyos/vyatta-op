@@ -7,6 +7,7 @@ bin_sudo_usersdir = $(bindir)/sudo-users
 
 funcdir		 = $(datadir)/vyatta-op/functions
 func_DATA	 = functions/tech-support
+func_DATA	+= functions/tech-support-brief
 
 bin_SCRIPTS	 = scripts/vyatta-show-interfaces
 bin_SCRIPTS	+= scripts/vyatta-show-interfaces.pl
@@ -25,6 +26,8 @@ bin_SCRIPTS	+= scripts/vyatta-sudo
 bin_SCRIPTS	+= scripts/vyatta-show-snmp.pl
 bin_SCRIPTS	+= scripts/rename-image.pl
 bin_SCRIPTS	+= scripts/show-image-storage.pl
+bin_SCRIPTS	+= scripts/node-exists.pl
+bin_SCRIPTS	+= scripts/vyatta-remote-copy.pl
 
 sbin_SCRIPTS     = scripts/dhcpv6-client-show-leases.pl
 

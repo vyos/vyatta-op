@@ -1,0 +1,4 @@
+help: Save compressed brief tech-support report to specified file/path
+allowed: echo -n 'file scp://<user>:<passwd>@<host>/<file> ftp://<user>:<passwd>@<host>/<file>'
+run: source ${vyatta_datadir}/vyatta-op/functions/tech-support-brief save $5 
+

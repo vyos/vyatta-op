@@ -1,0 +1,2 @@
+help: Show brief tech-support report
+run: source ${vyatta_datadir}/vyatta-op/functions/tech-support-brief 

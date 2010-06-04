@@ -1,5 +1,6 @@
 # implement "show tech-support"
 # usage: tech-support [ save [ <filename> ] ]
+# usage: tech-support [ save-uncompressed [ <filename> ] ] 
 # NOTE: this file is sourced, NOT executed
 
 function header {
@@ -11,7 +12,8 @@ function header {
 
 # by default send to stdout
 OUT=1
-
+FLAG=0
+REMOTE=0
 DEFAULT_PATH=/opt/vyatta/etc/config/support
 DEFAULT_GROUP=users
 
@@ -27,15 +29,30 @@ do_rotate ()
 
 HOSTNAME=`hostname`
 CURTIME=`date +%F-%H%M%S`
-if [ "$1" == "save" ]; then
-  # "save" is specified. save output to file.
+   if [ "$1" == "save-uncompressed" ]; then
+    FLAG="1"
+   elif [ "$1" == "save" ]; then
+    FLAG="0"
+   fi
+
+ if [ "$1" == "save" ] || [ "$1" == "save-uncompressed" ]; then
+  # "save" or save-uncompressed is specified. save output to file.
   if [ -n "$2" ]; then
-    # "<filename>" is specified. use it as the prefix.
-    OUT="$2.$HOSTNAME.tech-support.$CURTIME"
+   if [[ "$2" =~ scp:///* ]]; then  
+     OUT="$HOSTNAME.tech-support.$CURTIME"
+     REMOTE="1" 
+   elif [[ "$2" =~ ftp:///* ]]; then 
+     OUT="$HOSTNAME.tech-support.$CURTIME"
+     REMOTE="1"
+   else
+      #file to be save locally
+     OUT="$2.$HOSTNAME.tech-support.$CURTIME"
+   fi
   else
-    OUT="$HOSTNAME.tech-support.$CURTIME"
+     OUT="$HOSTNAME.tech-support.$CURTIME"
   fi
-  if [[ $OUT != /* ]]; then
+  
+if [[ $OUT != /* ]]; then
     # it's not absolute path. save in default path.
     mkdir -p $DEFAULT_PATH >& /dev/null
     chgrp $DEFAULT_GROUP $DEFAULT_PATH >& /dev/null
@@ -47,194 +64,93 @@ if [ "$1" == "save" ]; then
     echo "Cannot create tech-support file '$OUT'"
     exit 1
   fi
-  echo "Saving output to '$OUT'..."
+  if [ $REMOTE != "1" ]; then   
+   echo "Saving output to $OUT ..."
+  fi
 fi
 
 (
 export PATH=/sbin:/usr/sbin:$PATH
 
-header Current time
-date
+header Show Tech-Support  
+header CONFIGURATION 
+
 
 header Vyatta Version and Package Changes
 show version all
 
-header Installed Packages
-dpkg -l
-
-header Modules
-cat /proc/modules
-
-header "Kernel messages at boot time (/var/log/dmesg)"
-cat /var/log/dmesg
-
-header "Recent Kernel messages (dmesg)"
-dmesg
-
-header CPU Info
-cat /proc/cpuinfo
-
-header Mem Info
-cat /proc/meminfo
-
-header PCI Info
-sudo lspci -vvx
-
-header System Info
-${vyatta_bindir}/vyatta-show-dmi
-
-header Interfaces
-show interfaces
-
-header Interface statistics
-ip -s link show
-
-for eth in $(cd /sys/class/net; echo eth*)
-do header "Ethtool statistics for $eth"
-   sudo ethtool -S $eth
-done
-
-header Devices
-cat /proc/devices
-
-header Partitions
-cat /proc/partitions
-
-disks=`cat /proc/partitions | awk '{ if ($4!="name") { print $4 } }' | egrep -v "[0-9]$" | egrep -v "^$"`
-
-for disk in $disks; do
-    header "Partitioning for disk $disk"
-    fdisk -l /dev/$disk
-done
-
-header Mounts
-cat /proc/mounts
-
-header Diskstats
-cat /proc/diskstats
-
-header Kernel command line
-cat /proc/cmdline
-
-header Interrupts
-cat /proc/interrupts
-
-header Load Average
-cat /proc/loadavg
-
-header /opt/vyatta/etc/config/config.boot
+header Configuration File 
 cat /opt/vyatta/etc/config/config.boot
 
 header Running configuration
 show configuration
 
-header \''ps -ef'\'
-ps -ef
-
-header \''df -h -x squashfs'\'
-df -h -x squashfs
-
-header \''lsof -P -n -i'\'
-sudo lsof -P -n -i
-
-header \'free\'
-free
-
-header /etc/apt/sources.list
+header Package Repository Configuration File 
 cat /etc/apt/sources.list
 
-header /etc/ipsec.conf
-cat /etc/ipsec.conf
-
-if [ -r /etc/ipsec.secrets ]; then
-    header /etc/ipsec.secrets
-    cat /etc/ipsec.secrets
-fi
-
-header \''ls -l /etc/rc?.d'\'
-ls -l /etc/rc?.d
-
-header /etc/rc.local
+header User Startup Scripts 
 cat /etc/rc.local
 
-header \''iptables -L -vn'\'
-sudo /sbin/iptables -L -vn
 
-header \''iptables -t nat -L -vn'\'
-sudo /sbin/iptables -t nat -L -vn
+header INTERFACES
 
-header \''iptables -t mangle -L -vn'\'
-sudo /sbin/iptables -t mangle -L -vn
 
-header \''iptables -t raw -L -vn'\'
-sudo /sbin/iptables -t raw -L -vn
+header Interfaces
+show interfaces
 
-function show_route_limit ()
-{
-   NUM=$(show $1 route $2 | wc -l)
-   # subtract 3 lines of header
-   [ $NUM -gt 3 ] &&  NUM=$[$NUM - 3]
-   OUTPUT=$(echo show $1 route $2 \(total $NUM\))
-   CMD="show $1 route $2"
-   if [ $3 -eq 0 ]
-   then
-      header $OUTPUT
-      vtysh -c "$CMD"
-   else
-      header "$OUTPUT- limit $3"
-      vtysh -c "$CMD" | head -n $3
-   fi
-}
+header Ethernet
 
-#
-# show all connected/static, limit the output others and include a total
-#
-show_route_limit ip connected 0
-show_route_limit ip static    0
-show_route_limit ip rip  500
-show_route_limit ip ospf 500
-show_route_limit ip bgp  500
-show_route_limit ip ''   500
+header Interface statistics
+ip -s link show
 
-show_route_limit ipv6 connected 0
-show_route_limit ipv6 static    0
-show_route_limit ipv6 ripng 500
-show_route_limit ipv6 ospf6 500
-show_route_limit ipv6 bgp   500
-show_route_limit ipv6 ''    500
+for eth in $(cd /sys/class/net; echo eth*)
+do header "Physical Interface statistics for $eth"
+   sudo ethtool -S $eth
+done
 
-header $HOME/.bash_history
-cat $HOME/.bash_history
+for eth in $(cd /sys/class/net; echo eth*)
+do header "Physical Interface Details for $eth"
+   show interfaces ethernet $eth physical 
+done
 
-header \''show vrrp'\'
-show vrrp
+header Physical Interface Offload Settings and Capabilities
+sudo ethtool -K
+ 
+header "ARP Table (Total entries)"
+show arp
 
-header \''last -ix'\'
-last -ix
+header Number of incomplete entries in ARP table
+show arp | grep incomplete | wc -l  
+header Serial
 
-header wanrouter hwprobe
-wanrouter hwprobe
+header "WAN Interface Hardware Information (wanrouter hwprobe)" 
+is_sangoma='lspci -n -d '1923:*''
+is_adsl='lspci -n -d '14bc:*''
+if [ -z "$is_sangoma" -a -z "$is_adsl" ]; then
 
-header wanrouter version
+ sudo wanrouter hwprobe
+
+header "WAN Interface Software Version (wanrouter version)"
 wanrouter version
 
-header wanrouter debug
+header "WAN Interface Debugging Information (wanrouter debug)" 
 wanrouter debug
 
-header wanrouter summary
+header "WAN Interface Connection Status Information (wanrouter summary)" 
 wanrouter summary
 
-header wanrouter status
+header "WAN Interface Information Summary (wanrouter status)" 
 wanrouter status
 
-header wanrouter modules
+header "WAN Interface Driver Information (wanrouter modules)"
 wanrouter modules
 
 if [ -e /etc/wanpipe/wanrouter.rc ]; then
-   header /etc/wanpipe/wanrouter.rc
+   header "WAN Interface Startup Script (/etc/wanpipe/wanrouter.rc)" 
    cat /etc/wanpipe/wanrouter.rc
 fi
 
+header WAN Interfaces
 wanifs=( /sys/class/net/wan* )
 wanifs=`echo -n ${wanifs[@]##*/}`
 
@@ -270,18 +186,512 @@ for i in /etc/wanpipe/wanpipe*.conf ; do
     fi
 done
 
-header wanrouter conflog
+header "WAN Interface Configuration Log (wanrouter conflog)"
 wanrouter conflog
 
-header /var/log/messages
+else
+echo "Wanpipe not configured"
+fi
+
+header ROUTING
+
+
+function show_route_limit ()
+{
+   NUM=$(show $1 route $2 | wc -l)
+   # subtract 3 lines of header
+   [ $NUM -gt 3 ] &&  NUM=$[$NUM - 3]
+   OUTPUT=$(echo show $1 route $2 \(total $NUM\))
+   CMD="show $1 route $2"
+   if [ $3 -eq 0 ]
+   then
+      header $OUTPUT
+      vtysh -c "$CMD"
+   else
+      header "$OUTPUT- limit $3"
+      vtysh -c "$CMD" | head -n $3
+   fi
+}
+
+#
+# show all connected/static, limit the output others and include a total
+#
+show_route_limit ip connected 0
+show_route_limit ip static    0
+show_route_limit ip rip  500
+show_route_limit ip ospf 500
+show_route_limit ip bgp  500
+show_route_limit ip ''   500
+
+show_route_limit ipv6 connected 0
+show_route_limit ipv6 static    0
+show_route_limit ipv6 ripng 500
+show_route_limit ipv6 ospf6 500
+show_route_limit ipv6 bgp   500
+show_route_limit ipv6 ''    500
+
+
+header IPTABLES 
+
+
+header Filter Chain Details 
+sudo /sbin/iptables -L -vn
+
+header Nat Chain Details 
+sudo /sbin/iptables -t nat -L -vn
+
+header Mangle Chain Details 
+sudo /sbin/iptables -t mangle -L -vn
+
+header Raw Chain Details 
+sudo /sbin/iptables -t raw -L -vn
+
+
+header SYSTEM
+
+
+header Current Time
+date
+ 
+header Installed Packages
+dpkg -l
+
+header Loaded Modules
+cat /proc/modules
+
+header CPU
+
+header Installed CPU/s 
+cat /proc/cpuinfo
+
+header Cumulative CPU Time Used by Running Processes
+top -n1 -b -S
+
+header Hardware Interrupt Counters
+cat /proc/interrupts
+ 
+header Load Average
+cat /proc/loadavg
+
+header Running Processes
+ps -ef
+
+header Memory
+
+header Installed Memory 
+cat /proc/meminfo
+
+header Memory Usage
+free
+
+header Storage
+
+header Devices
+cat /proc/devices
+
+header Partitions
+cat /proc/partitions
+
+disks=`cat /proc/partitions | awk '{ if ($4!="name") { print $4 } }' | egrep -v "[0-9]$" | egrep -v "^$"`
+
+for disk in $disks; do
+    header "Partitioning for disk $disk"
+    fdisk -l /dev/$disk
+done
+
+header Mounts
+cat /proc/mounts
+
+header Diskstats
+cat /proc/diskstats
+
+header Hard Drive Usage 
+df -h -x squashfs
+
+header General System
+
+header Boot Messages 
+cat /var/log/dmesg
+
+header "Recent Kernel messages (dmesg)"
+dmesg
+
+header PCI Info
+sudo lspci -vvx
+
+header System Info
+${vyatta_bindir}/vyatta-show-dmi
+
+header GRUB Command line
+cat /proc/cmdline
+
+header Open Ports 
+sudo lsof -P -n -i
+
+header System Startup Files 
+ls -l /etc/rc?.d
+
+header Bash History
+#cat $HOME/.bash_history
+for path in /opt/vyatta/config/active/system/login/user/* ; do 
+   user=$(basename $path); 
+   header "Bash History for $user"; 
+   case $user in 
+      root) file="/root/.bash_history";;
+      *) file="/home/$user/.bash_history";; 
+   esac; 
+cat .bash_history | gawk '/^#[0-9]*/ {t = substr($0,2); next} {print strftime("%FT%T%z", t) " " $0}' | sort -u
+done
+
+header Login History 
+last -ix
+
+header Recent Log Messages 
 tail -n 250 /var/log/messages
 
+header Entitlement
+show entitlement
+
+header NTP
+show ntp
+
+header Zebra
+show zebra
+
+
+###
+# End of Core section
+###
+
+
+header BGP 
+perl /opt/vyatta/bin/node-exists.pl bgp protocols 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header BGP Summary
+show ip bgp summary
+header BGP Neighbors
+show ip bgp neighbors
+header BGP Debugging Information 
+show debugging bgp 
+else
+echo "BGP is not configured"
+fi
+
+header CLUSTERING
+perl /opt/vyatta/bin/node-exists.pl cluster cluster 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header Cluster Status
+show cluster status
+else
+echo "Clustering is not configured"
+fi
+
+header DHCP Server 
+perl /opt/vyatta/bin/node-exists.pl dhcp-server service 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then 
+header DHCP Leases
+show dhcp leases
+header DHCP Statistics
+show dhcp statistics
+else
+echo "DHCP server is not configured"
+fi
+
+header DHCP Client 
+header DHCP Client Leases 
+is_dhcp=`show dhcp client leases | wc -l` 
+if [ -z is_dhcp ]; then 
+echo "DHCP client is not configured"
+else 
+show dhcp client leases
+fi
+
+
+header DHCPV6 
+perl /opt/vyatta/bin/node-exists.pl dhcpv6-server service
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header DHCPV6 Server Status
+show dhcpv6 server status 
+header DHCPV6 Server Leases
+show dhcpv6 server leases
+header DHCPV6 Relay-Agent
+show dhcpv6 relay-agent
+header DHCPV6 Client Leases
+show dhcpv6 client leases 
+else
+echo "DHCPV6 Server is not configured"
+fi
+
+
+header DNS 
+perl /opt/vyatta/bin/node-exists.pl dns service
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header DNS Dynamic Status
+show dns dynamic status
+header DNS Forwarding Statistics
+show dns forwarding statistics
+header DNS Forwarding Nameservers  
+show dns forwarding nameservers
+else
+echo "DNS is not configured"
+fi
+
+
+header FIREWALL 
+perl /opt/vyatta/bin/node-exists.pl firewall firewall 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header Firewall Group
+show firewall group
+header Firewall Detail
+show firewall detail
+header Firewall Statistics
+show firewall statistics 
+else
+echo "Firewall is not configured"
+fi
+
+header IPS
+perl /opt/vyatta/bin/node-exists.pl content-inspection content-inspection 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header IPS log
+show ips log
+header IPS Update-Log
+show ips update-log
+else
+echo "IPS is not configured"
+fi
+
+header IPSec
+perl /opt/vyatta/bin/node-exists.pl ipsec vpn
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header IPSec Status
+show vpn ipsec status
+header IPSec sa
+show vpn ipsec sa
+header IPSec sa Detail
+show vpn ipsec sa detail
+header IPSec sa Statistics
+show vpn ipsec sa statistics
+ 
+header /etc/ipsec.conf
+cat /etc/ipsec.conf
+
+if [ -r /etc/ipsec.secrets ]; then
+    header /etc/ipsec.secrets
+    cat /etc/ipsec.secrets
+fi
+else
+echo "IPSec is not configured"
+fi
+
+header NAT
+perl /opt/vyatta/bin/node-exists.pl nat service
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header NAT Rules
+show nat rules
+header NAT Statistics
+show nat statistics
+header NAT Translations Detail
+show nat translations detail
+else
+echo "NAT is not configured"
+fi
+
+
+header NETFLOW
+perl /opt/vyatta/bin/node-exists.pl netflow system flow-accounting 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header NetFlow Accounting
+show flow-accounting 
+else
+echo "Netflow is not configured"
+fi
+
+header OPENVPN
+perl /opt/vyatta/bin/node-exists.pl openvpn interfaces 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header OpenVPN Interfaces
+show interfaces openvpn detail 
+header OpenVPN Server Status
+show openvpn server-status
+else
+echo "OpenVPN is not configured"
+fi
+
+header OSPF
+perl /opt/vyatta/bin/node-exists.pl ospf protocols 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header OSPF Neighbor
+show ip ospf neighbor
+header OSPF Route
+show ip ospf route
+header OSPF Debugging Information
+show debugging ospf 
+else
+echo "OSPF is not configured"
+fi
+
+header OSPFV3
+perl /opt/vyatta/bin/node-exists.pl ospfv3 protocols
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header OSPFV3 Debugging Information
+show debugging ospfv3
+else
+echo "OSPFV3 is not configured" 
+fi
+
+header Policy
+perl /opt/vyatta/bin/node-exists.pl policy policy 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header IP Route Maps
+show ip protocol 
+header Route-Map
+show route-map
+header IP Access Lists
+show ip access-lists
+header IP Community List
+show ip community-list 
+else
+echo "Policy is not configured"
+fi
+ 
+header QoS
+perl /opt/vyatta/bin/node-exists.pl qos-policy qos-policy 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header Current QoS Policies
+show queueing
+else
+echo "QoS is not configured"
+fi
+
+header RIP
+perl /opt/vyatta/bin/node-exists.pl rip protocols 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header IP RIP
+show ip rip 
+header RIP Status
+show ip rip status
+header RIP Debugging Information
+show debugging RIP
+else
+echo "RIP is not configured"
+fi
+
+header RIPNG 
+perl /opt/vyatta/bin/node-exists.pl ripng protocols 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header RIPNG Debugging Information
+show debugging ripng
+else
+echo "RIPNG is not configured"
+fi
+
+header VPN-L2TP 
+perl /opt/vyatta/bin/node-exists.pl l2tp vpn 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header VPN ike secrets
+show vpn ike secrets
+header VPN rsa-keys
+show vpn ike rsa-keys  
+header VPN ike sa
+show vpn ike sa
+header VPN ike Status
+show vpn ike status
+header VPN Remote-Access
+show vpn remote-access
+
+header VPN Debug Detail
+show vpn debug detail
+else
+echo "VPN L2TP is not configured"
+fi
+
+header VPN-PPTP 
+perl /opt/vyatta/bin/node-exists.pl pptp vpn 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header VPN Remote-Access
+show vpn remote-access
+else
+echo "VPN PPTP is not configured"
+fi
+
+header VRRP
+perl /opt/vyatta/bin/node-exists.pl ospf protocols
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header \''show vrrp'\'
+show vrrp
+else
+echo "VRRP is not configured"
+fi
+
+header WAN LOAD BALANCING
+perl /opt/vyatta/bin/node-exists.pl wan load-balancing 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header Wan Load Balance
+show wan-load-balance 
+header Wan Load Balance Status 
+show wan-load-balance status
+header Wan Load Balance Connection
+show wan-load-balance connection
+else
+echo "Wan Load Balance is not configured"
+fi
+
+header "WEBPROXY/URL-FILTERING" 
+perl /opt/vyatta/bin/node-exists.pl url-filtering service webproxy 
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header WebProxy Blacklist Categories
+show webproxy blacklist categories
+header WebProxy Blacklist Domains
+show webproxy blacklist domains
+header WebProxy Blacklist URLs
+show webproxy blacklist urls
+header WebProxy Blacklist Log 
+show webproxy blacklist log summary
+else
+echo "Webproxy/URL-filtering is not configured"
+fi
+ 
 header "END OF TECH-SUPPORT FILE"
 ) 1>&$OUT 2>&1
 
 if [ $OUT != "1" ]; then
   chgrp $DEFAULT_GROUP $OUT >& /dev/null
   chmod 664 $OUT >& /dev/null
-  echo "Done"
+  if [ $FLAG == "0" ]; then 
+    gzip $OUT
+    OUT=$OUT.gz 
+    if [ $REMOTE != "1" ]; then 
+    echo "File $OUT is the compressed file."
+    fi 
+  fi 
+  
+  if [ $REMOTE != "1" ]; then 
+   echo "Done"
+  fi
 fi
-
+if [ $REMOTE == "1" ]; then 
+  perl /opt/vyatta/bin/vyatta-remote-copy.pl $2 $OUT $FLAG 
+fi
