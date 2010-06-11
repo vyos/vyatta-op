@@ -1,2 +1,7 @@
 help: Show running configuration as set commands
-run: ${vyatta_sbindir}/vyatta-config-gen-sets.pl
+run: if [ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/admin" ]; 
+     then
+        ${vyatta_sbindir}/vyatta-config-gen-sets.pl
+     else
+        echo Must be an admin user to run this command.
+     fi

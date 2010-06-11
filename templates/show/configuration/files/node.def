@@ -1,5 +1,10 @@
 help: Show available saved configurations
-run: find ${vyatta_sysconfdir}/config/ -type f -not -name ".*" -not -name "config.boot.*" -printf "%f\t(%Tc)\t%T@\n" | sort -r -k3 | awk -F"\t" '{printf ("%-20s\t%s\n", $1,$2) ;}'
+run: if [ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/admin" ]; 
+     then
+       find ${vyatta_sysconfdir}/config/ -type f -not -name ".*" -not -name "config.boot.*" -printf "%f\t(%Tc)\t%T@\n" | sort -r -k3 | awk -F"\t" '{printf ("%-20s\t%s\n", $1,$2) ;}'
+     else
+        echo Must be an admin user to run this command.
+     fi
 
 
 
