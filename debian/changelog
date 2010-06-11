@@ -1,3 +1,9 @@
+vyatta-op (0.13.69) unstable; urgency=low
+
+  * Block operator user from running "show configuration *"
+
+ -- Stig Thormodsrud <stig@vyatta.com>  Fri, 11 Jun 2010 11:07:05 -0700
+
 vyatta-op (0.13.68) unstable; urgency=low
 
   * Allow admin user to run "show system image storage" command.
