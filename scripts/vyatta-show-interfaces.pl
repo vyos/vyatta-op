@@ -242,7 +242,6 @@ sub run_show_intf_brief {
 	my @ip_addr = get_ipaddr($intf);
 	my ($state, $link) = get_state_link($intf);
 	my $description = get_intf_description($intf);
-	$description = substr($description, 0, 29); # make it fit on 1 line
 	if (scalar(@ip_addr) == 0) {
 	    printf($format, $intf, "-", $state, $link, $description);
 	} else {
