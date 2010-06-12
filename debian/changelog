@@ -1,3 +1,10 @@
+vyatta-op (0.13.70) unstable; urgency=low
+
+  * Fix 5497: display entire interface description in the operational
+    command output
+
+ -- Stig Thormodsrud <stig@vyatta.com>  Sat, 12 Jun 2010 11:03:19 -0700
+
 vyatta-op (0.13.69) unstable; urgency=low
 
   * Block operator user from running "show configuration *"
