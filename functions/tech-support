@@ -379,7 +379,7 @@ echo "BGP is not configured"
 fi
 
 header CLUSTERING
-perl /opt/vyatta/bin/node-exists.pl cluster cluster 
+perl /opt/vyatta/bin/node-exists.pl cluster
 ret_val=$?
 if [ $ret_val -eq 0 ]; then
 header Cluster Status
@@ -443,7 +443,7 @@ fi
 
 
 header FIREWALL 
-perl /opt/vyatta/bin/node-exists.pl firewall firewall 
+perl /opt/vyatta/bin/node-exists.pl firewall
 ret_val=$?
 if [ $ret_val -eq 0 ]; then
 header Firewall Group
@@ -457,7 +457,7 @@ echo "Firewall is not configured"
 fi
 
 header IPS
-perl /opt/vyatta/bin/node-exists.pl content-inspection content-inspection 
+perl /opt/vyatta/bin/node-exists.pl content-inspection
 ret_val=$?
 if [ $ret_val -eq 0 ]; then
 header IPS log
@@ -554,15 +554,15 @@ echo "OSPFV3 is not configured"
 fi
 
 header Policy
-perl /opt/vyatta/bin/node-exists.pl policy policy 
+perl /opt/vyatta/bin/node-exists.pl policy 
 ret_val=$?
 if [ $ret_val -eq 0 ]; then
 header IP Route Maps
 show ip protocol 
 header Route-Map
 show route-map
-header IP Access Lists
-show ip access-lists
+#header IP Access Lists
+#show ip access-lists
 header IP Community List
 show ip community-list 
 else
@@ -570,10 +570,10 @@ echo "Policy is not configured"
 fi
  
 header QoS
-perl /opt/vyatta/bin/node-exists.pl qos-policy qos-policy 
+perl /opt/vyatta/bin/node-exists.pl traffic-policy
 ret_val=$?
 if [ $ret_val -eq 0 ]; then
-header Current QoS Policies
+header Current Traffic Policies
 show queueing
 else
 echo "QoS is not configured"
@@ -635,12 +635,17 @@ echo "VPN PPTP is not configured"
 fi
 
 header VRRP
-perl /opt/vyatta/bin/node-exists.pl ospf protocols
+found=0
+for eth in $(cd /sys/class/net; echo eth*)
+do perl /opt/vyatta/bin/node-exists.pl vrrp interfaces ethernet $eth 
 ret_val=$?
 if [ $ret_val -eq 0 ]; then
 header \''show vrrp'\'
 show vrrp
-else
+found=1
+fi
+done
+if [ $found -eq 0 ]; then
 echo "VRRP is not configured"
 fi
 

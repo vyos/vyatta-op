@@ -39,8 +39,10 @@ if ($ARGV[0])
      $level = $level . " " . $sublevel;
      $i++; 
    }
-    
+   if ($ARGV[1])
+    { 
      $config->setLevel($level);   
+    }    
   if ($config->existsOrig($node))
    { exit 0; }
   else { exit 1; }   
