@@ -83,7 +83,12 @@ header Configuration File
 cat /opt/vyatta/etc/config/config.boot
 
 header Running configuration
-show configuration
+ret_value=`id -gn`
+if [ "$ret_value" == "vyattacfg" ]; then
+ run show configuration
+else
+ show configuration 
+fi
 
 header Package Repository Configuration File 
 cat /etc/apt/sources.list
@@ -110,17 +115,35 @@ done
 
 for eth in $(cd /sys/class/net; echo eth*)
 do header "Physical Interface Details for $eth"
+ ret_value=`id -gn`
+ if [ "$ret_value" == "vyattacfg" ]; then
+   run show interfaces ethernet $eth physical 
+else
    show interfaces ethernet $eth physical 
+fi
 done
 
 header Physical Interface Offload Settings and Capabilities
 sudo ethtool -K
  
 header "ARP Table (Total entries)"
-show arp
+do header "Physical Interface Details for $eth"
+ ret_value=`id -gn`
+ if [ "$ret_value" == "vyattacfg" ]; then
+   run show arp 
+else
+   show arp
+ fi
+done
 
 header Number of incomplete entries in ARP table
-show arp | grep incomplete | wc -l  
+ ret_value=`id -gn`
+ if [ "$ret_value" == "vyattacfg" ]; then
+   run show arp | grep incomplete | wc -l 
+else
+  show arp | grep incomplete | wc -l 
+ fi
+ 
 header Serial
 
 header "WAN Interface Hardware Information (wanrouter hwprobe)" 
@@ -319,6 +342,9 @@ dmesg
 header PCI Info
 sudo lspci -vvx
 
+header PCI Vendor and Device Codes 
+sudo lspci -nn
+
 header System Info
 ${vyatta_bindir}/vyatta-show-dmi
 
@@ -353,10 +379,20 @@ header Entitlement
 show entitlement
 
 header NTP
-show ntp
+ret_value=`id -gn`
+if [ "$ret_value" == "vyattacfg" ]; then
+ run show ntp 
+else
+ show ntp 
+fi
 
 header Zebra
-show zebra
+ret_value=`id -gn`
+if [ "$ret_value" == "vyattacfg" ]; then
+ run show zebra 
+else
+ show zebra 
+fi
 
 
 ###
@@ -402,11 +438,18 @@ fi
 
 header DHCP Client 
 header DHCP Client Leases 
-is_dhcp=`show dhcp client leases | wc -l` 
+ret_value=`id -gn`
+if [ "$ret_value" == "vyattacfg" ]; then
+ is_dhcp=`run show dhcp client leases | wc -l` 
+else
+ is_dhcp=`show dhcp client leases | wc -l` 
+fi
 if [ -z is_dhcp ]; then 
 echo "DHCP client is not configured"
-else 
-show dhcp client leases
+elif [ "$ret_value" == ""vyattacfg ]; then 
+ run show dhcp client leases
+else
+ show dhcp client leases
 fi
 
 
