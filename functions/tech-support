@@ -319,6 +319,9 @@ dmesg
 header PCI Info
 sudo lspci -vvx
 
+header PCI Vendor and Device Codes
+sudo lspci -nn
+ 
 header System Info
 ${vyatta_bindir}/vyatta-show-dmi
 
@@ -400,17 +403,16 @@ else
 echo "DHCP server is not configured"
 fi
 
-header DHCP Client 
-header DHCP Client Leases 
-is_dhcp=`show dhcp client leases | wc -l` 
-if [ -z is_dhcp ]; then 
+header DHCP Client
+is_dhcp=`show dhcp client leases | wc -l`
+if [ "$is_dhcp" == "1" ]; then
 echo "DHCP client is not configured"
-else 
+else
+header DHCP Client Leases
 show dhcp client leases
 fi
 
-
-header DHCPV6 
+header DHCPV6 Server 
 perl /opt/vyatta/bin/node-exists.pl dhcpv6-server service
 ret_val=$?
 if [ $ret_val -eq 0 ]; then
@@ -418,14 +420,28 @@ header DHCPV6 Server Status
 show dhcpv6 server status 
 header DHCPV6 Server Leases
 show dhcpv6 server leases
-header DHCPV6 Relay-Agent
-show dhcpv6 relay-agent
-header DHCPV6 Client Leases
-show dhcpv6 client leases 
 else
 echo "DHCPV6 Server is not configured"
 fi
 
+header DHCPV6 Relay 
+perl /opt/vyatta/bin/node-exists.pl dhcpv6-relay service
+ret_val=$?
+if [ $ret_val -eq 0 ]; then
+header DHCPV6 Relay Status
+show dhcpv6 relay-agent status 
+else
+echo "DHCPV6 Relay is not configured"
+fi
+
+header DHCPV6 Client
+is_dhcp=`show dhcpv6 client leases | wc -l`
+if [ "$is_dhcp" == "1" ]; then
+echo "DHCPV6 client is not configured"
+else
+header DHCPV6 Client Leases 
+show dhcpv6 client leases
+fi
 
 header DNS 
 perl /opt/vyatta/bin/node-exists.pl dns service
@@ -569,14 +585,14 @@ else
 echo "Policy is not configured"
 fi
  
-header QoS
+header Traffic Policy 
 perl /opt/vyatta/bin/node-exists.pl traffic-policy
 ret_val=$?
 if [ $ret_val -eq 0 ]; then
 header Current Traffic Policies
 show queueing
 else
-echo "QoS is not configured"
+echo "Traffic-Policy is not configured"
 fi
 
 header RIP
@@ -588,7 +604,7 @@ show ip rip
 header RIP Status
 show ip rip status
 header RIP Debugging Information
-show debugging RIP
+show debugging rip 
 else
 echo "RIP is not configured"
 fi
