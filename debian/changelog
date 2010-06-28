@@ -1,3 +1,11 @@
+vyatta-op (0.13.72) unstable; urgency=low
+
+  * Added new command to print PCI device information.
+  * Revert "Added new command to print PCI device information."
+  * Blocked user operator from using show tech-support.
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Mon, 28 Jun 2010 20:31:48 +0000
+
 vyatta-op (0.13.71) unstable; urgency=low
 
   * Changes to read policy and vrrp configuration for show tech-support.
