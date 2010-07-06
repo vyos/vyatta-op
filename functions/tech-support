@@ -249,6 +249,11 @@ sudo /sbin/iptables -t raw -L -vn
 
 header SYSTEM
 
+header Show System Image Version 
+show system image version
+
+header Show System Image Storage
+show system image storage
 
 header Current Time
 date
