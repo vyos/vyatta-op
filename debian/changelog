@@ -1,3 +1,9 @@
+vyatta-op (0.13.73) unstable; urgency=low
+
+  * Changed to save 100 log files instead of 10.
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Tue, 06 Jul 2010 16:37:56 +0000
+
 vyatta-op (0.13.72) unstable; urgency=low
 
   * Added new command to print PCI device information.
