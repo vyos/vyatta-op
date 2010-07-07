@@ -1,3 +1,9 @@
+vyatta-op (0.13.75) unstable; urgency=low
+
+  * Add show login commands
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Tue, 06 Jul 2010 22:04:08 -0700
+
 vyatta-op (0.13.74) unstable; urgency=low
 
   * Added 'show system image' commands to 'show tech-support'.
