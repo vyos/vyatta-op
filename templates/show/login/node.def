@@ -1,0 +1,2 @@
+help: Show current login credentials
+run: ${vyatta_bindir}/vyatta-show-current-user

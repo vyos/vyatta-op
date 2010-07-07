@@ -1,0 +1,2 @@
+help: Show current login user id
+run: id -un
