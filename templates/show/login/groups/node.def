@@ -1,2 +1,2 @@
 help: Show current login group information
-run: id -gn
+run: id -Gn

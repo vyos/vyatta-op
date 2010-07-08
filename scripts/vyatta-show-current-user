@@ -11,7 +11,7 @@ then
 fi
 
 echo -n "user      : " ; id -un
-echo -n "groups    : " ; id -gn
+echo -n "groups    : " ; id -Gn
 
 if id -Z >/dev/null 2>&1
 then
