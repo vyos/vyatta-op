@@ -1,3 +1,9 @@
+vyatta-op (0.13.76) unstable; urgency=low
+
+  * Display supplemental groups
+
+ -- Stephen Hemminger <shemminger@lenny.localdomain>  Thu, 08 Jul 2010 12:57:36 -0700
+
 vyatta-op (0.13.75) unstable; urgency=low
 
   * Add show login commands
