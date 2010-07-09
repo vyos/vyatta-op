@@ -60,7 +60,7 @@ do
   if [ "$response" == "n" ]; then
     exit 1
   else
-    sudo /usr/sbin/conntrack -F
-    sudo /usr/sbin/conntrack -F expect
+    sudo /usr/sbin/conntrack -F  >&/dev/null
+    sudo /usr/sbin/conntrack -F expect  >&/dev/null
   fi
 done
