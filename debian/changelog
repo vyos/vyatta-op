@@ -1,3 +1,9 @@
+vyatta-op (0.13.79) unstable; urgency=low
+
+  * Remove duplicate templates
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Fri, 09 Jul 2010 17:51:33 -0700
+
 vyatta-op (0.13.78) unstable; urgency=low
 
   * Add clear interfaces wireless
