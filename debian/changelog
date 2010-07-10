@@ -1,3 +1,9 @@
+vyatta-op (0.13.78) unstable; urgency=low
+
+  * Add clear interfaces wireless
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Fri, 09 Jul 2010 17:25:01 -0700
+
 vyatta-op (0.13.77) unstable; urgency=low
 
   * hide conntrack messages
