@@ -1,0 +1,4 @@
+help: Clear interface information for a given wireless interface
+allowed: local -a array ;
+	 array=( /sys/class/net/wlan* ) ;
+	 echo  -n ${array[@]##*/}
