@@ -1,3 +1,9 @@
+vyatta-op (0.13.80) unstable; urgency=low
+
+  * part of fix for BZ 5839 - move clear process cmds under restart
+
+ -- Mohit Mehta <mohit.mehta@vyatta.com>  Tue, 20 Jul 2010 14:21:19 -0700
+
 vyatta-op (0.13.79) unstable; urgency=low
 
   * Remove duplicate templates
