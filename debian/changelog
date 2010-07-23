@@ -1,3 +1,9 @@
+vyatta-op (0.13.80+larkspur3) unstable; urgency=low
+
+  * Added /home to the archive.
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Fri, 23 Jul 2010 20:18:15 +0000
+
 vyatta-op (0.13.80+larkspur2) unstable; urgency=low
 
   * Adding 'generate tech-support archive'command
