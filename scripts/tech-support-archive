@@ -53,7 +53,7 @@ builtin cd "$OUT"
 echo "Saving the archivals..."
 sudo tar -zcf config.tgz /opt/vyatta/etc/config --exclude "*tech-support-archive*" >& /dev/null
 sudo tar -zcf etc.tgz /etc >& /dev/null 
-#sudo tar -zcf home.tgz /home >& /dev/null
+sudo tar -zcf home.tgz /home >& /dev/null
 sudo tar -zcf var-log.tgz /var/log >& /dev/null 
 sudo tar -zcf root.tgz /root >& /dev/null 
 sudo tar -zcf tmp.tgz /tmp >& /dev/null
