@@ -54,6 +54,10 @@ if ($flag == 0)
 {
  $save_file=$save_file . ".gz" 
 }
+if ($flag == 2)
+{
+ $save_file=$save_file . ".tgz"
+}
 if ($mode eq 'url') {
   print "Saving output to $save_file\n"; 
   my $rc = system("curl -# -T $tmp_file $save_file");

@@ -29,6 +29,7 @@ bin_SCRIPTS	+= scripts/show-image-storage.pl
 bin_SCRIPTS	+= scripts/node-exists.pl
 bin_SCRIPTS	+= scripts/vyatta-remote-copy.pl
 bin_SCRIPTS	+= scripts/vyatta-show-current-user
+bin_SCRIPTS	+= scripts/tech-support-archive
 
 sbin_SCRIPTS     = scripts/dhcpv6-client-show-leases.pl
 
