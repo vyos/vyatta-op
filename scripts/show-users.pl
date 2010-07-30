@@ -61,7 +61,6 @@ $filter |= VYATTA|OTHER if ($filter == 0);
 # Read list of Vyatta users
 my $cfg = new Vyatta::Config;
 $cfg->setLevel('system login user');
-$cfg->{_active_dir_base} = '/opt/vyatta/config/active/';
 my %vuser = map { $_ => 1 } $cfg->listOrigNodes();
 
 # Setup to access lastlog

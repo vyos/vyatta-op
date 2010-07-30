@@ -86,7 +86,6 @@ sub get_ddns_interfaces {
 
     my $vyatta_config = new Vyatta::Config;
     $vyatta_config->setLevel("service dns dynamic");
-    $vyatta_config->{_active_dir_base} = "/opt/vyatta/config/active/";
     my @ddns_interfaces = $vyatta_config->listOrigNodes("interface");
     @ddns_interfaces = sort(@ddns_interfaces);
     return (@ddns_interfaces);

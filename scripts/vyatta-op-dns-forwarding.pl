@@ -92,7 +92,6 @@ sub get_dns_nameservers {
     my $vyatta_config = new Vyatta::Config;
 
     $vyatta_config->setLevel("service dns forwarding");
-    $vyatta_config->{_active_dir_base} = "/opt/vyatta/config/active/";
     my $use_system_nameservers = $vyatta_config->existsOrig("system");
     my @use_dhcp_nameservers = $vyatta_config->returnOrigValues("dhcp");
     my @use_nameservers = $vyatta_config->returnOrigValues("name-server");
