@@ -1,3 +1,9 @@
+vyatta-op (0.13.80+larkspur4) unstable; urgency=low
+
+  * fix typo in tech-support script
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Mon, 16 Aug 2010 16:52:19 -0700
+
 vyatta-op (0.13.80+larkspur3) unstable; urgency=low
 
   * Added /home to the archive.
