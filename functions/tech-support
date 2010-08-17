@@ -340,9 +340,8 @@ header System Startup Files
 ls -l /etc/rc?.d
 
 header Bash History
-#cat $HOME/.bash_history
-for path in /opt/vyatta/config/active/system/login/user/* ; do 
-   user=$(basename $path); 
+eval "cfg_users=($(cli-shell-api listActiveNodes system login user))"
+for user in "${cfg_users[@]}"; do
    header "Bash History for $user"; 
    case $user in 
       root) file="/root/.bash_history";;
