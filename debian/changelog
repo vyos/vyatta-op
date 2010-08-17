@@ -1,3 +1,10 @@
+vyatta-op (0.13.83) unstable; urgency=low
+
+  * fix typo in tech-support script
+  * remove low-level config dir usage
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Mon, 16 Aug 2010 17:02:26 -0700
+
 vyatta-op (0.13.82) unstable; urgency=low
 
   * new API changes
