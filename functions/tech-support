@@ -348,7 +348,7 @@ for path in /opt/vyatta/config/active/system/login/user/* ; do
       root) file="/root/.bash_history";;
       *) file="/home/$user/.bash_history";; 
    esac; 
-   cat $file | gawk '/^#[0-9]*/ {t = substr($0,2); next} {print strftime("%FT%T%z", t) " " $0}' | sort -u
+  sudo cat $file | gawk '/^#[0-9]*/ {t = substr($0,2); next} {print strftime("%FT%T%z", t) " " $0}' | sort -u
 done
 
 header Login History 
