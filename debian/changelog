@@ -1,3 +1,9 @@
+vyatta-op (0.13.80+larkspur5) unstable; urgency=low
+
+  * Allow non-root user extract root's bash history. Added "sudo".
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Tue, 17 Aug 2010 20:38:49 +0000
+
 vyatta-op (0.13.80+larkspur4) unstable; urgency=low
 
   * fix typo in tech-support script
