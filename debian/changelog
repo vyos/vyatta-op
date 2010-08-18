@@ -1,3 +1,15 @@
+vyatta-op (0.13.84) unstable; urgency=low
+
+  [ Deepti Kulkarni ]
+  * Adding 'generate tech-support archive'command
+  * Added /home to the archive.
+  * Allow non-root user extract root's bash history. Added "sudo".
+
+  [ An-Cheng Huang ]
+  * change tech-support to use shell API directly
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Wed, 18 Aug 2010 12:02:59 -0700
+
 vyatta-op (0.13.83) unstable; urgency=low
 
   * fix typo in tech-support script
