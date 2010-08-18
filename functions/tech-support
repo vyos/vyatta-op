@@ -372,39 +372,33 @@ show zebra
 
 
 header BGP 
-perl /opt/vyatta/bin/node-exists.pl bgp protocols 
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header BGP Summary
-show ip bgp summary
-header BGP Neighbors
-show ip bgp neighbors
-header BGP Debugging Information 
-show debugging bgp 
+if cli-shell-api existsActive protocols bgp; then
+  header BGP Summary
+  show ip bgp summary
+  header BGP Neighbors
+  show ip bgp neighbors
+  header BGP Debugging Information 
+  show debugging bgp 
 else
-echo "BGP is not configured"
+  echo "BGP is not configured"
 fi
 
 header CLUSTERING
-perl /opt/vyatta/bin/node-exists.pl cluster
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header Cluster Status
-show cluster status
+if cli-shell-api existsActive cluster; then
+  header Cluster Status
+  show cluster status
 else
-echo "Clustering is not configured"
+  echo "Clustering is not configured"
 fi
 
 header DHCP Server 
-perl /opt/vyatta/bin/node-exists.pl dhcp-server service 
-ret_val=$?
-if [ $ret_val -eq 0 ]; then 
-header DHCP Leases
-show dhcp leases
-header DHCP Statistics
-show dhcp statistics
+if cli-shell-api existsActive service dhcp-server; then
+  header DHCP Leases
+  show dhcp leases
+  header DHCP Statistics
+  show dhcp statistics
 else
-echo "DHCP server is not configured"
+  echo "DHCP server is not configured"
 fi
 
 header DHCP Client
@@ -417,25 +411,21 @@ show dhcp client leases
 fi
 
 header DHCPV6 Server 
-perl /opt/vyatta/bin/node-exists.pl dhcpv6-server service
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header DHCPV6 Server Status
-show dhcpv6 server status 
-header DHCPV6 Server Leases
-show dhcpv6 server leases
+if cli-shell-api existsActive service dhcpv6-server; then
+  header DHCPV6 Server Status
+  show dhcpv6 server status 
+  header DHCPV6 Server Leases
+  show dhcpv6 server leases
 else
-echo "DHCPV6 Server is not configured"
+  echo "DHCPV6 Server is not configured"
 fi
 
 header DHCPV6 Relay 
-perl /opt/vyatta/bin/node-exists.pl dhcpv6-relay service
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header DHCPV6 Relay Status
-show dhcpv6 relay-agent status 
+if cli-shell-api existsActive service dhcpv6-relay; then
+  header DHCPV6 Relay Status
+  show dhcpv6 relay-agent status 
 else
-echo "DHCPV6 Relay is not configured"
+  echo "DHCPV6 Relay is not configured"
 fi
 
 header DHCPV6 Client
@@ -448,255 +438,219 @@ show dhcpv6 client leases
 fi
 
 header DNS 
-perl /opt/vyatta/bin/node-exists.pl dns service
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header DNS Dynamic Status
-show dns dynamic status
-header DNS Forwarding Statistics
-show dns forwarding statistics
-header DNS Forwarding Nameservers  
-show dns forwarding nameservers
+if cli-shell-api existsActive service dns; then
+  header DNS Dynamic Status
+  show dns dynamic status
+  header DNS Forwarding Statistics
+  show dns forwarding statistics
+  header DNS Forwarding Nameservers  
+  show dns forwarding nameservers
 else
-echo "DNS is not configured"
+  echo "DNS is not configured"
 fi
 
 
 header FIREWALL 
-perl /opt/vyatta/bin/node-exists.pl firewall
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header Firewall Group
-show firewall group
-header Firewall Detail
-show firewall detail
-header Firewall Statistics
-show firewall statistics 
+if cli-shell-api existsActive firewall; then
+  header Firewall Group
+  show firewall group
+  header Firewall Detail
+  show firewall detail
+  header Firewall Statistics
+  show firewall statistics 
 else
-echo "Firewall is not configured"
+  echo "Firewall is not configured"
 fi
 
 header IPS
-perl /opt/vyatta/bin/node-exists.pl content-inspection
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header IPS log
-show ips log
-header IPS Update-Log
-show ips update-log
+if cli-shell-api existsActive content-inspection; then
+  header IPS log
+  show ips log
+  header IPS Update-Log
+  show ips update-log
 else
-echo "IPS is not configured"
+  echo "IPS is not configured"
 fi
 
 header IPSec
-perl /opt/vyatta/bin/node-exists.pl ipsec vpn
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header IPSec Status
-show vpn ipsec status
-header IPSec sa
-show vpn ipsec sa
-header IPSec sa Detail
-show vpn ipsec sa detail
-header IPSec sa Statistics
-show vpn ipsec sa statistics
- 
-header /etc/ipsec.conf
-cat /etc/ipsec.conf
+if cli-shell-api existsActive vpn ipsec; then
+  header IPSec Status
+  show vpn ipsec status
+  header IPSec sa
+  show vpn ipsec sa
+  header IPSec sa Detail
+  show vpn ipsec sa detail
+  header IPSec sa Statistics
+  show vpn ipsec sa statistics
+   
+  header /etc/ipsec.conf
+  cat /etc/ipsec.conf
 
-if [ -r /etc/ipsec.secrets ]; then
+  if [ -r /etc/ipsec.secrets ]; then
     header /etc/ipsec.secrets
     cat /etc/ipsec.secrets
-fi
+  fi
 else
-echo "IPSec is not configured"
+  echo "IPSec is not configured"
 fi
 
 header NAT
-perl /opt/vyatta/bin/node-exists.pl nat service
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header NAT Rules
-show nat rules
-header NAT Statistics
-show nat statistics
-header NAT Translations Detail
-show nat translations detail
+if cli-shell-api existsActive service nat; then
+  header NAT Rules
+  show nat rules
+  header NAT Statistics
+  show nat statistics
+  header NAT Translations Detail
+  show nat translations detail
 else
-echo "NAT is not configured"
+  echo "NAT is not configured"
 fi
 
 
 header NETFLOW
-perl /opt/vyatta/bin/node-exists.pl netflow system flow-accounting 
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header NetFlow Accounting
-show flow-accounting 
+if cli-shell-api existsActive system flow-accounting netflow; then
+  header NetFlow Accounting
+  show flow-accounting 
 else
-echo "Netflow is not configured"
+  echo "Netflow is not configured"
 fi
 
 header OPENVPN
-perl /opt/vyatta/bin/node-exists.pl openvpn interfaces 
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header OpenVPN Interfaces
-show interfaces openvpn detail 
-header OpenVPN Server Status
-show openvpn server-status
+if cli-shell-api existsActive interfaces openvpn; then
+  header OpenVPN Interfaces
+  show interfaces openvpn detail 
+  header OpenVPN Server Status
+  show openvpn server-status
 else
-echo "OpenVPN is not configured"
+  echo "OpenVPN is not configured"
 fi
 
 header OSPF
-perl /opt/vyatta/bin/node-exists.pl ospf protocols 
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header OSPF Neighbor
-show ip ospf neighbor
-header OSPF Route
-show ip ospf route
-header OSPF Debugging Information
-show debugging ospf 
+if cli-shell-api existsActive protocols ospf; then
+  header OSPF Neighbor
+  show ip ospf neighbor
+  header OSPF Route
+  show ip ospf route
+  header OSPF Debugging Information
+  show debugging ospf 
 else
-echo "OSPF is not configured"
+  echo "OSPF is not configured"
 fi
 
 header OSPFV3
-perl /opt/vyatta/bin/node-exists.pl ospfv3 protocols
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header OSPFV3 Debugging Information
-show debugging ospfv3
+if cli-shell-api existsActive protocols ospfv3; then
+  header OSPFV3 Debugging Information
+  show debugging ospfv3
 else
-echo "OSPFV3 is not configured" 
+  echo "OSPFV3 is not configured" 
 fi
 
 header Policy
-perl /opt/vyatta/bin/node-exists.pl policy 
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header IP Route Maps
-show ip protocol 
-header Route-Map
-show route-map
-#header IP Access Lists
-#show ip access-lists
-header IP Community List
-show ip community-list 
+if cli-shell-api existsActive policy; then
+  header IP Route Maps
+  show ip protocol 
+  header Route-Map
+  show route-map
+  #header IP Access Lists
+  #show ip access-lists
+  header IP Community List
+  show ip community-list 
 else
-echo "Policy is not configured"
+  echo "Policy is not configured"
 fi
  
 header Traffic Policy 
-perl /opt/vyatta/bin/node-exists.pl traffic-policy
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header Current Traffic Policies
-show queueing
+if cli-shell-api existsActive traffic-policy; then
+  header Current Traffic Policies
+  show queueing
 else
-echo "Traffic-Policy is not configured"
+  echo "Traffic-Policy is not configured"
 fi
 
 header RIP
-perl /opt/vyatta/bin/node-exists.pl rip protocols 
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header IP RIP
-show ip rip 
-header RIP Status
-show ip rip status
-header RIP Debugging Information
-show debugging rip 
+if cli-shell-api existsActive protocols rip; then
+  header IP RIP
+  show ip rip 
+  header RIP Status
+  show ip rip status
+  header RIP Debugging Information
+  show debugging rip 
 else
-echo "RIP is not configured"
+  echo "RIP is not configured"
 fi
 
 header RIPNG 
-perl /opt/vyatta/bin/node-exists.pl ripng protocols 
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header RIPNG Debugging Information
-show debugging ripng
+if cli-shell-api existsActive protocols ripng; then
+  header RIPNG Debugging Information
+  show debugging ripng
 else
-echo "RIPNG is not configured"
+  echo "RIPNG is not configured"
 fi
 
 header VPN-L2TP 
-perl /opt/vyatta/bin/node-exists.pl l2tp vpn 
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header VPN ike secrets
-show vpn ike secrets
-header VPN rsa-keys
-show vpn ike rsa-keys  
-header VPN ike sa
-show vpn ike sa
-header VPN ike Status
-show vpn ike status
-header VPN Remote-Access
-show vpn remote-access
+if cli-shell-api existsActive vpn l2tp; then
+  header VPN ike secrets
+  show vpn ike secrets
+  header VPN rsa-keys
+  show vpn ike rsa-keys  
+  header VPN ike sa
+  show vpn ike sa
+  header VPN ike Status
+  show vpn ike status
+  header VPN Remote-Access
+  show vpn remote-access
 
-header VPN Debug Detail
-show vpn debug detail
+  header VPN Debug Detail
+  show vpn debug detail
 else
-echo "VPN L2TP is not configured"
+  echo "VPN L2TP is not configured"
 fi
 
 header VPN-PPTP 
-perl /opt/vyatta/bin/node-exists.pl pptp vpn 
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header VPN Remote-Access
-show vpn remote-access
+if cli-shell-api existsActive vpn pptp; then
+  header VPN Remote-Access
+  show vpn remote-access
 else
-echo "VPN PPTP is not configured"
+  echo "VPN PPTP is not configured"
 fi
 
 header VRRP
 found=0
-for eth in $(cd /sys/class/net; echo eth*)
-do perl /opt/vyatta/bin/node-exists.pl vrrp interfaces ethernet $eth 
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header \''show vrrp'\'
-show vrrp
-found=1
-fi
+for eth in $(cd /sys/class/net; echo eth*); do
+  if cli-shell-api existsActive interfaces ethernet $eth vrrp; then
+    header \''show vrrp'\'
+    show vrrp
+    found=1
+  fi
 done
 if [ $found -eq 0 ]; then
-echo "VRRP is not configured"
+  echo "VRRP is not configured"
 fi
 
 header WAN LOAD BALANCING
-perl /opt/vyatta/bin/node-exists.pl wan load-balancing 
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header Wan Load Balance
-show wan-load-balance 
-header Wan Load Balance Status 
-show wan-load-balance status
-header Wan Load Balance Connection
-show wan-load-balance connection
+if cli-shell-api existsActive load-balancing wan; then
+  header Wan Load Balance
+  show wan-load-balance 
+  header Wan Load Balance Status 
+  show wan-load-balance status
+  header Wan Load Balance Connection
+  show wan-load-balance connection
 else
-echo "Wan Load Balance is not configured"
+  echo "Wan Load Balance is not configured"
 fi
 
 header "WEBPROXY/URL-FILTERING" 
-perl /opt/vyatta/bin/node-exists.pl url-filtering service webproxy 
-ret_val=$?
-if [ $ret_val -eq 0 ]; then
-header WebProxy Blacklist Categories
-show webproxy blacklist categories
-header WebProxy Blacklist Domains
-show webproxy blacklist domains
-header WebProxy Blacklist URLs
-show webproxy blacklist urls
-header WebProxy Blacklist Log 
-show webproxy blacklist log summary
+if cli-shell-api existsActive service webproxy url-filtering; then
+  header WebProxy Blacklist Categories
+  show webproxy blacklist categories
+  header WebProxy Blacklist Domains
+  show webproxy blacklist domains
+  header WebProxy Blacklist URLs
+  show webproxy blacklist urls
+  header WebProxy Blacklist Log 
+  show webproxy blacklist log summary
 else
-echo "Webproxy/URL-filtering is not configured"
+  echo "Webproxy/URL-filtering is not configured"
 fi
  
 header "END OF TECH-SUPPORT FILE"
