@@ -1,3 +1,9 @@
+vyatta-op (0.13.85) unstable; urgency=low
+
+  * switch "show configuration" to use new config output implementation.
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Thu, 26 Aug 2010 16:47:14 -0700
+
 vyatta-op (0.13.84) unstable; urgency=low
 
   [ Deepti Kulkarni ]
