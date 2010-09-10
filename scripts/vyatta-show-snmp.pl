@@ -16,7 +16,7 @@
 # 
 # Author: Stephen Hemminger
 # Date: January 2010
-# Description: Script to display snmp information
+# Description: Script to display SNMP information
 # 
 # **** End License ****
 #
@@ -39,11 +39,8 @@ sub get_community {
 }
 
 my $community = get_community();
-die "No SNMP community's configured\n"
+die "No SNMP communities configured\n"
     unless $community;
 
 exec 'snmpstatus', '-c', $community, '-v', '1', 'localhost'
     or die "Can't exec snmpstatus: $!";
-
-
-
