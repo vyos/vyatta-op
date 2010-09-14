@@ -36,10 +36,13 @@ declare -x VYATTA_PAGER=$_vyatta_default_pager
 
 _vyatta_op_do_key_bindings ()
 {
-  if [ "$SHELL" == "/bin/vbash" ]; then
-    # only do this if vbash
-    bind '"?": possible-completions'
+  if [ "$SHELL" != "/bin/vbash" ]; then
+    # only do bindings if vbash
+    return
   fi
+
+  bind '"?": possible-completions'
+  bind 'set show-all-if-ambiguous on'
 
   nullglob_save=$(shopt -p nullglob)
   shopt -u nullglob
@@ -85,7 +88,6 @@ _vyatta_op_init ()
 	fi
     done
 
-    bind 'set show-all-if-ambiguous on'
     shopt -s histverify
 }
 
