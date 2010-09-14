@@ -1,3 +1,13 @@
+vyatta-op (0.13.87) unstable; urgency=low
+
+  [ Stephen Hemminger ]
+  * Fix message spelling
+
+  [ An-Cheng Huang ]
+  * fix for bug 6194
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Tue, 14 Sep 2010 13:33:47 -0700
+
 vyatta-op (0.13.86) unstable; urgency=low
 
   * UNRELEASED
