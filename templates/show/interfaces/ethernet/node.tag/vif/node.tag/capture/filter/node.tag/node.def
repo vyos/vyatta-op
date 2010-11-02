@@ -1,0 +1,2 @@
+help: Show captured traffic for interface with filtering
+run: /opt/vyatta/bin/vyatta-tshark-interface-port.pl "$4.$6" "$9"

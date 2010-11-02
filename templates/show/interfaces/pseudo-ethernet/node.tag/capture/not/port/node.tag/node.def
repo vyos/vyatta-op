@@ -1,3 +1,3 @@
 help: Show captured traffic excluding the specified pseudo ethernet interface port
-run: /opt/vyatta/bin/vyatta-tshark-interface-port.pl "$4" "$8" 1
+run: /opt/vyatta/bin/vyatta-tshark-interface-port.pl "$4" "not port $8"
 allowed: echo -n '<1-65535>'
