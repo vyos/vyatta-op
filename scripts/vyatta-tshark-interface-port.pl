@@ -63,9 +63,9 @@ check_if_interface_is_tsharkable($intf);
 if ($#ARGV > 0){
     my $filter = $ARGV[1];
     print "Capturing traffic on $intf $filter ...\n";
-    exec "sudo /usr/bin/tshark -n -i $intf $filter";
+    exec "/usr/bin/tshark -n -i $intf $filter";
 } else {
     print "Capturing traffic on $intf ...\n";
-    exec "sudo /usr/bin/tshark -n -i $intf";
+    exec "/usr/bin/tshark -n -i $intf";
 }
 
