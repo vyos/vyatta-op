@@ -1,3 +1,13 @@
+vyatta-op (0.13.88) unstable; urgency=low
+
+  [ Daniil Baturin ]
+  * Fixed yesno error messages when run with no "-y" argument and with
+    empty prompt.
+
+  [ Stig Thormodsrud ]
+
+ -- Stig Thormodsrud <stig@vyatta.com>  Fri, 05 Nov 2010 14:03:43 -0700
+
 vyatta-op (0.13.87) unstable; urgency=low
 
   [ Stephen Hemminger ]
