@@ -30,7 +30,7 @@ sub get_community {
 	or return;
     my $community;
     while (<$cfg>) {
-	next unless m/^r[ow]community (\w+)$/;
+	next unless m/^r[ow]community (\w+)/;
 	$community = $1;
 	last;
     }
