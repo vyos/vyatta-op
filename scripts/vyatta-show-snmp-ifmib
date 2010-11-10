@@ -23,6 +23,7 @@
 use strict;
 use warnings;
 use Getopt::Long;
+use POSIX qw(strtol);
 
 # This is used to show values corresponding to to results IF-MIB.
 my %interfaces;
@@ -52,8 +53,8 @@ sub read_sysfs {
 
     my $val = <$f>;
     close $f;
-    chomp $val;
-    return $val;
+
+    return strtol($val);
 }
 
 # Imitate code in net-snmp to lookup PC
@@ -65,8 +66,9 @@ sub pci_info {
 
     return unless ( defined($vendor_id) && defined($device_id) );
 
-    open( my $pci, '-|', "lspci -m -d $vendor_id:$device_id" )
-      or die "Can't run lspci";
+    my $cmd = sprintf("lspci -m -d %04x:%04x", $vendor_id, $device_id);
+    open( my $pci, '-|', $cmd )
+      or die "Can't run $cmd";
     my $info = <$pci>;
     close $pci;
 
