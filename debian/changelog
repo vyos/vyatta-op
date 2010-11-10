@@ -1,3 +1,9 @@
+vyatta-op (0.13.90) unstable; urgency=low
+
+  * Add commands to show if-mib mappings for interface
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Tue, 09 Nov 2010 18:40:56 -0800
+
 vyatta-op (0.13.89) unstable; urgency=low
 
   * Fix path to ethtool
