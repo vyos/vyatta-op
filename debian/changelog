@@ -1,3 +1,13 @@
+vyatta-op (0.13.91) unstable; urgency=low
+
+  [ Stephen Hemminger ]
+  * Change pci id parsing
+
+  [ An-Cheng Huang ]
+  * match pre-mendocino "show configuration"
+
+ -- An-Cheng Huang <ancheng@vyatta.com>  Wed, 10 Nov 2010 11:43:21 -0800
+
 vyatta-op (0.13.90) unstable; urgency=low
 
   * Add commands to show if-mib mappings for interface
