@@ -1,3 +1,11 @@
+vyatta-op (0.13.89) unstable; urgency=low
+
+  * Fix path to ethtool
+  * Fix lookup of community string
+  * Enhance show snmp command
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Tue, 09 Nov 2010 16:27:02 -0800
+
 vyatta-op (0.13.88) unstable; urgency=low
 
   [ Daniil Baturin ]
