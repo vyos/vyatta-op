@@ -22,25 +22,84 @@
 #
 use strict;
 use warnings;
+use Getopt::Long;
+use NetAddr::IP;
 
-sub get_community {
-    my $snmpcfg = '/etc/snmp/snmpd.conf';
+my $SNMPDCFG   = '/etc/snmp/snmpd.conf';
+my $SNMPSTATUS = '/usr/bin/snmpstatus';
 
-    open (my $cfg, '<', $snmpcfg)
-	or return;
-    my $community;
+# generate list of communities in configuration file
+sub read_config {
+    my %community;
+
+    open( my $cfg, '<', $SNMPDCFG )
+      or die "Can't open $SNMPDCFG : $!\n";
+
     while (<$cfg>) {
-	next unless m/^r[ow]community (\w+)/;
-	$community = $1;
-	last;
+        chomp;
+        s/#.*$//;
+        my @cols = split;
+        next
+          unless ( $#cols > 0
+            && ( $cols[0] eq 'rocommunity' || $cols[0] eq 'rwcommunity' ) );
+
+        my $addr = ( $#cols > 1 ) ? $cols[2] : "0.0.0.0/0";
+        $community{ $cols[1] } = NetAddr::IP->new($addr);
     }
     close $cfg;
-    return $community;
+
+    return \%community;
 }
 
-my $community = get_community();
-die "No SNMP communities configured\n"
-    unless $community;
+# expand list of available communities for allowed: tag
+sub show_all {
+    my $community = read_config();
 
-exec 'snmpstatus', '-c', $community, '-v', '1', 'localhost'
-    or die "Can't exec snmpstatus: $!";
+    print join( ' ', keys( %{$community} ) ), "\n";
+    exit 0;
+}
+
+# check status of any accessible community on localhost
+sub status_any {
+    my $cref      = read_config();
+    my %community = %{$cref};
+    my $localhost = new NetAddr::IP('localhost');
+
+    die "No SNMP community's configured\n"
+      unless scalar(%community);
+
+    foreach my $c ( keys %community ) {
+        my $addr = $community{$c};
+        status( $c, $localhost->addr() ) if ( $addr->contains($localhost) );
+    }
+    die "No SNMP community's accessible from ", $localhost->addr(), "\n";
+}
+
+# check status of one community
+sub status {
+    my ( $community, $host ) = @_;
+    $host = 'localhost' unless defined($host);
+
+    print "Status of SNMP community $community on $host\n";
+    exec $SNMPSTATUS, '-v1', '-c', $community, $host;
+    die "Can't exec $SNMPSTATUS : $!";
+}
+
+sub usage {
+    print "usage: $0 [--community=name [--host=hostname]]\n";
+    print "       $0 --allowed\n";
+    exit 1;
+}
+
+my ( $host, $community, $allowed );
+
+GetOptions(
+    "host=s"      => \$host,
+    "community=s" => \$community,
+    "allowed"     => \$allowed,
+) or usage();
+
+show_all() if ($allowed);
+status( $community, $host ) if ( defined($community) );
+status_any();
+
