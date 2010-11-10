@@ -24,6 +24,7 @@ bin_SCRIPTS     += scripts/show-dhcp-leases.pl
 bin_SCRIPTS     += scripts/vyatta-boot-image.pl
 bin_SCRIPTS	+= scripts/vyatta-sudo
 bin_SCRIPTS	+= scripts/vyatta-show-snmp.pl
+bin_SCRIPTS	+= scripts/vyatta-show-snmp-ifmib
 bin_SCRIPTS	+= scripts/rename-image.pl
 bin_SCRIPTS	+= scripts/show-image-storage.pl
 bin_SCRIPTS	+= scripts/vyatta-remote-copy.pl
