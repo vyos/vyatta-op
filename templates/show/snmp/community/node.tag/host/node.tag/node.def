@@ -1,0 +1,3 @@
+help: Show status of SNMP on specified host
+allowed: echo -n '<hostname> <x.x.x.x>'
+run: ${vyatta_bindir}/vyatta-show-snmp.pl --community $4 --host $6

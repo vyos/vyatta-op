@@ -1,0 +1,2 @@
+help: Show SNMP ifDescr for specified interface
+run: ${vyatta_bindir}/vyatta-show-snmp-ifmib --ifdescr $6

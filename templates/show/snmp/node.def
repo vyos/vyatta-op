@@ -1,2 +1,2 @@
-help: Show SNMP status
+help: Show status of SNMP on localhost
 run: ${vyatta_bindir}/vyatta-show-snmp.pl

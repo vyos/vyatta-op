@@ -2,7 +2,7 @@
 # Usage: yesno prompt...
 
 default=
-if [ $1 == "-y" ]
+if [ "$1" = "-y" ]
 then default='y'; shift
 fi
 
@@ -14,7 +14,7 @@ fi
 while true
 do
     read -p "$prompt" || exit 1
-    if [ -z "$REPLY" -a ! -z $default ]
+    if [ -z "$REPLY" -a ! -z "$default" ]
     then REPLY=$default
     fi
     case "$REPLY" in

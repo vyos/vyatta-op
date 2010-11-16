@@ -106,7 +106,7 @@ _show_itf_stats ()
 _show_itf_physical ()
 {
     for eth ; do
-        sudo /usr/sbin/ethtool $eth
+        /sbin/ethtool $eth
         echo
     done
 }

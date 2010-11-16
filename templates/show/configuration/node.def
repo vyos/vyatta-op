@@ -1,7 +1,7 @@
 help: Show running configuration
 run: if [ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/admin" ]; 
      then
-        cli-shell-api showCfg --show-active-only
+        cli-shell-api showCfg --show-active-only --show-hide-secrets
      else
         echo Must be an admin user to run this command.
      fi

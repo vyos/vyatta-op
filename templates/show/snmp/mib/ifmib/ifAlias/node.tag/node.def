@@ -1,0 +1,2 @@
+help: Show SNMP ifAlias for specified interface
+run: ${vyatta_bindir}/vyatta-show-snmp-ifmib --ifalias $6

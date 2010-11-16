@@ -1,0 +1,138 @@
+#! /usr/bin/perl
+
+# **** License ****
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# This code was originally developed by Vyatta, Inc.
+# Portions created by Vyatta are Copyright (C) 2007 Vyatta, Inc.
+# All Rights Reserved.
+#
+# Author: Stephen Hemminger
+# Date: Novemember 2010
+# Description: Script for show snmp ifmib
+#
+# **** End License ****
+
+use strict;
+use warnings;
+use Getopt::Long;
+use POSIX qw(strtol);
+
+# This is used to show values corresponding to to results IF-MIB.
+my %interfaces;
+
+sub show_ifindex {
+    foreach my $ifname (@_) {
+        my $info    = $interfaces{$ifname};
+        my $ifindex = $info->{'ifIndex'};
+        printf "%s: ifIndex = %d\n", $ifname, $ifindex;
+    }
+}
+
+sub show_ifalias {
+    foreach my $ifname (@_) {
+        my $info    = $interfaces{$ifname};
+        my $ifalias = $info->{'ifAlias'};
+        printf "%s: ifAlias = %s\n", $ifname,
+          defined($ifalias) ? $ifalias : $ifname;
+    }
+}
+
+sub read_sysfs {
+    my $filename = shift;
+
+    open( my $f, '<', $filename )
+      or return;    # not a PCI device
+
+    my $val = <$f>;
+    close $f;
+
+    return strtol($val);
+}
+
+# Imitate code in net-snmp to lookup PC
+# TODO - move to common code extension (and handle USB?)
+sub pci_info {
+    my $ifname    = shift;
+    my $vendor_id = read_sysfs("/sys/class/net/$ifname/device/vendor");
+    my $device_id = read_sysfs("/sys/class/net/$ifname/device/device");
+
+    return unless ( defined($vendor_id) && defined($device_id) );
+
+    my $cmd = sprintf("lspci -m -d %04x:%04x", $vendor_id, $device_id);
+    open( my $pci, '-|', $cmd )
+      or die "Can't run $cmd";
+    my $info = <$pci>;
+    close $pci;
+
+    return unless $info;
+
+    # extract vendor and device description from output
+    $info =~ /^\S+ "[^"]*" "([^"]*)" "([^"]*)"/;
+
+    return "$1 $2";
+}
+
+sub show_ifdescr {
+    foreach my $ifname (@_) {
+        my $ifdescr = pci_info($ifname);
+
+        printf "%s: ifDescr = %s\n", $ifname,
+		defined($ifdescr) ? $ifdescr : $ifname;
+    }
+}
+
+sub show_all {
+    foreach my $ifname (@_) {
+        my $info    = $interfaces{$ifname};
+        my $ifindex = $info->{'ifIndex'};
+        my $ifalias = $info->{'ifAlias'};
+        my $ifdescr = pci_info($ifname);
+
+        printf "%s: ifIndex = %d\n", $ifname, $ifindex;
+
+        my $pad = sprintf( "%-*s", length($ifname) + 1, " " );
+        printf "%s ifAlias = %s\n", $pad, $ifalias if ($ifalias);
+        printf "%s ifDescr = %s\n", $pad, $ifdescr if ($ifdescr);
+    }
+}
+
+my $show = \&show_all;
+
+GetOptions(
+    "ifindex" => sub { $show = \&show_ifindex },
+    "ifalias" => sub { $show = \&show_ifalias },
+    "ifdescr" => sub { $show = \&show_ifdescr },
+) or die "Unknown option\n";
+
+# List of all interfaces that currently exist on system
+# includes interfaces that may be outside Vyatta CLI because
+# they still show up in SNMP
+open( my $ip, '-|', 'ip li' )
+  or die "Can't run ip command\n";
+
+my $ifname;
+while (<$ip>) {
+    if (/^(\d+): ([^:]*): /) {
+        $ifname = $2;
+        $interfaces{$ifname} = { 'ifIndex' => $1 };
+    }
+    elsif (/^ +alias (.*)$/) {
+        $interfaces{$ifname}->{'ifAlias'} = $1;
+    }
+}
+close $ip;
+
+if (@ARGV) {
+    $show->(@ARGV);
+}
+else {
+    $show->( sort keys %interfaces );
+}
