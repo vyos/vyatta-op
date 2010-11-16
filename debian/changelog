@@ -1,3 +1,13 @@
+vyatta-op (0.13.92) unstable; urgency=low
+
+  [ Stephen Hemminger ]
+  * remove deprecated linda override
+
+  [ Deepti Kulkarni ]
+  * bug fix for 6192 - enhancement to add "iptables-save" to "show
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Tue, 16 Nov 2010 20:10:28 +0000
+
 vyatta-op (0.13.91) unstable; urgency=low
 
   [ Stephen Hemminger ]
