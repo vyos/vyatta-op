@@ -1,3 +1,10 @@
+vyatta-op (0.13.94) unstable; urgency=low
+
+  * Bugfix 6101: Add logging for system image change and delete.
+  * Allow admin users to disconnect PPP links.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Sun, 21 Nov 2010 02:48:16 -0800
+
 vyatta-op (0.13.93) unstable; urgency=low
 
   [ Stephen Hemminger ]
