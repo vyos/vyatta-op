@@ -1,3 +1,9 @@
+vyatta-op (0.13.95) unstable; urgency=low
+
+  * Bugfix 6101: Add syslog record when a system image is re-named.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Sun, 21 Nov 2010 05:12:56 -0800
+
 vyatta-op (0.13.94) unstable; urgency=low
 
   * Bugfix 6101: Add logging for system image change and delete.
