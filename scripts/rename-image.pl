@@ -94,6 +94,7 @@ my $line;
 while ($line = <GRUBFH>) {
     $line =~ s/\/boot\/$old_name/\/boot\/$new_name/g;
     $line =~ s/Vyatta $old_name/Vyatta $new_name/;
+    $line =~ s/Vyatta image $old_name/Vyatta image $new_name/;
     $line =~ s/Lost password change $old_name/Lost password change $new_name/;
     printf($tmpfh $line);
 }
@@ -103,6 +104,8 @@ close(GRUBFH);
 
 system("mv $image_path/$old_name $image_path/$new_name");
 system("cp $tmpfilename $image_path/grub/grub.cfg");
+
+system("logger -p local3.warning -t 'SystemImage' 'System image $old_name has been renamed $new_name'");
 
 printf("Done.\n");
 
