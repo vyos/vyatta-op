@@ -1,3 +1,13 @@
+vyatta-op (0.13.93) unstable; urgency=low
+
+  [ Stephen Hemminger ]
+  * Use lesspipe to display gzip files
+
+  [ Stig Thormodsrud ]
+  * Fix 6353: ENH: Rename "show configuration cmds"
+
+ -- Stig Thormodsrud <stig@vyatta.com>  Mon, 22 Nov 2010 11:35:05 -0800
+
 vyatta-op (0.13.92) unstable; urgency=low
 
   [ Stephen Hemminger ]
