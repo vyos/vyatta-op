@@ -1,3 +1,9 @@
+vyatta-op (0.13.96) unstable; urgency=low
+
+  * Rename 10vyatta-op to vyatta-op
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Wed, 24 Nov 2010 10:49:31 -0800
+
 vyatta-op (0.13.95) unstable; urgency=low
 
   * Bugfix 6101: Add syslog record when a system image is re-named.
