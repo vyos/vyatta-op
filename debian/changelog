@@ -1,3 +1,9 @@
+vyatta-op (0.13.97) unstable; urgency=low
+
+  * Use new bash completion for empty command
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Tue, 30 Nov 2010 20:46:17 -0800
+
 vyatta-op (0.13.96) unstable; urgency=low
 
   * Rename 10vyatta-op to vyatta-op
