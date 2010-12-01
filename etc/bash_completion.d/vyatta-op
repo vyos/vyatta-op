@@ -78,7 +78,7 @@ _vyatta_op_debug ()
 
 _vyatta_op_init ()
 {
-    complete -F _vyatta_op_expand ''
+    complete -E -F _vyatta_op_expand 
 
     for xd in $vyatta_op_templates/* ; do
 	if [ -d $xd ] ; then
