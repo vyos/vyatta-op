@@ -1,3 +1,9 @@
+vyatta-op (0.13.98) unstable; urgency=low
+
+  * Add default command completion
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Wed, 01 Dec 2010 09:09:16 -0800
+
 vyatta-op (0.13.97) unstable; urgency=low
 
   * Use new bash completion for empty command
