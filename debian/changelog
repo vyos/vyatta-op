@@ -1,3 +1,11 @@
+vyatta-op (0.13.99) unstable; urgency=low
+
+  * Add show system memory detail
+  * Add more options to show system processes
+  * Add show system memory cache
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Tue, 07 Dec 2010 11:10:11 -0800
+
 vyatta-op (0.13.98) unstable; urgency=low
 
   * Add default command completion
