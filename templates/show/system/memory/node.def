@@ -1,2 +1,2 @@
-help: Show system memory usage
+help: Display system memory usage
 run: free -ot
