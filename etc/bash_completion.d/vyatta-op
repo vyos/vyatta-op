@@ -77,11 +77,25 @@ _vyatta_op_debug ()
     done
 }
 
+# this is needed to provide original "default completion" behavior.
+# see "vyatta-cfg" completion script for details.
+_vyatta_op_default_expand ()
+{
+  local wc=${#COMP_WORDS[@]}
+  if (( wc < 2 )); then
+    _vyatta_op_expand
+  else
+    # after the first word => cannot be vyatta command so use original default
+    compopt -o filenames
+    _filedir_xspec
+  fi
+}
+
 _vyatta_op_init ()
 {
     # empty and default line compeletion
     complete -E -F _vyatta_op_expand 
-    complete -D -F _vyatta_op_expand
+    complete -D -F _vyatta_op_default_expand
 
     for xd in $vyatta_op_templates/* ; do
 	if [ -d $xd ] ; then
