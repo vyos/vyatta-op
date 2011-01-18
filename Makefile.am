@@ -2,6 +2,7 @@ defaultdir	 = /etc/default
 default_DATA	 = etc/default/vyatta
 completiondir	 = /etc/bash_completion.d
 completion_DATA	 = etc/bash_completion.d/vyatta-op
+completion_DATA	 += etc/bash_completion.d/vyatta-op-run
 opdir		 = $(datadir)/vyatta-op/templates
 bin_sudo_usersdir = $(bindir)/sudo-users
 
