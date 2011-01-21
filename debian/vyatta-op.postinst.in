@@ -10,3 +10,7 @@ ln -sf /opt/vyatta/sbin/vyatta-interfaces.pl ${bindir}/sudo-users/vyatta-interfa
 
 # rm symlink for sendmail that was added by ssmtp package
 rm -f /usr/sbin/sendmail
+
+# handle renamed file (not automatically deleted since it was "conffile")
+rm -f /etc/bash_completion.d/10vyatta-op
+
