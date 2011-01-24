@@ -1,3 +1,4 @@
 vyatta-op: file-in-unusual-dir
 vyatta-op: dir-or-file-in-opt
+vyatta-op: file-in-etc-not-marked-as-conffile
 vyatta-op: shell-script-fails-syntax-check ./opt/vyatta/bin/vyatta-show-interfaces

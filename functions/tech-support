@@ -246,6 +246,8 @@ sudo /sbin/iptables -t mangle -L -vn
 header Raw Chain Details 
 sudo /sbin/iptables -t raw -L -vn
 
+header Save Iptables Rule-Set
+sudo iptables-save -c
 
 header SYSTEM
 

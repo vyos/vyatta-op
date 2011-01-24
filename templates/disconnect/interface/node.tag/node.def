@@ -22,7 +22,7 @@ run:
 		    if [ -n "$PON_PIDS" ]; then
 			echo "killing pon pids: $PON_PIDS"
 			for PID in $PON_PIDS ; do
-			    kill -HUP $PID
+			    sudo kill -HUP $PID
 			done
 		    fi
 		fi

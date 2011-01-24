@@ -296,6 +296,9 @@ Default boot image has been set to "$new_ver".
 You need to reboot the system to start the new default image.
 
 EOF
+
+  system("logger -p local3.warning -t 'SystemImage' 'Default boot image has been changed from $def_ver to $new_ver'");
+
   exit 0;
 }
 
@@ -462,6 +465,8 @@ sub doDelete {
   } else {
       select_by_name($orig_def_ver, $def_ter);
   }
+
+  system("logger -p local3.warning -t 'SystemImage' 'System Image $del_ver has been deleted'");
 
   exit 0;
 }
