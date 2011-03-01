@@ -1,3 +1,15 @@
+vyatta-op (0.13.103) unstable; urgency=low
+
+  [ An-Cheng Huang ]
+  * don't use conffiles (not the vyatta way)
+  * correctly handle renamed file
+
+  [ Stephen Hemminger ]
+  * Add simplified 'show hardware cpu'
+  * Use lscpu in show tech support
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Tue, 01 Mar 2011 11:25:30 -0800
+
 vyatta-op (0.13.102) unstable; urgency=low
 
   * fix for bug 6476.
