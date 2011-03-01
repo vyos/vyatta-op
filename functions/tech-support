@@ -269,7 +269,7 @@ cat /proc/modules
 header CPU
 
 header Installed CPU/s 
-cat /proc/cpuinfo
+lscpu
 
 header Cumulative CPU Time Used by Running Processes
 top -n1 -b -S
