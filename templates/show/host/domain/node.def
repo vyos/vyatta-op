@@ -1,0 +1,2 @@
+help: Show domain name
+run: /bin/domainname
