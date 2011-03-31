@@ -236,19 +236,24 @@ sub run_show_intf {
 sub run_show_intf_brief {
     my @intfs = @_;
 
-    my $format = "%-12s %-18s %-11s %-6s %-29s\n";
-    printf($format, "Interface","IP Address","State","Link","Description");
+    my $format = "%-10s %-11s %-6s %-48s\n";
+    my $format2 = "%-1s %-40s\n";
+    printf($format, "Interface","State","Link","Description");
+    printf($format, "---------","-----","----","-----------");
     foreach my $intf (@intfs) {
-	my @ip_addr = get_ipaddr($intf);
-	my ($state, $link) = get_state_link($intf);
-	my $description = get_intf_description($intf);
-	if (scalar(@ip_addr) == 0) {
-	    printf($format, $intf, "-", $state, $link, $description);
-	} else {
-	    foreach my $ip (@ip_addr) {
-		printf($format, $intf, $ip, $state, $link, $description);
-	    }
-	}
+      next if ($intf =~ /gre0/);
+      next if ($intf =~ /sit0/);
+      my @ip_addr = get_ipaddr($intf);
+      my ($state, $link) = get_state_link($intf);
+      my $description = get_intf_description($intf);
+      if (scalar(@ip_addr) == 0) {
+        printf($format, $intf, $state, $link, $description);
+      } else {
+        printf($format, $intf, $state, $link, $description);
+        foreach my $ip (@ip_addr) {
+          printf($format2,'', "$ip");
+        }
+      }
     }
 }
 
