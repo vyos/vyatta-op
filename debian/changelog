@@ -1,3 +1,11 @@
+vyatta-op (0.13.104) unstable; urgency=low
+
+  * Add command to show domain name
+  * Add new command to show IP multicast groups
+  * Split Ipv4/Ipv6 multicast groups
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Thu, 31 Mar 2011 15:55:23 -0700
+
 vyatta-op (0.13.103) unstable; urgency=low
 
   [ An-Cheng Huang ]
