@@ -236,7 +236,7 @@ sub run_show_intf {
 sub run_show_intf_brief {
     my @intfs = @_;
 
-    my $format = "%-10s %-11s %-6s %-48s\n";
+    my $format = "%-13s %-11s %-6s %-47s\n";
     my $format2 = "%-1s %-40s\n";
     printf($format, "Interface","State","Link","Description");
     printf($format, "---------","-----","----","-----------");
