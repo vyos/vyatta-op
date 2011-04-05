@@ -1,3 +1,9 @@
+vyatta-op (0.13.105) unstable; urgency=low
+
+  * Adding top level "reset".
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Tue, 05 Apr 2011 10:34:21 -0700
+
 vyatta-op (0.13.104) unstable; urgency=low
 
   * Add command to show domain name
