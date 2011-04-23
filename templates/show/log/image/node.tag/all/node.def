@@ -1,0 +1,5 @@
+help: Show contents of all master log files for image
+run: eval $(lesspipe)
+     less $_vyatta_less_options \
+	--prompt=".log?m, file %i of %m., page %dt of %D" \
+	-- `printf "%s\n" /live/image/boot/$4/live-rw/var/log/messages* | sort -nr`

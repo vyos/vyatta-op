@@ -1,0 +1,4 @@
+help: Delete files in the specified directory
+comptype: imagefiles
+allowed: echo -n "<imagefiles>"
+run: sudo ${vyatta_sbindir}/vyatta-image-tools.pl --delete=$3

@@ -65,6 +65,8 @@ declare _vyatta_op_last_comp=${_vyatta_op_last_comp_init}
 declare _vyatta_op_node_path
 declare -a _vyatta_op_noncompletions _vyatta_op_completions
 declare -x -a _vyatta_pipe_noncompletions _vyatta_pipe_completions
+declare _vyatta_comptype
+declare -x -a reply
 
 source /etc/bash_completion.d/vyatta-op-run
 
@@ -237,6 +239,8 @@ _vyatta_op_expand ()
     local restore_shopts=$( shopt -p extglob nullglob | tr \\n \; )
     shopt -s extglob nullglob
     local cur=""
+    local _has_comptype=0
+    _vyatta_comptype=""
 
     if (( ${#COMP_WORDS[@]} > 0 )); then
         cur=${COMP_WORDS[COMP_CWORD]}
@@ -256,7 +260,7 @@ _vyatta_op_expand ()
       eval "$restore_shopts"
       return
     fi
-
+    
     if [ "${COMP_WORDS[*]}" != "$_vyatta_op_last_comp" ] ; then
 	if ! _vyatta_op_set_node_path ; then
 	    echo -e \\a
@@ -264,10 +268,23 @@ _vyatta_op_expand ()
 	    eval "$restore_shopts"
 	    return 1
 	fi
-	_vyatta_op_set_completions
+        _vyatta_set_comptype
+        case $_vyatta_comptype in
+          'imagefiles') 
+              _has_comptype=1
+              _vyatta_image_file_complete
+          ;;
+          *)
+              _has_comptype=0
+              _vyatta_op_set_completions
+          ;;
+        esac
     fi
-
-    COMPREPLY=($( compgen -W "${_vyatta_op_completions[*]}" -- $cur ))
+    if [[ $_has_comptype == 1 ]]; then
+        COMPREPLY=( "${_vyatta_op_completions[@]}" )
+    else
+        COMPREPLY=($( compgen -W "${_vyatta_op_completions[*]}" -- $cur ))
+    fi
 
     # if the last command line arg is empty and we have
     # an empty completion option (meaning wild card),
@@ -285,11 +302,11 @@ _vyatta_op_expand ()
     fi
 
     if [ "${COMP_WORDS[*]}" == "$_vyatta_op_last_comp" ] ; then
-	_vyatta_op_help "$cur" \
-	    ${_vyatta_op_noncompletions[@]} \
-	    ${_vyatta_op_completions[@]} \
-	    | ${VYATTA_PAGER:-cat}
-	COMPREPLY=( "" " " )
+	  _vyatta_op_help "$cur" \
+	      ${_vyatta_op_noncompletions[@]} \
+	      ${_vyatta_op_completions[@]} \
+	      | ${VYATTA_PAGER:-cat}
+	  COMPREPLY=( "" " " )
 	_vyatta_op_last_comp=${_vyatta_op_last_comp_init}
     else
 	_vyatta_op_last_comp="${COMP_WORDS[*]}"
@@ -387,6 +404,138 @@ _vyatta_pipe_completion ()
   fi
   return 0
 }
+
+# comptype
+_vyatta_set_comptype () 
+{
+  local comptype
+  unset _vyatta_comptype
+    for ndef in ${_vyatta_op_node_path}/*/node.def ; do
+        if [[ $ndef == */node.tag/node.def ]] ; then
+            local comptype=$( _vyatta_op_get_node_def_field $ndef comptype )
+            if [[ $comptype == "imagefiles" ]] ; then
+                _vyatta_comptype=$comptype
+                return 0
+            else
+                _vyatta_comptype=""
+                return 1
+            fi
+        else
+            _vyatta_comptype=""
+            return 1
+        fi
+    done
+}
+
+_vyatta_image_is_file()
+{
+  local cur=$1
+  cur=${cur/:/}
+  topdir=${cur%%/*}
+  cur=${cur#$topdir/}
+  if [[ $topdir == "running" ]]; then
+    cur="/${cur}"
+  else
+    cur="/live/image/boot/${topdir}/live-rw/${cur}"
+  fi  
+  if [[ -f ${cur} ]]; then
+    return 0;
+  else
+    return 1;
+  fi  
+}
+
+_vyatta_image_file_complete()
+{
+  if _vyatta_image_is_file ${COMP_WORDS[(( ${#COMP_WORDS[@]}-2 ))]}; then
+    _vyatta_op_completions=( "" " " )
+    return 0;
+  fi
+  _vyatta_image_path_complete
+}
+
+_vyatta_image_path_complete()
+{
+  compopt -o nospace
+  local -a reply
+  if _vyatta_image_is_file $cur ; then
+    foundfile=1
+    _vyatta_op_completions=( "${cur} " )
+    return 0;
+  fi
+  if [[ ${cur} == "" ]]; then
+    reply=( $(compgen -f /live/image/boot/ | grep -v grub) )
+    for i in `seq 0 $[${#reply[@]}-1]`; do
+      file=${reply[$i]}
+      reply[$i]=${file/#\/live\/image\/boot\//}
+      reply[$i]="${reply[$i]}://config/"
+    done
+    reply+=( "running://config/" )
+  else 
+    if ! [[ $cur =~ .*:\/\/ ]]; then
+      if [[ $cur =~ .*:\/ ]]; then
+        cur=${cur/:\//}
+      fi
+      if [[ $cur =~ .*: ]]; then
+        cur=${cur/:/}
+      fi
+      local isrunningimg=$(compgen -W "running" -- ${cur})
+      if [[ $isrunningimg == "running" ]];then
+        cur="/"
+      else
+        cur="/live/image/boot/${cur}"
+      fi
+      reply=( $(compgen -f ${cur}) )
+      for i in `seq 0 $[${#reply[@]}-1]`; do
+        file=${reply[$i]}
+        if [[ $isrunningimg == "running" ]];then
+          reply[$i]="running://config/"
+        else
+          reply[$i]=${file/#\/live\/image\/boot\//}
+          if [[ -d /live/image/boot/${reply[$i]} ]]; then
+            reply[$i]="${reply[$i]/#\//}://config/"
+          fi
+        fi
+      done
+    else
+      cur=${cur/:/}
+      topdir=${cur%%/*}
+      cur=${cur#$topdir//}
+      if [[ $topdir == "running" ]]; then
+        cur="/${cur}"
+      else
+        cur="/live/image/boot/${topdir}/live-rw/${cur}"
+      fi
+      reply=( $(compgen -f ${cur}) )
+      # for loop from _filedirs() in /etc/bash_completion
+      for ((i=0; i < ${#reply[@]}; i++)); do
+        if [[ ${cur:0:1} != "'" ]]; then 
+           [[ -d ${reply[i]} ]] && reply[i]="${reply[i]}"/
+           if [[ ${cur:0:1} == '"' ]]; then 
+             reply[i]=${reply[i]//\\/\\\\}
+             reply[i]=${reply[i]//\"/\\\"}
+             reply[i]=${reply[i]//\$/\\\$}
+           else
+             reply[i]=$(printf %q ${reply[i]})
+           fi
+        fi
+      done
+      for i in `seq 0 $[${#reply[@]}-1]`; do
+        file=${reply[$i]}
+        if [[ $topdir == "running" ]]; then
+          reply[$i]=${file/#\//"$topdir://"}
+        else
+          reply[$i]=${file/#\/live\/image\/boot\/$topdir/"$topdir://"}
+          reply[$i]=${reply[$i]/\/live-rw\/}
+        fi
+      done
+    fi 
+  fi
+  _vyatta_op_completions=( "${reply[@]}" )
+  return 0
+}
+
+
 
 nullglob_save=$( shopt -p nullglob )
 shopt -s nullglob

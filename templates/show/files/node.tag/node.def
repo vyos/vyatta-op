@@ -1,3 +1,4 @@
 help: Show files in the specified directory
-allowed: echo -n '<pathname>'
-run: ls -lh "$3"
+comptype: imagefiles
+allowed: echo -n "<imagefiles>"
+run: sudo ${vyatta_sbindir}/vyatta-image-tools.pl --show=$3

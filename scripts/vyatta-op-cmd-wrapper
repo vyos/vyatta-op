@@ -1,0 +1,5 @@
+#!/bin/vbash -l
+VYATTA_USER_LEVEL_DIR=/opt/vyatta/etc/shell/level/admin
+source /etc/default/vyatta
+source /etc/bash_completion.d/vyatta-op-run
+_vyatta_op_run $@

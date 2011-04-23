@@ -1,0 +1,10 @@
+help: Image to update
+allowed: reply=( $(compgen -f /live/image/boot/ | grep -v grub) )
+    for i in `seq 0 $[${#reply[@]}-1]`; do
+      file=${reply[$i]}
+      reply[$i]=${file/#\/live\/image\/boot\//}
+      reply[$i]="${reply[$i]}://"
+    done
+    reply+=( "running://" )
+    echo "${reply[*]}"
+run: sudo ${vyatta_sbindir}/vyatta-image-tools.pl --updateone $3

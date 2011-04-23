@@ -31,8 +31,10 @@ bin_SCRIPTS	+= scripts/show-image-storage.pl
 bin_SCRIPTS	+= scripts/vyatta-remote-copy.pl
 bin_SCRIPTS	+= scripts/vyatta-show-current-user
 bin_SCRIPTS	+= scripts/tech-support-archive
+bin_SCRIPTS	+= scripts/vyatta-op-cmd-wrapper
 
 sbin_SCRIPTS     = scripts/dhcpv6-client-show-leases.pl
+sbin_SCRIPTS     = scripts/vyatta-image-tools.pl
 
 bin_sudo_users_SCRIPTS      = scripts/vyatta-identify-interface.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-delete-log-file.sh
