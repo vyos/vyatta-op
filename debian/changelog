@@ -1,3 +1,9 @@
+vyatta-op (0.13.106) unstable; urgency=low
+
+  * Initial addition of image op mode tools
+
+ -- John Southworth <john.southworth@vyatta.com>  Sat, 23 Apr 2011 12:49:17 -0700
+
 vyatta-op (0.13.105) unstable; urgency=low
 
   * Adding top level "reset".
