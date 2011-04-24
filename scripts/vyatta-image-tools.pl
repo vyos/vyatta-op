@@ -145,6 +145,17 @@ sub show {
     system("file -sb $file");
     print "\n########### FILE DATA ###########\n";
     system("cat $file");
+ } elsif ( $file =~ /.*\.pcap/ ){
+    print "########### FILE INFO ###########\n";
+    my $filename = conv_file_to_rel($topdir, $file);
+    print "File Name: $filename\n";
+    print "Binary File: \n";
+    my $lsstr = `ls -lGh $file`;
+    parsels($lsstr);
+    print "  Description:\t";
+    system("file -sb $file");
+    print "\n########### FILE DATA ###########\n";
+    system("sudo tshark -r $file | less");
   } elsif ( -B $file ) {
     print "########### FILE INFO ###########\n";
     my $filename = conv_file_to_rel($topdir, $file);
