@@ -32,11 +32,18 @@ if (@copy){
 
 sub conv_file {
   my $file = " ";
-  $file = pop(@_);
-  $file =~ s/://;
-  $file =~ /(.+?)\/\/(.*)/;
-  my $topdir = $1;
-  $file = $2;
+  my $filein = pop(@_);
+  $file = $filein;
+  my $topdir;
+  if ($file =~ /(.+?):\/\/(.*)/){
+    $topdir = $1;
+    $file = $2;
+  } elsif ($file =~ /^\//) {
+    $topdir = "running";
+  } else {
+    print "File not found \n";
+    exit 1;
+  }
   if ( $topdir eq "running" ) {
     $file = "/$file";
   } else {
@@ -145,7 +152,7 @@ sub show {
     system("file -sb $file");
     print "\n########### FILE DATA ###########\n";
     system("cat $file");
- } elsif ( $file =~ /.*\.pcap/ ){
+  } elsif ( $file =~ /.*\.pcap/ ){
     print "########### FILE INFO ###########\n";
     my $filename = conv_file_to_rel($topdir, $file);
     print "File Name: $filename\n";
