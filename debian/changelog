@@ -1,3 +1,11 @@
+vyatta-op (0.13.108) unstable; urgency=low
+
+  * Clean up 'show interfaces' a bit.
+  * Cleanup spacing
+  * Check the validity of the filename passed to the image-tools script
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 25 Apr 2011 11:18:25 -0500
+
 vyatta-op (0.13.107) unstable; urgency=low
 
   * Add the ability to read a packet capture file in a useable format
