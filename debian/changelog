@@ -1,3 +1,9 @@
+vyatta-op (0.13.110) unstable; urgency=low
+
+  * Support saving to and from URLs in image tools
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 25 Apr 2011 14:03:10 -0500
+
 vyatta-op (0.13.109) unstable; urgency=low
 
   * I had the wrong URL for this repo and the previous release added a
