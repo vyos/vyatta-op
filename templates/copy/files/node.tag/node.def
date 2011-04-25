@@ -1,0 +1,3 @@
+help: Directory to copy files from
+comptype: imagefiles
+allowed: echo -n "<imagefiles>"

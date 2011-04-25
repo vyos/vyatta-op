@@ -1,0 +1,4 @@
+help: Show listing of user-defined log files for image
+run: if [ -d /live/image/boot/$4/live-rw/var/log/user ]
+     then ls /live/image/boot/$4/live-rw/var/log/user
+     fi

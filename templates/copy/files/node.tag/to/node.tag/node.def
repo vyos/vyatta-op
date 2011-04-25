@@ -1,0 +1,4 @@
+help: Directory to copy files to
+comptype: imagefiles
+allowed: echo -n "<imagefiles>"
+run: sudo ${vyatta_sbindir}/vyatta-image-tools.pl --copy $3 $5
