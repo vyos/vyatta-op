@@ -1,3 +1,10 @@
+vyatta-op (0.13.109) unstable; urgency=low
+
+  * I had the wrong URL for this repo and the previous release added a
+    tag. Rereleasing to proper URL
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 25 Apr 2011 11:20:30 -0500
+
 vyatta-op (0.13.108) unstable; urgency=low
 
   * Clean up 'show interfaces' a bit.
