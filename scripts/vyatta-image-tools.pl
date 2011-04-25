@@ -112,6 +112,11 @@ sub url_copy {
       $from =~ /.*\/(.*)/;
       my $from_file = $1;
       $to = "$to/$from_file";
+      if (-f "$to") {
+        if (!y_or_n("This file exists; overwrite if needed?")){
+          exit 0;
+        }
+      }
     }
     curl_from($from, $to);
   }
@@ -141,8 +146,22 @@ sub copy {
   } elsif ( -d $to && -d $from ){
     my $print_from = conv_file_to_rel($f_topdir, $from);
     my $print_to = conv_file_to_rel($t_topdir, $to);
-    if (y_or_n("Merge directory $print_from with $print_to?")){
+    print "Directory exists. Would you like to:\n"
+         ."  Merge (M)\n"
+         ."  Overwrite (O)\n"
+         ."  Create subdirectory (S): ";
+    my $answer = <>;
+    if ($answer =~ /M|m/){
       rsync($from, $to);
+    } elsif ($answer =~ /O|o/){
+      system("rm -rf $to");
+      rsync($from, $to);
+    } elsif ($answer =~ /S|s/){
+      $from =~ /.*\/(.*?)\//;
+      my $from_lastdir = $1;
+      copy($from, "$to/$from_lastdir");
+    } else {
+      print "Unsupported operation\n";
     }
   } else {
     rsync($from, $to);

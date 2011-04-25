@@ -1,3 +1,6 @@
-help: Directory to copy files from
+help: Copy files from specified source
+  scp://<user>:<passwd>@<host>/<file> 
+  ftp://<user>:<passwd>@<host>/<file> 
+  tftp://<host>/<file>  
 comptype: imagefiles
 allowed: echo -n "<imagefiles>"
