@@ -41,11 +41,20 @@ sub conv_file {
   } elsif ($file =~ /^\//) {
     $topdir = "running";
   } else {
-    print "File not found \n";
+    print "File: $filein not found \n";
     exit 1;
   }
   if ( $topdir eq "running" ) {
     $file = "/$file";
+  } elsif ( lc($topdir) eq 'tftp') {
+    $file = $filein;
+    $topdir = 'url';
+  } elsif ( lc($topdir) eq 'ftp') {
+    $file = $filein;
+    $topdir = 'url';
+  } elsif ( lc($topdir) eq 'scp') {
+    $file = $filein;
+    $topdir = 'url';
   } else {
     $file = "/live/image/boot/$topdir/live-rw/$file";
   }
@@ -65,6 +74,10 @@ sub conv_file_to_rel {
 sub delete_file {
   my ($file) = @_;
   (my $topdir, $file) = conv_file($file);
+  if ($topdir eq 'url'){
+    print "Cannot delete files from a url\n";
+    exit 1;
+  }
   if (-d $file){
     my $print_dir = conv_file_to_rel($topdir,$file);
     if (y_or_n("Do you want to erase the entire $print_dir directory?")){
@@ -80,11 +93,42 @@ sub delete_file {
   }
 }
 
-sub copy {
+sub url_copy {
   my ($from, $to) = @_;
   my ($f_topdir, $t_topdir);
   ($f_topdir, $from) = conv_file($from);
   ($t_topdir, $to) = conv_file($to);
+  if ($t_topdir eq 'url' && $f_topdir eq 'url'){
+    print "Cannot copy a url to a url\n";
+    exit 1;
+  } elsif($t_topdir eq 'url') {
+    if (-d $from){
+      print "Cannot upload an entire directory to url\n";
+      exit 1;
+    }
+    curl_to($from, $to);
+  } elsif ($f_topdir eq 'url') {
+    if (-d $to){
+      $from =~ /.*\/(.*)/;
+      my $from_file = $1;
+      $to = "$to/$from_file";
+    }
+    curl_from($from, $to);
+  }
+  exit 0;
+}
+
+sub copy {
+  my ($from, $to) = @_;
+  my ($f_topdir, $t_topdir);
+  ($f_topdir, $from) = conv_file($from);
+  if ($f_topdir eq 'url'){
+    url_copy($from, $to);
+  }
+  ($t_topdir, $to) = conv_file($to);
+  if ($t_topdir eq 'url'){
+    url_copy($from, $to);
+  }
   $from =~ /.*\/(.*)/;
   my $from_file = $1;
   if ( -d $from && -e $to && !( -d $to ) ){
@@ -109,7 +153,15 @@ sub update {
   my ($to, $from) = @_;
   my ($t_topdir, $f_topdir);
   ($f_topdir, $from) = conv_file($from);
+  if ($f_topdir eq 'url'){
+    print "Cannot update from a url\n";
+    exit 1;
+  }
   ($t_topdir, $to) = conv_file($to);
+  if ($f_topdir eq 'url'){
+    print "Cannot update to a url\n";
+    exit 1;
+  }
   my $print_from = conv_file_to_rel($f_topdir, $from);
   my $print_to = conv_file_to_rel($t_topdir, $to);
   my $msg = "WARNING: This is a destructive copy of the /config directories\n"
@@ -127,6 +179,18 @@ sub rsync {
   system("rsync -av --progress $from $to");
 }
 
+sub curl_to {
+  my ($from, $to) = @_;
+  my $rc = system("curl -# -k -T $from $to");
+  print "\n";
+}
+
+sub curl_from {
+  my ($from, $to) = @_;
+  my $rc = system("curl -# -k $from > $to");
+  print "\n";
+}
+
 sub y_or_n {
   my ($msg) = @_;
   print "$msg (Y/N): ";
@@ -138,6 +202,10 @@ sub y_or_n {
 sub show {
   my ($topdir, $file) = conv_file(pop(@_));
   my $output = "";
+  if ($topdir eq 'url'){
+    print "Cannot show files from a url\n";
+    exit 1;
+  }
   if ( -d $file ) {
     print "########### DIRECTORY LISTING ###########\n";
     system("ls -lGph  --group-directories-first $file");
@@ -175,7 +243,8 @@ sub show {
     print "\n########### FILE DATA ###########\n";
     system("hexdump -C $file| less");
   } else {
-    print "File Not Found\n";
+    my $filename = conv_file_to_rel($topdir, $file);
+    print "File: $filename not found\n";
   }
 }
 
