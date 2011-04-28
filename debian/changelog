@@ -1,3 +1,10 @@
+vyatta-op (0.13.112) unstable; urgency=low
+
+  * verify the users intention when deleting directories since we don't
+    have a glob
+
+ -- John Southworth <john.southworth@vyatta.com>  Thu, 28 Apr 2011 10:42:16 -0500
+
 vyatta-op (0.13.111) unstable; urgency=low
 
   * Add options when copying a directory to another directory
