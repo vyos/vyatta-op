@@ -80,9 +80,19 @@ sub delete_file {
   }
   if (-d $file){
     my $print_dir = conv_file_to_rel($topdir,$file);
-    if (y_or_n("Do you want to erase the entire $print_dir directory?")){
-      system("rm -rf $file");
-      print("Directory erased\n");
+    print "This is a directory. Would you like to delete:\n"
+         ."  Entire directory (D)\n"
+         ."  Files in directory (F): ";
+    my $answer = <>;
+    if ($answer =~ /F|f/){
+      system("rm -rf $file/*");
+    } elsif ($answer =~ /D|d/){
+      if (y_or_n("Do you want to erase the entire $print_dir directory?")){
+        system("rm -rf $file");
+        print("Directory erased\n");
+      }
+    } else {
+      print "Unsupported operation\n";
     }
   } elsif (-f $file) {
     my $print_file = conv_file_to_rel($topdir,$file);
