@@ -202,6 +202,10 @@ sub curl_from {
 
 sub y_or_n {
   my ($msg) = @_;
+  my $process_client = $ENV{'VYATTA_PROCESS_CLIENT'};
+  if (defined $process_client){
+    return 1 if ($process_client =~ /gui2_rest/);
+  }
   print "$msg (Y/N): ";
   my $input = <>;
   return 1 if ($input =~ /Y|y/);
