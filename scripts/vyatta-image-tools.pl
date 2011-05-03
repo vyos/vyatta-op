@@ -59,6 +59,10 @@ sub conv_file {
     $file = $filein;
     $topdir = 'url';
   } else {
+    if (! -d "/live/image/boot/$topdir/live-rw"){
+      print "Image $topdir not found!\n";
+      exit 1;
+    }
     $file = "/live/image/boot/$topdir/live-rw/$file";
   }
   return ($topdir, $file);
