@@ -49,6 +49,9 @@ sub conv_file {
   } elsif ( lc($topdir) eq 'tftp') {
     $file = $filein;
     $topdir = 'url';
+  } elsif ( lc($topdir) eq 'http') {
+    $file = $filein;
+    $topdir = 'url';
   } elsif ( lc($topdir) eq 'ftp') {
     $file = $filein;
     $topdir = 'url';
@@ -104,6 +107,9 @@ sub url_copy {
   } elsif($t_topdir eq 'url') {
     if (-d $from){
       print "Cannot upload an entire directory to url\n";
+      exit 1;
+    } elsif ($to =~ /http/){
+      print "Cannot upload to http url\n";
       exit 1;
     }
     curl_to($from, $to);
@@ -179,7 +185,7 @@ sub update {
 
 sub rsync {
   my ($from,$to) = @_;
-  system("rsync -av --progress $from $to");
+  system("rsync -a --progress $from $to");
 }
 
 sub curl_to {
