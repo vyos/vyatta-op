@@ -1,3 +1,9 @@
+vyatta-op (0.13.117) unstable; urgency=low
+
+  * Support non-interactive mode for webgui2
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 03 May 2011 17:25:04 -0500
+
 vyatta-op (0.13.116) unstable; urgency=low
 
   * Add back default case for copy, removed too many lines on last
