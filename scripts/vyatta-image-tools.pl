@@ -147,6 +147,8 @@ sub copy {
     if (y_or_n("This directory exists; would you like to merge?")){
       rsync($from, $to);
     }
+  } else {
+    rsync($from, $to);
   }
 }
 
