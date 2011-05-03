@@ -80,19 +80,9 @@ sub delete_file {
   }
   if (-d $file){
     my $print_dir = conv_file_to_rel($topdir,$file);
-    print "This is a directory. Would you like to delete:\n"
-         ."  Entire directory (D)\n"
-         ."  Files in directory (F): ";
-    my $answer = <>;
-    if ($answer =~ /F|f/){
-      system("rm -rf $file/*");
-    } elsif ($answer =~ /D|d/){
-      if (y_or_n("Do you want to erase the entire $print_dir directory?")){
-        system("rm -rf $file");
-        print("Directory erased\n");
-      }
-    } else {
-      print "Unsupported operation\n";
+    if (y_or_n("Do you want to erase the entire $print_dir directory?")){
+      system("rm -rf $file");
+      print("Directory erased\n");
     }
   } elsif (-f $file) {
     my $print_file = conv_file_to_rel($topdir,$file);
@@ -154,27 +144,9 @@ sub copy {
       rsync($from, $to);
     }
   } elsif ( -d $to && -d $from ){
-    my $print_from = conv_file_to_rel($f_topdir, $from);
-    my $print_to = conv_file_to_rel($t_topdir, $to);
-    print "Directory exists. Would you like to:\n"
-         ."  Merge (M)\n"
-         ."  Overwrite (O)\n"
-         ."  Create subdirectory (S): ";
-    my $answer = <>;
-    if ($answer =~ /M|m/){
+    if (y_or_n("This directory exists; would you like to merge?")){
       rsync($from, $to);
-    } elsif ($answer =~ /O|o/){
-      system("rm -rf $to");
-      rsync($from, $to);
-    } elsif ($answer =~ /S|s/){
-      $from =~ /.*\/(.*?)\//;
-      my $from_lastdir = $1;
-      copy($from, "$to/$from_lastdir");
-    } else {
-      print "Unsupported operation\n";
     }
-  } else {
-    rsync($from, $to);
   }
 }
 

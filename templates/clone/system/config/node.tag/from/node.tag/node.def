@@ -7,4 +7,4 @@ allowed: reply=( $(compgen -f /live/image/boot/ | grep -v grub) )
     done
     reply+=( "running://" )
     echo "${reply[*]}"
-run: sudo ${vyatta_sbindir}/vyatta-image-tools.pl --update $3 $5
+run: sudo ${vyatta_sbindir}/vyatta-image-tools.pl --update $4 $6
