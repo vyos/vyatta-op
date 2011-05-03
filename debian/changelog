@@ -1,3 +1,9 @@
+vyatta-op (0.13.115) unstable; urgency=low
+
+  * Change behavior of image tools as per discussion in design meeting
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 03 May 2011 12:53:05 -0500
+
 vyatta-op (0.13.114) unstable; urgency=low
 
   * Fix accidental merge of show interfaces script, reverting to
