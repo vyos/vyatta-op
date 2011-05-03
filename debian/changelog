@@ -1,3 +1,11 @@
+vyatta-op (0.13.116) unstable; urgency=low
+
+  * Add back default case for copy, removed too many lines on last
+    commit
+  * Add http as a url mode users can copy from
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 03 May 2011 15:19:39 -0500
+
 vyatta-op (0.13.115) unstable; urgency=low
 
   * Change behavior of image tools as per discussion in design meeting
