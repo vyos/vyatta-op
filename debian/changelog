@@ -1,3 +1,9 @@
+vyatta-op (0.13.119) unstable; urgency=low
+
+  * allow "reboot at" and "reboot" to be invoked by the rest api.
+
+ -- Michael Larson <mike@vyatta.com>  Wed, 04 May 2011 14:07:39 -0700
+
 vyatta-op (0.13.118) unstable; urgency=low
 
   * Fail on invalid image name
