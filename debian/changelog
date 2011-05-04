@@ -1,3 +1,9 @@
+vyatta-op (0.13.118) unstable; urgency=low
+
+  * Fail on invalid image name
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 03 May 2011 19:05:22 -0500
+
 vyatta-op (0.13.117) unstable; urgency=low
 
   * Support non-interactive mode for webgui2
