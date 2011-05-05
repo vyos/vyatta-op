@@ -1,3 +1,9 @@
+vyatta-op (0.13.121) unstable; urgency=low
+
+  * suppress shutdown confirmation query if invoked by rest API.
+
+ -- Michael Larson <mike@vyatta.com>  Thu, 05 May 2011 10:34:56 -0700
+
 vyatta-op (0.13.120) unstable; urgency=low
 
   * allow "clear connection-tracking" op mode command to override query
