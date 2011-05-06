@@ -1,3 +1,9 @@
+vyatta-op (0.13.124) unstable; urgency=low
+
+  * bug fix - 6592: Include Quagga config in show tech-support output.
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Fri, 06 May 2011 16:36:42 -0700
+
 vyatta-op (0.13.123) unstable; urgency=low
 
   * Bugfix 7059 These commands weren't specified in the bug but they
