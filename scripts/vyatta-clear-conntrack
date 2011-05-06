@@ -55,8 +55,12 @@ get_response () {
 response=''
 while [ -z "$response" ]
 do
-  echo -ne "\nThis will clear all currently tracked and expected connections. Continue? (Y/N) [N]: "
-  response=$(get_response "N" "Y N")
+  if [ "$VYATTA_PROCESS_CLIENT" == "gui2_rest" ]; then
+      response="y"
+  else
+      echo -ne "\nThis will clear all currently tracked and expected connections. Continue? (Y/N) [N]: "
+      response=$(get_response "N" "Y N")
+  fi
   if [ "$response" == "n" ]; then
     exit 1
   else

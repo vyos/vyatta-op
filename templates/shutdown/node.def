@@ -1,3 +1,9 @@
 help: Shutdown the system
-run: ${vyatta_bindir}/yesno -y "Proceed with shutdown? [confirm]" \
-     && sudo /sbin/shutdown -h now
+run: if [ "$VYATTA_PROCESS_CLIENT" == "gui2_rest" ]
+     then
+        sudo /sbin/shutdown -h now
+     else 
+        ${vyatta_bindir}/yesno -y "Proceed with shutdown? [confirm]" \
+        && sudo /sbin/shutdown -h now
+     fi
+

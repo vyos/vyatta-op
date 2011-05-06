@@ -115,11 +115,12 @@ if ($action eq "reboot") {
     if (defined $now) {
         do_reboot($login);
     } else {
-        if (prompt("Proceed with reboot? [confirm]", -y1d=>"y")) {
+        if (defined($ENV{VYATTA_PROCESS_CLIENT} && $ENV{VYATTA_PROCESS_CLIENT} eq 'gui2_rest') || 
+	    prompt("Proceed with reboot? [confirm]", -y1d=>"y")) {
             do_reboot($login);
-        } else {
-            print "Reboot canceled\n";
-            exit 1;
+	} else {
+	    print "Reboot canceled\n";
+	    exit 1;
         }
     }
 }
@@ -155,9 +156,11 @@ if ($action eq "reboot_at") {
     system("atrm $job");
 
     print "\nReload scheduled for $time\n\n";
-    if (! prompt("Proceed with reboot schedule? [confirm]", -y1d=>"y")) {
-	print "Reboot canceled\n";
-	exit 1;
+    if (!defined($ENV{VYATTA_PROCESS_CLIENT}) || $ENV{VYATTA_PROCESS_CLIENT} ne 'gui2_rest') {
+	if (! prompt("Proceed with reboot schedule? [confirm]", -y1d=>"y")) {
+	    print "Reboot canceled\n";
+	    exit 1;
+	}
     }
 
     @lines = `echo sudo /sbin/reboot | at $at_time 2>&1`;
