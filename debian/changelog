@@ -1,3 +1,10 @@
+vyatta-op (0.13.122) unstable; urgency=low
+
+  * Bugfix: 7059 Make it such that show file prints a proper error when
+    run as an operator user.
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 06 May 2011 13:27:55 -0500
+
 vyatta-op (0.13.121) unstable; urgency=low
 
   * suppress shutdown confirmation query if invoked by rest API.
