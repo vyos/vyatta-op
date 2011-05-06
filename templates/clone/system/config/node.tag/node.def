@@ -7,4 +7,10 @@ allowed: reply=( $(compgen -f /live/image/boot/ | grep -v grub) )
     done
     reply+=( "running://" )
     echo "${reply[*]}"
-run: sudo ${vyatta_sbindir}/vyatta-image-tools.pl --updateone $4
+run: if [ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/admin" ];
+     then
+         sudo ${vyatta_sbindir}/vyatta-image-tools.pl --updateone $4
+     else
+         echo Must be an admin user to run this command.
+     fi
+
