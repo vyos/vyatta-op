@@ -91,6 +91,8 @@ cat /etc/apt/sources.list
 header User Startup Scripts 
 cat /etc/rc.local
 
+header Quagga Configuration
+vtysh -c 'show run'
 
 header INTERFACES
 
