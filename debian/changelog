@@ -1,3 +1,10 @@
+vyatta-op (0.13.126) unstable; urgency=low
+
+  * Only show directories in top level completion because installed
+    systems have more in their /boot directories
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 13 May 2011 11:52:55 -0500
+
 vyatta-op (0.13.125) unstable; urgency=low
 
   * Exclude white-out files from copy. Backup current config dir before
