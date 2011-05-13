@@ -1,3 +1,10 @@
+vyatta-op (0.13.125) unstable; urgency=low
+
+  * Exclude white-out files from copy. Backup current config dir before
+    clone
+
+ -- John Southworth <john.southworth@vyatta.com>  Thu, 12 May 2011 19:17:12 -0500
+
 vyatta-op (0.13.124) unstable; urgency=low
 
   * bug fix - 6592: Include Quagga config in show tech-support output.
