@@ -1,3 +1,11 @@
+vyatta-op (0.13.127) unstable; urgency=low
+
+  * Move the clone system template to vyatta-op so that the node.defs
+    are available in the communtiy version. Note this still excludes
+    clone system image from being in community
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 13 May 2011 15:19:27 -0500
+
 vyatta-op (0.13.126) unstable; urgency=low
 
   * Only show directories in top level completion because installed
