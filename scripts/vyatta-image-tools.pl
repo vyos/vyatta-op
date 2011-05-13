@@ -180,16 +180,18 @@ sub update {
   my $msg = "WARNING: This is a destructive copy of the /config directories\n"
           . "This will erase all data in the ".$print_to."config directory\n"
           . "This data will be replaced with the data from $print_from\n"
+          . "The current config data will be backed up in $print_to/config.preclone\n"
           . "Do you wish to continue?";
   if (y_or_n("$msg")){
-    system("rm -rf $to/config");
+    system("rm -rf $to/config.preclone");
+    system("mv $to/config $to/config.preclone");
     rsync("$from/config", $to);
   }
 }
 
 sub rsync {
   my ($from,$to) = @_;
-  system("rsync -a --progress $from $to");
+  system("rsync -a --progress --exclude '.wh.*' $from $to");
 }
 
 sub curl_to {
