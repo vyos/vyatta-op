@@ -464,7 +464,7 @@ _vyatta_image_path_complete()
     return 0;
   fi
   if [[ ${cur} == "" ]]; then
-    reply=( $(compgen -f /live/image/boot/ | grep -v grub) )
+    reply=( $(compgen -d /live/image/boot/ | grep -v grub) )
     for i in `seq 0 $[${#reply[@]}-1]`; do
       file=${reply[$i]}
       reply[$i]=${file/#\/live\/image\/boot\//}
