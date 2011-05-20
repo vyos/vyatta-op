@@ -1,3 +1,10 @@
+vyatta-op (0.13.128) unstable; urgency=low
+
+  * only attempt to move the old /config dir if it exists when cloning a
+    configuration
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 20 May 2011 18:09:05 -0500
+
 vyatta-op (0.13.127) unstable; urgency=low
 
   * Move the clone system template to vyatta-op so that the node.defs
