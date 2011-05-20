@@ -184,7 +184,7 @@ sub update {
           . "Do you wish to continue?";
   if (y_or_n("$msg")){
     system("rm -rf $to/config.preclone");
-    system("mv $to/config $to/config.preclone");
+    system("mv $to/config $to/config.preclone") if ( -d "$to/config" );
     rsync("$from/config", $to);
   }
 }
