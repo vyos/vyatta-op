@@ -1,3 +1,9 @@
+vyatta-op (0.13.129) unstable; urgency=low
+
+  * Bugfix: 7091 make clone restore old config directory if it fails
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 27 May 2011 11:27:05 -0700
+
 vyatta-op (0.13.128) unstable; urgency=low
 
   * only attempt to move the old /config dir if it exists when cloning a
