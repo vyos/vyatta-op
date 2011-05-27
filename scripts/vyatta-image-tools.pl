@@ -185,13 +185,17 @@ sub update {
   if (y_or_n("$msg")){
     system("rm -rf $to/config.preclone");
     system("mv $to/config $to/config.preclone") if ( -d "$to/config" );
-    rsync("$from/config", $to);
+    if (rsync("$from/config", $to) > 0){
+      print "Clone Failed!\nRestoring old config\n";
+      system("mv $to/config.preclone $to/config");
+    }
   }
 }
 
 sub rsync {
   my ($from,$to) = @_;
   system("rsync -a --progress --exclude '.wh.*' $from $to");
+  return $?;
 }
 
 sub curl_to {
