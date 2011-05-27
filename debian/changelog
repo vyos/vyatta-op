@@ -1,3 +1,10 @@
+vyatta-op (0.13.130) unstable; urgency=low
+
+  * Bugfix 7101: Should have been the 6th argument not the 5thfor the
+    log file
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 27 May 2011 11:31:15 -0700
+
 vyatta-op (0.13.129) unstable; urgency=low
 
   * Bugfix: 7091 make clone restore old config directory if it fails
