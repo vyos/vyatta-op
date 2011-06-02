@@ -1,3 +1,9 @@
+vyatta-op (0.13.131) unstable; urgency=low
+
+  * suppress errors when reading pkg file.
+
+ -- Michael Larson <mike@vyatta.com>  Thu, 02 Jun 2011 11:58:57 -0700
+
 vyatta-op (0.13.130) unstable; urgency=low
 
   * Bugfix 7101: Should have been the 6th argument not the 5thfor the
