@@ -176,7 +176,7 @@ if (!(-e $debsfile)) {
 
 print "\n";
 $rHoH_base_debs = read_pkg_file(&echo_file($debsfile));
-$rHoH_now_debs  = read_pkg_file(get_pkg_version(`dpkg -l`));
+$rHoH_now_debs  = read_pkg_file(get_pkg_version(`dpkg -l 2> /dev/null`));
 
 if ($#ARGV == 0) {
     if ($options{$ARGV[0]}) {
