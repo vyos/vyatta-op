@@ -1,3 +1,10 @@
+vyatta-op (0.13.132) unstable; urgency=low
+
+  * Bugfix 5840: Change show interfaces so that ipv6 addresses and/or
+    long descriptions don't break formatting
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 03 Jun 2011 22:16:52 -0700
+
 vyatta-op (0.13.131) unstable; urgency=low
 
   * suppress errors when reading pkg file.
