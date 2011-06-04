@@ -233,22 +233,86 @@ sub run_show_intf {
     }
 }
 
+sub conv_brief_code {
+  my $state = pop(@_);
+  $state = 'u' if ($state eq 'up');
+  $state = 'd' if ($state eq 'down');
+  $state = 'a' if ($state eq 'admin down');
+  return $state;
+}
+
+sub conv_descriptions {
+  my $description = pop @_;
+  my @descriptions;
+  my $line = '';
+  foreach my $elem (split(' ', $description)){
+    if ((length($line) + length($elem)) >= 30){
+      push(@descriptions, $line);
+      $line = "$elem ";
+    } else {
+      $line .= "$elem ";
+    }
+  }
+  push(@descriptions, $line);
+  return @descriptions;
+}
+
 sub run_show_intf_brief {
     my @intfs = @_;
-
-    my $format = "%-12s %-18s %-11s %-6s %-29s\n";
-    printf($format, "Interface","IP Address","State","Link","Description");
+    my $format = "%-11s %-33s %-4s %-29s\n";
+    my $format2 = "%-11s %-33s\n";
+    print "Codes: S - State, L - Link, u - Up, d - Down, a - Admin Down\n";
+    printf($format, "Interface","IP Address","S/L","Description");
+    printf($format, "---------","----------","---","-----------");
     foreach my $intf (@intfs) {
       next if ($intf =~ /gre0/);
       next if ($intf =~ /sit0/);
+      next if ($intf =~ /tunl0/);
       my @ip_addr = get_ipaddr($intf);
       my ($state, $link) = get_state_link($intf);
+      $state = conv_brief_code($state);
+      $link = conv_brief_code($link);
       my $description = get_intf_description($intf);
+      my @descriptions = conv_descriptions($description);
       if (scalar(@ip_addr) == 0) {
-        printf($format, $intf, "-", $state, $link, $description);
+        printf($format, $intf, "-", "$state/$link", $description);
       } else {
-        foreach my $ip (@ip_addr) {
-          printf($format, $intf, $ip, $state, $link, $description);
+        my $tmpip = shift(@ip_addr);
+        my $desc = '';
+        if (length($tmpip) < 33){
+          $desc = shift @descriptions if (scalar(@descriptions) > 0 );
+          printf($format, $intf, $tmpip , "$state/$link", $desc);
+          foreach my $descrip (@descriptions){
+            printf($format, '', '', '', $descrip);
+          }
+          foreach my $ip (@ip_addr) {
+            printf($format2, '', $ip) if (defined $ip);
+          }
+        } else {
+          $desc = shift @descriptions if (scalar(@descriptions) > 0 );
+          printf($format2, $intf, $tmpip);
+          my $printed_desc = 0;
+          foreach my $ip (@ip_addr) {
+            if (length($ip) >= 33) {
+              printf($format2, '', $ip) if (defined $ip);
+            } else {
+              if (!$printed_desc){
+                printf($format, '', $ip, "$state/$link", $desc);
+                $printed_desc = 1;
+                foreach my $descrip (@descriptions){
+                  printf($format, '', '', '', $descrip);
+                }
+              } else {
+                printf($format2, '', $ip);
+              }
+            }
+          }
+          if (!$printed_desc){
+            printf($format, '', '', "$state/$link", $desc);
+            foreach my $descrip (@descriptions){
+              printf($format, '', '', '', $descrip);
+            }
+          }
         }
       }
    }
