@@ -167,12 +167,16 @@ sub update {
   my ($t_topdir, $f_topdir);
   ($f_topdir, $from) = conv_file($from);
   if ($f_topdir eq 'url'){
-    print "Cannot update from a url\n";
+    print "Cannot clone from a url\n";
     exit 1;
   }
   ($t_topdir, $to) = conv_file($to);
-  if ($f_topdir eq 'url'){
-    print "Cannot update to a url\n";
+  if ($t_topdir eq 'running'){
+    print "Cannot clone to running\n";
+    exit 1;
+  }
+  if ($t_topdir eq 'url'){
+    print "Cannot clone to a url\n";
     exit 1;
   }
   my $print_from = conv_file_to_rel($f_topdir, $from);
