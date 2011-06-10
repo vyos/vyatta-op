@@ -1,3 +1,9 @@
+vyatta-op (0.13.134) unstable; urgency=low
+
+  * Fix completion for image log files
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 10 Jun 2011 12:01:48 -0700
+
 vyatta-op (0.13.133) unstable; urgency=low
 
   * Fix clone so that it fails if a user attempts to clone to running://
