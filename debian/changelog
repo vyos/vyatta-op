@@ -1,3 +1,10 @@
+vyatta-op (0.13.136) unstable; urgency=low
+
+  * Display image type and hypervisor in show version
+  * Add dependency on vyatta-cfg-system
+
+ -- Stephen Hemminger <stephen.hemminger@vyatta.com>  Thu, 16 Jun 2011 18:00:17 -0400
+
 vyatta-op (0.13.135) unstable; urgency=low
 
   * Bugfix 5856:  Allow credentials on "add system image" command line
