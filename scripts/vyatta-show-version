@@ -1,27 +1,27 @@
 #!/usr/bin/perl -w
 #
 # Module: show_version
-# 
+#
 # **** License ****
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 2 as
 # published by the Free Software Foundation.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
-# 
+#
 # This code was originally developed by Vyatta, Inc.
 # Portions created by Vyatta are Copyright (C) 2005, 2006, 2007 Vyatta, Inc.
 # All Rights Reserved.
-# 
+#
 # Author: Rick Balocca
 # Date: 2007
 # Description:
-# 
+#
 # **** End License ****
-# 
+#
 use strict;
 use warnings;
 
@@ -43,11 +43,42 @@ sub echo_file {
     if (!(-e $file)) {
 	return @lines;
     }
-    
+
     open(my $FH, '<', $file) or die "Unable to open [$file]\n";
     @lines=<$FH>;
     close($FH);
     return @lines;
+}
+
+# This follows the chain from /boot/grub/menu.cfg which
+# boots /boot/vmlinuz to find the version of kernel running
+sub get_image_type {
+    my $kernel = readlink('/boot/vmlinuz');
+    my $version;
+
+    unless (defined($kernel)) {
+	warn "Can not read link /boot/vmlinuz: $!\n";
+	return;
+    }
+
+    unless ($kernel =~ /^vmlinuz-.*-([^-]*)-vyatta(.*)$/) {
+	warn "Unknown kernel version: $kernel\n";
+	return;
+    }
+
+    if ($1 eq '586') {
+	$version = "Intel 32bit";
+    } elsif ($1 eq "amd64") {
+	$version = "Intel 64bit";
+    } else {
+	$version = $1;
+    }
+
+    if ($2 eq '-virt') {
+	$version .= " Virtual"
+    }
+
+    return $version;
 }
 
 #
@@ -55,7 +86,7 @@ sub echo_file {
 #
 sub get_pkg_version {
     my @lines = @_;
-    
+
     my @new_lines = ();
     foreach my $line (@lines) {
 	if ($line =~ /^[D\|\+]/) {
@@ -84,7 +115,7 @@ sub read_pkg_file {
 sub show_added {
     for my $name (sort keys %$rHoH_now_debs) {
 	if (!$rHoH_base_debs->{$name}) {
-	    printf("Aii %-25s %-25s\n", 
+	    printf("Aii %-25s %-25s\n",
 		   $name, $rHoH_now_debs->{$name}->{'version'});
 	}
     }
@@ -93,7 +124,7 @@ sub show_added {
 sub show_deleted {
     for my $name (sort keys %$rHoH_base_debs) {
 	if (!$rHoH_now_debs->{$name}) {
-	    printf("X   %-25s %-25s\n", 
+	    printf("X   %-25s %-25s\n",
 		   $name, $rHoH_base_debs->{$name}->{'version'});
 	}
     }
@@ -101,7 +132,7 @@ sub show_deleted {
 
 sub show_upgraded_downgraded {
     my ($up_down) = @_;
-    
+
     my ($symbol, $op, $ver_base, $ver_now, $cmd);
     if ($up_down eq "upgraded") {
 	$symbol = "U";
@@ -117,11 +148,11 @@ sub show_upgraded_downgraded {
 	    if ($ver_base ne $ver_now) {
 		$cmd = "dpkg --compare-versions \"$ver_base\" $op \"$ver_now\"";
 		if (!system($cmd)) {
-		    printf("%sii %-25s %-20s (baseline: %s)\n", 
+		    printf("%sii %-25s %-20s (baseline: %s)\n",
 			   $symbol, $name, $ver_now, $ver_base);
 		}
             }
-	} 
+	}
     }
 }
 
@@ -154,6 +185,11 @@ my %options = (
 print(&echo_file($versionfile));
 print(&echo_file($buildfile));
 
+my $type = get_image_type();
+if ($type) {
+    print "System type:  $type\n";
+}
+
 my $booted = `grep -e '^unionfs.*/filesystem.squashfs' -e '^aufs.*/filesystem.squashfs' /proc/mounts`;
 if (defined($booted) && $booted ne "") {
     $booted="livecd";
@@ -166,14 +202,21 @@ if (defined($booted) && $booted ne "") {
     }
 }
 print "Boot via:     $booted\n";
+
+my $hv = `/opt/vyatta/sbin/hypervisor_vendor`;
+if (defined($hv) && $hv ne "") {
+    chomp $hv;
+    print "Hypervisor:   $hv\n";
+}
+
 my $uptime = `uptime`;
 if (defined $uptime && $uptime ne "") {
     print "Uptime:      $uptime\n";
 }
+
 if (!(-e $debsfile)) {
     exit 0;
 }
-
 print "\n";
 $rHoH_base_debs = read_pkg_file(&echo_file($debsfile));
 $rHoH_now_debs  = read_pkg_file(get_pkg_version(`dpkg -l 2> /dev/null`));
@@ -186,5 +229,3 @@ if ($#ARGV == 0) {
 	exit 1;
     }
 }
- 
-# end of file
