@@ -14,7 +14,7 @@ function header {
 OUT=1
 FLAG=0
 REMOTE=0
-DEFAULT_PATH=/opt/vyatta/etc/config/support
+DEFAULT_PATH=/config/support
 DEFAULT_GROUP=users
 
 do_rotate ()
@@ -37,19 +37,14 @@ CURTIME=`date +%F-%H%M%S`
 
  if [ "$1" == "save" ] || [ "$1" == "save-uncompressed" ]; then
   # "save" or save-uncompressed is specified. save output to file.
+  OUT="$HOSTNAME.tech-support.$CURTIME.txt"
   if [ -n "$2" ]; then
-   if [[ "$2" =~ scp:///* ]]; then  
-     OUT="$HOSTNAME.tech-support.$CURTIME"
-     REMOTE="1" 
-   elif [[ "$2" =~ ftp:///* ]]; then 
-     OUT="$HOSTNAME.tech-support.$CURTIME"
-     REMOTE="1"
-   else
+    if [[ "$2" =~ scp:///* || "$2" =~ ftp:///* ]]; then  
+      REMOTE="1" 
+    else
       #file to be save locally
-     OUT="$2.$HOSTNAME.tech-support.$CURTIME"
-   fi
-  else
-     OUT="$HOSTNAME.tech-support.$CURTIME"
+      OUT="$2.$OUT"
+    fi
   fi
   
 if [[ $OUT != /* ]]; then
