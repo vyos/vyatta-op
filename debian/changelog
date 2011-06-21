@@ -1,3 +1,9 @@
+vyatta-op (0.13.139) unstable; urgency=low
+
+  * fix path for 'show tech-support brief save'
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 20 Jun 2011 17:04:08 -0700
+
 vyatta-op (0.13.138) unstable; urgency=low
 
   * Bugfix 6800:  Allow non-vyatta menu entries in grub.cfg.
