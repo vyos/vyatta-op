@@ -13,7 +13,7 @@ function header {
 OUT=1
 FLAG=0
 REMOTE=0
-DEFAULT_PATH=/opt/vyatta/etc/config/support
+DEFAULT_PATH=/config/support
 DEFAULT_GROUP=users
 
 do_rotate ()
