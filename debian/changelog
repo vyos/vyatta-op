@@ -1,3 +1,9 @@
+vyatta-op (0.13.140) unstable; urgency=low
+
+  * add .txt extension to the 'show tech-support brief save' output
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 20 Jun 2011 17:19:19 -0700
+
 vyatta-op (0.13.139) unstable; urgency=low
 
   * fix path for 'show tech-support brief save'
