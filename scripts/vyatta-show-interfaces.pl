@@ -235,9 +235,9 @@ sub run_show_intf {
 
 sub conv_brief_code {
   my $state = pop(@_);
-  $state = 'u' if ($state eq 'up');
-  $state = 'd' if ($state eq 'down');
-  $state = 'a' if ($state eq 'admin down');
+  $state = 'U' if ($state eq 'up');
+  $state = 'D' if ($state eq 'down');
+  $state = 'A' if ($state eq 'admin down');
   return $state;
 }
 
@@ -261,7 +261,7 @@ sub run_show_intf_brief {
     my @intfs = @_;
     my $format = "%-11s %-33s %-4s %-29s\n";
     my $format2 = "%-11s %-33s\n";
-    print "Codes: S - State, L - Link, u - Up, d - Down, a - Admin Down\n";
+    print "Codes: S - State, L - Link, U - Up, D - Down, A - Admin Down\n";
     printf($format, "Interface","IP Address","S/L","Description");
     printf($format, "---------","----------","---","-----------");
     foreach my $intf (@intfs) {
@@ -275,7 +275,12 @@ sub run_show_intf_brief {
       my $description = get_intf_description($intf);
       my @descriptions = conv_descriptions($description);
       if (scalar(@ip_addr) == 0) {
-        printf($format, $intf, "-", "$state/$link", $description);
+        my $desc = '';
+        $desc = shift @descriptions if (scalar(@descriptions) > 0 );
+        printf($format, $intf, "-", "$state/$link", $desc);
+        foreach my $descrip (@descriptions){
+          printf($format, '', '', '', $descrip);
+        }
       } else {
         my $tmpip = shift(@ip_addr);
         my $desc = '';
