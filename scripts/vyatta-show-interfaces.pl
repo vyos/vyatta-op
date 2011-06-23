@@ -246,7 +246,7 @@ sub conv_descriptions {
   my @descriptions;
   my $line = '';
   foreach my $elem (split(' ', $description)){
-    if ((length($line) + length($elem)) >= 30){
+    if ((length($line) + length($elem)) >= 29){
       push(@descriptions, $line);
       $line = "$elem ";
     } else {
@@ -259,8 +259,8 @@ sub conv_descriptions {
 
 sub run_show_intf_brief {
     my @intfs = @_;
-    my $format = "%-11s %-33s %-4s %-29s\n";
-    my $format2 = "%-11s %-33s\n";
+    my $format = "%-12s %-33s %-4s %-28s\n";
+    my $format2 = "%-12s %-33s\n";
     print "Codes: S - State, L - Link, U - Up, D - Down, A - Admin Down\n";
     printf($format, "Interface","IP Address","S/L","Description");
     printf($format, "---------","----------","---","-----------");
