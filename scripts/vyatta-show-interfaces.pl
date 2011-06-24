@@ -235,7 +235,7 @@ sub run_show_intf {
 
 sub conv_brief_code {
   my $state = pop(@_);
-  $state = 'U' if ($state eq 'up');
+  $state = 'u' if ($state eq 'up');
   $state = 'D' if ($state eq 'down');
   $state = 'A' if ($state eq 'admin down');
   return $state;
