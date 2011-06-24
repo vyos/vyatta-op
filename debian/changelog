@@ -1,3 +1,13 @@
+vyatta-op (0.13.141) unstable; urgency=low
+
+  * Make interface states more readable by using capital letters; fix
+    bug in description output when there isn't an ip assigned
+  * Adjust spacing on Interface column
+  * make the 'u' for up lowercase so that it will draw the users
+    attention to interfaces that are down.
+
+ -- John Southworth <john.southworth@vyatta.com>  Thu, 23 Jun 2011 19:56:41 -0500
+
 vyatta-op (0.13.140) unstable; urgency=low
 
   * add .txt extension to the 'show tech-support brief save' output
