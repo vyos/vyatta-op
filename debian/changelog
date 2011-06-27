@@ -1,3 +1,9 @@
+vyatta-op (0.13.142) unstable; urgency=low
+
+  * fix typo in show interfaces legend
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 27 Jun 2011 16:50:20 -0500
+
 vyatta-op (0.13.141) unstable; urgency=low
 
   * Make interface states more readable by using capital letters; fix
