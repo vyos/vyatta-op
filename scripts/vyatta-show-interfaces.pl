@@ -261,7 +261,7 @@ sub run_show_intf_brief {
     my @intfs = @_;
     my $format = "%-12s %-33s %-4s %-28s\n";
     my $format2 = "%-12s %-33s\n";
-    print "Codes: S - State, L - Link, U - Up, D - Down, A - Admin Down\n";
+    print "Codes: S - State, L - Link, u - Up, D - Down, A - Admin Down\n";
     printf($format, "Interface","IP Address","S/L","Description");
     printf($format, "---------","----------","---","-----------");
     foreach my $intf (@intfs) {
