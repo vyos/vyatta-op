@@ -46,6 +46,8 @@ sub conv_file {
   }
   if ( $topdir eq "running" ) {
     $file = "/$file";
+  } elsif ( lc($topdir) eq 'disk-install' ) {
+    $file = "/live/image/$file";
   } elsif ( lc($topdir) eq 'tftp') {
     $file = $filein;
     $topdir = 'url';
@@ -72,6 +74,8 @@ sub conv_file_to_rel {
   my ($topdir, $filename) = @_;
   if ($topdir eq "running"){
     $filename =~ s?/?$topdir://?;
+  } elsif ($topdir eq "disk-install") {
+    $filename =~ s?/live/image/?$topdir://?; 
   } else {
     $filename =~ s?/live/image/boot/$topdir/live-rw/?$topdir://?;
   }
@@ -172,6 +176,10 @@ sub update {
   }
   ($t_topdir, $to) = conv_file($to);
   if ($t_topdir eq 'running'){
+    print "Cannot clone to running\n";
+    exit 1;
+  }
+  if ($t_topdir eq 'disk-install'){
     print "Cannot clone to running\n";
     exit 1;
   }

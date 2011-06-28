@@ -5,7 +5,6 @@ allowed: reply=( $(compgen -f /live/image/boot/ | grep -v grub) )
       reply[$i]=${file/#\/live\/image\/boot\//}
       reply[$i]="${reply[$i]}://"
     done
-    reply+=( "running://" )
     echo "${reply[*]}"
 run: if [ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/admin" ];
      then
