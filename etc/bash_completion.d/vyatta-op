@@ -435,6 +435,8 @@ _vyatta_image_is_file()
   cur=${cur#$topdir/}
   if [[ $topdir == "running" ]]; then
     cur="/${cur}"
+  elif [[ $topdir == "disk-install" ]]; then
+    cur="/live/image/${cur}"
   else
     cur="/live/image/boot/${topdir}/live-rw/${cur}"
   fi  
@@ -472,7 +474,7 @@ _vyatta_image_path_complete()
     done
     reply+=( "running://config/" )
     if [[ -d /live/image/opt/vyatta/etc/config || -d /live/image/config ]]; then
-      reply+=( "disk-install://config/" )
+      reply+=( "disk-install://" )
     fi
   else 
     if ! [[ $cur =~ .*:\/\/ ]]; then
@@ -497,7 +499,7 @@ _vyatta_image_path_complete()
         if [[ $isrunningimg == "running" ]];then
           reply[$i]="running://config/"
         elif [[ $isdiskinstall == "disk-install" ]]; then
-          reply[$i]="disk-install://config/" 
+          reply[$i]="disk-install://" 
         else
           reply[$i]=${file/#\/live\/image\/boot\//}
           if [[ -d /live/image/boot/${reply[$i]} ]]; then
