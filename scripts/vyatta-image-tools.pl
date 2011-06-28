@@ -180,7 +180,7 @@ sub update {
     exit 1;
   }
   if ($t_topdir eq 'disk-install'){
-    print "Cannot clone to running\n";
+    print "Cannot clone to disk-install\n";
     exit 1;
   }
   if ($t_topdir eq 'url'){
