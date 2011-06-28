@@ -1,3 +1,11 @@
+vyatta-op (0.13.146) unstable; urgency=low
+
+  * Use proper directory for disk-installs. Do completion of directory
+    names only in clone system config since disk installs will have
+    other files in /live/image/boot
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 28 Jun 2011 12:52:00 -0500
+
 vyatta-op (0.13.145) unstable; urgency=low
 
   * Don't guide disk-install files to /config as it doesn't exist. fix
