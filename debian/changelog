@@ -1,3 +1,9 @@
+vyatta-op (0.13.143) unstable; urgency=low
+
+  * Add a disk-install uri for old disk based installs in image tools
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 28 Jun 2011 11:33:01 -0500
+
 vyatta-op (0.13.142) unstable; urgency=low
 
   * fix typo in show interfaces legend
