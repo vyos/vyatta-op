@@ -1,3 +1,10 @@
+vyatta-op (0.13.145) unstable; urgency=low
+
+  * Don't guide disk-install files to /config as it doesn't exist. fix
+    file detection for disk-install
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 28 Jun 2011 12:11:27 -0500
+
 vyatta-op (0.13.144) unstable; urgency=low
 
   * Fix typo in error message in last commit
