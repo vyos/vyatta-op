@@ -197,7 +197,9 @@ sub update {
   if (y_or_n("$msg")){
     system("rm -rf $to/config.preclone");
     system("mv $to/config $to/config.preclone") if ( -d "$to/config" );
-    if (rsync("$from/config", $to) > 0){
+    my $confdir="config";
+    $confdir="opt/vyatta/etc/config" if ( $f_topdir eq "disk-install" );
+    if (rsync("$from/$confdir", $to) > 0){
       print "Clone Failed!\nRestoring old config\n";
       system("mv $to/config.preclone $to/config");
     }

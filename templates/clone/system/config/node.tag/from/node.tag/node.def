@@ -1,5 +1,5 @@
 help: Image to update from
-allowed: reply=( $(compgen -f /live/image/boot/ | grep -v grub) )
+allowed: reply=( $(compgen -d /live/image/boot/ | grep -v grub) )
     for i in `seq 0 $[${#reply[@]}-1]`; do
       file=${reply[$i]}
       reply[$i]=${file/#\/live\/image\/boot\//}
