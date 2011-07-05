@@ -1,3 +1,10 @@
+vyatta-op (0.13.147) unstable; urgency=low
+
+  * Bugfix 7277: Make clone system config consistent with the other
+    image tools
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 05 Jul 2011 10:48:39 -0500
+
 vyatta-op (0.13.146) unstable; urgency=low
 
   * Use proper directory for disk-installs. Do completion of directory
