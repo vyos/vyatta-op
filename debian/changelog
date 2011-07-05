@@ -1,3 +1,9 @@
+vyatta-op (0.13.149) unstable; urgency=low
+
+  * Clean up clone warning message
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 05 Jul 2011 12:16:58 -0500
+
 vyatta-op (0.13.148) unstable; urgency=low
 
   * Bugfix 7278: Add a 'show log image <image-name> tail' command
