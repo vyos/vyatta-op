@@ -1,0 +1,2 @@
+help: Show last lines of messages file
+run: tail /live/image/boot/$4/live-rw/var/log/messages

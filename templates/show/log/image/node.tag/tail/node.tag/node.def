@@ -1,0 +1,3 @@
+help: Show last changes to messages
+allowed: echo -n '<NUMBER>'
+run: tail -n "$6"  /live/image/boot/$4/live-rw/var/log/messages | ${VYATTA_PAGER:-cat}
