@@ -1,3 +1,9 @@
+vyatta-op (0.13.150) unstable; urgency=low
+
+  * bug fix to improve "generate tech-support archive" help text.
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Tue, 05 Jul 2011 07:37:43 -0700
+
 vyatta-op (0.13.149) unstable; urgency=low
 
   * Clean up clone warning message
