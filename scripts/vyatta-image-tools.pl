@@ -191,8 +191,8 @@ sub update {
   my $print_to = conv_file_to_rel($t_topdir, $to);
   my $msg = "WARNING: This is a destructive copy of the /config directories\n"
           . "This will erase all data in the ".$print_to."config directory\n"
-          . "This data will be replaced with the data from $print_from\n"
-          . "The current config data will be backed up in $print_to/config.preclone\n"
+          . "This data will be replaced with the data from ".$print_from."config\n"
+          . "The current config data will be backed up in ".$print_to."config.preclone\n"
           . "Do you wish to continue?";
   if (y_or_n("$msg")){
     system("rm -rf $to/config.preclone");
