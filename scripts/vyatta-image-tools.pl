@@ -24,7 +24,7 @@ if (@update){
   update(@update);
 }
 if (defined($updateone)){
-  update($updateone, "running://");
+  update($updateone, "running");
 }
 if (@copy){
   copy(@copy);
@@ -169,12 +169,12 @@ sub copy {
 sub update {
   my ($to, $from) = @_;
   my ($t_topdir, $f_topdir);
-  ($f_topdir, $from) = conv_file($from);
+  ($f_topdir, $from) = conv_file("$from://");
   if ($f_topdir eq 'url'){
     print "Cannot clone from a url\n";
     exit 1;
   }
-  ($t_topdir, $to) = conv_file($to);
+  ($t_topdir, $to) = conv_file("$to://");
   if ($t_topdir eq 'running'){
     print "Cannot clone to running\n";
     exit 1;

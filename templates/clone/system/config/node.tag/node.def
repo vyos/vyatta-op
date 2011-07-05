@@ -3,7 +3,6 @@ allowed: reply=( $(compgen -d /live/image/boot/ | grep -v grub) )
     for i in `seq 0 $[${#reply[@]}-1]`; do
       file=${reply[$i]}
       reply[$i]=${file/#\/live\/image\/boot\//}
-      reply[$i]="${reply[$i]}://"
     done
     echo "${reply[*]}"
 run: if [ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/admin" ];
