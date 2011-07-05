@@ -1,2 +1,2 @@
-help: Generate tech-support archival at the specified path.
+help: Generate tech-support archive
 run: ${vyatta_bindir}/tech-support-archive 

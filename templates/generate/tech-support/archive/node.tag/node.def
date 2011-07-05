@@ -1,4 +1,4 @@
-help: Generate ecompressed tech-support archival at the specificed path. 
+help: Generate compressed tech-support archive at the specified path
 allowed: echo -n '<file> <scp://<user>:<passwd>@<host>/<file>> <ftp://<user>:<passwd>@<host>/<file>>'
 run: ${vyatta_bindir}/tech-support-archive "$4" 
 
