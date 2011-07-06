@@ -1,3 +1,9 @@
+vyatta-op (0.13.152) unstable; urgency=low
+
+  *  Bugfix 7285: remove coloring of error
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 06 Jul 2011 16:08:23 -0500
+
 vyatta-op (0.13.151) unstable; urgency=low
 
   * Bugfix 7283: make ntp.vyatta.com have a new line
