@@ -1,3 +1,9 @@
+vyatta-op (0.13.151) unstable; urgency=low
+
+  * Bugfix 7283: make ntp.vyatta.com have a new line
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 06 Jul 2011 14:13:53 -0500
+
 vyatta-op (0.13.150) unstable; urgency=low
 
   * bug fix to improve "generate tech-support archive" help text.
