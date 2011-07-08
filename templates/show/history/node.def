@@ -1,2 +1,4 @@
 help: show command history
-run: history
+run: HISTFILE="$HOME/.bash_history"
+     \set -o history 
+     history 
