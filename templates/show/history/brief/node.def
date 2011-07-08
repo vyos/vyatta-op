@@ -1,2 +1,4 @@
 help: recent command history
-run: history 20
+run: HISTFILE="$HOME/.bash_history"
+     \set -o history 
+     history 20
