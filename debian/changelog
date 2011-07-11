@@ -1,3 +1,10 @@
+vyatta-op (0.13.156) unstable; urgency=low
+
+  * Bugfix 7266: make 'show history' work with non interactive shells
+    like webgui
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 11 Jul 2011 12:53:16 -0500
+
 vyatta-op (0.13.155) unstable; urgency=low
 
   * re-release of package due to bad git config
