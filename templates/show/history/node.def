@@ -1,4 +1,5 @@
 help: show command history
-run: HISTFILE="$HOME/.bash_history"
+run: HISTTIMEFORMAT='%FT%T%z '
+     HISTFILE="$HOME/.bash_history"
      \set -o history 
      history 
