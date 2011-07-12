@@ -42,8 +42,8 @@ _vyatta_op_do_key_bindings ()
     return
   fi
 
-  bind '"?": possible-completions'
-  bind 'set show-all-if-ambiguous on'
+  bind '"?": possible-completions' 2> /dev/null
+  bind 'set show-all-if-ambiguous on' 2> /dev/null
 
   nullglob_save=$(shopt -p nullglob)
   shopt -u nullglob
