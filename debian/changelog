@@ -1,3 +1,9 @@
+vyatta-op (0.13.158) unstable; urgency=low
+
+  * silence warnings when sourcing this script non-interactively
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 12 Jul 2011 16:21:54 -0500
+
 vyatta-op (0.13.157) unstable; urgency=low
 
   * Fix history time format so that webgui and cli match
