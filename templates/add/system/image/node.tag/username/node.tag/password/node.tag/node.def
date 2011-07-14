@@ -1,0 +1,3 @@
+help: Password to use with authentication
+
+run: sudo /opt/vyatta/sbin/install-image "$4" "$6" "$8"
