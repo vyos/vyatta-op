@@ -1,3 +1,9 @@
+vyatta-op (0.13.135) unstable; urgency=low
+
+  * Bugfix 5856:  Allow credentials on "add system image" command line
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Thu, 14 Jul 2011 10:46:19 -0700
+
 vyatta-op (0.13.134) unstable; urgency=low
 
   * Fix completion for image log files
