@@ -1,4 +1,4 @@
-help: Save uncompressed brief tech-support report to specified file/path
+help: Save uncompressed brief tech-support report to specified path/file
 allowed: echo -n '<file> <scp://<user>:<passwd>@<host>/<file>> <ftp://<user>:<passwd>@<host>/<file>>'
 run: if [ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/admin" ];
      then
