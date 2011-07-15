@@ -1,3 +1,9 @@
+vyatta-op (0.13.152+napa6) unstable; urgency=low
+
+  * Bugfix 7327: change the show tech-support help text
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 15 Jul 2011 17:14:02 -0500
+
 vyatta-op (0.13.152+napa5) unstable; urgency=low
 
   * silence warnings when sourcing this script non-interactively
