@@ -1,3 +1,9 @@
+vyatta-op (0.13.138) unstable; urgency=low
+
+  * Bugfix 6800:  Allow non-vyatta menu entries in grub.cfg.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Sun, 17 Jul 2011 16:44:53 -0700
+
 vyatta-op (0.13.137) unstable; urgency=low
 
   * Bugfix 7124: make 'show tech-support save' have a .txt at the end of
