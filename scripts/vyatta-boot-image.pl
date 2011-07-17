@@ -50,61 +50,72 @@ my $grub_cfg;	# Pathname of grub config file we will use.
 # whether the entry is a "lost password reset" boot menu item.
 #
 sub parseGrubCfg {
-  my $fd = undef;
-  return undef if (!open($fd, '<', $grub_cfg));
+    my $fd = undef;
+    return undef if (!open($fd, '<', $grub_cfg));
 
-  my %ghash = ();
-  my @entries = ();
-  my $in_entry = 0;
-  my $idx = 0;
-  my $running_boot_cmd=`cat /proc/cmdline`;
-  $running_boot_cmd =~ s/BOOT_IMAGE=//;
-  while (<$fd>) {
-    if ($in_entry) {
-      if (/^}/) {
-        $in_entry = 0;
-        ++$idx;
-      } elsif (/^\s+linux /) {
-        my %ehash = (
-          'idx' => $idx,
-          'ver' => undef,
-          'term' => undef,
-          'reset' => undef
-        );
-        # kernel line
-        if (/^\s+linux \/boot\/([^\/ ]+)\/.* boot=live /) {
-          # union install
-          $ehash{'ver'} = $1;
-        } else {
-          # old install
-          $ehash{'ver'} = $OLD_IMG_VER_STR;
-        }
-        if (/console=tty0.*console=ttyS0/) {
-          $ehash{'term'} = 'serial';
-        } else {
-          $ehash{'term'} = 'kvm';
-        }
-        if (/standalone_root_pw_reset/) {
-          $ehash{'reset'} = 1;
-        } else {
-          $ehash{'reset'} = 0;
-        }
-	if (/$running_boot_cmd/) {
-	    $ehash{'running_vers'} = 1;
-	} else {
-	    $ehash{'running_vers'} = 0;
-	}
-        push @entries, \%ehash;
-      }
-    } elsif (/^set default=(\d+)$/) {
-      $ghash{'default'} = $1;
-    } elsif (/^menuentry /) {
-      $in_entry = 1;
-    } 
-  }
-  close($fd);
-  $ghash{'entries'} = \@entries;
-  return \%ghash;
+    my %ghash = ();
+    my @entries = ();
+    my $in_entry = 0;
+    my $idx = 0;
+    my $running_boot_cmd=`cat /proc/cmdline`;
+    $running_boot_cmd =~ s/BOOT_IMAGE=//;
+    while (<$fd>) {
+	if ($in_entry) {
+	    if (/^}/) {
+	        if ($in_entry == 1) {
+		    # Entry did not have linux kernel line
+		    my %ehash = (
+			'idx' => $idx,
+			'ver' => undef,
+			'term' => undef,
+			'reset' => undef
+			);
+		    push @entries, \%ehash;
+	        }
+	        $in_entry = 0;
+	        ++$idx;
+	    } elsif (/^\s+linux /) {
+		my %ehash = (
+		    'idx' => $idx,
+		    'ver' => undef,
+		    'term' => undef,
+		    'reset' => undef
+		    );
+		# kernel line
+		if (/^\s+linux \/boot\/([^\/ ]+)\/.* boot=live /) {
+		    # union install
+		    $ehash{'ver'} = $1;
+		} else {
+		    # old install
+		    $ehash{'ver'} = $OLD_IMG_VER_STR;
+		}
+		if (/console=tty0.*console=ttyS0/) {
+		    $ehash{'term'} = 'serial';
+		} else {
+		    $ehash{'term'} = 'kvm';
+		}
+		if (/standalone_root_pw_reset/) {
+		    $ehash{'reset'} = 1;
+		} else {
+		    $ehash{'reset'} = 0;
+		}
+		if (/$running_boot_cmd/) {
+		    $ehash{'running_vers'} = 1;
+		} else {
+		    $ehash{'running_vers'} = 0;
+		}
+		push @entries, \%ehash;
+		$in_entry++;
+	    }
+        } elsif (/^set default=(\d+)$/) {
+	    $ghash{'default'} = $1;
+	} elsif (/^menuentry /) {
+	    $in_entry = 1;
+	} 
+    }
+    close($fd);
+    $ghash{'entries'} = \@entries;
+    return \%ghash;
 }
 
 # This function deletes the entries for the specified version from the grub
@@ -175,6 +186,7 @@ sub getBootList {
   my @list = ();
   foreach (@{$entries}) {
     my ($ver, $term) = ($_->{'ver'}, $_->{'term'});
+    next if (!defined($ver));	# Skip non-vyatta entry
     next if ($_->{'reset'}); # skip password reset entry
     next if ($term ne $dterm); # not the default terminal
     next if (defined($vhash{$ver})); # version already in list
@@ -320,6 +332,9 @@ sub select_by_name {
     my $entries = $gref->{'entries'};
     my $entry;
     foreach $entry (@{$entries}) {
+	# Skip non-vyatta entries
+	next if (!defined($entry->{'ver'}));
+
 	# Skip entries that are not using the same term type as before
 	next if ($entry->{'term'} ne $def_term);
 	# Skip the password reset entries
