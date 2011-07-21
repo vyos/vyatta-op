@@ -1,3 +1,9 @@
+vyatta-op (0.13.152+napa7) unstable; urgency=low
+
+  * Bugfix 7357: change the op mode command wrapper to setup the aliases
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 20 Jul 2011 19:27:36 -0500
+
 vyatta-op (0.13.152+napa6) unstable; urgency=low
 
   * Bugfix 7327: change the show tech-support help text
