@@ -1,5 +1,6 @@
 #!/bin/vbash -l
-VYATTA_USER_LEVEL_DIR=/opt/vyatta/etc/shell/level/admin
+shopt -s expand_aliases
 source /etc/default/vyatta
-source /etc/bash_completion.d/vyatta-op-run
-_vyatta_op_run $@
+source /etc/bash_completion.d/vyatta-op
+_vyatta_op_init
+_vyatta_op_run "$@"
