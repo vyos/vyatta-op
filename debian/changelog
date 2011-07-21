@@ -1,3 +1,9 @@
+vyatta-op (0.13.161) unstable; urgency=low
+
+  * Bugfix 7357: change the op mode command wrapper to setup the aliases
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 20 Jul 2011 19:28:53 -0500
+
 vyatta-op (0.13.160) unstable; urgency=low
 
   * Bugfix 6392: Improve display of numeric values for storage usage.
