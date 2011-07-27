@@ -566,6 +566,10 @@ fi
 
 _vyatta_op_init $@
 
+if [[ "VYATTA_USER_LEVEL_DIR"=="/opt/vyatta/etc/shell/level/users" ]]; then
+  PS1='\u@\h> '
+fi
+
 ###  Local Variables:
 ###  mode: shell-script
 ###  End:
