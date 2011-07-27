@@ -67,13 +67,13 @@ _vyatta_op_run ()
 
     local run_cmd=$(_vyatta_op_get_node_def_field $tpath/node.def run)
     local ret=0
+    local cmd_regex="^(LESSOPEN=|less|pager|tail|/opt/vyatta/bin/vyatta-tshark-interface-port.pl).*"
     if [ -n "$run_cmd" ]; then
-	if [[ -t 1 &&  "$1" == "show" && \
-	    ! $run_cmd =~ ^\(LESSOPEN=\|less\|pager\|tail\|/opt/vyatta/bin/vyatta-tshark-interface-port.pl\).* ]] ; then
-            eval "($run_cmd) | ${VYATTA_PAGER:-cat}"
-	else
-            eval "$run_cmd"
-	fi
+      if [[ -t 1 &&  "$1" == "show" && ! $run_cmd =~ $cmd_regex ]] ; then
+        eval "($run_cmd) | ${VYATTA_PAGER:-cat}"
+      else
+        eval "$run_cmd"
+      fi
     else
         echo "Incomplete command" >&2
         ret=1
