@@ -1,3 +1,9 @@
+vyatta-op (0.13.164) unstable; urgency=low
+
+  * Bugfix 7380: fix pager exceptions regex.
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 27 Jul 2011 16:11:58 -0500
+
 vyatta-op (0.13.163) unstable; urgency=low
 
   * Bugfix 5611: Fix a typo in the shell level check
