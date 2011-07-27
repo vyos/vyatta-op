@@ -1,3 +1,9 @@
+vyatta-op (0.13.163) unstable; urgency=low
+
+  * Bugfix 5611: Fix a typo in the shell level check
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 26 Jul 2011 20:22:34 -0700
+
 vyatta-op (0.13.162) unstable; urgency=low
 
   * Bugfix 5611: Set prompt for operator level users to be similar to
