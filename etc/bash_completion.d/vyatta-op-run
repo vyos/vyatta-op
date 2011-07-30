@@ -40,6 +40,42 @@ _vyatta_op_get_node_def_field ()
     }' $file
 }
 
+_vyatta_op_conv_node_path ()
+{
+  # is the node ok, ambiguous, or invalid
+  local node_path
+  local node
+  local -a ARR
+  node_path=$1
+  node=$2
+  ARR=( "$node_path/$node"* )
+  if [[ "${#ARR[@]}" == "1" ]]; then
+   echo ${ARR[0]##*/}
+  elif [[ "${#ARR[@]}" == "0" ]]; then
+   if [[ -d "${node_path}/node.tag" ]]; then
+     echo "$node tag"
+   else
+     echo "$node invalid"
+   fi
+  elif [[ -d "$node_path/$node" ]]; then
+    echo $node
+  else
+   echo "$node ambiguous"
+  fi  
+}
+
+_vyatta_op_conv_run_cmd ()
+{
+  # Substitue bash positional variables 
+  # for the same value in the expanded array
+  local run_cmd
+  run_cmd="$@"
+  run_cmd="${run_cmd/\"\$\@\"/${args[*]}}"
+  run_cmd="${run_cmd/\$\*/${args[*]}}"
+  run_cmd=$(echo -e "$run_cmd" | sed -e 's/\$\([0-9]\)/\$\{args\[\1\]\}/g')
+  echo -ne "$run_cmd"
+}
+
 _vyatta_op_run ()
 {
     local -i estat
@@ -51,8 +87,25 @@ _vyatta_op_run ()
     false; estat=$?
 
     i=1
-    for arg in "$@"
-        do
+    declare -a args  # array of expanded arguments
+    for arg in "$@"; do
+        arg=( $(_vyatta_op_conv_node_path $tpath $arg) )  # expand the arguments
+        # output proper error message based on the above expansion
+        if [[ "${arg[1]}" == "ambiguous" ]]; then
+          echo -ne "\n  Ambiguous command: ${args[@]} [$arg]\n"
+          local -a cmds=( "$tpath/$arg"* )
+          _vyatta_op_node_path=$tpath
+          local comps=$(_vyatta_op_help $arg ${cmds[@]##*/})
+          echo -e "$comps\n" | sed -e 's/^P/  P/'
+          eval $restore_shopts
+          return 1
+        elif [[ "${arg[1]}" == "invalid" ]]; then
+          echo -ne "\n  Invalid command: ${args[@]} [$arg]\n\n"
+          eval $restore_shopts
+          return 1
+        fi
+
+        args[$i]=$arg
         if [ -f "$tpath/$arg/node.def" ] ; then
             tpath+=/$arg
         elif [ -f $tpath/node.tag/node.def ] ; then
@@ -66,6 +119,7 @@ _vyatta_op_run ()
     done
 
     local run_cmd=$(_vyatta_op_get_node_def_field $tpath/node.def run)
+    run_cmd=$(_vyatta_op_conv_run_cmd "$run_cmd") # convert the positional parameters
     local ret=0
     local cmd_regex="^(LESSOPEN=|less|pager|tail|/opt/vyatta/bin/vyatta-tshark-interface-port.pl).*"
     if [ -n "$run_cmd" ]; then
@@ -75,8 +129,8 @@ _vyatta_op_run ()
         eval "$run_cmd"
       fi
     else
-        echo "Incomplete command" >&2
-        ret=1
+      echo -ne "\n  Incomplete command: ${args[@]}\n\n" >&2
+      ret=1
     fi
     eval $restore_shopts
     return $ret

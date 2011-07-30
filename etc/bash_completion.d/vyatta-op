@@ -101,17 +101,22 @@ _vyatta_op_init ()
     complete -E -F _vyatta_op_expand 
     complete -D -F _vyatta_op_default_expand
 
-    for xd in $vyatta_op_templates/* ; do
-	if [ -d $xd ] ; then
-	    cmd=${xd##*/}
-	    complete -F _vyatta_op_expand $cmd
-	    eval alias $cmd=\'_vyatta_op_run $cmd\'
-	fi
+    # create the top level aliases for the unambiguous portions of the commands
+    # this is the only place we need an entire enumerated list of the subcommands
+    for cmd in $( ls /opt/vyatta/share/vyatta-op/templates/ ); do
+      for pos in $(seq 1 ${#cmd}); do  
+        case ${cmd:0:$pos} in  
+          for|do|done|if|fi|case|while|tr )
+            continue ;;
+          *) ;;
+        esac
+        complete -F _vyatta_op_expand ${cmd:0:$pos}
+        eval alias ${cmd:0:$pos}=\'_vyatta_op_run ${cmd:0:$pos}\' 
+      done 
     done
 
     shopt -s histverify
 }
-
 
 # $1: label
 # $2...: help
@@ -177,10 +182,13 @@ _vyatta_op_help ()
 
 _vyatta_op_set_node_path ()
 {
+    local node
     _vyatta_op_node_path=$vyatta_op_templates
     for (( i=0 ; i<COMP_CWORD ; i++ )) ; do
-	if [ -f "${_vyatta_op_node_path}/${COMP_WORDS[i]}/node.def" ] ; then
-	    _vyatta_op_node_path+=/${COMP_WORDS[i]}
+        # expand the command so completion continues to work with short versions
+        node=$(_vyatta_op_conv_node_path $_vyatta_op_node_path ${COMP_WORDS[i]})
+	if [ -f "${_vyatta_op_node_path}/$node/node.def" ] ; then
+	    _vyatta_op_node_path+=/$node
 	elif [ -f ${_vyatta_op_node_path}/node.tag/node.def ] ; then
 	    _vyatta_op_node_path+=/node.tag
 	else
