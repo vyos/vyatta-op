@@ -1,3 +1,9 @@
+vyatta-op (0.13.166) unstable; urgency=low
+
+  * Bugfix 2823: Operational mode command interpreter
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 29 Jul 2011 20:42:45 -0700
+
 vyatta-op (0.13.165) unstable; urgency=low
 
   * Add top level verb "force".
