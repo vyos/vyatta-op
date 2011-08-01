@@ -67,6 +67,11 @@ declare -a _vyatta_op_noncompletions _vyatta_op_completions
 declare -x -a _vyatta_pipe_noncompletions _vyatta_pipe_completions
 declare _vyatta_comptype
 declare -x -a reply
+declare -a _vyatta_operator_allowed
+
+if [[ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/users" ]]; then
+   _vyatta_operator_allowed=( $(cat /opt/vyatta/etc/shell/level/users/allowed-op) )
+fi
 
 source /etc/bash_completion.d/vyatta-op-run
 
@@ -80,6 +85,21 @@ _vyatta_op_debug ()
 	echo -ne " \"$s\""
     done
 }
+
+_vyatta_op_is_elem_of () {
+  local elem=$1
+  local -a olist
+  eval "olist=( \"\${$2[@]}\" )"
+  for e in ${olist[*]}; do
+    if [[ "$e" == "$elem" ]]; then
+      echo -n '1'
+      return
+    fi
+  done
+  echo -n '0'
+  return
+}
+
 
 # this is needed to provide original "default completion" behavior.
 # see "vyatta-cfg" completion script for details.
@@ -223,7 +243,15 @@ _vyatta_op_set_completions ()
 	if [[ "${allowed[i]}" == \<*\> ]] ; then
 	    _vyatta_op_noncompletions+=( ${allowed[i]} )
 	else
-	    completions+=( ${allowed[i]} )
+      if [[ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/admin" ]]; then
+	      completions+=( ${allowed[i]} )
+      elif [[ $(_vyatta_op_is_elem_of ${allowed[i]} _vyatta_operator_allowed) == "1" ]];then
+        completions+=( ${allowed[i]} )
+      elif [[ $_vyatta_op_node_path == $vyatta_op_templates ]];then
+        continue
+      else 
+        completions+=( ${allowed[i]} )
+      fi
 	fi
     done
 
