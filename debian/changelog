@@ -1,3 +1,10 @@
+vyatta-op (0.13.167) unstable; urgency=low
+
+  * Only show operator users the top level commands they are allowed to
+    execute in tab complete
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 01 Aug 2011 19:00:09 -0500
+
 vyatta-op (0.13.166) unstable; urgency=low
 
   * Bugfix 2823: Operational mode command interpreter
