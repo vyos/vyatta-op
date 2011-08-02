@@ -2,13 +2,17 @@ defaultdir	 = /etc/default
 default_DATA	 = etc/default/vyatta
 completiondir	 = /etc/bash_completion.d
 completion_DATA	 = etc/bash_completion.d/vyatta-op
-completion_DATA	 += etc/bash_completion.d/vyatta-op-run
 opdir		 = $(datadir)/vyatta-op/templates
 bin_sudo_usersdir = $(bindir)/sudo-users
 
 funcdir		 = $(datadir)/vyatta-op/functions
 func_DATA	 = functions/tech-support
 func_DATA	+= functions/tech-support-brief
+
+interpdir = $(datadir)/vyatta-op/functions/interpreter
+interp_DATA = functions/interpreter/vyatta-op-run
+interp_DATA += functions/interpreter/vyatta-common
+interp_DATA += functions/interpreter/vyatta-image-complete
 
 bin_SCRIPTS	 = scripts/vyatta-show-interfaces
 bin_SCRIPTS	+= scripts/vyatta-show-interfaces.pl

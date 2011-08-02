@@ -19,6 +19,32 @@
 # 
 # **** End License ****
 
+_vyatta_op_init ()
+{
+    # empty and default line compeletion
+    complete -E -F _vyatta_op_expand
+    complete -D -F _vyatta_op_default_expand
+
+    # create the top level aliases for the unambiguous portions of the commands
+    # this is the only place we need an entire enumerated list of the subcommands
+    for cmd in $( ls /opt/vyatta/share/vyatta-op/templates/ ); do
+      for pos in $(seq 1 ${#cmd}); do
+        case ${cmd:0:$pos} in
+          for|do|done|if|fi|case|while|tr )
+            continue ;;
+          *) ;;
+        esac
+        complete -F _vyatta_op_expand ${cmd:0:$pos}
+        eval alias ${cmd:0:$pos}=\'_vyatta_op_run ${cmd:0:$pos}\'
+      done
+    done
+
+    shopt -s histverify
+    if [[ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/users" ]]; then
+      PS1='\u@\h> '
+    fi
+}
+
 _vyatta_op_get_node_def_field ()
 {
     local file=$1 field=$2

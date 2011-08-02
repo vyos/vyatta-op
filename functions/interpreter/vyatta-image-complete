@@ -1,0 +1,142 @@
+# vyatta bash operational mode image name completions
+# **** License ****
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+# 
+# This code was originally developed by Vyatta, Inc.
+# Portions created by Vyatta are Copyright (C) 2006, 2007 Vyatta, Inc.
+# All Rights Reserved.
+# 
+# Author: John Southworth
+# Date: 2011
+# Description: setup bash completion for image file names
+# 
+# **** End License ****
+_vyatta_image_is_file()
+{
+  local cur=$1
+  cur=${cur/:/}
+  topdir=${cur%%/*}
+  cur=${cur#$topdir/}
+  if [[ $topdir == "running" ]]; then
+    cur="/${cur}"
+  elif [[ $topdir == "disk-install" ]]; then
+    cur="/live/image/${cur}"
+  else
+    cur="/live/image/boot/${topdir}/live-rw/${cur}"
+  fi
+  if [[ -f ${cur} ]]; then
+    return 0;
+  else
+    return 1;
+  fi
+}
+
+_vyatta_image_file_complete()
+{
+  if _vyatta_image_is_file ${COMP_WORDS[(( ${#COMP_WORDS[@]}-2 ))]}; then
+    _vyatta_op_completions=( "" " " )
+    return 0;
+  fi
+  _vyatta_image_path_complete
+}
+
+
+_vyatta_image_path_complete()
+{
+  compopt -o nospace
+  local -a reply
+  if _vyatta_image_is_file $cur ; then
+    foundfile=1
+    _vyatta_op_completions=( "${cur} " )
+    return 0;
+  fi
+  if [[ ${cur} == "" ]]; then
+    reply=( $(compgen -d /live/image/boot/ | grep -v grub) )
+    for i in `seq 0 $[${#reply[@]}-1]`; do
+      file=${reply[$i]}
+      reply[$i]=${file/#\/live\/image\/boot\//}
+      reply[$i]="${reply[$i]}://config/"
+    done
+    reply+=( "running://config/" )
+    if [[ -d /live/image/opt/vyatta/etc/config || -d /live/image/config ]]; then
+      reply+=( "disk-install://" )
+    fi
+  else 
+    if ! [[ $cur =~ .*:\/\/ ]]; then
+      if [[ $cur =~ .*:\/ ]]; then
+        cur=${cur/:\//}
+      fi
+      if [[ $cur =~ .*: ]]; then
+        cur=${cur/:/}
+      fi
+      local isrunningimg=$(compgen -W "running" -- ${cur})
+      local isdiskinstall=$(compgen -W "disk-install" -- ${cur})
+      if [[ $isrunningimg == "running" ]];then
+        cur="/"
+      elif [[ $isdiskinstall == "disk-install" ]]; then
+        cur="/live/image/"
+      else
+        cur="/live/image/boot/${cur}"
+      fi
+      reply=( $(compgen -f ${cur}) )
+      for i in `seq 0 $[${#reply[@]}-1]`; do
+        file=${reply[$i]}
+        if [[ $isrunningimg == "running" ]];then
+          reply[$i]="running://config/"
+        elif [[ $isdiskinstall == "disk-install" ]]; then
+          reply[$i]="disk-install://" 
+        else
+          reply[$i]=${file/#\/live\/image\/boot\//}
+          if [[ -d /live/image/boot/${reply[$i]} ]]; then
+            reply[$i]="${reply[$i]/#\//}://config/"
+          fi
+        fi
+      done
+    else
+      cur=${cur/:/}
+      topdir=${cur%%/*}
+      cur=${cur#$topdir//}
+      if [[ $topdir == "running" ]]; then
+        cur="/${cur}"
+      elif [[ $topdir == "disk-install" ]]; then
+        cur="/live/image/${cur}"
+      else
+        cur="/live/image/boot/${topdir}/live-rw/${cur}"
+      fi
+      reply=( $(compgen -f ${cur}) )
+      # for loop from _filedirs() in /etc/bash_completion
+      for ((i=0; i < ${#reply[@]}; i++)); do
+        if [[ ${cur:0:1} != "'" ]]; then 
+           [[ -d ${reply[i]} ]] && reply[i]="${reply[i]}"/
+           if [[ ${cur:0:1} == '"' ]]; then 
+             reply[i]=${reply[i]//\\/\\\\}
+             reply[i]=${reply[i]//\"/\\\"}
+             reply[i]=${reply[i]//\$/\\\$}
+           else
+             reply[i]=$(printf %q ${reply[i]})
+           fi
+        fi
+      done
+      for i in `seq 0 $[${#reply[@]}-1]`; do
+        file=${reply[$i]}
+        if [[ $topdir == "running" ]]; then
+          reply[$i]=${file/#\//"$topdir://"}
+        elif [[ $topdir == "disk-install" ]]; then
+          reply[$i]=${file/#\/live\/image\//$"$topdir://"} 
+        else
+          reply[$i]=${file/#\/live\/image\/boot\/$topdir/"$topdir://"}
+          reply[$i]=${reply[$i]/\/live-rw\/}
+        fi
+      done
+    fi 
+  fi
+  _vyatta_op_completions=( "${reply[@]}" )
+  return 0
+}
