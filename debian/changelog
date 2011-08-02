@@ -1,3 +1,12 @@
+vyatta-op (0.13.168) unstable; urgency=low
+
+  * Reorganize the bash completion and command interpreter scripts into
+    easier to manage chunks. vyatta-op-run no longer exists in
+    /etc/bash_completion.d/ as it is not a completion script it should
+    not be here
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 02 Aug 2011 12:45:48 -0500
+
 vyatta-op (0.13.167) unstable; urgency=low
 
   * Only show operator users the top level commands they are allowed to
