@@ -1,3 +1,11 @@
+vyatta-op (0.13.169) unstable; urgency=low
+
+  * Fix paging problem with short top level show commmand
+  * Add support for unambiguous top level commands for unpriviledged
+    users
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 02 Aug 2011 19:41:59 -0500
+
 vyatta-op (0.13.168) unstable; urgency=low
 
   * Reorganize the bash completion and command interpreter scripts into
