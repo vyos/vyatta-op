@@ -40,9 +40,6 @@ _vyatta_op_init ()
     done
 
     shopt -s histverify
-    if [[ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/users" ]]; then
-      PS1='\u@\h> '
-    fi
 }
 
 _vyatta_op_get_node_def_field ()

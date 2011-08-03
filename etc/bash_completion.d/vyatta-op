@@ -68,8 +68,8 @@ declare _vyatta_comptype
 declare -x -a reply
 declare -a _vyatta_operator_allowed
 
-if [[ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/users" ]]; then
-   _vyatta_operator_allowed=( $(cat /opt/vyatta/etc/shell/level/users/allowed-op) )
+if [[ "$VYATTA_USER_LEVEL_DIR" != "/opt/vyatta/etc/shell/level/admin" ]]; then
+   _vyatta_operator_allowed=( $(cat $VYATTA_USER_LEVEL_DIR/allowed-op) )
 fi
 
 #source /etc/bash_completion.d/vyatta-op-run
@@ -444,7 +444,11 @@ if [ "$_OFR_CONFIGURE" == "ok" ]; then
   return 0
 fi
 
-_vyatta_op_init $@
+if [[ "$VYATTA_USER_LEVEL_DIR" != "/opt/vyatta/etc/shell/level/admin" ]]; then
+  vyatta_unpriv_init $@
+else
+  _vyatta_op_init $@
+fi
 
 ###  Local Variables:
 ###  mode: shell-script
