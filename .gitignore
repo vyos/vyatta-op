@@ -23,6 +23,7 @@ libtool
 /INSTALL
 /Makefile.in
 /Makefile
+/etc/shell/level/users/allowed-op
 
 /src/render_xml
 

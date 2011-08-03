@@ -13,6 +13,7 @@ vyatta_unpriv_ambiguous ()
   get_prefix_filtered_list $1 op_allowed filtered_cmds
   _vyatta_op_node_path=${vyatta_op_templates}
   comps=$(_vyatta_op_help $1 ${filtered_cmds[@]})
+  echo -ne "\n  Ambiguous command: [$1]\n"
   echo -e "$comps\n" | sed -e 's/^P/  P/'
 }
 
