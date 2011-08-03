@@ -1,3 +1,11 @@
+vyatta-op (0.13.170) unstable; urgency=low
+
+  * Generate unpriviledged allowed-op at compile time. Add script to
+    allow admin user to regenerate it if needed. Fix ambiguous command
+    message.
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 03 Aug 2011 12:01:49 -0500
+
 vyatta-op (0.13.169) unstable; urgency=low
 
   * Fix paging problem with short top level show commmand
