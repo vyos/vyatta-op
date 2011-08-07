@@ -1,3 +1,10 @@
+vyatta-op (0.13.152+napa2) unstable; urgency=low
+
+  * Bugfix 7304: Bring DHCPv6 client leases script back into the
+    release.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Sun, 07 Aug 2011 15:00:52 -0700
+
 vyatta-op (0.13.152+napa1) unstable; urgency=low
 
   * new branch
