@@ -82,6 +82,18 @@ _vyatta_op_conv_node_path ()
    fi
   elif [[ -d "$node_path/$node" ]]; then
     echo $node
+  elif [[ "$VYATTA_USER_LEVEL_DIR" != "/opt/vyatta/etc/shell/level/admin" ]];then
+   # special handling for unprivledged completions.
+   # Since top level commands are different for unprivledged users
+   # we need a handler to expand them properly.
+   local -a filtered_cmds=()
+   local -a allowed=( $(cat $VYATTA_USER_LEVEL_DIR/allowed-op.in) )
+   get_prefix_filtered_list $node allowed filtered_cmds
+   if [[ "${#filtered_cmds[@]}" == "1" ]];then
+      echo ${filtered_cmds[0]}
+   else
+      echo "${node} ambiguous"
+   fi
   else
    echo "$node ambiguous"
   fi  
