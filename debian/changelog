@@ -1,3 +1,10 @@
+vyatta-op (0.13.171) unstable; urgency=low
+
+  * Add handler for top level unprivledged command expansion in node
+    conversion function
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 08 Aug 2011 14:19:52 -0500
+
 vyatta-op (0.13.170) unstable; urgency=low
 
   * Generate unpriviledged allowed-op at compile time. Add script to
