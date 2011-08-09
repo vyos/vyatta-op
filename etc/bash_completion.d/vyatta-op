@@ -47,7 +47,7 @@ _vyatta_op_do_key_bindings ()
   nullglob_save=$(shopt -p nullglob)
   shopt -u nullglob
   bind_cmds=$(grep '^bind .* # vyatta key binding$' $HOME/.bashrc)
-  eval $bind_cmds
+  eval $bind_cmds 2> /dev/null
   eval $nullglob_save
 }
 
