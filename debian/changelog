@@ -1,3 +1,9 @@
+vyatta-op (0.13.173) unstable; urgency=low
+
+  * Silence another keybinding error when running from config mode
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 09 Aug 2011 18:31:46 -0500
+
 vyatta-op (0.13.172) unstable; urgency=low
 
   *  Ignore ip6tunl0 anchor interface
