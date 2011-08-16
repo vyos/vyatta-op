@@ -1,0 +1,4 @@
+#
+# Operational mode template for the "ping" command
+#
+help: Send IPv4 Internet Control Message Protocol (ICMP) echo request
