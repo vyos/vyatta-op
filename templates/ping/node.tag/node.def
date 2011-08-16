@@ -2,7 +2,7 @@
 # Operational mode front-end for "ping" command
 #
 
-help:   Send ICMP echo request to specified <hostname|IPv4 address>
-allowed: echo -n '<hostname> <x.x.x.x>'
+help:   Send ICMP echo request to specified node
+allowed: echo -n '<hostname> <x.x.x.x> <h:h:h:h:h:h:h:h>'
 
-run:	/bin/ping $2
+run:	/opt/vyatta/bin/vyatta-ping $2

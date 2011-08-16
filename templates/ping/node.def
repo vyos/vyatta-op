@@ -2,3 +2,4 @@
 # Operational mode template for the "ping" command
 #
 help: Send Internet Control Message Protocol (ICMP) echo request
+allowed: echo -n '<hostname> <x.x.x.x> <h:h:h:h:h:h:h:h>'
