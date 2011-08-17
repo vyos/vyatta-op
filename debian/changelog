@@ -1,3 +1,10 @@
+vyatta-op (0.13.174) unstable; urgency=low
+
+  * Bugfix 7442: Check if running interactively before doing binding
+    options
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 17 Aug 2011 16:20:39 -0500
+
 vyatta-op (0.13.173) unstable; urgency=low
 
   * Silence another keybinding error when running from config mode
