@@ -40,14 +40,16 @@ _vyatta_op_do_key_bindings ()
     # only do bindings if vbash
     return
   fi
-
-  bind '"?": possible-completions' 2> /dev/null
-  bind 'set show-all-if-ambiguous on' 2> /dev/null
-
   nullglob_save=$(shopt -p nullglob)
   shopt -u nullglob
-  bind_cmds=$(grep '^bind .* # vyatta key binding$' $HOME/.bashrc)
-  eval $bind_cmds 2> /dev/null
+  case "$-" in
+    *i*)
+      bind '"?": possible-completions' 
+      bind 'set show-all-if-ambiguous on' 
+      bind_cmds=$(grep '^bind .* # vyatta key binding$' $HOME/.bashrc)
+      eval $bind_cmds 
+    ;;
+  esac
   eval $nullglob_save
 }
 
@@ -59,7 +61,11 @@ test -f /etc/default/vyatta && \
 test ! -d "$vyatta_op_templates" && \
     return 0
 
-declare -r _vyatta_op_last_comp_init='>>>>>>LASTCOMP<<<<<<'
+case "$-" in
+  *i*)
+    declare -r _vyatta_op_last_comp_init='>>>>>>LASTCOMP<<<<<<'
+  ;;
+esac
 declare _vyatta_op_last_comp=${_vyatta_op_last_comp_init}
 declare _vyatta_op_node_path
 declare -a _vyatta_op_noncompletions _vyatta_op_completions
