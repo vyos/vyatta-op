@@ -1,3 +1,9 @@
+vyatta-op (0.13.160) unstable; urgency=low
+
+  * Bugfix 6392: Improve display of numeric values for storage usage.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Wed, 17 Aug 2011 16:20:01 -0700
+
 vyatta-op (0.13.159) unstable; urgency=low
 
   * Bugfix 7327: change the show tech-support help text
