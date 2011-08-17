@@ -1,0 +1,3 @@
+help: Monitor operational mode command
+allowed: echo '<operational-mode-command>'
+run: watch  /opt/vyatta/bin/vyatta-op-cmd-wrapper ${@:3}
