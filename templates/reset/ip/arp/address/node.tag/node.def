@@ -1,0 +1,3 @@
+help: Reset ARP cache for an IPv4 address
+allowed: echo -n '<x.x.x.x>'
+run: sudo /sbin/ip neigh flush to "$5"
