@@ -1,0 +1,3 @@
+help: Monitor the path to a destination in realtime
+allowed: echo '<hostname> <x.x.x.x> <h:h:h:h:h:h:h:h>'
+run: mtr $3
