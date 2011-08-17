@@ -1,0 +1,3 @@
+help: Reset ARP cache for interface
+allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show all
+run: sudo /sbin/ip neigh flush dev "$5"
