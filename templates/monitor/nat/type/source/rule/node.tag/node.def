@@ -1,0 +1,2 @@
+help: Monitor Source NAT logs for a specified rule
+allowed: local -a ARR=$(cli-shell-api listEffectiveNodes service nat rule); echo "${ARR[@]}"
