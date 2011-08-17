@@ -25,6 +25,16 @@ use warnings;
 use Getopt::Long;
 
 
+sub better_units {
+    my $units = shift;
+
+    $units =~ s/K/ KB/;
+    $units =~ s/M/ MB/;
+    $units =~ s/G/ GB/;
+    $units =~ s/T/ TB/;
+    return $units;
+}
+
 #
 # Main section
 #
@@ -55,12 +65,19 @@ foreach my $image (@bootlist_arr) {
     my $garbage;
 
     if ( -e "$imagedir/$image") {
-	$string = `du -s $imagedir/$image`;
+	$string = `du -s -h $imagedir/$image`;
 	($total, $garbage) = split(' ', $string);
-	$string = `du -s $imagedir/$image/*.squashfs`;
+	$total = better_units($total);
+
+	$string = `du -s -h $imagedir/$image --exclude live-rw`;
 	($read_only, $garbage) = split(' ', $string);
-	$read_write = $total - $read_only;
-	printf("%-30s %12d %12d %12d\n", $image, $read_only, $read_write,
+	$read_only = better_units($read_only);
+
+	$string = `du -s -h $imagedir/$image/live-rw`;
+	($read_write, $garbage) = split(' ', $string);
+	$read_write = better_units($read_write);
+
+	printf("%-30s %12s %12s %12s\n", $image, $read_only, $read_write,
 	       $total);
     }
 }
