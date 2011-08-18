@@ -1,2 +1,2 @@
-help: Clear all currently tracked connections
+help: Reset all currently tracked connections
 run: sudo /opt/vyatta/bin/sudo-users/vyatta-clear-conntrack
