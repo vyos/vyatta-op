@@ -1,0 +1,25 @@
+#
+# Operational mode template for the "traceroute" command
+#
+
+help:   Track network path to specified <hostname|IPv4 address>
+allowed: echo -n '<hostname> <x:x:x:x>'
+
+run:
+     if /opt/vyatta/sbin/vyatta-validate-type.pl -q ipv4 $3
+       then
+           /usr/bin/traceroute $3
+           echo
+       else
+           if cat /etc/resolv.conf 2> /dev/null | grep -q nameserver
+             then
+                 if /usr/bin/host $3 &> /dev/null
+                   then
+                       /usr/bin/traceroute $3
+                   else
+                       echo "Invalid IPv4 address or host name '$3'"
+                 fi
+             else
+                 echo "Either enter a valid IPv4 address or configure Domain Name Server to resolve host names"
+           fi
+     fi
