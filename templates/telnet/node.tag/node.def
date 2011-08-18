@@ -1,5 +1,5 @@
 help: Telnet to host
-allowed: echo -n '<hostname> <x.x.x.x> <y:y:y:y:y>'
+allowed: echo -n '<hostname> <x.x.x.x> <h:h:h:h:h:h:h:h>'
 
 run: if [ -x /usr/bin/telnet ] ; then
      	/usr/bin/$*
