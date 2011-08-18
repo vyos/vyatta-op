@@ -1,6 +1,6 @@
 help: Enable/disable getting help using question mark (default enabled)
 allowed: echo -n 'enable' 'disable'
-run: if [ "$4" == 'disable' ]; then
+run: if [ "$5" == 'disable' ]; then
        sed -i "/^bind '\"?\": .* # vyatta key binding$/d" $HOME/.bashrc
        echo "bind '\"?\": self-insert' # vyatta key binding" >> $HOME/.bashrc
        bind '"?": self-insert'
