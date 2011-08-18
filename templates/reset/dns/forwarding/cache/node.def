@@ -1,4 +1,4 @@
-help: Clear DNS forwarding cache
+help: Reset DNS forwarding cache
 run:
         if ps ax | grep dnsmasq | grep -v grep > /dev/null
         then
