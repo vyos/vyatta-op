@@ -1,7 +1,7 @@
 help: Set terminal to given number of rows (0 disables paging)
 allowed: echo -n '<NUMBER>'
-run: if [ "$3" -eq 0 ] ; then
+run: if [ "$4" -eq 0 ] ; then
 	VYATTA_PAGER=cat
      else
-	stty rows $3
+	stty rows $4
      fi
