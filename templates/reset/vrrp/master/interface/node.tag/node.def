@@ -1,2 +1,2 @@
-help: Show VRRP information for specified interface
+help: Reset VRRP master for a specified interface
 allowed: /opt/vyatta/sbin/vyatta-keepalived.pl --vrrp-action=list-vrrp-intf

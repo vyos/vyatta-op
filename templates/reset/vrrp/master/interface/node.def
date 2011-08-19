@@ -1,2 +1,2 @@
-help: Clear VRRP master for a specific interface
+help: Reset VRRP master for a specific interface
 allowed: /opt/vyatta/bin/sudo-users/vyatta-clear-vrrp.pl --action=find_vrrp_intf
