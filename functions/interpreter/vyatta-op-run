@@ -71,7 +71,7 @@ _vyatta_op_conv_node_path ()
   local -a ARR
   node_path=$1
   node=$2
-  ARR=( "$node_path/$node"* )
+  ARR=( $(compgen -d $node_path/$node) )
   if [[ "${#ARR[@]}" == "1" ]]; then
    echo ${ARR[0]##*/}
   elif [[ "${#ARR[@]}" == "0" ]]; then
