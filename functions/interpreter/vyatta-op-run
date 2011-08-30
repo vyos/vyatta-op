@@ -124,7 +124,11 @@ _vyatta_op_run ()
     i=1
     declare -a args  # array of expanded arguments
     for arg in "$@"; do
-        arg=( $(_vyatta_op_conv_node_path $tpath $arg) )  # expand the arguments
+        if [[ $arg == "*" ]]; then
+          arg="*" #leave user defined wildcards alone
+        else
+          arg=( $(_vyatta_op_conv_node_path $tpath $arg) )  # expand the arguments
+        fi
         # output proper error message based on the above expansion
         if [[ "${arg[1]}" == "ambiguous" ]]; then
           echo -ne "\n  Ambiguous command: ${args[@]} [$arg]\n"
@@ -140,16 +144,16 @@ _vyatta_op_run ()
           return 1
         fi
 
-        args[$i]=$arg
         if [ -f "$tpath/$arg/node.def" ] ; then
             tpath+=/$arg
         elif [ -f $tpath/node.tag/node.def ] ; then
             tpath+=/node.tag
         else
-            echo "Invalid command" >&2
+            echo -ne "\n  Invalid command: ${args[@]} [$arg]\n\n" >&2
             eval $restore_shopts
             return 1
         fi
+        args[$i]=$arg
         let "i+=1"
     done
 
