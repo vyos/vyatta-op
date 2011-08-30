@@ -1,3 +1,10 @@
+vyatta-op (0.13.175) unstable; urgency=low
+
+  * Fix user defined wildcards such as in 'clear ip bgp *' and fix an
+    error message to be consistent
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 30 Aug 2011 18:00:24 -0500
+
 vyatta-op (0.13.174) unstable; urgency=low
 
   * Bugfix 7442: Check if running interactively before doing binding
