@@ -1,3 +1,11 @@
+vyatta-op (0.13.176) unstable; urgency=low
+
+  * Only generate directory names for path expansions, node.def is never
+    a valid completion unless part of a filename which is handled
+    differently
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 30 Aug 2011 18:28:12 -0500
+
 vyatta-op (0.13.175) unstable; urgency=low
 
   * Fix user defined wildcards such as in 'clear ip bgp *' and fix an
