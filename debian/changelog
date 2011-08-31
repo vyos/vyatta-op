@@ -1,3 +1,9 @@
+vyatta-op (0.13.177) unstable; urgency=low
+
+  * Fix completion for user wildcards
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 31 Aug 2011 12:39:29 -0500
+
 vyatta-op (0.13.176) unstable; urgency=low
 
   * Only generate directory names for path expansions, node.def is never
