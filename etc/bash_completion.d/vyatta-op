@@ -180,7 +180,11 @@ _vyatta_op_set_node_path ()
     _vyatta_op_node_path=$vyatta_op_templates
     for (( i=0 ; i<COMP_CWORD ; i++ )) ; do
         # expand the command so completion continues to work with short versions
-        node=$(_vyatta_op_conv_node_path $_vyatta_op_node_path ${COMP_WORDS[i]})
+        if [[ "${COMP_WORDS[i]}" == "*" ]]; then
+          node="node.tag" # user defined wildcars are always tag nodes
+        else
+          node=$(_vyatta_op_conv_node_path $_vyatta_op_node_path ${COMP_WORDS[i]})
+        fi
 	if [ -f "${_vyatta_op_node_path}/$node/node.def" ] ; then
 	    _vyatta_op_node_path+=/$node
 	elif [ -f ${_vyatta_op_node_path}/node.tag/node.def ] ; then
