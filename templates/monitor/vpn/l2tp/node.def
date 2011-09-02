@@ -1,0 +1,2 @@
+help: Monitor L2TP VPN 
+run: ${vyatta_bindir}/vyatta-monitor "VPN-L2TP" l2tp ppp remote-access-aaa-win remote-access-zzz-mac

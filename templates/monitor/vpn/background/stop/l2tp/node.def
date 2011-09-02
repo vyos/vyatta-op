@@ -1,0 +1,2 @@
+help: Stop background monitoring for L2TP VPN 
+run: ${vyatta_bindir}/vyatta-monitor-background-stop "VPN-L2TP:" l2tp ppp remote-access-aaa-win remote-access-zzz-mac
