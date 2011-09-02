@@ -1,0 +1,2 @@
+help: Stop background monitoring for PPTP VPN 
+run: ${vyatta_bindir}/vyatta-monitor-background-stop "VPN-PPTP" pptp ppp 

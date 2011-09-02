@@ -41,6 +41,9 @@ bin_SCRIPTS	+= scripts/tech-support-archive
 bin_SCRIPTS	+= scripts/vyatta-op-cmd-wrapper
 bin_SCRIPTS += scripts/vyatta-ping
 bin_SCRIPTS += scripts/vyatta-traceroute
+bin_SCRIPTS += scripts/vyatta-monitor
+bin_SCRIPTS += scripts/vyatta-monitor-background
+bin_SCRIPTS += scripts/vyatta-monitor-background-stop
 
 sbin_SCRIPTS     = scripts/dhcpv6-client-show-leases.pl
 sbin_SCRIPTS    += scripts/vyatta-image-tools.pl

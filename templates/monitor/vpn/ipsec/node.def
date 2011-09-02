@@ -1,0 +1,2 @@
+help: Monitor IPSec VPN 
+run: ${vyatta_bindir}/vyatta-monitor "VPN-IPSEC" pluto pptp l2tp ppp

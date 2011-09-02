@@ -1,0 +1,3 @@
+help: Start background VPN monitoring
+run: ${vyatta_bindir}/vyatta-monitor-background "VPN-ALL" pluto pptp l2tp ppp
+
