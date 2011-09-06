@@ -1,0 +1,2 @@
+help: Monitor Link Layer Discovery Protocol (LLDP) daemon
+run: ${vyatta_bindir}/vyatta-monitor LLDP lldpd

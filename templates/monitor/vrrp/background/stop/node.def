@@ -1,0 +1,2 @@
+help: Stop background monitoring for VRRP
+run: ${vyatta_bindir}/vyatta-monitor-background-stop VRRP

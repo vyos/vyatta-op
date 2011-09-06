@@ -1,0 +1,2 @@
+help: Monitor Dynamic Host Control Protocol (DHCP)
+run: ${vyatta_bindir}/vyatta-monitor DHCP dhcpd

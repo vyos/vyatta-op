@@ -1,0 +1,2 @@
+help: Start background monitoring of Content-Inspection
+run: ${vyatta_bindir}/vyatta-monitor-background Content-Inspection snort

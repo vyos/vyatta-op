@@ -1,0 +1,2 @@
+help: Monitor Content-Inspection
+run: ${vyatta_bindir}/vyatta-monitor Content-Inspection snort

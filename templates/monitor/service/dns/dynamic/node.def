@@ -1,0 +1,2 @@
+help: Monitor Dynamic DNS
+run: ${vyatta_bindir}/vyatta-monitor Dynamic-DNS ddclient

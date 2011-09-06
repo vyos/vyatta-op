@@ -1,0 +1,2 @@
+help: Start background monitoring for cluster service
+run: ${vyatta_bindir}/vyatta-monitor-background Cluster heartbeat cl_status mach_down ha_log
