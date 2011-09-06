@@ -1,0 +1,2 @@
+help: Start background monitoring of the HTTPS service
+run: ${vyatta_bindir}/vyatta-monitor-background HTTPS lighttpd chunker webgui
