@@ -1,6 +1,10 @@
 #!/bin/bash
 declare awkmatch="$2"
 declare pidname="$1"
+if [ ! -d /var/run/vyatta/monitor ]; then
+  sudo mkdir -p /var/run/vyatta/monitor
+  sudo chmod -R 777 /var/run/vyatta/monitor
+fi
 for i in "${@:3}"; do
   awkmatch+="|$i"  
 done
