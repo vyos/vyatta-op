@@ -1,7 +1,0 @@
-help: List currently running VPN background montioring processes
-run: ARR=$(ls /var/run/vyatta/monitor/VPN*"$(tty| sed -e s-/--g -e s/dev//g)"*.pid)
-     ARR=${ARR[@]##*/}
-     ARR=${ARR[@]%%-pts*}
-     for i in "${ARR[@]}";do 
-        echo $i
-     done
