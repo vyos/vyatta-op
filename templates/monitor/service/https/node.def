@@ -1,0 +1,2 @@
+help: Monitor the Secure Hypertext Transfer Protocol (HTTPS) service
+run: ${vyatta_bindir}/vyatta-monitor HTTPS lighttpd chunker webgui

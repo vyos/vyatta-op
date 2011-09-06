@@ -1,0 +1,2 @@
+help: Stop background monitoring for cluster service
+run: ${vyatta_bindir}/vyatta-monitor-background-stop Cluster

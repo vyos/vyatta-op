@@ -1,0 +1,2 @@
+help: Monitor clustering service
+run: ${vyatta_bindir}/vyatta-monitor Cluster heartbeat cl_status mach_down ha_log
