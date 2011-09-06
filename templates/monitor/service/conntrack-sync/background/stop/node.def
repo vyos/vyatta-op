@@ -1,0 +1,2 @@
+help: Stop background monitoring of conntrack-sync
+run: ${vyatta_bindir}/vyatta-monitor-background-stop Conntrack-Sync

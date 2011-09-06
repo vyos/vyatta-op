@@ -1,0 +1,2 @@
+help: Start background monitoring of the LLDP daemon
+run: ${vyatta_bindir}/vyatta-monitor-background LLDP lldpd

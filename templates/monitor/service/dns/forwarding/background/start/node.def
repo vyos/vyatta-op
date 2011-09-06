@@ -1,0 +1,2 @@
+help: Start background forwarding of DNS Forwarding
+run: ${vyatta_bindir}/vyatta-monitor-background DNS-Forward dnsmasq

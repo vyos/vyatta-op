@@ -1,0 +1,2 @@
+help: Stop background forwarding of DNS Forwarding
+run: ${vyatta_bindir}/vyatta-monitor-background-stop DNS-Forward
