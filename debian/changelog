@@ -1,3 +1,9 @@
+vyatta-op (0.13.178) unstable; urgency=low
+
+  * Fix some problems with the completion scripts
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 07 Sep 2011 13:31:42 -0500
+
 vyatta-op (0.13.177) unstable; urgency=low
 
   * Fix completion for user wildcards
