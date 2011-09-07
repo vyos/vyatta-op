@@ -3,6 +3,6 @@
 #
 
 help:   Send IPv4 ICMP echo request to specified <hostname|IPv4 address>
-allowed: echo -n '<hostname> <x:x:x:x:x>'
+allowed: echo -n '<hostname> <x.x.x.x>'
 
-run:	/bin/ping $2
+run:	/bin/ping $3
