@@ -107,7 +107,6 @@ _vyatta_op_default_expand ()
     _vyatta_op_expand
   else
     # after the first word => cannot be vyatta command so use original default
-    compopt -o filenames
     _filedir_xspec
   fi
 }
