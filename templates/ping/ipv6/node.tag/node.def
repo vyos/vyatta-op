@@ -5,4 +5,4 @@
 help:   Send IPv6 ICMP echo request to specified <hostname|IPv6 address>
 allowed: echo -n '<hostname> <h:h:h:h:h:h:h:h>'
 
-run:	/bin/ping6 $2
+run:	/bin/ping6 $3
