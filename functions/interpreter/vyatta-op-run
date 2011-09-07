@@ -162,6 +162,7 @@ _vyatta_op_run ()
     local ret=0
     local cmd_regex="^(LESSOPEN=|less|pager|tail|/opt/vyatta/bin/vyatta-tshark-interface-port.pl).*"
     if [ -n "$run_cmd" ]; then
+      eval $restore_shopts
       if [[ -t 1 &&  "${args[1]}" == "show" && ! $run_cmd =~ $cmd_regex ]] ; then
         eval "($run_cmd) | ${VYATTA_PAGER:-cat}"
       else
@@ -169,9 +170,9 @@ _vyatta_op_run ()
       fi
     else
       echo -ne "\n  Incomplete command: ${args[@]}\n\n" >&2
+      eval $restore_shopts
       ret=1
     fi
-    eval $restore_shopts
     return $ret
 }
 
