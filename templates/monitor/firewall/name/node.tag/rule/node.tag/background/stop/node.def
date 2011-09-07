@@ -1,0 +1,2 @@
+help: Stop background monitoring of a rule in the specified firewall
+run: ${vyatta_bindir}/vyatta-monitor-background-stop Firewall-$4-rule-$6 "\[$4-$6-[A,D,R]\]"
