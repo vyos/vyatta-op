@@ -1,3 +1,1 @@
 help: Monitor the specifed firewall
-allowed: local -a ARR=$(cli-shell-api -- listEffectiveNodes firewall name) 
-         echo "${ARR[@]}"
