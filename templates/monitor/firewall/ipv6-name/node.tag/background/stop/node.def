@@ -1,0 +1,2 @@
+help: Stop background monitoring of a specified firewall
+run: ${vyatta_bindir}/vyatta-monitor-background-stop Firewall-ipv6-$4
