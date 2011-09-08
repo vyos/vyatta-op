@@ -1,0 +1,2 @@
+help: Show IPv6 Open Shortest Path First (OSPFv3) protocol debugging flags
+run: vtysh -c "show debugging ospf6"

@@ -1,0 +1,2 @@
+help: Show RIPNG protocol debugging flags
+run: vtysh -c "show debugging ripng"

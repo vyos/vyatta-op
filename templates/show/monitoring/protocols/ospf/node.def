@@ -1,0 +1,2 @@
+help: Show Open Shortest Path First (OSPF) protocol debugging flags
+run: vtysh -c "show debugging ospf"

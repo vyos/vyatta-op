@@ -1,0 +1,2 @@
+help: Show Border Gateway Protocol (BGP) debugging flags
+run: vtysh -c "show debugging bgp"
