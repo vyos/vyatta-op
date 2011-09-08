@@ -1,0 +1,2 @@
+help: Show Routing Information Base (RIB) debugging flags
+run: vtysh -c "show debugging zebra"
