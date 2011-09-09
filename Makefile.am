@@ -68,3 +68,5 @@ install-exec-hook:
 	cd templates; $(cpiop) $(DESTDIR)$(opdir)
 	mkdir -p $(DESTDIR)$(etc_shell_leveldir)
 	cd etc/shell/level; $(cpiop) $(DESTDIR)$(etc_shell_leveldir)
+	mkdir -p $(DESTDIR)/etc/
+	cp etc/bash.bash_logout $(DESTDIR)/etc/
