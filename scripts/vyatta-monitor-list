@@ -1,0 +1,21 @@
+#!/bin/bash
+declare CURRENT_PTS=$(tty | sed -e s-/--g -e s/dev//g)
+declare CURRENT_UID=$(id -u)
+declare -a MPIDS
+MPIDS=( $(ls /var/run/vyatta/monitor/*.pid 2>/dev/null) )
+
+for pidfile in "${MPIDS[@]}"; do
+  pid=$(<$pidfile)
+  procname=$(cat /proc/$pid/cmdline 2>/dev/null)
+  if [[ "$procname" =~ "tail" ]] ; then
+    pts=${pidfile##*-pts}
+    pts=${pts%%.pid}
+    if [[ "pts$pts" == "$CURRENT_PTS" ]]; then
+      if cat /proc/$pid/status | grep -q "Uid:.*$CURRENT_UID" ; then 
+        print=${pidfile##*/}
+        print=${print%%-pts$pts*}
+        echo $print
+      fi
+    fi
+  fi
+done

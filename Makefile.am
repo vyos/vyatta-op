@@ -42,6 +42,7 @@ bin_SCRIPTS	+= scripts/vyatta-op-cmd-wrapper
 bin_SCRIPTS += scripts/vyatta-ping
 bin_SCRIPTS += scripts/vyatta-traceroute
 bin_SCRIPTS += scripts/vyatta-monitor
+bin_SCRIPTS += scripts/vyatta-monitor-list
 bin_SCRIPTS += scripts/vyatta-monitor-cleanup
 bin_SCRIPTS += scripts/vyatta-monitor-background
 bin_SCRIPTS += scripts/vyatta-monitor-background-stop

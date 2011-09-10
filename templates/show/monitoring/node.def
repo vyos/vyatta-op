@@ -1,1 +1,2 @@
 help: Show currently monitored services
+run: ${vyatta_bindir}/vyatta-monitor-list
