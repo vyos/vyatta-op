@@ -23,7 +23,7 @@ for pidfile in "${MPIDS[@]}"; do
           rm -rf $pidfile
         fi
       fi
-    elsif [[ "$MODE" == "LOGOUT" ]]; then
+    elif [[ "$MODE" == "LOGOUT" ]]; then
       # on logout kill all monitors
       kill $pid
       rm -rf $pidfile
