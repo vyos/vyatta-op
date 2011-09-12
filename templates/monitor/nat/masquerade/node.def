@@ -1,2 +1,2 @@
 help: Monitor Masquerade NAT logs
-run: "Monitor all Masquerade nat rules"
+run: ${vyatta_bindir}/vyatta-monitor NAT-MASQ "\[NAT-[0-9]*-MASQ\]"

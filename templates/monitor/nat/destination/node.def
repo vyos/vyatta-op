@@ -1,2 +1,2 @@
 help: Monitor Destination NAT logs
-run: "Monitor Destination nat
+run: ${vyatta_bindir}/vyatta-monitor NAT-DEST "\[NAT-[0-9]*-DNAT\]"

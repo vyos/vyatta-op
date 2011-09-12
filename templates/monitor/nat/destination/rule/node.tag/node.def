@@ -1,2 +1,3 @@
 help: Monitor Destination NAT logs for the specified rule
 allowed: local -a ARR=$(cli-shell-api listEffectiveNodes service nat rule); echo "${ARR[@]}"
+run: ${vyatta_bindir}/vyatta-monitor NAT-DEST-RULE-$5 "\[NAT-$5-DNAT\]"
