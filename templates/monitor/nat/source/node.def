@@ -1,2 +1,2 @@
 help: Monitor Source NAT logs
-run: "Monitor all source nat rules"
+run: ${vyatta_bindir}/vyatta-monitor NAT-SOURCE "\[NAT-[0-9]*-SNAT\]"
