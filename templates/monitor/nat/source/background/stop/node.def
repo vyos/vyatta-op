@@ -1,0 +1,2 @@
+help: Stop background monitoring of Source NAT
+run: ${vyatta_bindir}/vyatta-monitor-background-stop NAT-SOURCE

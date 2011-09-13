@@ -1,0 +1,2 @@
+help: Start background Destination NAT monitoring
+run:  ${vyatta_bindir}/vyatta-monitor-background NAT-DEST "\[NAT-[0-9]*-DNAT\]"

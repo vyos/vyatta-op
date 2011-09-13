@@ -1,1 +1,2 @@
 help: Monitor Network Address Translation (NAT)
+run: ${vyatta_bindir}/vyatta-monitor NAT-DEST "\[NAT-[0-9]*-*\]"

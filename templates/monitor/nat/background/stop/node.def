@@ -1,0 +1,3 @@
+help: Stop background NAT monitoring
+help: Stop background NAT monitoring
+run: ${vyatta_bindir}/vyatta-monitor-background-stop NAT

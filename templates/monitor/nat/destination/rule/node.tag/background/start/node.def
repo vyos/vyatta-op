@@ -1,0 +1,2 @@
+help: Start background monitoring of a specified Destination NAT rule
+run: ${vyatta_bindir}/vyatta-monitor-background NAT-DEST-RULE-$5 "\[NAT-$5-DNAT\]"
