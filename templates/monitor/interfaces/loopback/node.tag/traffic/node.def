@@ -1,2 +1,2 @@
-help: Monitor captured traffic on loopback interface
-run: /opt/vyatta/bin/vyatta-tshark-interface-port.pl "$4"
+help: Montior captured traffic on specified loopback interface
+run: ${vyatta_bindir}/vyatta-tshark.pl --intf $4

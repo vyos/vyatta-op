@@ -1,1 +1,3 @@
-help: Monitor a specified bonding interface
+help: Monitor specified bonding interface
+allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show bonding
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf=""

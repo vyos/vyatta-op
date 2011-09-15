@@ -23,6 +23,7 @@ bin_SCRIPTS	+= scripts/vyatta-show-version
 bin_SCRIPTS     += scripts/vyatta-show-dhclient.pl
 bin_SCRIPTS	+= scripts/vyatta-show-dmi
 bin_SCRIPTS	+= scripts/vyatta-tshark-interface-port.pl
+bin_SCRIPTS	+= scripts/vyatta-tshark.pl
 bin_SCRIPTS	+= scripts/vyatta-show-bonding.pl
 bin_SCRIPTS	+= scripts/vyatta-cpu-summary.pl
 bin_SCRIPTS	+= scripts/yesno

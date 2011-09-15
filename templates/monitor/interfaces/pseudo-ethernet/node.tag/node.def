@@ -1,1 +1,3 @@
-help: Monitor a specified pseudo-ethernet interface
+help: Monitor specified pseudo-ethernet interface
+allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show pseudo-ethernet
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf=""

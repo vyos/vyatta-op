@@ -1,1 +1,3 @@
-help: Monitor a specified tunnel interface
+help: Monitor specified tunnel interface
+allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show tunnel
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf=""
