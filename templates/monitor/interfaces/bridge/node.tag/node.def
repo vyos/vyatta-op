@@ -1,1 +1,3 @@
-help: Monitor a specified bridge interface
+help: Monitor specified bridge interface
+allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show bridge
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf=""

@@ -4,7 +4,7 @@ declare CURRENT_UID=$(id -u)
 declare CURRENT_UNAME=$(id -un)
 declare -a MPIDS
 MODE=$1
-MPIDS=( $(ls /var/run/vyatta/monitor/*.pid) )
+MPIDS=( $(ls /var/run/vyatta/monitor/*.pid 2> /dev/null ) )
 
 for pidfile in "${MPIDS[@]}"; do
   pid=$(<$pidfile)
