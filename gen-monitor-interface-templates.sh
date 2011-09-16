@@ -36,7 +36,7 @@ for type in "${types[@]}"; do
 
   # save
   echo 'help: Save monitored traffic to a file' >  $type/node.tag/traffic/save/node.def
-  echo -e 'help: Save monitored traffic to a file\nrun: ${vyatta_bindir}/vyatta-tshark.pl --intf $4 --save "${@:7}"' >  $type/node.tag/traffic/save/node.def
+  echo -e 'help: Save monitored traffic to a file\nrun: ${vyatta_bindir}/vyatta-tshark.pl --intf $4 --save "${@:7}"' >  $type/node.tag/traffic/save/node.tag/node.def
 
   # detail
   echo -e "help: Monitor detailed traffic for the specified $type interface"> $type/node.tag/traffic/detail/node.def
