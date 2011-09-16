@@ -1,2 +1,2 @@
-help: Monitor captured traffic on specified bonding virtual interface
-run: /opt/vyatta/bin/vyatta-tshark-interface-port.pl "$4.$6"
+help: Montior captured traffic on specified bonding interface
+run: ${vyatta_bindir}/vyatta-tshark.pl --intf $4.$6

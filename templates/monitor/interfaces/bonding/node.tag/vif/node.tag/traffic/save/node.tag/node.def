@@ -1,0 +1,2 @@
+help: Save monitored traffic to a file
+run: ${vyatta_bindir}/vyatta-tshark.pl --intf $4.$6 --save "${@:9}"
