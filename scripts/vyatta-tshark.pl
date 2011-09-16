@@ -57,14 +57,20 @@ sub check_if_interface_is_tsharkable {
 #
 # main
 #
-my ($detail,$filter,$intf,$unlimited);
+my ($detail,$filter,$intf,$unlimited,$save);
 
-GetOptions("detail!"                 => \$detail,
+GetOptions("detail!"                => \$detail,
            "filter=s"               => \$filter,
+           "save=s"                 => \$save,
            "intf=s"                 => \$intf,
-           "unlimited!"              => \$unlimited);
+           "unlimited!"             => \$unlimited);
 
 check_if_interface_is_tsharkable($intf);
+
+if (defined($save)){
+  exec "sudo /usr/bin/tshark -i $intf -w '$save' | grep -v root"; 
+  exit 0;
+}
 
 if (defined($filter)) {
   if (defined($detail)) { 
