@@ -198,6 +198,10 @@ sub run_show_intf {
 	my $description = get_intf_description($intf);
 	my $timestamp = $clear{'timestamp'};
 	my $line = `ip addr show $intf | sed 's/^[0-9]*: //'`; chomp $line; 
+  if ($line =~ /link\/tunnel6/) {
+      my $estat = `ip -6 tun show $intf | sed 's/.*encap/encap/'`;
+      $line =~ s%    link/tunnel6%    $estat$&%;
+  }
 	print "$line\n";
 	if (defined $timestamp and $timestamp ne "") {
 	    my $time_str = strftime("%a %b %d %R:%S %Z %Y", 
