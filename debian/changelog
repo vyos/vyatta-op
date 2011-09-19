@@ -1,3 +1,9 @@
+vyatta-op (0.13.180) unstable; urgency=low
+
+  * Changed openvpn show command syntax.
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Mon, 19 Sep 2011 06:42:18 -0700
+
 vyatta-op (0.13.179) unstable; urgency=low
 
   * Add operational information for ipv6 tunnel interfaces, part of bug
