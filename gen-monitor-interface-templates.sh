@@ -46,6 +46,7 @@ for type in "${types[@]}"; do
   # detail filter
   echo "help: Monitor detailed filtered traffic for the specified $type interface" >  $type/node.tag/traffic/detail/filter/node.def
   echo -e "help: Monitor detailed filtered traffic for the specified $type interface" > $type/node.tag/traffic/detail/filter/node.tag/node.def
+  echo -e "allowed: echo -e '<pcap-filter>'" >> $type/node.tag/traffic/detail/filter/node.tag/node.def
   echo 'run: ${vyatta_bindir}/vyatta-tshark.pl --intf $4 --detail --filter "${@:8}"' >> $type/node.tag/traffic/detail/filter/node.tag/node.def
 
   # detail unlimited
@@ -55,11 +56,13 @@ for type in "${types[@]}"; do
   # detail unlimited filter
   echo "help: Monitor detailed filtered traffic for the specified $type interface" >  $type/node.tag/traffic/detail/unlimited/filter/node.def
   echo "help: Monitor detailed filtered traffic for the specified $type interface" > $type/node.tag/traffic/detail/unlimited/filter/node.tag/node.def
+  echo "allowed: echo -e '<pcap-filter>'" >> $type/node.tag/traffic/detail/unlimited/filter/node.tag/node.def
   echo 'run: ${vyatta_bindir}/vyatta-tshark.pl --intf $4 --detail --unlimited --filter "${@:9}"' >> $type/node.tag/traffic/detail/unlimited/filter/node.tag/node.def
 
   #filter
   echo "help: Monitor filtered traffic for the specified $type interface" > $type/node.tag/traffic/filter/node.def
   echo "help: Monitor filtered traffic for the specified $type interface" > $type/node.tag/traffic/filter/node.tag/node.def
+  echo "allowed: echo -e '<pcap-filter>'" >> $type/node.tag/traffic/filter/node.tag/node.def
   echo 'run: ${vyatta_bindir}/vyatta-tshark.pl --intf $4 --filter "${@:7}"' >> $type/node.tag/traffic/filter/node.tag/node.def
 
   # unlimited
@@ -69,6 +72,7 @@ for type in "${types[@]}"; do
   # unlimited filter
   echo "help: Monitor filtered traffic for the specified $type interface" >  $type/node.tag/traffic/unlimited/filter/node.def
   echo "help: Monitor filtered traffic for the specified $type interface" > $type/node.tag/traffic/unlimited/filter/node.tag/node.def
+  echo "allowed: echo -e '<pcap-filter>'" >> $type/node.tag/traffic/unlimited/filter/node.tag/node.def
   echo 'run: ${vyatta_bindir}/vyatta-tshark.pl --intf $4 --unlimited --filter "${@:8}"' >> $type/node.tag/traffic/unlimited/filter/node.tag/node.def
 
 done
