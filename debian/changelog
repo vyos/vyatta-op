@@ -1,3 +1,10 @@
+vyatta-op (0.13.179) unstable; urgency=low
+
+  * Add operational information for ipv6 tunnel interfaces, part of bug
+    6900
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 19 Sep 2011 13:24:22 -0500
+
 vyatta-op (0.13.178) unstable; urgency=low
 
   * Fix some problems with the completion scripts
