@@ -519,7 +519,7 @@ if cli-shell-api existsActive interfaces openvpn; then
   header OpenVPN Interfaces
   show interfaces openvpn detail 
   header OpenVPN Server Status
-  show openvpn server-status
+  show openvpn status server
 else
   echo "OpenVPN is not configured"
 fi
