@@ -17,7 +17,7 @@ else
     | grep -m1 -E "$ip4regex">/dev/null; then
     # resolve address and check if it is ipv4 or other
     /usr/bin/traceroute ${@:2} $ADDR
-  elif host $ADDR | awk {' print $4 '} \
+  elif host $ADDR | awk {' print $5 '} \
     | grep -m1 -E "$ip6regex">/dev/null; then
     # if ipv6 resolution then ping6
     /usr/bin/traceroute6 ${@:2} $ADDR
