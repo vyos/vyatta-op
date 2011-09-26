@@ -1,3 +1,10 @@
+vyatta-op (0.13.185) unstable; urgency=low
+
+  * Bugfix 7502: Fix "show system image" on xen images built by virt-
+    munger.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Mon, 26 Sep 2011 15:04:01 -0700
+
 vyatta-op (0.13.184) unstable; urgency=low
 
   * Bugfix 7502: Make "delete system image" work correctly on Xen
