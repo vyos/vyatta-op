@@ -411,14 +411,11 @@ sub curVer {
 	# Boot command line is not formatted as it would be for a system
 	# booted via grub2 with union mounted root filesystem.  Another
 	# possibility is that it the system is Xen booted via pygrub.
-	#
-	if (-l $XEN_DEFAULT_IMAGE) {
-	    # On Xen/pygrub systems, we figure out the running version by
-	    # looking at the bind mount of /boot.
-	    $vers = `mount | awk '/on \\/boot / { print \$1 }'`;
-	    $vers =~ s/\/live\/image\/boot\///;
-	    chomp($vers);
-	}
+	# On Xen/pygrub systems, we figure out the running version by
+	# looking at the bind mount of /boot.
+	$vers = `mount | awk '/on \\/boot / { print \$1 }'`;
+	$vers =~ s/\/live\/image\/boot\///;
+	chomp($vers);
     }
 
     # In a non-image system, the kernel resides directly under "/boot".
