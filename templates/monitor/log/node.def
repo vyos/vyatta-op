@@ -1,2 +1,2 @@
-help: Show last lines of messages file
+help: Monitor last lines of messages file
 run: tail --follow=name /var/log/messages
