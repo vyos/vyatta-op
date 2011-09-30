@@ -326,15 +326,20 @@ _vyatta_op_expand ()
       eval "$restore_shopts"
       return
     fi
+
+    # this needs to be done on every completion even if it is the 'same' comp.
+    # The cursor can be at different places in the string. 
+    # this will lead to unexpected cases if setting the node path isn't attempted
+    # each time.
+    if ! _vyatta_op_set_node_path ; then
+      echo -e \\a
+      _vyatta_op_invalid_completion
+      COMPREPLY=( "" " " )
+      eval "$restore_shopts"
+      return 1
+    fi
     
     if [ "${COMP_WORDS[*]}" != "$_vyatta_op_last_comp" ] ; then
-      if ! _vyatta_op_set_node_path ; then
-        echo -e \\a
-        _vyatta_op_invalid_completion
-        COMPREPLY=( "" " " )
-        eval "$restore_shopts"
-        return 1
-      fi
         _vyatta_set_comptype
         case $_vyatta_comptype in
           'imagefiles') 
