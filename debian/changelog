@@ -1,3 +1,13 @@
+vyatta-op (0.13.186) unstable; urgency=low
+
+  * If there are no completions then always show the non-completions,
+    this gets rid of the empty tab completions
+  * Inform users of invalid or ambiguous commands at completion time
+  * Reformat vyatta-op script, there were two indentation styles,
+    changed from tabs to spaces
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 30 Sep 2011 12:50:28 -0500
+
 vyatta-op (0.13.185) unstable; urgency=low
 
   * Bugfix 7502: Fix "show system image" on xen images built by virt-
