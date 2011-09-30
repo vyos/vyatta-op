@@ -225,7 +225,7 @@ _vyatta_op_set_completions ()
     ndef=${_vyatta_op_node_path}/node.def
     [ -f $ndef ] && \
       node_run=$( _vyatta_op_get_node_def_field $ndef run )
-    if [ -n "$node_run" ]; then
+    if [ -z "$cur" -a -n "$node_run" ]; then
       _vyatta_op_noncompletions+=('<Enter>')
     fi
 
