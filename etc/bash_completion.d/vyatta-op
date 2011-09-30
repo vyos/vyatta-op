@@ -373,6 +373,7 @@ _vyatta_op_expand ()
           echo
           _vyatta_op_invalid_completion 
           COMPREPLY=( "" " " )
+          _vyatta_op_last_comp=${_vyatta_op_last_comp_init}
     # if there are no completions then always show the non-comps
     elif [ "${COMP_WORDS[*]}" == "$_vyatta_op_last_comp" ] || 
          [ ${#_vyatta_op_completions[@]} -eq 0 ]; then
