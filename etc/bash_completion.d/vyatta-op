@@ -313,8 +313,9 @@ _vyatta_op_expand ()
 	    fi
 	done
     fi
-
-    if [ "${COMP_WORDS[*]}" == "$_vyatta_op_last_comp" ] ; then
+    # if there are no completions then always show the non-comps
+    if [ "${COMP_WORDS[*]}" == "$_vyatta_op_last_comp" ] ||
+       [ ${#_vyatta_op_completions[@]} -eq 0 ]; then
 	  _vyatta_op_help "$cur" \
 	      ${_vyatta_op_noncompletions[@]} \
 	      ${_vyatta_op_completions[@]} \
