@@ -373,7 +373,7 @@ _vyatta_op_expand ()
       echo "Number of comps: ${#_vyatta_op_completions[@]}"
       echo "Number of non-comps: ${#_vyatta_op_noncompletions[@]}"
       echo "Last comp: $_vyatta_op_last_comp"
-      echo -e "Cureent comp: ${COMP_WORDS[*]}\n"
+      echo -e "Current comp: ${COMP_WORDS[*]}\n"
     fi
     # if there are no completions then handle invalid commands
     if [ ${#_vyatta_op_noncompletions[@]} -eq 0 ] &&
