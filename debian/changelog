@@ -1,3 +1,12 @@
+vyatta-op (0.13.188) unstable; urgency=low
+
+  * Fix problem with recovering from invalid completion
+  * Add some useful debugging to the comps script, it can be enabled on
+    the fly via an environment variable
+  * Fix typo in previous commit
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 30 Sep 2011 17:10:20 -0500
+
 vyatta-op (0.13.187) unstable; urgency=low
 
   * fix handleing of invalid commands when there is an the parent node
