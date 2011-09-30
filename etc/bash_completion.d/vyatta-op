@@ -168,7 +168,11 @@ _vyatta_op_help ()
 	    else
 		last_help=$help
 	    fi
-	    _vyatta_op_print_help "$comp" "$help"
+      if [[ "$comp" == "<Enter>" ]]; then
+        continue
+      else
+        _vyatta_op_print_help "$comp" "$help"
+      fi
 	fi
     done
 }
@@ -216,6 +220,15 @@ _vyatta_op_set_completions ()
     # donot complete entries like <HOSTNAME> or <A.B.C.D>
     _vyatta_op_noncompletions=( )
     completions=( )
+
+    # make runable commands have a non-comp
+    ndef=${_vyatta_op_node_path}/node.def
+    [ -f $ndef ] && \
+      node_run=$( _vyatta_op_get_node_def_field $ndef run )
+    if [ -n "$node_run" ]; then
+        _vyatta_op_noncompletions+=('<Enter>')
+    fi
+
     for (( i=0 ; i<${#allowed[@]} ; i++ )) ; do
 	if [[ "${allowed[i]}" == \<*\> ]] ; then
 	    _vyatta_op_noncompletions+=( ${allowed[i]} )
@@ -231,8 +244,16 @@ _vyatta_op_set_completions ()
       fi
 	fi
     done
+    
+    # Prefix filter the non empty completions
+    if [ -n "$cur" ]; then
+      _vyatta_op_completions=()
+      get_prefix_filtered_list "$cur" completions _vyatta_op_completions
+      _vyatta_op_completions=($( printf "%s\n" ${_vyatta_op_completions[@]} | sort -u ))
+    else
+      _vyatta_op_completions=($( printf "%s\n" ${completions[@]} | sort -u ))
+    fi
 
-    _vyatta_op_completions=($( printf "%s\n" ${completions[@]} | sort -u ))
 }
 
 _vyatta_op_comprely_needs_ambiguity ()
@@ -245,6 +266,39 @@ _vyatta_op_comprely_needs_ambiguity ()
 
     [ ${#uniq[@]} -eq 1 ] && return
     false
+}
+
+_vyatta_op_invalid_completion ()
+{
+      local tpath=$vyatta_op_templates
+      local -a args
+      local i=1 
+      for arg in "${COMP_WORDS[@]}"; do
+        arg=( $(_vyatta_op_conv_node_path $tpath $arg) )  # expand the arguments
+        # output proper error message based on the above expansion
+        if [[ "${arg[1]}" == "ambiguous" ]]; then
+          echo -ne "\n  Ambiguous command: ${args[@]} [$arg]\n"
+          local -a cmds=( "$tpath/$arg"* )
+          _vyatta_op_node_path=$tpath
+          local comps=$(_vyatta_op_help $arg ${cmds[@]##*/})
+          echo -e "$comps" | sed -e 's/^P/  P/'
+          break
+        elif [[ "${arg[1]}" == "invalid" ]]; then
+          echo -ne "\n  Invalid command: ${args[@]} [$arg]\n"
+          break
+        fi  
+
+        if [ -f "$tpath/$arg/node.def" ] ; then
+            tpath+=/$arg
+        elif [ -f $tpath/node.tag/node.def ] ; then
+            tpath+=/node.tag
+        else
+            echo -ne "\n  Invalid command: ${args[@]} [$arg]\n" >&2 
+            break
+        fi  
+        args[$i]=$arg
+        let "i+=1"
+      done
 }
 
 _vyatta_op_expand ()
@@ -277,6 +331,7 @@ _vyatta_op_expand ()
     if [ "${COMP_WORDS[*]}" != "$_vyatta_op_last_comp" ] ; then
 	if ! _vyatta_op_set_node_path ; then
 	    echo -e \\a
+      _vyatta_op_invalid_completion
 	    COMPREPLY=( "" " " )
 	    eval "$restore_shopts"
 	    return 1
@@ -313,8 +368,14 @@ _vyatta_op_expand ()
 	    fi
 	done
     fi
+    # if there are no completions then handle invalid commands
+    if [ ${#_vyatta_op_noncompletions[@]} -eq 0 ] &&
+       [ ${#_vyatta_op_completions[@]} -eq 0 ]; then
+          echo
+          _vyatta_op_invalid_completion
+          COMPREPLY=( "" " " )
     # if there are no completions then always show the non-comps
-    if [ "${COMP_WORDS[*]}" == "$_vyatta_op_last_comp" ] ||
+    elif [ "${COMP_WORDS[*]}" == "$_vyatta_op_last_comp" ] ||
        [ ${#_vyatta_op_completions[@]} -eq 0 ]; then
 	  _vyatta_op_help "$cur" \
 	      ${_vyatta_op_noncompletions[@]} \
