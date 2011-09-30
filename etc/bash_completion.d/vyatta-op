@@ -280,10 +280,10 @@ _vyatta_op_invalid_completion ()
           local -a cmds=( "$tpath/$arg"* )
           _vyatta_op_node_path=$tpath
           local comps=$(_vyatta_op_help $arg ${cmds[@]##*/})
-          echo -e "$comps" | sed -e 's/^P/  P/'
+          echo -ne "$comps" | sed -e 's/^P/  P/'
           break
         elif [[ "${arg[1]}" == "invalid" ]]; then
-          echo -ne "\n  Invalid command: ${args[@]} [$arg]\n"
+          echo -ne "\n  Invalid command: ${args[@]} [$arg]"
           break
         fi  
 
@@ -292,7 +292,7 @@ _vyatta_op_invalid_completion ()
         elif [ -f $tpath/node.tag/node.def ] ; then
             tpath+=/node.tag
         else
-            echo -ne "\n  Invalid command: ${args[@]} [$arg]\n" >&2 
+            echo -ne "\n  Invalid command: ${args[@]} [$arg]" >&2 
             break
         fi  
         args[$i]=$arg
