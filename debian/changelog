@@ -1,3 +1,10 @@
+vyatta-op (0.13.190) unstable; urgency=low
+
+  * Stop completions from getting stuck on nodes when backspacing to
+    them
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 30 Sep 2011 19:03:58 -0500
+
 vyatta-op (0.13.189) unstable; urgency=low
 
   * Fix output of invalid and ambiguous error messages
