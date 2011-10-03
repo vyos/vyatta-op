@@ -1,3 +1,9 @@
+vyatta-op (0.13.192) unstable; urgency=low
+
+  * Make completion properly handle non-last-word completions
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 03 Oct 2011 13:18:38 -0500
+
 vyatta-op (0.13.191) unstable; urgency=low
 
   * Make completions not get stuck when backspacing over a character in
