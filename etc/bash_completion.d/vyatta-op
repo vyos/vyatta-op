@@ -297,6 +297,9 @@ _vyatta_op_invalid_completion ()
         fi  
         args[$i]=$arg
         let "i+=1"
+        if [ $[${#COMP_WORDS[@]}+1] -eq $i ];then
+          echo -ne "\n  No completion found with prefix [$arg]"
+        fi
       done
 }
 
