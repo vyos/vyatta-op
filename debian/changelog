@@ -1,3 +1,10 @@
+vyatta-op (0.13.194) unstable; urgency=low
+
+  * Fix a bug in op mode handling of non sticking completions, we want
+    the help text if the current completion is empty for consistency
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 04 Oct 2011 15:42:20 -0500
+
 vyatta-op (0.13.193) unstable; urgency=low
 
   * Alert users when they have entered a completion that doesn't match.
