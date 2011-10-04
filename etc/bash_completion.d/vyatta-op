@@ -411,6 +411,7 @@ _vyatta_op_expand ()
           _vyatta_op_last_comp=${_vyatta_op_last_comp_init}
     # Stop completions from getting stuck
     elif [ ${#_vyatta_op_completions[@]} -eq 1 ] &&
+         [ -n "$cur" ] &&
          [[ "${COMPREPLY[0]}" =~ "$cur" ]]; then
           _vyatta_op_last_comp=${_vyatta_op_last_comp_init}
     # if there are no completions then always show the non-comps
