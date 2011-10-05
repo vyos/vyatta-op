@@ -1,3 +1,10 @@
+vyatta-op (0.13.195) unstable; urgency=low
+
+  * Make non-lastword completions more fluid by using the current prefix
+    and word provided by bash
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 05 Oct 2011 16:14:42 -0500
+
 vyatta-op (0.13.194) unstable; urgency=low
 
   * Fix a bug in op mode handling of non sticking completions, we want
