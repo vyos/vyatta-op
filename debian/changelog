@@ -1,3 +1,9 @@
+vyatta-op (0.13.196) unstable; urgency=low
+
+  * fix stuck completion on non-lastword
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 05 Oct 2011 17:54:43 -0500
+
 vyatta-op (0.13.195) unstable; urgency=low
 
   * Make non-lastword completions more fluid by using the current prefix
