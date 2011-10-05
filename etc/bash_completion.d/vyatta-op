@@ -313,6 +313,8 @@ _vyatta_op_expand ()
     shopt -s extglob nullglob
     local cur=""
     local _has_comptype=0
+    local current_prefix=$2
+    local current_word=$3
     _vyatta_comptype=""
 
     if (( ${#COMP_WORDS[@]} > 0 )); then
@@ -359,20 +361,24 @@ _vyatta_op_expand ()
           ;;
           *)
               _has_comptype=0
-              _vyatta_op_set_completions $cur
+              if [[ -z "$current_word" ]]; then
+                _vyatta_op_set_completions $cur
+              else
+                _vyatta_op_set_completions $current_prefix
+              fi
           ;;
         esac
     fi
     if [[ $_has_comptype == 1 ]]; then
       COMPREPLY=( "${_vyatta_op_completions[@]}" )
     else
-      COMPREPLY=($( compgen -W "${_vyatta_op_completions[*]}" -- $cur ))
+      COMPREPLY=($( compgen -W "${_vyatta_op_completions[*]}" -- $current_prefix ))
     fi
 
     # if the last command line arg is empty and we have
     # an empty completion option (meaning wild card),
     # append a blank(s) to the completion array to force ambiguity
-    if [ -z "$cur" ] ||
+    if [ -z "$current_prefix" -a -n "$current_word" ] ||
        [[ "${COMPREPLY[0]}" =~ "$cur" ]]; then
       for comp ; do
         if [ -z "$comp" ] ; then
@@ -387,6 +393,8 @@ _vyatta_op_expand ()
     # Set this environment to enable and disable debugging on the fly
     if [[ $DBG_OP_COMPS -eq 1 ]]; then
       echo -e "\nCurrent: '$cur'"
+      echo -e "Current word: '$current_word'"
+      echo -e "Current prefix: '$current_prefix'"
       echo "Number of comps: ${#_vyatta_op_completions[*]}"
       echo "Number of non-comps: ${#_vyatta_op_noncompletions[*]}"
       echo "_vyatta_op_completions: '${_vyatta_op_completions[*]}'"
@@ -417,7 +425,7 @@ _vyatta_op_expand ()
     # if there are no completions then always show the non-comps
     elif [ "${COMP_WORDS[*]:0:$[$COMP_CWORD+1]}" == "$_vyatta_op_last_comp" ] || 
          [ ${#_vyatta_op_completions[@]} -eq 0 ]; then
-          _vyatta_op_help "$cur" \
+          _vyatta_op_help "$current_prefix" \
             ${_vyatta_op_noncompletions[@]} \
             ${_vyatta_op_completions[@]} \
             | ${VYATTA_PAGER:-cat}
