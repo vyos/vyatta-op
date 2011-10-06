@@ -514,7 +514,7 @@ _vyatta_pipe_completion ()
   _vyatta_pipe_noncompletions=()
 
   for word in "$@"; do
-    if [ "$found" == "1" -o "$word" == "|" ]; then
+    if [[ "$found" == "1" || "$word" == "|" ]]; then
       pipe_cmd+=( "$word" )
       found=1
     fi
