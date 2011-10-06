@@ -34,7 +34,7 @@ get_prefix_filtered_list ()
   local idx=0
   for elem in "${olist[@]}"; do
     local sub=${elem#$pfx}
-    if [ "$elem" == "$sub" ] && [ -n "$pfx" ]; then
+    if [[ "$elem" == "$sub" ]] && [[ -n "$pfx" ]]; then
       continue
     fi
     eval "$3[$idx]=\"$elem\""
@@ -60,7 +60,7 @@ get_prefix_filtered_list2 ()
     eval "local elem=\${$2[$orig_idx]}"
     eval "local elem2=\${$4[$orig_idx]}"
     local sub=${elem#$pfx}
-    if [ "$elem" == "$sub" ] && [ -n "$pfx" ]; then
+    if [[ "$elem" == "$sub" ]] && [[ -n "$pfx" ]]; then
       continue
     fi
     eval "$3[$idx]=\"$elem\""
