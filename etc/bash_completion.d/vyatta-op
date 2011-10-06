@@ -148,6 +148,9 @@ _vyatta_op_help ()
        _vyatta_op_print_help '<Enter>' "Execute the current command"
     fi
     for comp ; do
+      if [[ "$comp" == "<Enter>" ]]; then
+        continue
+      fi
       if [ -z "$comp" ] ; then
         if [ "X$node_tag_help" == "X$last_help" ] ; then
           help=""
@@ -168,11 +171,7 @@ _vyatta_op_help ()
         else
           last_help=$help
         fi
-        if [[ "$comp" == "<Enter>" ]]; then
-          continue
-        else 
-          _vyatta_op_print_help "$comp" "$help"
-        fi
+        _vyatta_op_print_help "$comp" "$help"
       fi
     done
 }
