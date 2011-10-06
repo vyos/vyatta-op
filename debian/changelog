@@ -1,3 +1,9 @@
+vyatta-op (0.13.198) unstable; urgency=low
+
+  * fix help text printing when the command is runnable
+
+ -- John Southworth <john.southworth@vyatta.com>  Thu, 06 Oct 2011 01:01:57 -0500
+
 vyatta-op (0.13.197) unstable; urgency=low
 
   * Fix: first word completions; empty completions on tag nodes, if
