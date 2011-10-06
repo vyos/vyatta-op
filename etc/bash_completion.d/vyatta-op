@@ -103,7 +103,7 @@ _vyatta_op_default_expand ()
   local wc=${#COMP_WORDS[@]}
   if (( wc < 2 )) ||
      [[ $COMP_CWORD -eq 0 ]]; then
-    _vyatta_op_expand
+    _vyatta_op_expand "$@"
   else
     # after the first word => cannot be vyatta command so use original default
     _filedir_xspec
@@ -210,7 +210,7 @@ _vyatta_op_set_completions ()
         if [ ${#a[@]} -ne 0 ] ; then
           allowed+=( "${a[@]}" )
         else
-          allowed+=( "" )
+          allowed+=( "<text>" )
         fi
       else
         local sdir=${ndef%/*}
@@ -413,6 +413,12 @@ _vyatta_op_expand ()
     # if there are no completions then handle invalid commands
     if [ ${#_vyatta_op_noncompletions[@]} -eq 0 ] &&
        [ ${#_vyatta_op_completions[@]} -eq 0 ]; then
+          echo
+          _vyatta_op_invalid_completion 
+          COMPREPLY=( "" " " )
+          _vyatta_op_last_comp=${_vyatta_op_last_comp_init}
+    elif [ ${#COMPREPLY[@]} -eq 0 ] &&
+         [ -n "$current_prefix" ]; then
           echo
           _vyatta_op_invalid_completion 
           COMPREPLY=( "" " " )
