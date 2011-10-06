@@ -1,3 +1,12 @@
+vyatta-op (0.13.197) unstable; urgency=low
+
+  * Fix: first word completions; empty completions on tag nodes, if
+    there is a tag node there should always be at least a non-comp so
+    that the help text will be displayed; invalid completions in the
+    middle of the string
+
+ -- John Southworth <john.southworth@vyatta.com>  Thu, 06 Oct 2011 00:36:32 -0500
+
 vyatta-op (0.13.196) unstable; urgency=low
 
   * fix stuck completion on non-lastword
