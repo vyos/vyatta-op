@@ -413,7 +413,8 @@ _vyatta_op_expand ()
     # This is non obvious... 
     # To have completion continue to work when working with words that aren't the last word,
     # we have to set nospace at the beginning of this script and then append the spaces here.
-    if [ ${#COMPREPLY[@]} -eq 1 ];then
+    if [ ${#COMPREPLY[@]} -eq 1 ] && 
+       [[ $_has_comptype -ne 1 ]]; then
        COMPREPLY=( "${COMPREPLY[0]} " )
     fi
     # if there are no completions then handle invalid commands
