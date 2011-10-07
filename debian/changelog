@@ -1,3 +1,10 @@
+vyatta-op (0.13.201) unstable; urgency=low
+
+  * Fix completions for templates using custom completion functions
+    (currently image tools)
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 07 Oct 2011 13:32:50 -0500
+
 vyatta-op (0.13.200) unstable; urgency=low
 
   * Bugfix 6747: use bash conditional expressions instead of posix test
