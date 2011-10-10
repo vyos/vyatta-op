@@ -1,3 +1,5 @@
 help: Monitor a specified Masquerade NAT rule
-allowed: local -a ARR=$(cli-shell-api listEffectiveNodes service nat rule); echo "${ARR[@]}"
+allowed: local -a ARR
+  eval "ARR=($(cli-shell-api listEffectiveNodes service nat rule))"
+  echo ${ARR[@]}
 run: ${vyatta_bindir}/vyatta-monitor NAT-MASQ-RULE-$5 "\[NAT-$5-MASQ\]"
