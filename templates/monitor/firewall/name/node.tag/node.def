@@ -1,4 +1,5 @@
 help: Monitor a specified firewall
-allowed: local -a ARR=$(cli-shell-api -- listEffectiveNodes firewall name)
-         echo "${ARR[@]}"
+allowed: local -a ARR
+         eval "ARR=($(cli-shell-api -- listEffectiveNodes firewall name))"
+         echo ${ARR[@]}
 run: ${vyatta_bindir}/vyatta-monitor Firewall-$4 "\[$4-[0-9]*-[A,D,R]\]"
