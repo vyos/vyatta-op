@@ -1,0 +1,2 @@
+help: Show log for Virtual Router Redundancy Protocol (VRRP)
+run: cat $(printf "%s\n" /var/log/messages* | sort -nr) | grep -e Keepalived_vrrp

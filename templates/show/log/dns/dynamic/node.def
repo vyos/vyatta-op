@@ -1,0 +1,2 @@
+help: Show log for Dynamic DNS
+run: cat $(printf "%s\n" /var/log/messages* | sort -nr) | grep -e "ddclient"

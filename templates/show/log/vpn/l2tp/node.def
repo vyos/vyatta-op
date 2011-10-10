@@ -1,0 +1,2 @@
+help: Show log for L2TP
+run: cat $(printf "%s\n" /var/log/messages* | sort -nr) | grep -e remote-access-aaa-win -e remote-access-zzz-mac -e xl2tpd -e ppp

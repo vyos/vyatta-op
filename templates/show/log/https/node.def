@@ -1,0 +1,2 @@
+help: Show log for Https
+run: cat $(printf "%s\n" /var/log/messages* | sort -nr) | grep -e lighttpd -e chuncker -e webgui

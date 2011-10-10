@@ -1,0 +1,2 @@
+help: Show log for Cluster
+run: cat $(printf "%s\n" /var/log/messages* | sort -nr) | grep -e heartbeat -e cl_status -e mach_down -e ha_log
