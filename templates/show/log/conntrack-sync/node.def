@@ -1,0 +1,3 @@
+help: Show log for Conntrack-sync
+run: 
+        cat $(printf "%s\n" /var/log/messages* | sort -nr ) | grep -e conntrackd
