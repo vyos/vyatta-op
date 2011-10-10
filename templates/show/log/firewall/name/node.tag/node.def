@@ -1,5 +1,5 @@
 help: Show log for a specified firewall
 allowed: local -a ARR=$(cli-shell-api -- listEffectiveNodes firewall name)
-         echo "${ARR[@]}"
+          echo "${ARR[@]//\'/}"
 run: cat $(printf "%s\n" /var/log/messages* | sort -nr ) | grep -e "\[$5-[0-9]*-[A,D,R]\]"
 
