@@ -1,3 +1,9 @@
+vyatta-op (0.13.202) unstable; urgency=low
+
+  * Bugfix 7543: remove trailing spaces from the show interfaces output
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 10 Oct 2011 12:09:05 -0500
+
 vyatta-op (0.13.201) unstable; urgency=low
 
   * Fix completions for templates using custom completion functions
