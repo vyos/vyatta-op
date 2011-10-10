@@ -1,4 +1,4 @@
 help: Show log for a rule in the specified firewall
-allowed: local -a ARR=$(cli-shell-api -- listEffectiveNodes firewall ipv6-name ${COMP_WORDS[3]} rule)
-          echo "${ARR[@]}"
+allowed: local -a ARR=$(cli-shell-api -- listEffectiveNodes firewall ipv6-name ${COMP_WORDS[4]} rule)
+          echo "${ARR[@]//\'/}"
 run: cat $(printf "%s\n" /var/log/messages* | sort -nr) | grep -e "\[$5-$7-[A,D,R]\]"
