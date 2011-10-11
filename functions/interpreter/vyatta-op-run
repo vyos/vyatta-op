@@ -132,7 +132,7 @@ _vyatta_op_run ()
         # output proper error message based on the above expansion
         if [[ "${arg[1]}" == "ambiguous" ]]; then
           echo -ne "\n  Ambiguous command: ${args[@]} [$arg]\n"
-          local -a cmds=( "$tpath/$arg"* )
+          local -a cmds=( $(compgen -d $tpath/$arg) )
           _vyatta_op_node_path=$tpath
           local comps=$(_vyatta_op_help $arg ${cmds[@]##*/})
           echo -e "$comps\n" | sed -e 's/^P/  P/'
