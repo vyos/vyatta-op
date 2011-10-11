@@ -1,3 +1,10 @@
+vyatta-op (0.13.203) unstable; urgency=low
+
+  * Fix ambiguous error text so that it doesn't show node.def, generate
+    the completions using compgen -d
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 11 Oct 2011 10:54:22 -0500
+
 vyatta-op (0.13.202) unstable; urgency=low
 
   * Bugfix 7543: remove trailing spaces from the show interfaces output
