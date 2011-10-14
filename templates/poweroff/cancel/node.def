@@ -1,0 +1,2 @@
+help: Cancel a pending poweroff
+run: sudo /sbin/shutdown -c

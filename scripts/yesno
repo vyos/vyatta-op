@@ -4,7 +4,10 @@
 default=
 if [ "$1" = "-y" ]
 then default='y'; shift
+elif [[ "$1" = "-n" ]]; then
+  default='n'; shift
 fi
+
 
 if [ $# -eq 0 ]
 then prompt="yes or no: "

@@ -1,0 +1,3 @@
+help: Poweroff the system now [disruptive]
+run:  sudo /sbin/shutdown -h now
+

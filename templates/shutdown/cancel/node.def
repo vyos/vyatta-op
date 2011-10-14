@@ -1,2 +1,0 @@
-help: Cancel a pending shutdown
-run: sudo /sbin/shutdown -c
