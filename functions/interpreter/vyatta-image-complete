@@ -21,13 +21,17 @@
 _vyatta_image_is_file()
 {
   local cur=$1
-  cur=${cur/:/}
-  topdir=${cur%%/*}
-  cur=${cur#$topdir/}
+  if ! [[ ${cur:0:1} =~ "/" ]]; then
+    cur=${cur/:/}
+    topdir=${cur%%/*}
+    cur=${cur#$topdir/}
+  fi
   if [[ $topdir == "running" ]]; then
     cur="/${cur}"
   elif [[ $topdir == "disk-install" ]]; then
     cur="/live/image/${cur}"
+  elif [[ ${cur:0:1} =~ "/" ]]; then
+    cur=${cur}
   else
     cur="/live/image/boot/${topdir}/live-rw/${cur}"
   fi
@@ -57,6 +61,14 @@ _vyatta_image_path_complete()
     _vyatta_op_completions=( "${cur} " )
     return 0;
   fi
+  if [[ ${cur:0:1} =~ "/" ]]; then
+    reply=( $(compgen -f ${cur}) )
+    for ((i=0; i < ${#reply[@]}; i++)); do
+      [[ -d ${reply[i]} ]] && reply[i]="${reply[i]}"/
+    done
+    _vyatta_op_completions=( "${reply[@]}" )
+    return
+  fi
   if [[ ${cur} == "" ]]; then
     reply=( $(compgen -d /live/image/boot/ | grep -v grub) )
     for i in `seq 0 $[${#reply[@]}-1]`; do
@@ -85,7 +97,7 @@ _vyatta_image_path_complete()
       else
         cur="/live/image/boot/${cur}"
       fi
-      reply=( $(compgen -f ${cur}) )
+      reply=( $(compgen -f ${cur} | grep -v grub) )
       for i in `seq 0 $[${#reply[@]}-1]`; do
         file=${reply[$i]}
         if [[ $isrunningimg == "running" ]];then
@@ -129,7 +141,7 @@ _vyatta_image_path_complete()
         if [[ $topdir == "running" ]]; then
           reply[$i]=${file/#\//"$topdir://"}
         elif [[ $topdir == "disk-install" ]]; then
-          reply[$i]=${file/#\/live\/image\//$"$topdir://"} 
+          reply[$i]=${file/#\/live\/image\//"$topdir://"} 
         else
           reply[$i]=${file/#\/live\/image\/boot\/$topdir/"$topdir://"}
           reply[$i]=${reply[$i]/\/live-rw\/}
