@@ -101,7 +101,10 @@ _vyatta_op_debug ()
 _vyatta_op_default_expand ()
 {
   local wc=${#COMP_WORDS[@]}
-  if (( wc < 2 )) ||
+  if [[ "${COMP_WORDS[0]}" =~ "/" ]]; then
+    # if we are looking for a directory on the first completion then do directory completions
+    _filedir_xspec
+  elif (( wc < 2 )) ||
      [[ $COMP_CWORD -eq 0 ]]; then
     _vyatta_op_expand "$@"
   else
