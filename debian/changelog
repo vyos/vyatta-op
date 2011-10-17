@@ -1,3 +1,10 @@
+vyatta-op (0.13.205) unstable; urgency=low
+
+  * Allow completions using normal dirctory paths as well as a shortcut
+    to running:// in file name completions
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 17 Oct 2011 15:50:09 -0500
+
 vyatta-op (0.13.204) unstable; urgency=low
 
   * Make directory completions, if it is the first word of the
