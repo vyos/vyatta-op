@@ -1,3 +1,11 @@
+vyatta-op (0.13.204) unstable; urgency=low
+
+  * Make directory completions, if it is the first word of the
+    completion, work so that users can easily find scripts they may be
+    trying to run.
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 17 Oct 2011 13:44:11 -0500
+
 vyatta-op (0.13.203) unstable; urgency=low
 
   * Fix ambiguous error text so that it doesn't show node.def, generate
