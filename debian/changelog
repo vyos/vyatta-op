@@ -1,3 +1,9 @@
+vyatta-op (0.13.181) unstable; urgency=low
+
+  * Bugfix 7502: Correctly display image names on Xen.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Wed, 19 Oct 2011 16:56:11 -0700
+
 vyatta-op (0.13.180) unstable; urgency=low
 
   * Changed openvpn show command syntax.
