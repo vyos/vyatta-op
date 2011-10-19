@@ -36,6 +36,7 @@ my $VER_FILE = '/opt/vyatta/etc/version';
 my $OLD_IMG_VER_STR = 'Old-non-image-installation';
 my $OLD_GRUB_CFG = '/boot/grub/grub.cfg';
 my $DISK_BOOT = '/boot';
+my $XEN_DEFAULT_IMAGE = "$UNION_BOOT/%%default_image";
 
 # 
 # Globals
@@ -58,7 +59,14 @@ sub parseGrubCfg {
     my $in_entry = 0;
     my $idx = 0;
     my $running_boot_cmd=`cat /proc/cmdline`;
-    $running_boot_cmd =~ s/BOOT_IMAGE=//;
+    if (! ($running_boot_cmd =~ s/BOOT_IMAGE=//)) {
+	# Mis-formatted boot cmd.  It might be Xen, which boots with pygrub.
+	# We use a symlink in this case to point to the default image.
+	#
+	if (-l $XEN_DEFAULT_IMAGE) {
+	    $running_boot_cmd = readlink($XEN_DEFAULT_IMAGE);
+	}
+    }
     while (<$fd>) {
 	if ($in_entry) {
 	    if (/^}/) {
