@@ -26,6 +26,7 @@ use strict;
 use warnings;
 use Getopt::Long;
 use File::Temp qw/ :mktemp /;
+use File::Copy;
 
 # 
 # Constants
@@ -311,6 +312,24 @@ sub doSelect {
     print "Failed to set the default boot image. Exiting...\n";
     exit 1;
   }
+
+  if (-l $XEN_DEFAULT_IMAGE) {
+      my $backup_symlink = $XEN_DEFAULT_IMAGE . ".orig";
+      if (!move($XEN_DEFAULT_IMAGE, $backup_symlink)) {
+	  printf("Unable to back up Xen default image symlink: $XEN_DEFAULT_IMAGE\n");
+	  printf("Default boot image has not been changed.\n");
+	  system("logger -p local3.warning -t 'SystemImage' 'Default boot image attempt to change from $def_ver to $new_ver failed: cant back up symlink'");
+	  exit 1;
+      }
+      if (!symlink ($new_ver, $XEN_DEFAULT_IMAGE)) {
+	  move($backup_symlink, $XEN_DEFAULT_IMAGE);
+	  printf("Unable to update Xen default image symlink: $XEN_DEFAULT_IMAGE.\n");
+	  printf("Default boot image has not been changed.\n");
+	  system("logger -p local3.warning -t 'SystemImage' 'Default boot image attempt to change from $def_ver to $new_ver failed: cant update symlink'");
+	  exit 1;
+      }
+  }
+
   print <<EOF;
 Default boot image has been set to "$new_ver".
 You need to reboot the system to start the new default image.
