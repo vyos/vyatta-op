@@ -32,7 +32,7 @@ use Getopt::Long;
 sub check_if_interface_is_tsharkable {
     my $interface = shift;
     
-    my @grep_tshark_interfaces = `sudo /usr/bin/tshark -D | grep $interface`;
+    my @grep_tshark_interfaces = `/usr/bin/tshark -D | grep $interface`;
     my $any_interface;
 
     for my $count (0 .. $#grep_tshark_interfaces) {
@@ -68,7 +68,11 @@ GetOptions("detail!"                => \$detail,
 check_if_interface_is_tsharkable($intf);
 
 if (defined($save)){
-  exec "sudo /usr/bin/tshark -i $intf -w '$save' | grep -v root"; 
+  if (!($save =~ /.*\.pcap/)) {
+    print("Please name your file <filename>.pcap\n");
+    exit 1;
+  }
+  exec "/usr/bin/tshark -i $intf -w '$save'"; 
   exit 0;
 }
 
@@ -76,32 +80,32 @@ if (defined($filter)) {
   if (defined($detail)) { 
     if (defined($unlimited)){
       print "Capturing traffic on $intf ...\n";
-      exec "sudo /usr/bin/tshark -n -i $intf -V $filter 2> /dev/null";
+      exec "/usr/bin/tshark -n -i $intf -V $filter 2> /dev/null";
     } else {
       print "Capturing traffic on $intf ...\n";
-      exec "sudo /usr/bin/tshark -n -i $intf -c 1000 -V $filter 2> /dev/null";
+      exec "/usr/bin/tshark -n -i $intf -c 1000 -V $filter 2> /dev/null";
     }
   } elsif (defined($unlimited)) {
     print "Capturing traffic on $intf ...\n";
-    exec "sudo /usr/bin/tshark -n -i $intf  $filter 2> /dev/null";
+    exec "/usr/bin/tshark -n -i $intf  $filter 2> /dev/null";
   } else {
     print "Capturing traffic on $intf ...\n";
-    exec "sudo /usr/bin/tshark -n -i $intf -c 1000  $filter 2> /dev/null";
+    exec "/usr/bin/tshark -n -i $intf -c 1000  $filter 2> /dev/null";
   }
 } elsif (defined($detail)) {
     if (defined($unlimited)) {
       print "Capturing traffic on $intf ...\n";
-      exec "sudo /usr/bin/tshark -n -i $intf -V 2> /dev/null";
+      exec "/usr/bin/tshark -n -i $intf -V 2> /dev/null";
     } else {
       print "Capturing traffic on $intf ...\n";
-      exec "sudo /usr/bin/tshark -n -i $intf -c 1000 -V 2> /dev/null";
+      exec "/usr/bin/tshark -n -i $intf -c 1000 -V 2> /dev/null";
     }
 } elsif (defined($unlimited)) {
   print "Capturing traffic on $intf ...\n";
-  exec "sudo /usr/bin/tshark -n -i $intf 2> /dev/null";
+  exec "/usr/bin/tshark -n -i $intf 2> /dev/null";
 } else {
   print "Capturing traffic on $intf ...\n";
-  exec "sudo /usr/bin/tshark -n -i $intf -c 1000 2> /dev/null";
+  exec "/usr/bin/tshark -n -i $intf -c 1000 2> /dev/null";
 }
 
 exit 0;
