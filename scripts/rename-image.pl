@@ -25,6 +25,9 @@ use warnings;
 use Getopt::Long;
 use File::Temp qw/ tempfile tempdir /;
 
+my $UNION_BOOT = '/live/image/boot';
+my $XEN_DEFAULT_IMAGE = "$UNION_BOOT/%%default_image";
+
 my $old_name;
 my $new_name;
 
@@ -55,7 +58,8 @@ if (("$new_name" eq "Old-non-image-installation") ||
     ("$new_name" =~ /^initrd/) ||
     ("$new_name" =~ /^vmlinuz/) ||
     ("$new_name" =~ /^System\.map/) ||
-    ("$new_name" =~ /^config-/)) {
+    ("$new_name" =~ /^config-/) ||
+    ("$new_name" =~ /^%%/)) {
     printf("Can't use reserved image name.\n");
     exit 1;
 }
@@ -63,8 +67,13 @@ if (("$new_name" eq "Old-non-image-installation") ||
 my $cmdline=`cat /proc/cmdline`;
 my $cur_name;
 ($cur_name, undef) = split(' ', $cmdline);
-$cur_name =~ s/BOOT_IMAGE=\/boot\///;
-$cur_name =~ s/\/vmlinuz.*//;
+if ($cur_name =~ s/BOOT_IMAGE=\/boot\///) {
+    $cur_name =~ s/\/vmlinuz.*//;
+} else {
+    if (-l $XEN_DEFAULT_IMAGE) {
+	$cur_name = readlink($XEN_DEFAULT_IMAGE);
+    }
+}
 
 if ($old_name eq $cur_name) {
     printf("Can't re-name the running image.\n");
@@ -104,6 +113,7 @@ close(GRUBFH);
 
 system("mv $image_path/$old_name $image_path/$new_name");
 system("cp $tmpfilename $image_path/grub/grub.cfg");
+
 
 system("logger -p local3.warning -t 'SystemImage' 'System image $old_name has been renamed $new_name'");
 
