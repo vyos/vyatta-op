@@ -1,3 +1,9 @@
+vyatta-op (0.13.182) unstable; urgency=low
+
+  * Bugfix 7502: Make "rename system image" work correctly on Xen.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Wed, 19 Oct 2011 17:14:42 -0700
+
 vyatta-op (0.13.181) unstable; urgency=low
 
   * Bugfix 7502: Correctly display image names on Xen.
