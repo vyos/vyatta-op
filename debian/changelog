@@ -1,3 +1,9 @@
+vyatta-op (0.13.183) unstable; urgency=low
+
+  * Bugfix 7502: Get "set system image default-boot" to work on Xen.
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Wed, 19 Oct 2011 17:54:56 -0700
+
 vyatta-op (0.13.182) unstable; urgency=low
 
   * Bugfix 7502: Make "rename system image" work correctly on Xen.
