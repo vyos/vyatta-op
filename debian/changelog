@@ -1,3 +1,11 @@
+vyatta-op (0.13.206) unstable; urgency=low
+
+  * Workaround for bug 7570, turning echo on manually when running a
+    templated command should fix the majority of the problems. It would
+    be better to fix the readline/less interaction in the future
+
+ -- John Southworth <john.southworth@vyatta.com>  Thu, 20 Oct 2011 16:47:21 -0500
+
 vyatta-op (0.13.205) unstable; urgency=low
 
   * Allow completions using normal dirctory paths as well as a shortcut
