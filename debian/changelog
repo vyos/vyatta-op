@@ -1,3 +1,11 @@
+vyatta-op (0.13.207) unstable; urgency=low
+
+  * Don't show an error message when we can't turn echo on (this is the
+    case with the webgui)
+  * Bugfix 7577: Only show the remote uri help if there is no completion
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 21 Oct 2011 15:26:59 -0500
+
 vyatta-op (0.13.206) unstable; urgency=low
 
   * Workaround for bug 7570, turning echo on manually when running a
