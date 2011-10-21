@@ -1,0 +1,5 @@
+help: Montior specified OpenVPN interface process
+allowed: local -a array ;
+         array=( /sys/class/net/vtun* ) ;
+         echo  -n "<vtunX>" ${array[@]##*/}
+run: ${vyatta_bindir}/vyatta-monitor OpenVPN-$4 openvpn-$4
