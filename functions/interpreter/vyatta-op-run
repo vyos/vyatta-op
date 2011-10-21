@@ -120,9 +120,9 @@ _vyatta_op_run ()
 
     _vyatta_op_last_comp=${_vyatta_op_last_comp_init}
     false; estat=$?
-    stty echo # turn echo on, this is a workaround for bug 7570
-              # not a fix we need to look at why the readline library 
-              # is getting confused on paged help text.
+    stty echo 2> /dev/null # turn echo on, this is a workaround for bug 7570
+                           # not a fix we need to look at why the readline library 
+                           # is getting confused on paged help text.
 
     i=1
     declare -a args  # array of expanded arguments
