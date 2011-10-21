@@ -51,6 +51,10 @@ _vyatta_image_file_complete()
   _vyatta_image_path_complete
 }
 
+declare -a non_comps=( "http://<user>:<passwd>@<host>/<file>" \
+ "scp://<user>:<passwd>@<host>/<file>" \
+ "ftp://<user>:<passwd>@<host>/<file>" \
+ "tftp://<host>/<file>" )
 
 _vyatta_image_path_complete()
 {
@@ -59,6 +63,7 @@ _vyatta_image_path_complete()
   if _vyatta_image_is_file $cur ; then
     foundfile=1
     _vyatta_op_completions=( "${cur} " )
+    _vyatta_op_noncompletions=( )
     return 0;
   fi
   if [[ ${cur:0:1} =~ "/" ]]; then
@@ -80,7 +85,9 @@ _vyatta_image_path_complete()
     if [[ -d /live/image/opt/vyatta/etc/config || -d /live/image/config ]]; then
       reply+=( "disk-install://" )
     fi
+    _vyatta_op_noncompletions=( "${non_comps[@]}" )
   else 
+     _vyatta_op_noncompletions=( )
     if ! [[ $cur =~ .*:\/\/ ]]; then
       if [[ $cur =~ .*:\/ ]]; then
         cur=${cur/:\//}

@@ -1,7 +1,4 @@
 help: Copy files to specified destination
-  scp://<user>:<passwd>@<host>/<file> 
-  ftp://<user>:<passwd>@<host>/<file> 
-  tftp://<host>/<file>  
 comptype: imagefiles
 allowed: echo -n "<imagefiles>"
 run: if [ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/admin" ];
