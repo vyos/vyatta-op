@@ -1,3 +1,9 @@
+vyatta-op (0.13.184) unstable; urgency=low
+
+  * Bugfix 7502: Make "delete system image" work correctly on Xen
+
+ -- Bob Gilligan <gilligan@vyatta.com>  Fri, 21 Oct 2011 15:09:33 -0700
+
 vyatta-op (0.13.183) unstable; urgency=low
 
   * Bugfix 7502: Get "set system image default-boot" to work on Xen.
