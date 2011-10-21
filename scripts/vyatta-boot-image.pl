@@ -59,13 +59,16 @@ sub parseGrubCfg {
     my @entries = ();
     my $in_entry = 0;
     my $idx = 0;
+    my $curver;
     my $running_boot_cmd=`cat /proc/cmdline`;
     if (! ($running_boot_cmd =~ s/BOOT_IMAGE=//)) {
-	# Mis-formatted boot cmd.  It might be Xen, which boots with pygrub.
-	# We use a symlink in this case to point to the default image.
+	# Mis-formatted boot cmd.  Look harder to to find the current
+	# version string.
 	#
-	if (-l $XEN_DEFAULT_IMAGE) {
-	    $running_boot_cmd = readlink($XEN_DEFAULT_IMAGE);
+	$curver = curVer();
+	if (defined($curver)) {
+	    # Only one of $running_boot_cmd or $curver should be defined.
+	    undef $running_boot_cmd;
 	}
     }
     while (<$fd>) {
@@ -108,10 +111,19 @@ sub parseGrubCfg {
 		} else {
 		    $ehash{'reset'} = 0;
 		}
-		if (/$running_boot_cmd/) {
-		    $ehash{'running_vers'} = 1;
-		} else {
-		    $ehash{'running_vers'} = 0;
+		if (defined($running_boot_cmd)) {
+		    if (/$running_boot_cmd/) {
+			$ehash{'running_vers'} = 1;
+		    } else {
+			$ehash{'running_vers'} = 0;
+		    }
+		} elsif (defined($curver)) {
+		    my $matchstr = "/boot/$curver/vmlinuz";
+		    if (/$matchstr/) {
+			$ehash{'running_vers'} = 1;
+		    } else {
+			$ehash{'running_vers'} = 0;
+		    }
 		}
 		push @entries, \%ehash;
 		$in_entry++;
@@ -392,9 +404,22 @@ sub curVer {
     my $vers = `awk '{print \$1}' /proc/cmdline`;
 
     # In an image-booted system, the image name is the directory name
-    # directory under "/boot" in the pathname of the kernel we booted.
-    $vers =~ s/BOOT_IMAGE=\/boot\///;
-    $vers =~ s/\/?vmlinuz.*\n$//;
+    # under "/boot" in the pathname of the kernel we booted.
+    if ($vers =~ s/BOOT_IMAGE=\/boot\///) {
+	$vers =~ s/\/?vmlinuz.*\n$//;
+    } else {
+	# Boot command line is not formatted as it would be for a system
+	# booted via grub2 with union mounted root filesystem.  Another
+	# possibility is that it the system is Xen booted via pygrub.
+	#
+	if (-l $XEN_DEFAULT_IMAGE) {
+	    # On Xen/pygrub systems, we figure out the running version by
+	    # looking at the bind mount of /boot.
+	    $vers = `mount | awk '/on \\/boot / { print \$1 }'`;
+	    $vers =~ s/\/live\/image\/boot\///;
+	    chomp($vers);
+	}
+    }
 
     # In a non-image system, the kernel resides directly under "/boot".
     # No second-level directory means that $vers will be null.

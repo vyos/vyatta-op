@@ -70,8 +70,16 @@ my $cur_name;
 if ($cur_name =~ s/BOOT_IMAGE=\/boot\///) {
     $cur_name =~ s/\/vmlinuz.*//;
 } else {
+    # Boot command line is not formatted as it would be for a system
+    # booted via grub2 with union mounted root filesystem.  Another
+    # possibility is that it the system is Xen booted via pygrub.
+    #
     if (-l $XEN_DEFAULT_IMAGE) {
-	$cur_name = readlink($XEN_DEFAULT_IMAGE);
+	# On Xen/pygrub systems, we figure out the running version by
+	# looking at the bind mount of /boot.
+	$cur_name = `mount | awk '/on \\/boot / { print \$1 }'`;
+	$cur_name =~ s/\/live\/image\/boot\///;
+	chomp($cur_name);
     }
 }
 
