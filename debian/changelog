@@ -1,3 +1,77 @@
+vyatta-op (0.13.208) unstable; urgency=low
+
+  * Create new ping command with the following semantics
+  * Add monitor command for traceroutes using mtr
+  * Add monitor for operational commands
+  * Directory structure for Monitor NAT
+  * Move 'clear arp' to 'reset ip arp'
+  * Move 'clear dns' and 'clear connection-tracking' to 'reset dns' and
+  * Move init-floppy install-system and install-image
+  * Initial traceroute rework checkin
+  * Fixup the help text for top level commands; move terminal to set
+    terminal
+  * Add toplevel node.def for install
+  * Move some more commands
+  * Fix the help text for connection-tracking
+  * Move 'clear vrrp' to 'reset vrrp'
+  * fix help text for 'reset vrrp master interface group'
+  * Remove no top level verb
+  * Update operator level user top level commands to reflect changes in
+    the command structure
+  * Add reset terminal command to fix broken terminal sessions with out
+    reconnecting
+  * move 'remove raid' to 'delete raid'
+  * Initial monitor vpn implementation. Other montior commands will be
+    build on these scripts
+  * Move the background monitoring for vpn under each of the categories
+    as suggested by support
+  * Forground monitoring for many daemons
+  * Background monitoring for services
+  * Add firewall forground monitoring
+  * Add background monitoring for firewalls
+  * Fix ping commands off by one problem, fix help txt for ping ipv4
+  * Add 'monitor firewall ipv6-name' command
+  * Move 'show debugging' to 'show monitoring protocols' to reflect new
+    debugging layout
+  * Move nodes from services since in other operational commands we
+    don't
+  * Cleanup background monitor sessions on logout
+  * Forgot to fix a typo in the local copy of vyatta-monitor-cleanup
+  * Add 'show monitoring' script to list active background monitoring
+  * Forground monitoring for nat
+  * Add background monitoring for NAT
+  * Move packet capture to 'monitor interfaces'
+  * More monitor interface traffic commands
+  * Fix 'monitor interface traffic save'
+  * Implement packet capture for vifs
+  * Remove extraneous run commands
+  * Fix filter completion
+  * Fix ipv6 matching in ping and traceroute
+  * remove run from 'montior interface [type] [name]' command
+  * remove run from 'montior interface [type] [name] vif [name]' command
+  * move 'show log tail' to 'monitor log'
+  * 'show log tail <NUMBER>' should still be a show command, not a
+    monitor command.
+  * Add monitor openvpn
+  * Allow log filtering similar to the way the monitor commands work
+  * Fix up completion for 'show log firewall'
+  * Fix up completion for 'monitor firewall'
+  * Fix up completion for 'monitor nat'
+  * Fix 'monitor nat' tag
+  * Add a command to stop all current background monitoring processes
+  * Bugfix 7557: Move shutdown to poweroff, change confirmation from
+    default in the affirmative to defualt in the negative.
+  * Make the reboot syntax the same as the poweroff syntax; require the
+    affirmative answer instead of defaulting to it
+  * Bugfix 5806, 7552: Fix set date ntp node.def to list proper servers
+    from configuration, and run on unprivledged ports so the commands
+    work at the same time the ntp service is running.
+  * Bugfix 7575: Make tshark run as a normal user so that writing files
+    works properly
+  * Add monitoring for specific openvpn interface processes
+
+ -- John Southworth <john.southworth@vyatta.com>  Thu, 27 Oct 2011 17:47:27 -0500
+
 vyatta-op (0.13.207) unstable; urgency=low
 
   * Don't show an error message when we can't turn echo on (this is the
