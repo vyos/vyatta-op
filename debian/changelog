@@ -1,3 +1,9 @@
+vyatta-op (0.13.209) unstable; urgency=low
+
+  * Wait for user to hit enter before continuing with a reboot
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 01 Nov 2011 11:31:53 -0500
+
 vyatta-op (0.13.208) unstable; urgency=low
 
   * Create new ping command with the following semantics
