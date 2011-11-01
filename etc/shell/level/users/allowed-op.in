@@ -6,6 +6,7 @@ exit
 force
 monitor
 ping
+reset
 release
 renew
 set
