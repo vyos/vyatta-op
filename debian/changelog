@@ -1,3 +1,9 @@
+vyatta-op (0.13.211) unstable; urgency=low
+
+  * Fix install help text
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 01 Nov 2011 13:40:03 -0500
+
 vyatta-op (0.13.210) unstable; urgency=low
 
   * Bugfix 7603: add reset top level to allowed list for operator users
