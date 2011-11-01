@@ -1,3 +1,9 @@
+vyatta-op (0.13.210) unstable; urgency=low
+
+  * Bugfix 7603: add reset top level to allowed list for operator users
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 01 Nov 2011 13:22:55 -0500
+
 vyatta-op (0.13.209) unstable; urgency=low
 
   * Wait for user to hit enter before continuing with a reboot
