@@ -1,3 +1,11 @@
+vyatta-op (0.13.212) unstable; urgency=low
+
+  * Remove accidental commit of 'show system boot-messages commit'
+    command, this was part of a mockup for a proposed bugfix and I
+    didn't intend to commit it
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 07 Nov 2011 18:05:50 -0600
+
 vyatta-op (0.13.211) unstable; urgency=low
 
   * Fix install help text
