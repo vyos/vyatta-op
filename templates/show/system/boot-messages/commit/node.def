@@ -1,2 +1,0 @@
-help: Show the commit messages from this boot
-run: cat /var/log/vyatta/vyatta-commit-this-boot.log
