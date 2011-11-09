@@ -24,6 +24,8 @@ use strict;
 use warnings;
 use Getopt::Long;
 use File::Temp qw/ tempfile tempdir /;
+use File::Copy;
+use Sys::Syslog qw/:standard :macros/;
 
 my $UNION_BOOT = '/live/image/boot';
 my $XEN_DEFAULT_IMAGE = "$UNION_BOOT/%%default_image";
@@ -99,16 +101,14 @@ my $tmpfh;
 my $tmpfilename;
 ($tmpfh, $tmpfilename) = tempfile();
 
-if (!open (GRUBFH, "<${image_path}/grub/grub.cfg")) {
-    printf("Can't open grub file.\n");
-    exit 1;
-}
+open (my $grubfh, '<', "${image_path}/grub/grub.cfg")
+    or die "Can't open grub file.\n";
 
 # This is sensitive to the format of menu entries and boot paths
 # in the grub config file.
 #
 my $line;
-while ($line = <GRUBFH>) {
+while ($line = <$grubfh>) {
     $line =~ s/\/boot\/$old_name/\/boot\/$new_name/g;
     $line =~ s/Vyatta $old_name/Vyatta $new_name/;
     $line =~ s/Vyatta image $old_name/Vyatta image $new_name/;
@@ -117,13 +117,14 @@ while ($line = <GRUBFH>) {
 }
 
 close($tmpfh);
-close(GRUBFH);
+close($grubfh);
 
-system("mv $image_path/$old_name $image_path/$new_name");
-system("cp $tmpfilename $image_path/grub/grub.cfg");
+mv("$image_path/$old_name", "$image_path/$new_name")
+    or die "rename $old_name to $new_name failed: $!\n";
 
+cp($tmpfilename, "$image_path/grub/grub.cfg")
+    or die "copy $tmpfilename to grub.cfg failed: $!\n";
 
-system("logger -p local3.warning -t 'SystemImage' 'System image $old_name has been renamed $new_name'");
+syslog("warning", "System image $old_name has been renamed $new_name");
 
 printf("Done.\n");
-
