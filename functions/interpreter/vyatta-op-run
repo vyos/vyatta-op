@@ -127,6 +127,7 @@ _vyatta_op_run ()
     i=1
     declare -a args  # array of expanded arguments
     for arg in "$@"; do
+        local orig_arg=$arg
         if [[ $arg == "*" ]]; then
           arg="*" #leave user defined wildcards alone
         else
@@ -156,7 +157,11 @@ _vyatta_op_run ()
             eval $restore_shopts
             return 1
         fi
-        args[$i]=$arg
+        if [[ "$arg" == "node.tag" ]]; then
+          args[$i]=$orig_arg
+        else 
+          args[$i]=$arg
+        fi
         let "i+=1"
     done
 
