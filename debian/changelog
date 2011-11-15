@@ -1,3 +1,10 @@
+vyatta-op (0.13.215) unstable; urgency=low
+
+  * Rename "reset connection-tracking" to "reset aconntrack" to be
+    consistent with other packages.
+
+ -- Daniil Baturin <daniil.baturin@vyatta.com>  Tue, 15 Nov 2011 23:49:06 +0700
+
 vyatta-op (0.13.214) unstable; urgency=low
 
   * :Fixing bug 4086, added support for showing domain overrides
