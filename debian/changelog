@@ -1,3 +1,42 @@
+vyatta-op (0.13.214) unstable; urgency=low
+
+  * :Fixing bug 4086, added support for showing domain overrides
+
+ -- Gaurav Sinha <gaurav.sinha@vyatta.com>  Wed, 09 Nov 2011 16:38:31 -0800
+
+vyatta-op (0.13.213) unstable; urgency=low
+
+  * Fix perlcritic warning about bareword file handle
+  * cleanup rename-image
+
+ -- Stephen Hemminger <shemminger@vyatta.com>  Wed, 09 Nov 2011 08:19:04 -0800
+
+vyatta-op (0.13.212) unstable; urgency=low
+
+  * Remove accidental commit of 'show system boot-messages commit'
+    command, this was part of a mockup for a proposed bugfix and I
+    didn't intend to commit it
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 07 Nov 2011 18:05:50 -0600
+
+vyatta-op (0.13.211) unstable; urgency=low
+
+  * Fix install help text
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 01 Nov 2011 13:40:03 -0500
+
+vyatta-op (0.13.210) unstable; urgency=low
+
+  * Bugfix 7603: add reset top level to allowed list for operator users
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 01 Nov 2011 13:22:55 -0500
+
+vyatta-op (0.13.209) unstable; urgency=low
+
+  * Wait for user to hit enter before continuing with a reboot
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 01 Nov 2011 11:31:53 -0500
+
 vyatta-op (0.13.208) unstable; urgency=low
 
   * Create new ping command with the following semantics

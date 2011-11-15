@@ -67,8 +67,24 @@ sub get_nameserver_stats {
     $show_stats_output .=   "Nameserver statistics\n";
     $show_stats_output .=   "---------------------\n";
 
-    my @grepped_lines = `grep ': server' $dnsmasq_log`;
+    #To show overridden domain servers seperately, we need to compare IPs
+    #configured for the domain overrides in the config with the stats.  
 
+    my $vyatta_config = new Vyatta::Config;
+    $vyatta_config->setLevel("service dns forwarding");
+
+    my @domains = $vyatta_config->listOrigNodes("domain");   
+    my @domain_servers_list;
+
+    #build a list of servers that are overriding global nameservers
+    if (@domains) {
+        foreach my $domain (@domains) {
+            push(@domain_servers_list, $vyatta_config->returnOrigValue("domain $domain server"));             
+        }  
+    }
+    my $found_overrides = 0;
+    my $show_stats_overrides; 
+    my @grepped_lines = `grep ': server' $dnsmasq_log`;
     foreach my $lines (@grepped_lines) {
             my @each_line = split(/\s+/, $lines);
             my $nameserver_word = $each_line[5];
@@ -79,9 +95,17 @@ sub get_nameserver_stats {
             my $queries_sent = $queries_sent_split[0];
             my $queries_retried_failed = $each_line[12];
 
-            $show_stats_output .= "Server: $nameserver\nQueries sent: $queries_sent\nQueries retried or failed: $queries_retried_failed\n\n";
-
+            if (grep {$_ eq $nameserver}@domain_servers_list) {
+                if (!$found_overrides) {
+                    $found_overrides = 1;
+                    $show_stats_overrides .= "\nDomain Override Servers\n\n";
+                }
+                $show_stats_overrides .= "Server: $nameserver\nQueries sent: $queries_sent\nQueries retried or failed: $queries_retried_failed\n\n";
+            } else {
+                $show_stats_output .= "Server: $nameserver\nQueries sent: $queries_sent\nQueries retried or failed: $queries_retried_failed\n\n";
+            }
     }
+    $show_stats_output .= $show_stats_overrides;
 }
 
 sub print_stats {
@@ -162,17 +186,36 @@ sub get_dns_nameservers {
         $show_nameservers_output .= "-----------------------------------------------\n";
         $show_nameservers_output .= "   Nameservers configured for DNS forwarding\n";
         $show_nameservers_output .= "-----------------------------------------------\n";
+
+        my $line_flag;
+        ## server=/test.com/1.1.1.1 
 	foreach my $line (@dnsmasq_conf_nameservers) {
 	        my @split_line = split(/=/, $line);
 		my @nameserver_array = split(/\s+/, $split_line[1]);
                 my $nameserver = $nameserver_array[0];
+                my $domain;
+                my @domain_tokens; 
+
+                if ($nameserver_array[2] eq "domain-override")
+                {
+                    #$nameserver has /test.com/1.1.1.1, seperate it. 
+                    @domain_tokens = split(/\//, $nameserver);
+                    if (!defined($line_flag)) { 
+                        $line_flag = 1;
+                        $show_nameservers_output .= "\n";
+                        $show_nameservers_output .= "Domain Overrides\n";
+                        $show_nameservers_output .= "\n";
+                    }      
+                } 
 		$active_nameservers[$active_nameserver_count] = $nameserver;
 		$active_nameserver_count++;
                 my $nameserver_via = $nameserver_array[2];
                 if (@nameserver_array > 3){
 		   my $dhcp_interface = $nameserver_array[3];
 	           $show_nameservers_output .= "$nameserver available via '$nameserver_via $dhcp_interface'\n";
-                 } else {
+                 } elsif (@domain_tokens) {
+                     $show_nameservers_output .= "$domain_tokens[1] uses $domain_tokens[2] via '$nameserver_via'\n";
+                   } else {
  		   $show_nameservers_output .= "$nameserver available via '$nameserver_via'\n";
  		}
         }

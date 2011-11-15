@@ -74,13 +74,11 @@ my %ghash = ();
 foreach my $lease_filename (@lease_files) {
     my @lines=();
 
-    if (!open(LEASE_FILE, "</var/lib/dhcp3/$lease_filename")) {
-	printf("Can't open lease file for reading:  $lease_filename\n");
-	exit 1;
-    }
+    open(my $f, '<', "/var/lib/dhcp3/$lease_filename")
+	or die "Can't open lease file for reading:  $lease_filename\n";
 
-    @lines = <LEASE_FILE>;
-    close(LEASE_FILE);
+    @lines = <$f>;
+    close $f;
     chomp @lines;
 
     my $level = 0;

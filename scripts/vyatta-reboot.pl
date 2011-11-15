@@ -116,7 +116,7 @@ if ($action eq "reboot") {
         do_reboot($login);
     } else {
         if (defined($ENV{VYATTA_PROCESS_CLIENT} && $ENV{VYATTA_PROCESS_CLIENT} eq 'gui2_rest') || 
-	    prompt("Proceed with reboot? (Yes/No) [No] ", -yn1d=>"n")) {
+	    prompt("Proceed with reboot? (Yes/No) [No] ", -ynd=>"n")) {
             do_reboot($login);
 	} else {
 	    print "Reboot canceled\n";
