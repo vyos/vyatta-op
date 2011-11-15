@@ -1,3 +1,10 @@
+vyatta-op (0.13.217) unstable; urgency=low
+
+  * Fix case where node.tag was sent to script instead of the actual
+    argument
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 15 Nov 2011 14:13:46 -0800
+
 vyatta-op (0.13.216) unstable; urgency=low
 
   * Force release
