@@ -190,7 +190,7 @@ sub deleteGrubEntries {
 
   my $p = (stat($grub_cfg))[2];
   return 'Failed to modify GRUB configuration'
-    if (!defined($p) || !chmod(($p & 07777), $tfile));
+    if (!defined($p) || !chmod(($p & oct(7777)), $tfile));
   system("mv $tfile $grub_cfg");
   return 'Failed to delete GRUB entries' if ($? >> 8);
   return undef;
@@ -244,7 +244,7 @@ sub image_vyatta_version {
 	    return "unknown";
 	}
 
-	my @squash_files = </live/image/boot/$image_name/*.squashfs>;
+	my @squash_files = glob("/live/image/boot/$image_name/*.squashfs");
 	foreach my $squash_file (@squash_files) {
 	    if (-e $squash_file) {
 		system("sudo mkdir /tmp/squash_mount");
@@ -369,8 +369,7 @@ sub select_by_name {
 
     # Find the entry that matches the new default version
     my $entries = $gref->{'entries'};
-    my $entry;
-    foreach $entry (@{$entries}) {
+    foreach my $entry (@{$entries}) {
 	# Skip non-vyatta entries
 	next if (!defined($entry->{'ver'}));
 
@@ -436,9 +435,7 @@ sub del_non_image_files {
     system("echo Deleting disk-based system files at: `date` >> $logfile");
     system("echo Run by: `whoami` >> $logfile");
 
-    my @entries=</live/image/*>;
-    my $entry;
-    foreach $entry (@entries) {
+    foreach my $entry (glob("/live/image/*")) {
 	if ($entry eq "/live/image/boot") {
 	    print "Skipping $entry.\n";
 	} else {
