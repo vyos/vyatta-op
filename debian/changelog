@@ -1,3 +1,9 @@
+vyatta-op (0.13.219) unstable; urgency=low
+
+  * Add show interfaces for vrrp interfaces
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 05 Dec 2011 12:04:32 -0800
+
 vyatta-op (0.13.218) unstable; urgency=low
 
   * boot-image: fix perl critic warnings
