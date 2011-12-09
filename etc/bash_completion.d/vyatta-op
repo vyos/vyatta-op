@@ -105,7 +105,8 @@ _vyatta_op_default_expand ()
     # if we are looking for a directory on the first completion then do directory completions
     _filedir_xspec
   elif (( wc < 2 )) ||
-     [[ $COMP_CWORD -eq 0 ]]; then
+     [[ $COMP_CWORD -eq 0 ]] ||
+     [[ $1 == $2 ]]; then
     _vyatta_op_expand "$@"
   else
     # after the first word => cannot be vyatta command so use original default
@@ -135,6 +136,8 @@ _vyatta_op_print_help ()
 # $2...: possible completions
 _vyatta_op_help ()
 {
+    local restore_shopts=$( shopt -p extglob nullglob | tr \\n \; )
+    shopt -u nullglob
     local cur=$1; shift
     local ndef node_tag_help node_run help last_help
 
@@ -152,6 +155,7 @@ _vyatta_op_help ()
     fi
     if [ $# -eq 0 ];then
        _vyatta_op_print_help '<text>' "$node_tag_help"
+       eval "$restore_shopts"
        return
     fi
     for comp ; do
@@ -181,6 +185,7 @@ _vyatta_op_help ()
         _vyatta_op_print_help "$comp" "$help"
       fi
     done
+    eval "$restore_shopts"
 }
 
 _vyatta_op_set_node_path ()
@@ -208,11 +213,14 @@ _vyatta_op_set_completions ()
 {
     local -a allowed completions
     local cur=$1
-
+    local restore_shopts=$( shopt -p extglob nullglob | tr \\n \; )
     for ndef in ${_vyatta_op_node_path}/*/node.def ; do
       if [[ $ndef == */node.tag/node.def ]] ; then
         local acmd=$( _vyatta_op_get_node_def_field $ndef allowed )
+        shopt -u extglob nullglob
         local -a a=($( eval "$acmd" ))
+        eval "$restore_shopts"
+
         if [ ${#a[@]} -ne 0 ] ; then
           allowed+=( "${a[@]}" )
         else
@@ -238,7 +246,7 @@ _vyatta_op_set_completions ()
 
     for (( i=0 ; i<${#allowed[@]} ; i++ )) ; do
       if [[ "${allowed[i]}" == \<*\> ]] ; then
-        _vyatta_op_noncompletions+=( ${allowed[i]} )
+        _vyatta_op_noncompletions+=( "${allowed[i]}" )
       else
         if [[ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/admin" ]]; then
           completions+=( ${allowed[i]} )
@@ -260,6 +268,7 @@ _vyatta_op_set_completions ()
     else 
       _vyatta_op_completions=($( printf "%s\n" ${completions[@]} | sort -u ))
     fi
+    #shopt -s nullglob
 }
 
 _vyatta_op_comprely_needs_ambiguity ()
@@ -306,8 +315,8 @@ _vyatta_op_invalid_completion ()
         let "i+=1"
         if [ $[${#COMP_WORDS[@]}+1] -eq $i ];then
           _vyatta_op_help "" \
-            ${_vyatta_op_noncompletions[@]} \
-            ${_vyatta_op_completions[@]} \
+            "${_vyatta_op_noncompletions[@]}" \
+            "${_vyatta_op_completions[@]}" \
             | ${VYATTA_PAGER:-cat}
         fi
       done
@@ -444,8 +453,8 @@ _vyatta_op_expand ()
     elif [ "${COMP_WORDS[*]:0:$[$COMP_CWORD+1]}" == "$_vyatta_op_last_comp" ] || 
          [ ${#_vyatta_op_completions[@]} -eq 0 ]; then
           _vyatta_op_help "$current_prefix" \
-            ${_vyatta_op_noncompletions[@]} \
-            ${_vyatta_op_completions[@]} \
+            "${_vyatta_op_noncompletions[@]}" \
+            "${_vyatta_op_completions[@]}" \
             | ${VYATTA_PAGER:-cat}
           COMPREPLY=( "" " " )
           _vyatta_op_last_comp=${_vyatta_op_last_comp_init}
