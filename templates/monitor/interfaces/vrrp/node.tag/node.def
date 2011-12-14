@@ -1,0 +1,3 @@
+help: Monitor specified vrrp interface
+allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show vrrp
+
