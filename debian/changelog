@@ -1,3 +1,9 @@
+vyatta-op (0.13.222) unstable; urgency=low
+
+  * Add monitoring for vrrp interfaces
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 14 Dec 2011 15:52:41 -0800
+
 vyatta-op (0.13.221) unstable; urgency=low
 
   * Fix a few completion problems
