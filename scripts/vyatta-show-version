@@ -209,6 +209,26 @@ if (defined($hv) && $hv ne "") {
     print "Hypervisor:   $hv\n";
 }
 
+
+my $plat_model = `sudo /usr/sbin/dmidecode -s system-product-name`;
+chomp $plat_model;
+my $plat_sn = `sudo /usr/sbin/dmidecode -s system-serial-number`;
+chomp $plat_sn;
+my $plat_uuid = `sudo /usr/sbin/dmidecode -s system-uuid`;
+chomp $plat_uuid;
+
+if (defined $plat_model && $plat_model ne "" && $plat_model ne " ") {
+    print "HW model:     $plat_model\n"
+}
+
+if (defined $plat_sn && $plat_sn ne "" && $plat_sn ne " ") {
+    print "HW S/N:       $plat_sn\n"
+}
+
+if (defined $plat_uuid && $plat_uuid ne "" && $plat_uuid ne " ") {
+    print "HW UUID:      $plat_uuid\n"
+}
+
 my $uptime = `uptime`;
 if (defined $uptime && $uptime ne "") {
     print "Uptime:      $uptime\n";
