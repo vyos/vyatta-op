@@ -1,2 +1,0 @@
-help: Start background monitoring of a specified Masquerade NAT rule
-run: ${vyatta_bindir}/vyatta-monitor-background NAT-MASQ-RULE-$5 "\[NAT-$5-MASQ\]"

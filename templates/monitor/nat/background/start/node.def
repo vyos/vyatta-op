@@ -1,2 +1,0 @@
-help: Start background NAT monitoring
-run: ${vyatta_bindir}/vyatta-monitor-background NAT "\[NAT-[0-9]*-*\]"
