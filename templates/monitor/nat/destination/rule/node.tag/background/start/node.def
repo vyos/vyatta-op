@@ -1,2 +1,2 @@
 help: Start background monitoring of a specified destination NAT rule
-run: ${vyatta_bindir}/vyatta-monitor-background NAT-DEST-RULE-$5 "\[NAT-DST-$5-*\]"
+run: ${vyatta_bindir}/vyatta-monitor-background NAT-DEST-RULE-$5 "\[NAT-DST-$5.*\]"

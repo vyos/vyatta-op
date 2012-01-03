@@ -1,2 +1,2 @@
 help: Start background destination NAT monitoring
-run:  ${vyatta_bindir}/vyatta-monitor-background NAT-DEST "\[NAT-DST-[0-9]*-*\]"
+run:  ${vyatta_bindir}/vyatta-monitor-background NAT-DEST "\[NAT-DST-[0-9]*.*\]"
