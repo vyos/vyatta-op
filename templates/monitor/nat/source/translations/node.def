@@ -1,0 +1,4 @@
+help: Monitor active source NAT translations events
+run: LESSOPEN=cat
+     echo Type control-C to quit 
+     sudo /usr/sbin/conntrack -E -n -o xml 2>/dev/null | ${vyatta_bindir}/sudo-users/vyatta-nat-translations.pl --pipe --type=source

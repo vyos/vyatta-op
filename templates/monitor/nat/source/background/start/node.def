@@ -1,2 +1,2 @@
-help: Start background monitoring of Source NAT
-run: ${vyatta_bindir}/vyatta-monitor-background NAT-SOURCE "\[NAT-[0-9]*-SNAT\]"
+help: Start background monitoring of source NAT
+run: ${vyatta_bindir}/vyatta-monitor-background NAT-SOURCE "\[NAT-SRC-[0-9]*-*\]"

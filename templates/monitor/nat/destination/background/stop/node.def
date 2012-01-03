@@ -1,2 +1,2 @@
-help: Stop background Destination NAT monitoring
+help: Stop background destination NAT monitoring
 run: ${vyatta_bindir}/vyatta-monitor-background-stop NAT-DEST

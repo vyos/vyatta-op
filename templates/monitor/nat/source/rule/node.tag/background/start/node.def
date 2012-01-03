@@ -1,2 +1,2 @@
-help: Start background monitoring of a specified Source NAT rule
-run: ${vyatta_bindir}/vyatta-monitor-background NAT-SOURCE-RULE-$5 "\[NAT-$5-SNAT]\]"
+help: Start background monitoring of a specified source NAT rule
+run: ${vyatta_bindir}/vyatta-monitor-background NAT-SOURCE-RULE-$5 "\[NAT-SRC-$5-*\]"

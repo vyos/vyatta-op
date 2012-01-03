@@ -1,0 +1,4 @@
+help: Show active destination NAT translations events verbose
+run: LESSOPEN=cat
+     echo Type control-C to quit 
+     sudo /usr/sbin/conntrack -E -g -o xml 2>/dev/null | ${vyatta_bindir}/sudo-users/vyatta-nat-translations.pl --pipe --type=destination --verbose
