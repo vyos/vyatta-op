@@ -1,3 +1,10 @@
+vyatta-op (0.13.224) unstable; urgency=low
+
+  * Update NAT monitor templates.
+  * Remove old NAT monitor templates.
+
+ -- Daniil Baturin <daniil.baturin@vyatta.com>  Wed, 04 Jan 2012 02:13:08 +0700
+
 vyatta-op (0.13.223) unstable; urgency=low
 
   * Bugfix 7473: Display hardware model, S/N and UUID if available.
