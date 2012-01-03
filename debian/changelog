@@ -1,3 +1,9 @@
+vyatta-op (0.13.225) unstable; urgency=low
+
+  * Fix NAT monitor rule log prefix.
+
+ -- Daniil Baturin <daniil.baturin@vyatta.com>  Wed, 04 Jan 2012 04:50:46 +0700
+
 vyatta-op (0.13.224) unstable; urgency=low
 
   * Update NAT monitor templates.
