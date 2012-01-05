@@ -1,2 +1,2 @@
 help: Monitor source NAT
-run: ${vyatta_bindir}/vyatta-monitor NAT-SOURCE "\[NAT-SRC-[0-9]*-*\]"
+run: ${vyatta_bindir}/vyatta-monitor NAT-SOURCE "\[NAT-SRC-[0-9]*.*\]"
