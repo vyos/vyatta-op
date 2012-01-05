@@ -135,7 +135,7 @@ _vyatta_op_run ()
         fi
         # output proper error message based on the above expansion
         if [[ "${arg[1]}" == "ambiguous" ]]; then
-          echo -ne "\n  Ambiguous command: ${args[@]} [$arg]\n"
+          echo -ne "\n  Ambiguous command: ${args[@]} [$arg]\n" >&2
           local -a cmds=( $(compgen -d $tpath/$arg) )
           _vyatta_op_node_path=$tpath
           local comps=$(_vyatta_op_help $arg ${cmds[@]##*/})
@@ -143,7 +143,7 @@ _vyatta_op_run ()
           eval $restore_shopts
           return 1
         elif [[ "${arg[1]}" == "invalid" ]]; then
-          echo -ne "\n  Invalid command: ${args[@]} [$arg]\n\n"
+          echo -ne "\n  Invalid command: ${args[@]} [$arg]\n\n" >&2
           eval $restore_shopts
           return 1
         fi
