@@ -1,3 +1,9 @@
+vyatta-op (0.13.226) unstable; urgency=low
+
+  * Send interpreter errors to stderr
+
+ -- John Southworth <john.southworth@vyatta.com>  Thu, 05 Jan 2012 10:15:20 -0800
+
 vyatta-op (0.13.225) unstable; urgency=low
 
   * Fix NAT monitor rule log prefix.
