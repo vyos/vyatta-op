@@ -1,3 +1,10 @@
+vyatta-op (0.13.227) unstable; urgency=low
+
+  * bug 7714: Fixing runtime script error seen in show dns forwarding
+    statistics
+
+ -- Gaurav Sinha <gaurav.sinha@vyatta.com>  Mon, 09 Jan 2012 11:02:57 -0800
+
 vyatta-op (0.13.226) unstable; urgency=low
 
   * Send interpreter errors to stderr
