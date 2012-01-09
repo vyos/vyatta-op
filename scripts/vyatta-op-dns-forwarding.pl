@@ -105,7 +105,9 @@ sub get_nameserver_stats {
                 $show_stats_output .= "Server: $nameserver\nQueries sent: $queries_sent\nQueries retried or failed: $queries_retried_failed\n\n";
             }
     }
-    $show_stats_output .= $show_stats_overrides;
+    if (defined($show_stats_overrides)) {
+        $show_stats_output .= $show_stats_overrides;
+    }
 }
 
 sub print_stats {
