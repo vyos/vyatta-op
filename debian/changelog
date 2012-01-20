@@ -1,3 +1,9 @@
+vyatta-op (0.13.228) unstable; urgency=low
+
+  * add missing node.def from monitor interfaces vrrp
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 20 Jan 2012 18:36:25 +0000
+
 vyatta-op (0.13.227) unstable; urgency=low
 
   * bug 7714: Fixing runtime script error seen in show dns forwarding
