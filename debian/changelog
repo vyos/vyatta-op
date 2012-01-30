@@ -1,3 +1,9 @@
+vyatta-op (0.13.229) unstable; urgency=low
+
+  * Fix 'show bridge' help text
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 30 Jan 2012 22:48:09 +0000
+
 vyatta-op (0.13.228) unstable; urgency=low
 
   * add missing node.def from monitor interfaces vrrp
