@@ -1,3 +1,9 @@
+vyatta-op (0.13.230) unstable; urgency=low
+
+  * Improve firewall log matches
+
+ -- John Southworth <john.southworth@vyatta.com>  Thu, 02 Feb 2012 11:17:04 -0800
+
 vyatta-op (0.13.229) unstable; urgency=low
 
   * Fix 'show bridge' help text
