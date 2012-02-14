@@ -1,3 +1,9 @@
+vyatta-op (0.13.231) unstable; urgency=low
+
+  * Bugfix 7774: fix quoted string variable expression
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 13 Feb 2012 18:54:12 -0800
+
 vyatta-op (0.13.230) unstable; urgency=low
 
   * Improve firewall log matches
