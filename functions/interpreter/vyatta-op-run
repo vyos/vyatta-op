@@ -110,6 +110,7 @@ _vyatta_op_conv_run_cmd ()
   run_cmd=$1
   run_cmd="${run_cmd/\"\$\@\"/${args[*]}}"
   run_cmd="${run_cmd/\$\*/${args[*]}}"
+  run_cmd="${run_cmd//\\/\\\\}"
   inquote=0;
   outcmd='';
   OIFS=$IFS
