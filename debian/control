@@ -8,6 +8,7 @@ Standards-Version: 3.7.2
 Package: vyatta-op
 Architecture: all
 Depends: sed (>= 4.1.5),
+ console-setup, console-terminus,
  ethtool,
  traceroute,
  ntpdate,
