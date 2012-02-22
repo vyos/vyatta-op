@@ -1,3 +1,11 @@
+vyatta-op (0.13.239) unstable; urgency=low
+
+  * Bugfix 4053: implement bandwidth utilization montior commands 'mon
+    int <type> <name>'; 'mon int <type> <name> flow'
+  * Add dendencies for bugfix 4053 to debian/control
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 22 Feb 2012 23:55:13 +0000
+
 vyatta-op (0.13.238) unstable; urgency=low
 
   * Add console keymap reconfigure op-mode command
