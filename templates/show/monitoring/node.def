@@ -1,2 +1,7 @@
 help: Show currently monitored services
-run: ${vyatta_bindir}/vyatta-monitor-list
+run: echo "Background monitoring sessions:"
+     ${vyatta_bindir}/vyatta-monitor-list
+     for proto in bgp ospf rip ospfv3 ripng; do 
+       show monitoring protocols $proto
+     done
+
