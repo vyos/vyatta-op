@@ -1,3 +1,9 @@
+vyatta-op (0.13.237) unstable; urgency=low
+
+  * Handle 64 bit counters in show interfaces
+
+ -- Stephen Hemminger <shemminger@vyatta.com>  Wed, 22 Feb 2012 10:49:08 -0800
+
 vyatta-op (0.13.236) unstable; urgency=low
 
   * Add headers to show montioring command
