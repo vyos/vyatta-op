@@ -1,3 +1,4 @@
 help: Monitor specified ethernet interface
 allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show ethernet
+run: bmon -p $4
 

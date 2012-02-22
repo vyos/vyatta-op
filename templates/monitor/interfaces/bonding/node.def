@@ -1,1 +1,2 @@
 help: Monitor a bonding interface
+run: bmon -p bond*,!bond*v*,!bond*.*

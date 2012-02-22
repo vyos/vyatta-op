@@ -1,3 +1,4 @@
 help: Monitor specified tunnel interface
 allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show tunnel
+run: bmon -p $4
 
