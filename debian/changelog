@@ -1,3 +1,10 @@
+vyatta-op (0.13.235) unstable; urgency=low
+
+  * Bugfix 2581: show protocol debugging summary with 'show monitoring'
+  * Bugfix 5806: Don't show ntp.vyatta.com by default for show ntp
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 22 Feb 2012 08:55:39 -0800
+
 vyatta-op (0.13.234) unstable; urgency=low
 
   * Bug 4086:fixed order of display in show dns forwarding nameservers,
