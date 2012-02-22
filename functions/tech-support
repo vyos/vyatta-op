@@ -100,24 +100,31 @@ header Ethernet
 header Interface statistics
 ip -s link show
 
-for eth in $(cd /sys/class/net; echo eth*)
+for eth in $(/opt/vyatta/sbin/vyatta-interfaces.pl --show=ethernet)
 do header "Physical Interface statistics for $eth"
    sudo ethtool -S $eth
 done
 
-for eth in $(cd /sys/class/net; echo eth*)
+for eth in $(/opt/vyatta/sbin/vyatta-interfaces.pl --show=ethernet)
 do header "Physical Interface Details for $eth"
    show interfaces ethernet $eth physical 
+   /sbin/ethtool -k $eth
 done
 
-header Physical Interface Offload Settings and Capabilities
-sudo ethtool -K
- 
 header "ARP Table (Total entries)"
 show arp
 
 header Number of incomplete entries in ARP table
 show arp | grep incomplete | wc -l  
+
+header Bridge
+/usr/sbin/brctl show
+for br in $(/opt/vyatta/sbin/vyatta-interfaces.pl --show=bridge)
+do header "Bridge Information for $br"
+    /usr/sbin/brctl showstp $br
+    /usr/sbin/brctl showmacs $br
+done
+
 header Serial
 
 header "WAN Interface Hardware Information (wanrouter hwprobe)" 
