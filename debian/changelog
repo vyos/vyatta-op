@@ -1,3 +1,23 @@
+vyatta-op (0.13.236) unstable; urgency=low
+
+  * Add headers to show montioring command
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 22 Feb 2012 10:11:37 -0800
+
+vyatta-op (0.13.235) unstable; urgency=low
+
+  * Bugfix 2581: show protocol debugging summary with 'show monitoring'
+  * Bugfix 5806: Don't show ntp.vyatta.com by default for show ntp
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 22 Feb 2012 08:55:39 -0800
+
+vyatta-op (0.13.234) unstable; urgency=low
+
+  * Bug 4086:fixed order of display in show dns forwarding nameservers,
+    removed redundant information
+
+ -- Gaurav <gaurav.sinha@vyatta.com>  Tue, 21 Feb 2012 16:31:54 -0800
+
 vyatta-op (0.13.233) unstable; urgency=low
 
   * Add bridge info to show tech support
