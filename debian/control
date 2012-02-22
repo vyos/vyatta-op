@@ -9,6 +9,8 @@ Package: vyatta-op
 Architecture: all
 Depends: sed (>= 4.1.5),
  console-setup, console-terminus,
+ bmon, 
+ iftop,
  ethtool,
  traceroute,
  ntpdate,
