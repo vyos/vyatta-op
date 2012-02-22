@@ -1,3 +1,10 @@
+vyatta-op (0.13.234) unstable; urgency=low
+
+  * Bug 4086:fixed order of display in show dns forwarding nameservers,
+    removed redundant information
+
+ -- Gaurav <gaurav.sinha@vyatta.com>  Tue, 21 Feb 2012 16:31:54 -0800
+
 vyatta-op (0.13.233) unstable; urgency=low
 
   * Add bridge info to show tech support
