@@ -54,7 +54,6 @@ my @rx_stat_vars =
 my @tx_stat_vars = 
     qw/tx_bytes tx_packets tx_errors tx_dropped tx_carrier_errors collisions/;
 
-
 sub get_intf_description {
     my $name = shift;
     my $description = interface_description($name);
@@ -165,26 +164,24 @@ sub get_intf_for_type {
     return @list;
 }
 
-# This function assumes 32-bit counters.  
+# This function has to deal with both 32 and 64 bit counters
 sub get_counter_val {
     my ($clear, $now) = @_;
 
     return $now if $clear == 0;
 
-    my $value;
-    if ($clear > $now) {
-	#
-	# The counter has rolled.  If the counter has rolled
-	# multiple times since the clear value, then this math
-	# is meaningless.
-	#
-	$value = (4294967296 - $clear) + $now;
-    } else {
-	$value = $now - $clear;
-    }
+    # device is using 64 bit values assume they never wrap
+    my $value = $now - $clear;
+    return $value if ($now >> 32) != 0;
+
+    # The counter has rolled.  If the counter has rolled
+    # multiple times since the clear value, then this math
+    # is meaningless.
+    $value = (4294967296 - $clear) + $now
+	if ($value < 0);
+
     return $value;
 }
-
 
 #
 # The "action" routines
@@ -197,11 +194,15 @@ sub run_show_intf {
 	my %clear = get_clear_stats($intf);
 	my $description = get_intf_description($intf);
 	my $timestamp = $clear{'timestamp'};
-	my $line = `ip addr show $intf | sed 's/^[0-9]*: //'`; chomp $line; 
-  if ($line =~ /link\/tunnel6/) {
-      my $estat = `ip -6 tun show $intf | sed 's/.*encap/encap/'`;
-      $line =~ s%    link/tunnel6%    $estat$&%;
-  }
+
+	my $line = `ip addr show $intf | sed 's/^[0-9]*: //'`;
+	chomp $line;
+
+	if ($line =~ /link\/tunnel6/) {
+	    my $estat = `ip -6 tun show $intf | sed 's/.*encap/encap/'`;
+	    $line =~ s%    link/tunnel6%    $estat$&%;
+	}
+
 	print "$line\n";
 	if (defined $timestamp and $timestamp ne "") {
 	    my $time_str = strftime("%a %b %d %R:%S %Z %Y", 
@@ -212,28 +213,20 @@ sub run_show_intf {
 	    print "    Description: $description\n";
 	}
 	print "\n";
-	my %stats = get_intf_stats($intf);
-	printf("    %10s %10s %10s %10s %10s %10s\n", "RX:  bytes", "packets",
-	       "errors", "dropped", "overrun", "mcast");
-	printf("    %10u %10u %10u %10d %10u %10u\n", 
-	       get_counter_val($clear{'rx_bytes'}, $stats{'rx_bytes'}),
-	       get_counter_val($clear{'rx_packets'}, $stats{'rx_packets'}),
-	       get_counter_val($clear{'rx_errors'}, $stats{'rx_errors'}),
-	       get_counter_val($clear{'rx_dropped'}, $stats{'rx_dropped'}),
-	       get_counter_val($clear{'rx_over_errors'}, 
-			       $stats{'rx_over_errors'}),
-	       get_counter_val($clear{'multicast'}, $stats{'multicast'}));
 
-	printf("    %10s %10s %10s %10s %10s %10s\n", "TX:  bytes", "packets",
-	       "errors", "dropped", "carrier", "collisions");
-	printf("    %10u %10u %10u %10u %10u %10u\n\n", 
-	       get_counter_val($clear{'tx_bytes'}, $stats{'tx_bytes'}),
-	       get_counter_val($clear{'tx_packets'}, $stats{'tx_packets'}),
-	       get_counter_val($clear{'tx_errors'}, $stats{'tx_errors'}),
-	       get_counter_val($clear{'tx_dropped'}, $stats{'tx_dropped'}),
-	       get_counter_val($clear{'tx_carrier_errors'}, 
-			       $stats{'tx_carrier_errors'}),
-	       get_counter_val($clear{'collisions'}, $stats{'collisions'}));
+	my %stats = get_intf_stats($intf);
+
+	my $fmt = "    %10s %10s %10s %10s %10s %10s\n";
+
+	printf($fmt,
+	       "RX:  bytes", "packets", "errors", "dropped", "overrun", "mcast");
+	printf($fmt,
+	       map { get_counter_val($clear{$_}, $stats{$_}) } @rx_stat_vars);
+
+	printf($fmt,
+	       "TX:  bytes", "packets", "errors", "dropped", "carrier", "collisions");
+	printf($fmt,
+	       map { get_counter_val($clear{$_}, $stats{$_}) } @tx_stat_vars);
     }
 }
 
@@ -331,14 +324,16 @@ sub run_show_intf_brief {
 sub run_show_counters {
     my @intfs = @_;
 
-    my $format = "%-12s %10s %10s     %10s %10s\n";
-    printf($format, "Interface","Rx Packets","Rx Bytes","Tx Packets","Tx Bytes");
+    printf("%-12s %10s %10s     %10s %10s\n",
+	   "Interface","Rx Packets","Rx Bytes","Tx Packets","Tx Bytes");
+
     foreach my $intf (@intfs) {
 	my ($state, $link) = get_state_link($intf);
 	next if $state ne 'up';
 	my %clear = get_clear_stats($intf);
 	my %stats = get_intf_stats($intf);
-	printf($format, $intf,  
+
+	printf("%-12s %10s %10s     %10s %10s\n", $intf,
 	       get_counter_val($clear{rx_packets}, $stats{rx_packets}),
 	       get_counter_val($clear{rx_bytes},   $stats{rx_bytes}),
 	       get_counter_val($clear{tx_packets}, $stats{tx_packets}),
@@ -459,4 +454,3 @@ if (defined $action_hash{$action}) {
 #
 &$func(@intf_list);
 
-# end of file
