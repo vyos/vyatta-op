@@ -188,6 +188,9 @@ sub get_dns_nameservers {
         $show_nameservers_output .= "-----------------------------------------------\n";
         $show_nameservers_output .= "   Nameservers configured for DNS forwarding\n";
         $show_nameservers_output .= "-----------------------------------------------\n";
+        my $show_nameservers_output_dhcp;
+        my $show_nameservers_output_domain;
+        my $show_nameservers_output_nameserver;
 
         my $line_flag;
         ## server=/test.com/1.1.1.1 
@@ -204,9 +207,9 @@ sub get_dns_nameservers {
                     @domain_tokens = split(/\//, $nameserver);
                     if (!defined($line_flag)) { 
                         $line_flag = 1;
-                        $show_nameservers_output .= "\n";
-                        $show_nameservers_output .= "Domain Overrides\n";
-                        $show_nameservers_output .= "\n";
+                        $show_nameservers_output_domain .= "\n";
+                        $show_nameservers_output_domain .= "Domain Overrides:\n";
+                        $show_nameservers_output_domain .= "\n";
                     }      
                 } 
 		$active_nameservers[$active_nameserver_count] = $nameserver;
@@ -214,12 +217,21 @@ sub get_dns_nameservers {
                 my $nameserver_via = $nameserver_array[2];
                 if (@nameserver_array > 3){
 		   my $dhcp_interface = $nameserver_array[3];
-	           $show_nameservers_output .= "$nameserver available via '$nameserver_via $dhcp_interface'\n";
+	           $show_nameservers_output_dhcp .= "$nameserver available via '$nameserver_via $dhcp_interface'\n";
                  } elsif (@domain_tokens) {
-                     $show_nameservers_output .= "$domain_tokens[1] uses $domain_tokens[2] via '$nameserver_via'\n";
+                     $show_nameservers_output_domain .= "$domain_tokens[1] uses $domain_tokens[2]\n";
                    } else {
- 		   $show_nameservers_output .= "$nameserver available via '$nameserver_via'\n";
+ 		   $show_nameservers_output_nameserver .= "$nameserver available via '$nameserver_via'\n";
  		}
+        }
+        if (defined ($show_nameservers_output_nameserver)) {
+          $show_nameservers_output .= $show_nameservers_output_nameserver;
+        }
+        if (defined ($show_nameservers_output_dhcp)) {
+          $show_nameservers_output .= $show_nameservers_output_dhcp;
+        }
+        if (defined ($show_nameservers_output_domain)) {
+          $show_nameservers_output .= $show_nameservers_output_domain ;
         }
 
 	# then you need to get nameservers from /etc/resolv.conf that are not in dnsmasq.conf to show them as inactive
