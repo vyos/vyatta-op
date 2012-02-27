@@ -1,3 +1,9 @@
+vyatta-op (0.13.240) unstable; urgency=low
+
+  * fix for bug 7719 - delete system image should accept 'y' or 'n'
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Mon, 27 Feb 2012 05:08:05 -0800
+
 vyatta-op (0.13.239) unstable; urgency=low
 
   * Bugfix 4053: implement bandwidth utilization montior commands 'mon
