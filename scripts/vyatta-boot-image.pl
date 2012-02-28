@@ -481,7 +481,7 @@ sub doDelete {
   }
   chomp($resp);
   $resp = lc($resp);
-  if ($resp ne 'yes') {
+  if (($resp ne 'yes') && ($resp ne 'y')) {
     print "Image is NOT deleted. Exiting...\n";
     exit 1;
   }
