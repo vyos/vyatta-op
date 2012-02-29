@@ -119,10 +119,10 @@ while ($line = <$grubfh>) {
 close($tmpfh);
 close($grubfh);
 
-mv("$image_path/$old_name", "$image_path/$new_name")
+move("$image_path/$old_name", "$image_path/$new_name")
     or die "rename $old_name to $new_name failed: $!\n";
 
-cp($tmpfilename, "$image_path/grub/grub.cfg")
+copy($tmpfilename, "$image_path/grub/grub.cfg")
     or die "copy $tmpfilename to grub.cfg failed: $!\n";
 
 syslog("warning", "System image $old_name has been renamed $new_name");
