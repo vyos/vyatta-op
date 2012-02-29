@@ -1,3 +1,9 @@
+vyatta-op (0.13.242) unstable; urgency=low
+
+  * bug fix for 7826 - fixed to use correct perl functions.
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Wed, 29 Feb 2012 06:15:51 -0800
+
 vyatta-op (0.13.241) unstable; urgency=low
 
   * Bugfix 4053: add missing top level 'monitor interfaces'
