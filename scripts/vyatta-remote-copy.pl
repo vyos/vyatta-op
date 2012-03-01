@@ -79,7 +79,7 @@ if ($mode eq 'url') {
             or die "Cannot open known_hosts: $!";
           print $known_hosts "$rsa_key\n";
           close($known_hosts);
-          $rc = system("curl -# -o $tmp_file $save_file");
+          $rc = system("curl -# -T $tmp_file $save_file");
           print "\n";
       }
   }
