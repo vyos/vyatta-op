@@ -1,3 +1,9 @@
+vyatta-op (0.13.245) unstable; urgency=low
+
+  * Fix tech-support save command
+
+ -- John Southworth <john.southworth@vyatta.com>  Thu, 01 Mar 2012 17:34:53 +0000
+
 vyatta-op (0.13.244) unstable; urgency=low
 
   * Allow users to import ssh keys when using image commands
