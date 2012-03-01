@@ -3,6 +3,7 @@ use Getopt::Long;
 use lib "/opt/vyatta/share/perl5/";
 
 use strict;
+use IO::Prompt;
 
 my ($show, $delete, $updateone);
 my @copy;
@@ -214,13 +215,55 @@ sub rsync {
 
 sub curl_to {
   my ($from, $to) = @_;
-  my $rc = system("curl -# -k -T $from $to");
+  my $rc = system("curl -# -T $from $to");
+  if ($to =~  /scp/ && ($rc >> 8) == 51){
+      $to =~ m/scp:\/\/(.*?)\//;
+      my $host = $1;
+      if ($host =~ m/.*@(.*)/) {
+        $host = $1;
+      }
+      my $rsa_key = `ssh-keyscan -t rsa $host 2>/dev/null`;
+      print "The authenticity of host '$host' can't be established.\n";
+      my $fingerprint = `ssh-keygen -lf /dev/stdin <<< \"$rsa_key\" | awk {' print \$2 '}`;
+      chomp $fingerprint;
+      print "RSA key fingerprint is $fingerprint.\n";
+      if (prompt("Are you sure you want to continue connecting (yes/no) [Yes]? ", -tynd=>"y")) {
+          mkdir "~/.ssh/";
+          open(my $known_hosts, ">>", "$ENV{HOME}/.ssh/known_hosts") 
+            or die "Cannot open known_hosts: $!";
+          print $known_hosts "$rsa_key\n";
+          close($known_hosts);
+          $rc = system("curl -# -T $from $to");
+          print "\n";
+      }
+  }
   print "\n";
 }
 
 sub curl_from {
   my ($from, $to) = @_;
-  my $rc = system("curl -# -k $from > $to");
+  my $rc = system("curl -# $from > $to");
+  if ($from =~ /scp/ && ($rc >> 8) == 51){
+      $from =~ m/scp:\/\/(.*?)\//;
+      my $host = $1;
+      if ($host =~ m/.*@(.*)/) {
+        $host = $1;
+      }
+      my $rsa_key = `ssh-keyscan -t rsa $host 2>/dev/null`;
+      print "The authenticity of host '$host' can't be established.\n";
+      my $fingerprint = `ssh-keygen -lf /dev/stdin <<< \"$rsa_key\" | awk {' print \$2 '}`;
+      chomp $fingerprint;
+      print "RSA key fingerprint is $fingerprint.\n";
+      if (prompt("Are you sure you want to continue connecting (yes/no) [Yes]? ", -tynd=>"y")) {
+          mkdir "~/.ssh/";
+          open(my $known_hosts, ">>", "$ENV{HOME}/.ssh/known_hosts") 
+            or die "Cannot open known_hosts: $!";
+          print $known_hosts "$rsa_key\n";
+          close($known_hosts);
+          $rc = system("curl -# $from > $to");
+          print "\n";
+      }
+  }
   print "\n";
 }
 
