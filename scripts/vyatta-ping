@@ -7,10 +7,12 @@ use warnings;
 use NetAddr::IP;
 use feature ":5.10";
 
-my $ip = new NetAddr::IP $ARGV[0];
-return unless defined $ip;
+my $host = $ARGV[0];
+my $ip = new NetAddr::IP;
+die "Unknown host: $host\n"
+    unless defined($ip);
 
-given ($ip->version) {
+given ($ip->version()) {
     when (4) {
 	exec { '/bin/ping' } 'ping', @ARGV
 	    or die "Can't exec ping";
@@ -20,9 +22,6 @@ given ($ip->version) {
 	    or die "Can't exec ping6";
     }
     default {
-	die "Unknown address: $ARGV[0]\n";
+	die "Unknown address: $host\n";
     }
 }
-
-
-
