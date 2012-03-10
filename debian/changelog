@@ -1,3 +1,9 @@
+vyatta-op (0.13.245+oxnard2) unstable; urgency=low
+
+  * ping: rewrite ping wrapper in perl
+
+ -- Stephen Hemminger <shemminger@vyatta.com>  Sat, 10 Mar 2012 11:07:11 -0800
+
 vyatta-op (0.13.245+oxnard1) unstable; urgency=low
 
   * new branch
