@@ -1,3 +1,9 @@
+vyatta-op (0.13.245+oxnard3) unstable; urgency=low
+
+  * ping: fix error handling
+
+ -- Stephen Hemminger <shemminger@vyatta.com>  Sat, 10 Mar 2012 11:16:41 -0800
+
 vyatta-op (0.13.245+oxnard2) unstable; urgency=low
 
   * ping: rewrite ping wrapper in perl
