@@ -1,28 +1,28 @@
-#!/bin/bash
-ADDR=$1
-# Regular expressions for matching an ipv4 and ipv6 address
-# simple ipv4 matcher
-ip4regex="^(25[0-5]|2[0-4][0-9]|1[0-9]{1,2}|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}$" 
-# based on IPv6 regex from here: http://forums.dartware.com/viewtopic.php?t=452
-ip6regex="^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))(%.+)?\s*$" 
+#! /usr/bin/perl
+#
+# Wrapper around ping
 
-# Main logic
-if [[ "$ADDR" =~ $ip4regex ]]; then
-  /bin/ping ${@:2} $ADDR
-elif [[ "$ADDR" =~ $ip6regex ]]; then
-  /bin/ping6 ${@:2} $ADDR
-else
-  echo "Resolving Address: $ADDR"
-  if host $ADDR | awk {' print $4 '} \
-    | grep -m1 -E "$ip4regex">/dev/null; then
-    # resolve address and check if it is ipv4 or other
-    /bin/ping ${@:2} $ADDR
-  elif host $ADDR | awk {' print $5 '} \
-    | grep -m1 -E "$ip6regex">/dev/null; then
-    # if ipv6 resolution then ping6
-    /bin/ping6 ${@:2} $ADDR
-  else
-    echo -e "\n  Unknown address: [$ADDR]\n"
-  fi
-fi
+use strict;
+use warnings;
+use NetAddr::IP;
+use feature ":5.10";
+
+my $ip = new NetAddr::IP $ARGV[0];
+return unless defined $ip;
+
+given ($ip->version) {
+    when (4) {
+	exec { '/bin/ping' } 'ping', @ARGV
+	    or die "Can't exec ping";
+    }
+    when (6) {
+	exec { '/bin/ping6' } 'ping6', @ARGV
+	    or die "Can't exec ping6";
+    }
+    default {
+	die "Unknown address: $ARGV[0]\n";
+    }
+}
+
+
 
