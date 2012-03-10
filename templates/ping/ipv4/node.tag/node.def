@@ -1,8 +1,0 @@
-#
-# Operational mode front-end for "ping" command
-#
-
-help:   Send IPv4 ICMP echo request to specified <hostname|IPv4 address>
-allowed: echo -n '<hostname> <x.x.x.x>'
-
-run:	/bin/ping $3

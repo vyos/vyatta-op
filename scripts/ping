@@ -1,0 +1,105 @@
+#! /usr/bin/perl
+# Wrapper around the base Linux ping command to provide
+#  nicer API (ie no flag arguments)
+#
+# **** License ****
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# This code was originally developed by Vyatta, Inc.
+# Portions created by Vyatta are Copyright (C) 2012 Vyatta, Inc.
+# All Rights Reserved.
+#
+#
+# Syntax
+#   ping HOST
+#           [ audible ]
+#           [ adaptive ]
+#           [ allow-broadcast]
+#           [ count REQUESTS ]
+#           [ mark N ]
+#           [ flow LABEL ]
+#           [ flood ]
+#           [ interval ]
+#           [ pattern PATTERN ]
+#           [ timestamp ]
+#           [ tos VALUE ]
+#           [ quiet ]
+#           [ bypass-routing ]
+#           [ size SIZE ]
+#           [ ttl TTL ]
+#           [ verbose ]
+
+use strict;
+use warnings;
+use NetAddr::IP;
+use feature ":5.10";
+
+# Table for translating options to arguments
+my %options = (
+    'audible'	=> 'a',
+    'adaptive'	=> 'A',
+    'allow-broadcast' => 'b',
+    'bypass-route' => 'r',
+    'count'	=> 'c:',
+    'deadline:' => 'w',
+    'flood'	=> 'f',
+    'interface' => 'I:',
+    'interval' => 'i:',
+    'mark'	=> 'm:',
+    'numeric'    => 'n',
+    'no-loopback' => 'L',
+    'pattern'    => 'p:',
+    'timestamp'  => 'D',
+    'tos'	=> 'Q:',
+    'quiet'	=> 'q',
+    'record-route' => 'R',
+    'size'	=> 's:',
+    'ttl'	=> 't:',
+    'verbose'	=> 'v',
+);
+
+# First argument is host
+my $host = shift @ARGV;
+die "ping: Missing host\n"
+    unless defined($host);
+
+my $ip = new NetAddr::IP $host;
+die "ping: Unknown host: $host\n"
+    unless defined($ip);
+
+my $cmd;
+given ($ip->version) {
+    when (4) {	$cmd = '/bin/ping'; }
+    when (6) {	$cmd = '/bin/ping6' }
+    default {
+	die "Unknown address: $host\n";
+    }
+}
+
+my @cmdargs = ( 'ping' );
+
+while (my $arg = shift @ARGV) {
+    my $pingarg = $options{$arg};
+    die "ping: unknown option $arg\n"
+	unless $pingarg;
+    
+    my $flag = "-" . substr($pingarg, 0, 1);
+    push @cmdargs, $flag;
+
+    if (rindex($pingarg, ':') != -1) {
+	my $optarg = pop @ARGV;
+	die "ping: missing argument for $arg option\n"
+	    unless defined($optarg);
+	push @cmdargs, $optarg;
+    }
+}
+
+exec { $cmd } @cmdargs, $host;
+
