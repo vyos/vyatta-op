@@ -8,7 +8,7 @@ use NetAddr::IP;
 use feature ":5.10";
 
 my $host = $ARGV[0];
-my $ip = new NetAddr::IP;
+my $ip = new NetAddr::IP $host;
 die "Unknown host: $host\n"
     unless defined($ip);
 
