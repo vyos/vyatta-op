@@ -32,7 +32,8 @@ test -z "$_vyatta_default_pager" && \
 	--auto-buffers\
 	--no-lessopen\
 	$_vyatta_less_options"
-declare -x VYATTA_PAGER=$_vyatta_default_pager
+test -z "$VYATTA_PAGER" && \
+    declare -x VYATTA_PAGER=$_vyatta_default_pager
 
 _vyatta_op_do_key_bindings ()
 {
