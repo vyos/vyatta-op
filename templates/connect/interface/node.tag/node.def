@@ -22,7 +22,7 @@ run:
 			/dev/null 2>&1 & )
 		else
                     # PPPOE, PPPOA, WLM interfaces are started directly
-                    ( umask 0; sudo /usr/sbin/pppd call $IFNAME > \
-                        /tmp/${IFNAME}.log 2>&1 & )
+                    ( umask 0; sudo /usr/sbin/pppd call $IFNAME \
+                               | sudo tee /tmp/${IFNAME}.log 2>&1 & )
 		fi
         fi
