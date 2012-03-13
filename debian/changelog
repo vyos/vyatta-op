@@ -1,3 +1,15 @@
+vyatta-op (0.13.247) unstable; urgency=low
+
+  [ Stephen Hemminger ]
+  * Add new ping command script
+
+  [ John Southworth ]
+  * Bugfix 7527: Don't override VYATTA_PAGER value if it was previously
+    set
+  * Bugfix 7896: make the pppoe log write as the root user
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 13 Mar 2012 22:57:18 +0000
+
 vyatta-op (0.13.246) unstable; urgency=low
 
   * new branch
