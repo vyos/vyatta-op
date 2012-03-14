@@ -1,0 +1,3 @@
+help: Send Internet Control Message Protocol (ICMP) echo request
+allowed: echo -n '<hostname> <x.x.x.x> <h:h:h:h:h:h:h:h>'
+run: ${vyatta_bindir}/ping ${@:2}
