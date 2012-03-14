@@ -41,35 +41,104 @@ use warnings;
 use NetAddr::IP;
 use feature ":5.10";
 
+sub get_options {
+   my ($opt, $args) = @_;
+   my $prev = $$args[-2];
+   my $arg = $$args[-1];
+   # print type text for arguments 
+   if ( exists($opt->{$arg}) && $opt->{$arg}->{type} ne "noarg" ){
+     get_args($opt, $arg);
+   }
+   # only show options that we haven't used yet
+   my $options = '';
+   foreach my $key (keys(%{$opt})){
+     next if (grep $_ eq $key, @{$args});
+     $options .= "$key ";
+   }
+   print $options;
+   exit 0;
+} 
+
+sub get_args {
+  my ($opt, $arg) = @_;
+  print $opt->{$arg}->{type}; 
+  exit 0; 
+}
+
 # Table for translating options to arguments
 my %options = (
-    'audible'	=> 'a',
-    'adaptive'	=> 'A',
-    'allow-broadcast' => 'b',
-    'bypass-route' => 'r',
-    'count'	=> 'c:',
-    'deadline:' => 'w',
-    'flood'	=> 'f',
-    'interface' => 'I:',
-    'interval' => 'i:',
-    'mark'	=> 'm:',
-    'numeric'    => 'n',
-    'no-loopback' => 'L',
-    'pattern'    => 'p:',
-    'timestamp'  => 'D',
-    'tos'	=> 'Q:',
-    'quiet'	=> 'q',
-    'record-route' => 'R',
-    'size'	=> 's:',
-    'ttl'	=> 't:',
-    'verbose'	=> 'v',
+    'audible'	      => { 'p_arg'=>'a',  
+                           'type'=>'noarg', 
+                           'help'=>'Make a noise on ping' },
+    'adaptive'	      => { 'p_arg'=>'A',  
+                           'type'=>'noarg', 
+                           'help'=>'Adativly set interpacket interval' },
+    'allow-broadcast' => { 'p_arg'=>'b',  
+                           'type'=>'noarg', 
+                           'help'=>'Ping broadcast address' },
+    'bypass-route'    => { 'p_arg'=>'r',  
+                           'type'=>'noarg', 
+                           'help'=>'Bypass normal routing tables' },
+    'count'           => { 'p_arg'=>'c:', 
+                           'type'=>'<requests>', 
+                           'help'=>'Number of requests to send' },
+    'deadline'        => { 'p_arg'=>'w:', 
+                           'type'=>'<seconds>', 
+                           'help'=>'Number of seconds before ping exits' },
+    'flood'	      => { 'p_arg'=>'f',  
+                           'type'=>'noarg', 
+                            'help'=>'Send 100 requests per second' } ,
+    'interface'       => { 'p_arg'=>'I:', 
+                           'type'=>'<interface> <X.X.X.X> <h:h:h:h:h:h:h:h>', 
+                           'help'=>'Interface to use as source for ping' }, 
+    'interval'        => { 'p_arg'=>'i:', 
+                           'type'=>'<seconds>',
+                           'help'=>'Number of seconds to wait between requests' },
+    'mark'	      => { 'p_arg'=>'m:', 
+                           'type'=>'<fwmark>', 
+                           'help'=>'Mark request for special processing' },
+    'numeric'         => { 'p_arg'=>'n', 
+                           'type'=>'noarg', 
+                           'help'=>'Do not resolve DNS names' },
+    'no-loopback'     => { 'p_arg'=>'L', 
+                           'type'=>'noarg', 
+                           'help'=>'Supress loopback of multicast pings' },
+    'pattern'         => { 'p_arg'=>'p:', 
+                           'type'=>'<pattern>', 
+                           'help'=>'Pattern to fill out the packet' },
+    'timestamp'       => { 'p_arg'=>'D', 
+                           'type'=>'noarg', 
+                           'help'=>'Print timestamp of output' },
+    'tos'	      => { 'p_arg'=>'Q:', 
+                           'type'=>'<tos>', 
+                           'help'=>'Mark packets with specified TOS' },
+    'quiet'	      => { 'p_arg'=>'q', 
+                           'type'=>'noarg', 
+                           'help'=>'Only print summary lines' },
+    'record-route'    => { 'p_arg'=>'R',  
+                           'type'=>'noarg', 
+                           'help'=>'Record route the packet takes' },
+    'size'	      => { 'p_arg'=>'s:',
+                           'type'=>'<bytes>', 
+                           'help'=>'Number of bytes to send' },
+    'ttl'	      => { 'p_arg'=>'t:', 
+                           'type'=>'<ttl>', 
+                           'help'=>'Maximum packet lifetime' },
+    'verbose'	      => { 'p_arg'=>'v',  
+                           'type'=>'noarg', 
+                           'help'=>'Verbose output' }
 );
+
+
 
 # First argument is host
 my $host = shift @ARGV;
 die "ping: Missing host\n"
     unless defined($host);
-
+if ($host eq "--get-options"){
+  my @args = @ARGV;
+  get_options(\%options, \@args);
+}
 my $ip = new NetAddr::IP $host;
 die "ping: Unknown host: $host\n"
     unless defined($ip);
@@ -86,7 +155,7 @@ given ($ip->version) {
 my @cmdargs = ( 'ping' );
 
 while (my $arg = shift @ARGV) {
-    my $pingarg = $options{$arg};
+    my $pingarg = $options{$arg}->{p_arg};
     die "ping: unknown option $arg\n"
 	unless $pingarg;
     
@@ -94,12 +163,11 @@ while (my $arg = shift @ARGV) {
     push @cmdargs, $flag;
 
     if (rindex($pingarg, ':') != -1) {
-	my $optarg = pop @ARGV;
+        my $optarg = shift @ARGV;
 	die "ping: missing argument for $arg option\n"
 	    unless defined($optarg);
 	push @cmdargs, $optarg;
     }
 }
-
 exec { $cmd } @cmdargs, $host;
 
