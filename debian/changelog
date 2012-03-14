@@ -1,3 +1,9 @@
+vyatta-op (0.13.245+oxnard7) unstable; urgency=low
+
+  * better fix for bug 7896
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 14 Mar 2012 18:04:19 +0000
+
 vyatta-op (0.13.245+oxnard6) unstable; urgency=low
 
   * Fix ping
