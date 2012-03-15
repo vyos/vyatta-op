@@ -1,3 +1,11 @@
+vyatta-op (0.13.248) unstable; urgency=low
+
+  * better fix for bug 7896
+  * Initial commit for new ping completion
+  * Add ping templates for completion
+
+ -- John Southworth <john.southworth@vyatta.com>  Thu, 15 Mar 2012 00:28:12 +0000
+
 vyatta-op (0.13.247) unstable; urgency=low
 
   [ Stephen Hemminger ]
