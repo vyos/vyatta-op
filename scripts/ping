@@ -256,6 +256,5 @@ while (my $arg = shift @$args) {
 	push @cmdargs, $optarg;
     }
 }
-print "@cmdargs\n";
 exec { $cmd } @cmdargs, $host;
 
