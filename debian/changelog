@@ -1,3 +1,10 @@
+vyatta-op (0.13.249) unstable; urgency=low
+
+  * Make ping feel like all the other system commands
+  * Remove unneeded debugging information from ping script
+
+ -- John Southworth <john.southworth@vyatta.com>  Thu, 22 Mar 2012 10:38:50 -0700
+
 vyatta-op (0.13.248) unstable; urgency=low
 
   * better fix for bug 7896
