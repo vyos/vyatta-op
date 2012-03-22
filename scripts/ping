@@ -43,19 +43,44 @@ use feature ":5.10";
 
 sub get_options {
    my ($opt, $args) = @_;
+   my $orig_arg = $$args[-1];
+
+   # expand the variables
+   if (scalar(@$args) > 2){
+     $args = expand_args($opt, $args);
+   }
+
    my $prev = $$args[-2];
    my $arg = $$args[-1];
-   # print type text for arguments 
-   if ( exists($opt->{$arg}) && $opt->{$arg}->{type} ne "noarg" ){
-     get_args($opt, $arg);
-   }
-   # only show options that we haven't used yet
+
+   # do something similar to compgen
    my $options = '';
+   if ($arg ne ''){
+     my @matches = grep { /^$arg/ } keys(%{$opt});
+     if (scalar(@matches) == 0){
+       if ( (exists($opt->{$prev}) && $opt->{$prev}->{type} ne "noarg") ) {
+         get_args($opt, $prev);
+       } 
+     }
+     $options = join " ", @matches;
+     print $options;
+     exit 0; 
+   }
+
+   if ( (exists($opt->{$prev}) && $opt->{$prev}->{type} ne "noarg") ) {
+     get_args($opt, $prev);
+   } 
+   
+   # only show options that we haven't used yet
    foreach my $key (keys(%{$opt})){
-     next if (grep $_ eq $key, @{$args});
+     next if (grep $_ eq $key, @{$args}) ;
      $options .= "$key ";
    }
-   print $options;
+   if ($options eq '' ){
+     print '<Enter>';
+   } else {
+     print $options;
+   }
    exit 0;
 } 
 
@@ -63,6 +88,66 @@ sub get_args {
   my ($opt, $arg) = @_;
   print $opt->{$arg}->{type}; 
   exit 0; 
+}
+
+sub expand_args {
+  my ($opt, $args) = @_;
+  my @expand_args = ();
+  my $index = 0;
+  my $prev = undef;
+  foreach my $arg (@$args){
+    $index++;
+    if ($index == 1 || $index == 2) {
+      push @expand_args, $arg;
+      next;
+    }
+    if ( $arg eq '' ){ 
+      push @expand_args, $arg;
+      next;
+    }
+    if ( (exists($opt->{$arg}) && $opt->{$arg}->{type} ne "noarg") ) {
+      push @expand_args, $arg;
+      $prev = $arg;
+      next;
+    } 
+    my ($err, @vals) = expand_arg($opt, $arg, $prev);
+    if (defined($err)) {
+      my $val = pop @$args;
+      pop @$args if ($val eq '');
+      if ( $err eq "ambiguous" ){
+        print STDERR "\n\n  Ambiguous command: @{$args} [$arg]\n\n";
+        print STDERR "  Possible completions:\n";
+        print STDERR "  $_\n" foreach @vals;
+        print '<nocomps>';
+      } else {
+        print STDERR "\n\n  Invalid command: @{$args} [$arg]\n";
+        print '<nocomps>';
+      }
+      exit 1;
+    }
+    # print type text for arguments 
+    $arg = $vals[0];
+    push @expand_args, $arg;
+    $prev = $arg;
+  }
+  return \@expand_args;
+}
+
+sub expand_arg {
+   my ($opt, $arg, $prev) = @_;
+   my @opts = grep { /^$arg/ } keys(%{$opt});
+   my @prevs = grep { /^$prev/} keys(%{$opt}) if defined($prev);
+   if (scalar(@opts) == 1 ){
+     return (undef, $opts[0]);
+   } elsif ($arg eq '') {
+     return (undef, $arg);
+   } elsif (defined($prev) && defined($opt->{$prev}) && $opt->{$prev}->{type} ne 'noarg'){
+     return (undef, $arg); 
+   } elsif (scalar(@opts) == 0 ) {
+     return ('invalid', undef);
+   } else {
+     return ('ambiguous', @opts);
+   }
 }
 
 # Table for translating options to arguments
@@ -136,8 +221,8 @@ my $host = shift @ARGV;
 die "ping: Missing host\n"
     unless defined($host);
 if ($host eq "--get-options"){
-  my @args = @ARGV;
-  get_options(\%options, \@args);
+  my @comp_args = @ARGV;
+  get_options(\%options, \@comp_args);
 }
 my $ip = new NetAddr::IP $host;
 die "ping: Unknown host: $host\n"
@@ -153,8 +238,10 @@ given ($ip->version) {
 }
 
 my @cmdargs = ( 'ping' );
-
-while (my $arg = shift @ARGV) {
+my $args = [ 'ping', $host, @ARGV ];
+$args = expand_args(\%options, $args);
+shift @$args; shift @$args;
+while (my $arg = shift @$args) {
     my $pingarg = $options{$arg}->{p_arg};
     die "ping: unknown option $arg\n"
 	unless $pingarg;
@@ -163,11 +250,12 @@ while (my $arg = shift @ARGV) {
     push @cmdargs, $flag;
 
     if (rindex($pingarg, ':') != -1) {
-        my $optarg = shift @ARGV;
+        my $optarg = shift @$args;
 	die "ping: missing argument for $arg option\n"
 	    unless defined($optarg);
 	push @cmdargs, $optarg;
     }
 }
+print "@cmdargs\n";
 exec { $cmd } @cmdargs, $host;
 

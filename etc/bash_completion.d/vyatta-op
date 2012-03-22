@@ -150,6 +150,10 @@ _vyatta_op_help ()
     [ -f $ndef ] && \
       node_run=$( _vyatta_op_get_node_def_field $ndef run )
 
+    if [[ "$1" == "<nocomps>" ]]; then
+       eval "$restore_shopts"
+       return
+    fi
     echo -en "\nPossible completions:"
     if [ -z "$cur" -a -n "$node_run" ]; then
        _vyatta_op_print_help '<Enter>' "Execute the current command"
