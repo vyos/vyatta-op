@@ -1,3 +1,9 @@
+vyatta-op (0.13.245+oxnard8) unstable; urgency=low
+
+  * Updating the changed openvpn show command
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Fri, 23 Mar 2012 05:16:24 -0700
+
 vyatta-op (0.13.245+oxnard7) unstable; urgency=low
 
   * better fix for bug 7896
