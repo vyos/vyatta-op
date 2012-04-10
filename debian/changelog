@@ -1,3 +1,13 @@
+vyatta-op (0.13.250) unstable; urgency=low
+
+  [ Stephen Hemminger ]
+  * Better perl style in boot image
+
+  [ Deepti Kulkarni ]
+  * fix to use the correct perl function
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Tue, 10 Apr 2012 09:53:16 -0700
+
 vyatta-op (0.13.249) unstable; urgency=low
 
   * Make ping feel like all the other system commands
