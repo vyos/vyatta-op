@@ -119,18 +119,14 @@ sub get_ipaddr {
 }
 
 sub get_state_link {
-    my $intf = shift;
+    my $name = shift;
+    my $intf = new Vyatta::Interface($name);
     my $state;
     my $link = 'down';
-    my $flags = get_sysfs_value($intf, 'flags');
 
-    my $hex_flags = hex($flags);
-    if ($hex_flags & 0x1) {	  # IFF_UP
+    if ($intf->up()) {
 	$state = 'up'; 
-	my $carrier = get_sysfs_value($intf, 'carrier');
-	if ($carrier eq '1') {
-	    $link = "up"; 
-	}
+	$link = "up" if ($intf->running());
     } else {
 	$state = "admin down";
     }
