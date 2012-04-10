@@ -192,7 +192,7 @@ sub deleteGrubEntries {
   die "Failed to modify GRUB configuration\n"
     if (!defined($p) || !chmod(($p & oct(7777)), $tfile));
 
-  mv($tfile, $grub_cfg)
+  move($tfile, $grub_cfg)
     or die "Failed to delete GRUB entries\n";
 }
 
