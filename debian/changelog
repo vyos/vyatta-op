@@ -1,3 +1,9 @@
+vyatta-op (0.13.251) unstable; urgency=low
+
+  * Use Interface.pm to find interface state
+
+ -- Stephen Hemminger <shemminger@vyatta.com>  Tue, 10 Apr 2012 18:30:35 -0700
+
 vyatta-op (0.13.250) unstable; urgency=low
 
   [ Stephen Hemminger ]
