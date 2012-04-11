@@ -52,8 +52,8 @@ my $grub_cfg;	# Pathname of grub config file we will use.
 # whether the entry is a "lost password reset" boot menu item.
 #
 sub parseGrubCfg {
-    my $fd = undef;
-    return undef if (!open($fd, '<', $grub_cfg));
+    open (my $fd, '<', $grub_cfg)
+	or die "Can't open grub config $grub_cfg: $!\n";
 
     my %ghash = ();
     my @entries = ();
@@ -189,11 +189,11 @@ sub deleteGrubEntries {
   close($rfd);
 
   my $p = (stat($grub_cfg))[2];
-  return 'Failed to modify GRUB configuration'
+  die "Failed to modify GRUB configuration\n"
     if (!defined($p) || !chmod(($p & oct(7777)), $tfile));
-  system("mv $tfile $grub_cfg");
-  return 'Failed to delete GRUB entries' if ($? >> 8);
-  return undef;
+
+  move($tfile, $grub_cfg)
+    or die "Failed to delete GRUB entries\n";
 }
 
 # This function takes the default terminal type and a list of all grub
@@ -362,10 +362,6 @@ sub select_by_name {
     # Re-scan the the grub config file to get the current indexes
     # of each entry.
     my $gref = parseGrubCfg();
-    if (!defined($gref)) {
-	print "Cannot parse GRUB configuration file. Exiting...\n";
-	exit 1;
-    }
 
     # Find the entry that matches the new default version
     my $entries = $gref->{'entries'};
@@ -498,11 +494,7 @@ sub doDelete {
   }
 
   print "Deleting the \"$del_ver\" image...\n";
-  my $err = deleteGrubEntries($del_ver);
-  if (defined($err)) {
-    print "$err. Exiting...\n";
-    exit 1;
-  }
+  deleteGrubEntries($del_ver);
 
   if ($del_ver eq $OLD_IMG_VER_STR) {
       del_non_image_files();
@@ -556,25 +548,19 @@ if (-e $UNION_GRUB_CFG) {
 }
 
 my $gref = parseGrubCfg();
-if (!defined($gref)) {
-    print "Cannot find GRUB configuration file. Exiting...\n";
-    exit 1;
-}
 
 my $def_idx = $gref->{'default'};
 my $entries = $gref->{'entries'};
 if (!defined($def_idx) || !defined($entries)
     || !defined(${$entries}[$def_idx])) {
-  print "Error parsing GRUB configuration file. Exiting...\n";
-  exit 1;
+    die "Error parsing GRUB configuration file. Exiting...\n";
 }
 my $def_ver = ${$entries}[$def_idx]->{'ver'};
 my $def_term = ${$entries}[$def_idx]->{'term'};
 
 my $bentries = getBootList($def_term, $entries);
 if ($#{$bentries} < 0) {
-  print "No images found. Exiting...\n";
-  exit 1;
+  die "No images found. Exiting...\n";
 }
 
 if (defined($list)) {
@@ -625,8 +611,7 @@ if (defined($resp)) {
   }
 }
 if (!defined($resp)) {
-  print "$error_msg Exiting...\n";
-  exit 1;
+  die "$error_msg Exiting...\n";
 }
 print "\n";
 
@@ -637,8 +622,7 @@ if (defined($sel)) {
 } elsif (defined($del)) {
   doDelete($resp, $def_ver, $def_term, $bentries);
 } else {
-    print "Unknown command.\n";
-    exit 1;
+  die "Unknown command.\n";
 }
 
 exit 0;
