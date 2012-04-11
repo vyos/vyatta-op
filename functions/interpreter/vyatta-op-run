@@ -134,7 +134,11 @@ _vyatta_op_conv_run_cmd ()
            [[ "$word" =~ \$[0-9] ]]; then
            word=$( sed -e 's/\$\([0-9]\)/\$\{args\[\1\]\}/g' <<<"$word" )
         fi
-        outline+="$word "
+        if [[ "$word" != '\\' ]]; then
+           outline+="$word "
+        else
+           outline+="$word"
+        fi
       done
       IFS=$'\n'
       line=$outline
