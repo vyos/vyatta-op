@@ -1,3 +1,9 @@
+vyatta-op (0.13.252) unstable; urgency=low
+
+  * Bugfix 8013: Fix space at end of line in command conversion
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 11 Apr 2012 13:30:45 -0700
+
 vyatta-op (0.13.251) unstable; urgency=low
 
   * Use Interface.pm to find interface state
