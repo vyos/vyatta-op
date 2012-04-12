@@ -1,3 +1,9 @@
+vyatta-op (0.13.253) unstable; urgency=low
+
+  * bug fix for 5792 - Fix the op-mode system image commands for live-cd
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Thu, 12 Apr 2012 03:10:10 -0700
+
 vyatta-op (0.13.252) unstable; urgency=low
 
   * Bugfix 8013: Fix space at end of line in command conversion
