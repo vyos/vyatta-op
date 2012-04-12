@@ -38,6 +38,7 @@ my $OLD_IMG_VER_STR = 'Old-non-image-installation';
 my $OLD_GRUB_CFG = '/boot/grub/grub.cfg';
 my $DISK_BOOT = '/boot';
 my $XEN_DEFAULT_IMAGE = "$UNION_BOOT/%%default_image";
+my $LIVE_CD = '/live/image/live';
 
 # 
 # Globals
@@ -542,6 +543,8 @@ if (-e $UNION_GRUB_CFG) {
     $grub_cfg = $UNION_GRUB_CFG;
 } elsif (-e $OLD_GRUB_CFG) {
     $grub_cfg = $OLD_GRUB_CFG;
+} elsif ((! -d $UNION_BOOT) && (-d $LIVE_CD)) {
+    die "System running on Live-CD\n";
 } else {
     print "Can not open Grub config file\n";
     exit 1;

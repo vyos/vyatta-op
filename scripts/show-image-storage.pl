@@ -41,7 +41,11 @@ sub better_units {
 
 # Figure out where the images live...
 my $imagedir = "/live/image/boot";
+my $livecd = "/live/image/live";
 if (! -e $imagedir) {
+    if (-d $livecd) {
+        die "System running on Live-CD\n";
+    } 
     # Must be running on Old non-image system.
     $imagedir = "/boot";
     if (! -e $imagedir) {
