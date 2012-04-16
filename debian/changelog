@@ -1,3 +1,9 @@
+vyatta-op (0.13.254) unstable; urgency=low
+
+  * bug 7985: fix regex for rename system image command
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Mon, 16 Apr 2012 05:02:11 -0700
+
 vyatta-op (0.13.253) unstable; urgency=low
 
   * bug fix for 5792 - Fix the op-mode system image commands for live-cd
