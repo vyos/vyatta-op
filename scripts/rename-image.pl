@@ -39,7 +39,7 @@ GetOptions(
     );
     
 if (!defined($old_name) || !defined($new_name)) {
-    printf("Must specify both old ane new name.\n");
+    printf("Must specify both old and new name.\n");
     exit 1;
 }
 
@@ -109,10 +109,11 @@ open (my $grubfh, '<', "${image_path}/grub/grub.cfg")
 #
 my $line;
 while ($line = <$grubfh>) {
-    $line =~ s/\/boot\/$old_name/\/boot\/$new_name/g;
-    $line =~ s/Vyatta $old_name/Vyatta $new_name/;
-    $line =~ s/Vyatta image $old_name/Vyatta image $new_name/;
-    $line =~ s/Lost password change $old_name/Lost password change $new_name/;
+    $line =~ s/\/boot\/$old_name\//\/boot\/$new_name\//g;
+    $line =~ s/\/boot\/$old_name /\/boot\/$new_name /g;
+    $line =~ s/Vyatta $old_name /Vyatta $new_name /;
+    $line =~ s/Vyatta image $old_name /Vyatta image $new_name /;
+    $line =~ s/Lost password change $old_name /Lost password change $new_name /;
     printf($tmpfh $line);
 }
 
