@@ -1,3 +1,9 @@
+vyatta-op (0.13.255) unstable; urgency=low
+
+  * Use terminal width for interface description wrapping
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 08 May 2012 15:00:07 -0700
+
 vyatta-op (0.13.254) unstable; urgency=low
 
   * bug 7985: fix regex for rename system image command
