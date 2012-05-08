@@ -24,6 +24,7 @@
 #
 
 use lib "/opt/vyatta/share/perl5/";
+require 'sys/ioctl.ph';
 
 use Vyatta::Interface;
 use Vyatta::Misc;
@@ -49,12 +50,21 @@ my %action_hash = (
 my $clear_stats_dir = '/var/run/vyatta';
 my $clear_file_magic = 'XYZZYX';
 
-my ($term_height, $term_width) = split ' ', `stty size`;
-
 my @rx_stat_vars = 
     qw/rx_bytes rx_packets rx_errors rx_dropped rx_over_errors multicast/; 
 my @tx_stat_vars = 
     qw/tx_bytes tx_packets tx_errors tx_dropped tx_carrier_errors collisions/;
+
+sub get_terminal_width {
+    my $winsize = '';
+    open(my $TTY, '>', '/dev/tty');
+    # undefined if output not going to terminal
+    return unless (ioctl($TTY, &TIOCGWINSZ, $winsize));
+    close($TTY);
+
+    my ($rows, $cols, undef, undef) = unpack('S4', $winsize);
+    return $cols;
+}
 
 sub get_intf_description {
     my $name = shift;
@@ -239,6 +249,8 @@ sub conv_brief_code {
 sub conv_descriptions {
   my $description = pop @_;
   my @descriptions;
+  my $term_width = get_terminal_width;
+  $term_width = 80 if (!defined($term_width));
   my $desc_len = $term_width - 56;
   my $line = '';
   foreach my $elem (split(' ', $description)){
