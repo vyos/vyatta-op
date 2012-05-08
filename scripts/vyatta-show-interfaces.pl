@@ -49,6 +49,8 @@ my %action_hash = (
 my $clear_stats_dir = '/var/run/vyatta';
 my $clear_file_magic = 'XYZZYX';
 
+my ($term_height, $term_width) = split ' ', `stty size`;
+
 my @rx_stat_vars = 
     qw/rx_bytes rx_packets rx_errors rx_dropped rx_over_errors multicast/; 
 my @tx_stat_vars = 
@@ -237,9 +239,10 @@ sub conv_brief_code {
 sub conv_descriptions {
   my $description = pop @_;
   my @descriptions;
+  my $desc_len = $term_width - 56;
   my $line = '';
   foreach my $elem (split(' ', $description)){
-    if ((length($line) + length($elem)) >= 24){
+    if ((length($line) + length($elem)) >= $desc_len){
       push(@descriptions, $line);
       $line = "$elem ";
     } else {
