@@ -1,3 +1,9 @@
+vyatta-op (0.13.257) unstable; urgency=low
+
+  * Moved get_terminal_width to Vyatta::Misc
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 09 May 2012 08:51:47 -0700
+
 vyatta-op (0.13.256) unstable; urgency=low
 
   * Use native perl code to figure othe the terminal width
