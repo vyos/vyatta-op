@@ -24,7 +24,6 @@
 #
 
 use lib "/opt/vyatta/share/perl5/";
-require 'sys/ioctl.ph';
 
 use Vyatta::Interface;
 use Vyatta::Misc;
@@ -54,17 +53,6 @@ my @rx_stat_vars =
     qw/rx_bytes rx_packets rx_errors rx_dropped rx_over_errors multicast/; 
 my @tx_stat_vars = 
     qw/tx_bytes tx_packets tx_errors tx_dropped tx_carrier_errors collisions/;
-
-sub get_terminal_width {
-    my $winsize = '';
-    open(my $TTY, '>', '/dev/tty');
-    # undefined if output not going to terminal
-    return unless (ioctl($TTY, &TIOCGWINSZ, $winsize));
-    close($TTY);
-
-    my ($rows, $cols, undef, undef) = unpack('S4', $winsize);
-    return $cols;
-}
 
 sub get_intf_description {
     my $name = shift;
