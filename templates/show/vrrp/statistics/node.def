@@ -1,0 +1,2 @@
+help: Show Virtual Router Redundancy Protocol (VRRP) statistics
+run: sudo /opt/vyatta/bin/sudo-users/vyatta-show-vrrp.pl --show=stats

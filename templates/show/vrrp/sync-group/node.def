@@ -1,0 +1,3 @@
+help: Show VRRP sync-group information
+run: /opt/vyatta/bin/sudo-users/vyatta-show-vrrp.pl --show=sync
+
