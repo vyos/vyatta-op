@@ -1,3 +1,0 @@
-help: Show summary of VRRP information
-run: /opt/vyatta/bin/sudo-users/vyatta-show-vrrp.pl "$3"
-

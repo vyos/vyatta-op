@@ -1,3 +1,0 @@
-help: Show VRRP information for specified interface
-allowed: sudo /opt/vyatta/bin/sudo-users/vyatta-show-vrrp.pl --show=interface
-run: sudo /opt/vyatta/bin/sudo-users/vyatta-show-vrrp.pl --show=detail --intf=$4

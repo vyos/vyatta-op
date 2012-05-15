@@ -1,3 +1,0 @@
-help: Show VRRP information for specified interface and group
-allowed: sudo /opt/vyatta/bin/sudo-users/vyatta-show-vrrp.pl --show=interface --intf="${COMP_WORDS[COMP_CWORD-2]}"
-run: sudo /opt/vyatta/bin/sudo-users/vyatta-show-vrrp.pl --show=detail --intf=$4 --vrid=$6
