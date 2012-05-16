@@ -1,3 +1,9 @@
+vyatta-op (0.13.260) unstable; urgency=low
+
+  * VTI show support.
+
+ -- Saurabh Mohan <saurabh@vyatta.com>  Wed, 16 May 2012 16:44:59 -0700
+
 vyatta-op (0.13.259) unstable; urgency=low
 
   * Move VRRP to its own package
