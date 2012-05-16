@@ -1,3 +1,10 @@
+vyatta-op (0.13.259) unstable; urgency=low
+
+  * Move VRRP to its own package
+  * Remove vrrp scripts from Makefile
+
+ -- John Southworth <john.southworth@vyatta.com>  Tue, 15 May 2012 20:47:26 -0700
+
 vyatta-op (0.13.258) unstable; urgency=low
 
   * Add Vyatta wrappers for new keepalived output
