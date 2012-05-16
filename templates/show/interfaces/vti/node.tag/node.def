@@ -1,0 +1,3 @@
+help: Show specified virtual tunnel interface information
+allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show vti
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf="$4"

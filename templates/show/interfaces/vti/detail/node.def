@@ -1,0 +1,2 @@
+help: Show detailed virtual tunnel interface information
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf-type=vti --action=show

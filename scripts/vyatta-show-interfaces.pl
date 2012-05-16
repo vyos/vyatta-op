@@ -265,6 +265,7 @@ sub run_show_intf_brief {
       next if ($intf =~ /sit0/);
       next if ($intf =~ /tunl0/);
       next if ($intf =~ /ip6tnl0/);
+      next if ($intf =~ /vti0/);
       my @ip_addr = get_ipaddr($intf);
       my ($state, $link) = get_state_link($intf);
       $state = conv_brief_code($state);
