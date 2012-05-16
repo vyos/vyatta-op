@@ -5,7 +5,6 @@ completion_DATA	 = etc/bash_completion.d/vyatta-op
 opdir		 = $(datadir)/vyatta-op/templates
 bin_sudo_usersdir = $(bindir)/sudo-users
 etc_shell_leveldir = $(sysconfdir)/shell/level
-share_perl5dir = $(datarootdir)/perl5/Vyatta/VRRP/
 
 funcdir		 = $(datadir)/vyatta-op/functions
 func_DATA	 = functions/tech-support
@@ -59,10 +58,6 @@ bin_sudo_users_SCRIPTS	   += scripts/vyatta-reboot.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-op-dns-forwarding.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-op-dynamic-dns.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-clear-conntrack
-bin_sudo_users_SCRIPTS	   += scripts/vrrp/vyatta-clear-vrrp.pl
-bin_sudo_users_SCRIPTS	   += scripts/vrrp/vyatta-show-vrrp.pl
-
-share_perl5_DATA = lib/Vyatta/VRRP/OPMode.pm
 
 all-local:
 	./gen-unpriv-commands.sh
