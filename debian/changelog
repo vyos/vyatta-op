@@ -1,3 +1,9 @@
+vyatta-op (0.13.261) unstable; urgency=low
+
+  * Ignore the default vti interface.
+
+ -- Saurabh Mohan <saurabh@vyatta.com>  Mon, 04 Jun 2012 16:43:00 -0700
+
 vyatta-op (0.13.260) unstable; urgency=low
 
   * VTI show support.
