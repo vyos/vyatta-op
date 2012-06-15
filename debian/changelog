@@ -1,3 +1,9 @@
+vyatta-op (0.13.245+oxnard9) unstable; urgency=low
+
+  * Bugfix 8013: Fix space at end of line in command conversion
+
+ -- John Southworth <john.southworth@vyatta.com>  Fri, 15 Jun 2012 09:38:59 -0700
+
 vyatta-op (0.13.245+oxnard8) unstable; urgency=low
 
   * Updating the changed openvpn show command
