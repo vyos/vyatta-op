@@ -1,2 +1,2 @@
 help: Show log for Network Address Translation (NAT)
-run: cat $(printf "%s\n" /var/log/messages* | sort -nr) | grep -e "\[NAT-[0-9]*-*\]"
+run: egrep -i "kernel:.*\[NAT-[A-Z]{3,}-[0-9]+\]" $(find /var/log -maxdepth 1 -type f -name messages\* | sort -t. -k2nr)
