@@ -1,3 +1,9 @@
+vyatta-op (0.13.245+oxnard10) unstable; urgency=low
+
+  * Fix NAT regex and correct log file sort order.
+
+ -- James Davidson <james.davidson@vyatta.com>  Mon, 09 Jul 2012 12:41:21 -0700
+
 vyatta-op (0.13.245+oxnard9) unstable; urgency=low
 
   * Bugfix 8013: Fix space at end of line in command conversion
