@@ -1,3 +1,9 @@
+vyatta-op (0.13.263) unstable; urgency=low
+
+  * Fix NAT regex to also find MASQ logs.
+
+ -- James Davidson <james.davidson@vyatta.com>  Wed, 01 Aug 2012 17:46:54 -0700
+
 vyatta-op (0.13.262) unstable; urgency=low
 
   * Fix NAT regex and correct log file sort order.
