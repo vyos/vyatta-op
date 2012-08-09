@@ -1,0 +1,4 @@
+help: Monitor specified vti interface
+allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show vti
+run: bmon -p $4
+

@@ -1,0 +1,2 @@
+help: Monitor a vti interface
+run: bmon -p vti*

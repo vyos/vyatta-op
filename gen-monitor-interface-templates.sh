@@ -16,6 +16,7 @@ declare -a types=(
        "bonding" \
        "tunnel" \
        "loopback" \
+       "vti"
 )
 
 for type in "${types[@]}"; do
@@ -24,11 +25,12 @@ for type in "${types[@]}"; do
   mkdir -p $type/node.tag/traffic/detail/unlimited/filter/node.tag
   mkdir -p $type/node.tag/traffic/filter/node.tag
   mkdir -p $type/node.tag/traffic/unlimited/filter/node.tag
-  
+
   #node.tag
   echo "help: Monitor specified $type interface" > $type/node.tag/node.def
   echo "allowed: \${vyatta_sbindir}/vyatta-interfaces.pl --show $type" >> $type/node.tag/node.def
-  echo "run: \${vyatta_bindir}/vyatta-show-interfaces.pl --intf=\"$4\"" >> $type/node.tag/node.def
+  echo 'run: bmon -p $4' >> $type/node.tag/node.def
+  echo '' >> $type/node.tag/node.def
 
   # standard
   echo "help: Montior captured traffic on specified $type interface" > $type/node.tag/traffic/node.def
