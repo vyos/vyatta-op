@@ -106,53 +106,51 @@ _vyatta_op_conv_run_cmd ()
   local restore_shopts=$( shopt -p extglob nullglob | tr \\n \; )
   shopt -s extglob
   shopt -u nullglob
-  local run_cmd
-  run_cmd=$1
+  local run_cmd="$1"
+  local line outline
+  local -i inquote=0;
+  local outcmd='';
+  local OIFS=$IFS
+  local re="([^']*')(.*)"
+
+  toggle_inquote()
+  {
+      if [[ $inquote == 0 ]]; then
+          inquote=1
+      else
+          inquote=0
+      fi
+  }
+
+  process_subline()
+  {
+      if [[ $inquote == 1 ]]; then
+          outline+="$1"
+      else
+          outline+=$(sed -e 's/\$\([0-9]\)/\$\{args\[\1\]\}/g' <<<"$1")
+      fi
+  }
+
   run_cmd="${run_cmd/\"\$\@\"/${args[*]}}"
   run_cmd="${run_cmd/\$\*/${args[*]}}"
   run_cmd="${run_cmd//\\/\\\\}"
-  inquote=0;
-  outcmd='';
-  OIFS=$IFS
   IFS=$'\n'
-  regex="'[^']+'"
   for line in ${run_cmd[@]}; do
     outline=''
-    if [[ "$line" =~ $regex ]]; then
-      IFS=$OIFS
-      for word in $line; do
-        if [[ $word =~ "'" ]]; then
-          if [[ $inquote == 0 ]]; then
-            inquote=1
-          else
-            inquote=0
-            outline+="$word "
-            continue
-          fi
-        fi
-        if [[ $inquote == 0 ]] &&
-           [[ "$word" =~ \$[0-9] ]]; then
-           word=$( sed -e 's/\$\([0-9]\)/\$\{args\[\1\]\}/g' <<<"$word" )
-        fi
-        if [[ "$word" != '\\' ]]; then
-           outline+="$word "
+    while [[ -n "$line" ]]; do
+        if [[ "$line" =~ $re ]]; then
+            process_subline "${BASH_REMATCH[1]}"
+            toggle_inquote
         else
-           outline+="$word"
+            process_subline "$line"
         fi
-      done
-      IFS=$'\n'
-      line=$outline
-    else
-      if [[ "$line" =~ \$[0-9] ]]; then
-        line=$( sed -e 's/\$\([0-9]\)/\$\{args\[\1\]\}/g' <<<"$line" )
-      fi
-    fi
-    outcmd+="$line\n"
+        line="${BASH_REMATCH[2]}"
+    done
+    outcmd+="$outline\n"
   done
-  run_cmd=$outcmd
   IFS=$OIFS
   eval "$restore_shopts"
-  echo -ne "$run_cmd"
+  echo -ne "$outcmd"
 }
 
 _vyatta_op_run ()
