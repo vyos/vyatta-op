@@ -1,3 +1,9 @@
+vyatta-op (0.13.265) unstable; urgency=low
+
+  * Fix handling of single quote character (') when parsing command
+
+ -- James Davidson <james.davidson@vyatta.com>  Tue, 21 Aug 2012 18:01:24 -0700
+
 vyatta-op (0.13.264) unstable; urgency=low
 
   * Bugfix 8217: VTI: add clear and monitor interfaces commands.
