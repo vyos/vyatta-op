@@ -70,6 +70,10 @@ export PATH=/sbin:/usr/sbin:$PATH
 header Show Tech-Support  
 header CONFIGURATION 
 
+if cli-shell-api validateTmplPath entitlement; then
+header Entitlement
+show entitlement
+fi
 
 header Vyatta Version and Package Changes
 show version all
@@ -361,9 +365,6 @@ last -ix
 
 header Recent Log Messages 
 tail -n 250 /var/log/messages
-
-header Entitlement
-show entitlement
 
 header NTP
 show ntp
