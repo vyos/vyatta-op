@@ -1,3 +1,9 @@
+vyatta-op (0.13.266) unstable; urgency=low
+
+  * Move display of entitlement info to the top of tech-support output
+
+ -- James Davidson <james.davidson@vyatta.com>  Tue, 28 Aug 2012 17:07:40 -0700
+
 vyatta-op (0.13.265) unstable; urgency=low
 
   * Fix handling of single quote character (') when parsing command
