@@ -1,4 +1,4 @@
-#!/bin/vbash -l
+#!/bin/vbash
 shopt -s expand_aliases
 source /etc/default/vyatta
 source /etc/bash_completion.d/vyatta-op
