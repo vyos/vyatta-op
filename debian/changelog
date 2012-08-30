@@ -1,3 +1,9 @@
+vyatta-op (0.13.267) unstable; urgency=low
+
+  * command wrapper doesn't need a login shell
+
+ -- John Southworth <john.southworth@vyatta.com>  Thu, 30 Aug 2012 09:31:50 -0700
+
 vyatta-op (0.13.266) unstable; urgency=low
 
   * Move display of entitlement info to the top of tech-support output
