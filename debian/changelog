@@ -1,3 +1,9 @@
+vyatta-op (0.13.268) unstable; urgency=low
+
+  * Fix use of lesspipe
+
+ -- James Davidson <james.davidson@vyatta.com>  Wed, 05 Sep 2012 10:24:59 -0700
+
 vyatta-op (0.13.267) unstable; urgency=low
 
   * command wrapper doesn't need a login shell
