@@ -456,7 +456,8 @@ _vyatta_op_expand ()
           _vyatta_op_last_comp=${_vyatta_op_last_comp_init}
     # if there are no completions then always show the non-comps
     elif [ "${COMP_WORDS[*]:0:$[$COMP_CWORD+1]}" == "$_vyatta_op_last_comp" ] || 
-         [ ${#_vyatta_op_completions[@]} -eq 0 ]; then
+         [ ${#_vyatta_op_completions[@]} -eq 0 ] ||
+         [ -z "$cur" ]; then
           _vyatta_op_help "$current_prefix" \
             "${_vyatta_op_noncompletions[@]}" \
             "${_vyatta_op_completions[@]}" \
