@@ -1,3 +1,11 @@
+vyatta-op (0.13.269) unstable; urgency=low
+
+  * Make opmode completions show the list on blank completion like
+    config mode now does
+  * Bugfix 8310: remove 'show log content-inspection'
+
+ -- John Southworth <john.southworth@vyatta.com>  Wed, 12 Sep 2012 16:14:34 -0700
+
 vyatta-op (0.13.268) unstable; urgency=low
 
   * Fix use of lesspipe
