@@ -369,10 +369,6 @@ tail -n 250 /var/log/messages
 header NTP
 show ntp
 
-header Zebra
-show zebra
-
-
 ###
 # End of Core section
 ###
@@ -385,7 +381,7 @@ if cli-shell-api existsActive protocols bgp; then
   header BGP Neighbors
   show ip bgp neighbors
   header BGP Debugging Information 
-  show debugging bgp 
+  show monitoring protocols bgp 
 else
   echo "BGP is not configured"
 fi
@@ -461,8 +457,8 @@ header FIREWALL
 if cli-shell-api existsActive firewall; then
   header Firewall Group
   show firewall group
-  header Firewall Detail
-  show firewall detail
+  header Firewall Summary
+  show firewall summary
   header Firewall Statistics
   show firewall statistics 
 else
@@ -539,7 +535,7 @@ if cli-shell-api existsActive protocols ospf; then
   header OSPF Route
   show ip ospf route
   header OSPF Debugging Information
-  show debugging ospf 
+  show monitoring protocols ospf 
 else
   echo "OSPF is not configured"
 fi
@@ -547,7 +543,7 @@ fi
 header OSPFV3
 if cli-shell-api existsActive protocols ospfv3; then
   header OSPFV3 Debugging Information
-  show debugging ospfv3
+  show monitoring protocols ospfv3
 else
   echo "OSPFV3 is not configured" 
 fi
@@ -581,7 +577,7 @@ if cli-shell-api existsActive protocols rip; then
   header RIP Status
   show ip rip status
   header RIP Debugging Information
-  show debugging rip 
+  show monitoring protocols rip 
 else
   echo "RIP is not configured"
 fi
@@ -589,7 +585,7 @@ fi
 header RIPNG 
 if cli-shell-api existsActive protocols ripng; then
   header RIPNG Debugging Information
-  show debugging ripng
+  show monitoring protocols ripng
 else
   echo "RIPNG is not configured"
 fi
