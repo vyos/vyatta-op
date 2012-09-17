@@ -38,6 +38,7 @@ use warnings;
 # valid actions
 #
 my %action_hash = (
+    'allowed'       => \&run_allowed,
     'show'       => \&run_show_intf,
     'show-brief' => \&run_show_intf_brief,
     'show-count' => \&run_show_counters,
@@ -160,6 +161,34 @@ sub get_intf_for_type {
     return @list;
 }
 
+# Find vlan interfaces
+sub get_vlan_intf() {
+    my @interfaces = getInterfaces();
+    my @list = ();
+
+    foreach my $name (@interfaces) {
+        my $intf = new Vyatta::Interface($name);
+        next unless $intf && defined($intf->vif());
+        push @list, $name;
+    }
+
+    return @list;
+}
+
+# Find vlan interfaces
+sub get_vrrp_intf() {
+    my @interfaces = getInterfaces();
+    my @list = ();
+
+    foreach my $name (@interfaces) {
+        my $intf = new Vyatta::Interface($name);
+        next unless $intf && defined($intf->vrid());
+        push @list, $name;
+    }
+
+    return @list;
+}
+
 # This function has to deal with both 32 and 64 bit counters
 sub get_counter_val {
     my ($clear, $now) = @_;
@@ -182,6 +211,11 @@ sub get_counter_val {
 #
 # The "action" routines
 #
+
+sub run_allowed {
+  my @intfs = @_;
+  print "@intfs";
+}
 
 sub run_show_intf {
     my @intfs = @_;
@@ -408,7 +442,7 @@ sub intf_sort {
 }
 
 sub usage {
-    print "Usage: $0 [intf=NAME|intf-type=TYPE] action=ACTION\n";
+    print "Usage: $0 [intf=NAME|intf-type=TYPE|vif|vrrp] action=ACTION\n";
     print "  NAME = ", join(' | ', get_intf_for_type()), "\n";
     print "  TYPE = ", join(' | ', Vyatta::Interface::interface_types()), "\n";
     print "  ACTION = ", join(' | ', keys %action_hash), "\n";
@@ -418,14 +452,17 @@ sub usage {
 #
 # main
 #
-my @intf_list = ();
-my ($intf_type, $intf);
+my ($intf_type, $intf, $vif_only, $vrrp_only);
 my $action = 'show';
 
 GetOptions("intf-type=s" => \$intf_type,
+           "vif"         => \$vif_only,
+           "vrrp"         => \$vrrp_only,
 	   "intf=s"      => \$intf,
 	   "action=s"    => \$action,
 ) or usage();
+
+my @intf_list;
 
 if ($intf) {
     die "Invalid interface [$intf]\n" 
@@ -434,6 +471,10 @@ if ($intf) {
     push @intf_list, $intf;
 } elsif ($intf_type) {
     @intf_list = get_intf_for_type($intf_type);
+} elsif ($vif_only) {
+    @intf_list = get_vlan_intf();
+} elsif ($vrrp_only) {
+    @intf_list = get_vrrp_intf();
 } else {
     # get all interfaces
     @intf_list = get_intf_for_type();
