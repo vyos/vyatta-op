@@ -1,3 +1,10 @@
+vyatta-op (0.13.271) unstable; urgency=low
+
+  * Bugfix 8300: show proper output for 'show interfaces vrrp'; also
+    fixes bug 8317
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 17 Sep 2012 14:06:22 -0700
+
 vyatta-op (0.13.270) unstable; urgency=low
 
   * bug fix for 8274 - fix deprecated commands in show tech support.
