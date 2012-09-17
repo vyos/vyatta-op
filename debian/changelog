@@ -1,3 +1,9 @@
+vyatta-op (0.13.270) unstable; urgency=low
+
+  * bug fix for 8274 - fix deprecated commands in show tech support.
+
+ -- Deepti Kulkarni <deepti@vyatta.com>  Mon, 17 Sep 2012 11:06:55 -0700
+
 vyatta-op (0.13.269) unstable; urgency=low
 
   * Make opmode completions show the list on blank completion like
