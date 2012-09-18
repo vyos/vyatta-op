@@ -1,3 +1,9 @@
+vyatta-op (0.13.272) unstable; urgency=low
+
+  * Fix handling of unknown interface types
+
+ -- Stephen Hemminger <shemminger@vyatta.com>  Mon, 17 Sep 2012 17:35:12 -0700
+
 vyatta-op (0.13.271) unstable; urgency=low
 
   * Bugfix 8300: show proper output for 'show interfaces vrrp'; also
