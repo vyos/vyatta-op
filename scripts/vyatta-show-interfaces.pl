@@ -295,17 +295,18 @@ sub run_show_intf_brief {
     printf($format, "Interface","IP Address","S/L","Description");
     printf($format, "---------","----------","---","-----------");
     foreach my $intf (@intfs) {
-      next if ($intf =~ /gre0/);
-      next if ($intf =~ /sit0/);
-      next if ($intf =~ /tunl0/);
-      next if ($intf =~ /ip6tnl0/);
-      next if ($intf =~ /ip_vti0/);
+      my $interface = new Vyatta::Interface($intf);
+      # ignore tunnels, unknown interface types, etc.
+      next unless $interface;
+
+      my $state = $interface->up() ? 'u' : 'A';
+      my $link  = $interface->running() ? 'u' : 'D';
+
+      my $description = $interface->description();
+      my @descriptions = conv_descriptions($description)
+	  if defined($description);
+
       my @ip_addr = get_ipaddr($intf);
-      my ($state, $link) = get_state_link($intf);
-      $state = conv_brief_code($state);
-      $link = conv_brief_code($link);
-      my $description = get_intf_description($intf);
-      my @descriptions = conv_descriptions($description);
       if (scalar(@ip_addr) == 0) {
         my $desc = '';
         $desc = shift @descriptions if (scalar(@descriptions) > 0 );
