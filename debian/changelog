@@ -1,3 +1,9 @@
+vyatta-op (0.13.274) unstable; urgency=low
+
+  * Bugfix 8421: fix show interfaces vrrp detail node to use new syntax
+
+ -- John Southworth <john.southworth@vyatta.com>  Mon, 08 Oct 2012 21:50:24 -0700
+
 vyatta-op (0.13.273) unstable; urgency=low
 
   * Fix use of LESSCLOSE
