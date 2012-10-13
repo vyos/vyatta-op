@@ -5,3 +5,4 @@ Mon Jul 11 12:51:04 CDT 2011: [re-release of package due to bad git config] at [
 Tue Nov 15 23:51:06 NOVT 2011: [Force release] at [debian/0.13.215]
 Sat Mar  3 02:26:16 PST 2012: [new branch] at [debian/0.13.245]
 Fri Oct 12 19:47:50 PDT 2012: [new branch] at [debian/0.13.274]
+Sat Oct 13 13:31:22 PDT 2012: [create daisy branch] at [debian/0.13.275]
