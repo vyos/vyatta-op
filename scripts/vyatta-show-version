@@ -190,11 +190,11 @@ if ($type) {
     print "System type:  $type\n";
 }
 
-my $booted = `grep -e '^unionfs.*/filesystem.squashfs' -e '^aufs.*/filesystem.squashfs' /proc/mounts`;
+my $booted = `egrep -e '^(union|overlay|au)fs.*/filesystem\.squashfs' /proc/mounts`;
 if (defined($booted) && $booted ne "") {
     $booted="livecd";
 } else {
-    my $image_boot = `grep -e '^unionfs / unionfs.*squashfs=ro' /proc/mounts`;
+    my $image_boot = `egrep -e '^(union|overlay)fs / (union|overlay)fs.*\.squashfs' /proc/mounts`;
     if ($image_boot ne "") {
 	$booted="image";
     } else {
