@@ -1,3 +1,9 @@
+vyatta-op (0.13.276) unstable; urgency=low
+
+  * Support detection of overlayfs
+
+ -- James Davidson <james.davidson@vyatta.com>  Fri, 19 Oct 2012 17:27:06 -0700
+
 vyatta-op (0.13.275) unstable; urgency=low
 
   * new branch
