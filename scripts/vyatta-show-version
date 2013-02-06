@@ -13,7 +13,7 @@
 # General Public License for more details.
 #
 # This code was originally developed by Vyatta, Inc.
-# Portions created by Vyatta are Copyright (C) 2005, 2006, 2007 Vyatta, Inc.
+# Portions created by Vyatta are Copyright (C) 2005-2013 Vyatta, Inc.
 # All Rights Reserved.
 #
 # Author: Rick Balocca
@@ -182,6 +182,10 @@ my %options = (
 #
 # main
 #
+my $hv = `/opt/vyatta/sbin/hypervisor_vendor`;
+if (defined($hv) && $hv ne "") {
+    $versionfile .= "-virt";
+}
 print(&echo_file($versionfile));
 print(&echo_file($buildfile));
 
@@ -203,7 +207,6 @@ if (defined($booted) && $booted ne "") {
 }
 print "Boot via:     $booted\n";
 
-my $hv = `/opt/vyatta/sbin/hypervisor_vendor`;
 if (defined($hv) && $hv ne "") {
     chomp $hv;
     print "Hypervisor:   $hv\n";
