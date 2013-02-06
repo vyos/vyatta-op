@@ -1,3 +1,9 @@
+vyatta-op (0.13.275+daisy2) unstable; urgency=low
+
+  * Display virt-brand version file if running in VM
+
+ -- James Davidson <james.davidson@vyatta.com>  Wed, 06 Feb 2013 12:12:26 -0800
+
 vyatta-op (0.13.275+daisy1) unstable; urgency=low
 
   * create daisy branch
