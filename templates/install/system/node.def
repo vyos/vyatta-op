@@ -1,2 +1,0 @@
-help: Install system to hard drive
-run: sudo /opt/vyatta/sbin/install-system
