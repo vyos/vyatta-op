@@ -1,3 +1,9 @@
+vyatta-op (0.13.275+daisy3) unstable; urgency=low
+
+  * Skip dmesg files starting with "Nothing has been logged yet"
+
+ -- James Davidson <james.davidson@vyatta.com>  Tue, 26 Feb 2013 11:55:09 -0800
+
 vyatta-op (0.13.275+daisy2) unstable; urgency=low
 
   * Display virt-brand version file if running in VM
