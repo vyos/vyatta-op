@@ -1,3 +1,9 @@
+vyatta-op (0.13.275+daisy4) unstable; urgency=low
+
+  * Sync up SNMPv3 support
+
+ -- James Davidson <james.davidson@vyatta.com>  Wed, 06 Mar 2013 11:35:53 -0800
+
 vyatta-op (0.13.275+daisy3) unstable; urgency=low
 
   * Skip dmesg files starting with "Nothing has been logged yet"
