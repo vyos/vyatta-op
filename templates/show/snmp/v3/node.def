@@ -1,0 +1,2 @@
+help: Show status of SNMP v3 on localhost
+run: /opt/vyatta/bin/vyatta-show-snmp-v3.pl --all

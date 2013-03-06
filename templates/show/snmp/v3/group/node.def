@@ -1,0 +1,2 @@
+help: Show the list of configured groups
+run: /opt/vyatta/bin/vyatta-show-snmp-v3.pl --group
