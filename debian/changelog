@@ -1,3 +1,9 @@
+vyatta-op (0.13.278) unstable; urgency=low
+
+  * Sync up SNMPv3 support
+
+ -- James Davidson <james.davidson@vyatta.com>  Thu, 28 Mar 2013 12:53:19 -0700
+
 vyatta-op (0.13.277) unstable; urgency=low
 
   * Remove format operational mode commands
