@@ -27,10 +27,13 @@ use NetAddr::IP;
 
 my $SNMPDCFG   = '/etc/snmp/snmpd.conf';
 my $SNMPSTATUS = '/usr/bin/snmpstatus';
+my $password_file = '/config/snmp/superuser_pass';
 
 # generate list of communities in configuration file
 sub read_config {
     my %community;
+
+    die "Service SNMP does not configured.\n" if (! -e $SNMPDCFG);
 
     open( my $cfg, '<', $SNMPDCFG )
       or die "Can't open $SNMPDCFG : $!\n";
@@ -65,14 +68,29 @@ sub status_any {
     my %community = %{$cref};
     my $localhost = new NetAddr::IP('localhost');
 
-    die "No SNMP community's configured\n"
-      unless scalar(%community);
-
-    foreach my $c ( keys %community ) {
+    if (scalar(%community)) {
+      foreach my $c ( keys %community ) {
         my $addr = $community{$c};
         status( $c, $localhost->addr() ) if ( $addr->contains($localhost) );
+      }
     }
-    die "No SNMP community's accessible from ", $localhost->addr(), "\n";
+    status_v3();
+
+}
+
+sub status_v3 {
+    open (my $file, '<' , $password_file) or die "Couldn't open $password_file - $!";
+    my $superuser_pass = do { local $/; <$file> };
+    close $file;
+    open ($file, '<', $SNMPDCFG) or die "Couldn't open $SNMPDCFG - $!";
+    my $superuser_login = '';
+    while (my $line = <$file>) {
+      if ($line =~ /^iquerySecName (.*)$/) {
+	$superuser_login = $1;
+      }
+    }
+    close $file;
+    exec $SNMPSTATUS, '-v3', '-l', 'authNoPriv', '-u', $superuser_login, '-A', $superuser_pass, 'localhost';
 }
 
 # check status of one community
