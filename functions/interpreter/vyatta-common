@@ -72,6 +72,9 @@ get_prefix_filtered_list2 ()
 is_elem_of () {
   local elem=$1
   local -a olist
+  if [[ -z $2 ]]; then
+    return 1
+  fi
   eval "olist=( \"\${$2[@]}\" )"
   for e in ${olist[*]}; do
     if [[ "$e" == "$elem" ]]; then
