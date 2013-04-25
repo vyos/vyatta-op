@@ -1,2 +1,0 @@
-help: Montior captured traffic on specified bonding interface
-run: ${vyatta_bindir}/vyatta-tshark.pl --intf $4

@@ -1,2 +1,0 @@
-help: Montior captured traffic on specified pseudo-ethernet interface
-run: ${vyatta_bindir}/vyatta-tshark.pl --intf $4

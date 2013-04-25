@@ -1,3 +1,0 @@
-help: Monitor specified bonding interface
-allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show bonding
-run: bmon -p $4

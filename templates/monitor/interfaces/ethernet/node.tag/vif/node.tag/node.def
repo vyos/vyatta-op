@@ -1,3 +1,0 @@
-help: Monitor specified ethernet interface
-allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show ethernet --vif ${COMP_WORDS[COMP_CWORD-2]}
-run: bmon -p $4.$6

@@ -62,6 +62,11 @@ bin_sudo_users_SCRIPTS     += scripts/vyatta-clear-conntrack
 
 all-local:
 	./gen-unpriv-commands.sh
+	./gen-monitor-interface-templates.sh
+	./gen-monitor-vif-interface-templates.sh
+
+clean-local:
+	$(RM) -r generated-templates
 
 cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
 	cpio -0pd
@@ -69,6 +74,7 @@ cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
 install-exec-hook:
 	mkdir -p $(DESTDIR)$(opdir)
 	cd templates; $(cpiop) $(DESTDIR)$(opdir)
+	cd generated-templates && $(cpiop) $(DESTDIR)$(opdir)
 	mkdir -p $(DESTDIR)$(etc_shell_leveldir)
 	cd etc/shell/level; $(cpiop) $(DESTDIR)$(etc_shell_leveldir)
 	mkdir -p $(DESTDIR)/etc/

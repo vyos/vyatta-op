@@ -1,4 +1,0 @@
-help: Monitor specified pseudo-ethernet interface
-allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show pseudo-ethernet
-run: bmon -p $4
-

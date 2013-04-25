@@ -1,2 +1,0 @@
-help: Monitor flows on specified interface
-run: sudo /usr/sbin/iftop -i $4.$6
