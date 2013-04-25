@@ -2,6 +2,8 @@
 #monitor interfaces [type] [name] traffic
 #monitor interfaces [type] [name] traffic flow
 #monitor interfaces [type] [name] traffic save [filename]
+#monitor interfaces [type] [name] traffic save [filename] size [number]
+#monitor interfaces [type] [name] traffic save [filename] size [number] files [number]
 #monitor interfaces [type] [name] traffic detail
 #monitor interfaces [type] [name] traffic detail filter
 #monitor interfaces [type] [name] traffic detail unlimited
@@ -27,7 +29,7 @@ cd $TEMPLATE_DIR
 
 for type in "${types[@]}"; do
   mkdir -p $type/node.tag/flow
-  mkdir -p $type/node.tag/traffic/save/node.tag
+  mkdir -p $type/node.tag/traffic/save/node.tag/size/node.tag/files/node.tag
   mkdir -p $type/node.tag/traffic/detail/filter/node.tag
   mkdir -p $type/node.tag/traffic/detail/unlimited/filter/node.tag
   mkdir -p $type/node.tag/traffic/filter/node.tag
@@ -47,8 +49,22 @@ for type in "${types[@]}"; do
   echo 'run: ${vyatta_bindir}/vyatta-tshark.pl --intf $4' >> $type/node.tag/traffic/node.def
 
   # traffic save
-  echo 'help: Save monitored traffic to a file' >|  $type/node.tag/traffic/save/node.def
-  echo -e 'help: Save monitored traffic to a file\nrun: ${vyatta_bindir}/vyatta-tshark.pl --intf $4 --save "${@:7}"' >|  $type/node.tag/traffic/save/node.tag/node.def
+  echo 'help: Save monitored traffic to a file' >| $type/node.tag/traffic/save/node.def
+  echo 'help: Save monitored traffic to the specified file' >| $type/node.tag/traffic/save/node.tag/node.def
+  echo "allowed: echo -e '<name>.pcap'" >>  $type/node.tag/traffic/save/node.tag/node.def
+  echo 'run: ${vyatta_bindir}/vyatta-tshark.pl --intf $4 --save "${@:7}"' >>  $type/node.tag/traffic/save/node.tag/node.def
+
+  # traffic save size
+  echo 'help: Save monitored traffic to a file with max size' >| $type/node.tag/traffic/save/node.tag/size/node.def
+  echo "help: Maximum file size (e.g., 1 = 1 KiB, 1M = 1 MiB)" >| $type/node.tag/traffic/save/node.tag/size/node.tag/node.def
+  echo "allowed: echo -e '<number>'" >> $type/node.tag/traffic/save/node.tag/size/node.tag/node.def
+  echo 'run: ${vyatta_bindir}/vyatta-tshark.pl --intf $4 --save "${@:7}" --size "${@:9}"' >> $type/node.tag/traffic/save/node.tag/size/node.tag/node.def
+
+  # traffic save size files
+  echo 'help: Save monitored traffic to a set of rotated file' >| $type/node.tag/traffic/save/node.tag/size/node.tag/files/node.def
+  echo 'help: Number of files to rotate stored traffic through' >| $type/node.tag/traffic/save/node.tag/size/node.tag/files/node.tag/node.def
+  echo "allowed: echo -e '<number>'" >> $type/node.tag/traffic/save/node.tag/size/node.tag/files/node.tag/node.def
+  echo 'run: ${vyatta_bindir}/vyatta-tshark.pl --intf $4 --save "${@:7}" --size "${@:9}" --files "${@:11}"' >> $type/node.tag/traffic/save/node.tag/size/node.tag/files/node.tag/node.def
 
   # traffic detail
   echo -e "help: Monitor detailed traffic for the specified $type interface" >| $type/node.tag/traffic/detail/node.def

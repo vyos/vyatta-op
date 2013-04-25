@@ -54,16 +54,48 @@ sub check_if_interface_is_tsharkable {
     }
 }
 
+my ($detail,$filter,$intf,$unlimited,$save,$files,$size);
+
+#
+# The size parameter can have one of the following
+# unit suffixes:
+#
+# - [kK] KiB (1024 bytes)
+# - [mM] MiB (1048576 bytes)
+# - [gG] GiB (1073741824 bytes)
+# - [tT] TiB (109951162778 bytes)
+#
+# Note: tshark's default size unit is KiB
+sub parse_size {
+    my ( $name, $parm ) = @_;
+    my %mult = ('T' => 1073741824, 't' => 1073741824,
+                'G' => 1048576,    'g' => 1048576,
+                'M' => 1024,       'm' => 1024,
+                'K' => 1,          'k' => 1);
+
+    die "Invalid parameter: $name" if ($name ne "size");
+    my ( $value, $unit ) = $parm =~ m/^([0-9]+)([kKmMgGtT])?$/;
+    die "Invalid size specified" unless $value;
+    $unit = "K" unless $unit;
+    $size = $value * $mult{$unit};
+}
+
 #
 # main
 #
-my ($detail,$filter,$intf,$unlimited,$save);
 
-GetOptions("detail!"                => \$detail,
-           "filter=s"               => \$filter,
-           "save=s"                 => \$save,
-           "intf=s"                 => \$intf,
-           "unlimited!"             => \$unlimited);
+my $result = GetOptions("detail!"                => \$detail,
+                        "filter=s"               => \$filter,
+                        "save=s"                 => \$save,
+                        "intf=s"                 => \$intf,
+                        "unlimited!"             => \$unlimited,
+                        "files=i"                => \$files,
+                        "size=s"                 => \&parse_size);
+
+if (! $result) {
+    print "Invalid option specifications\n";
+    exit 1;
+}
 
 check_if_interface_is_tsharkable($intf);
 
@@ -72,7 +104,12 @@ if (defined($save)){
     print("Please name your file <filename>.pcap\n");
     exit 1;
   }
-  exec "/usr/bin/tshark -i $intf -w '$save'"; 
+  my $options = "";
+
+  # the CLI will make sure that files is not defined w/o size also
+  $options .= " -a filesize:$size" if defined($size);
+  $options .= " -b files:$files" if defined($files);
+  exec "/usr/bin/tshark -i $intf -w '$save' $options";
   exit 0;
 }
 
