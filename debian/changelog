@@ -1,3 +1,11 @@
+vyatta-op (0.13.275+daisy5) unstable; urgency=low
+
+  * Update "monitor interfaces" generation scripts
+  * Use node generation scripts in build
+  * Add size and files options to "traffic save"
+
+ -- James Davidson <james.davidson@vyatta.com>  Fri, 26 Apr 2013 12:13:01 -0700
+
 vyatta-op (0.13.275+daisy4) unstable; urgency=low
 
   * Sync up SNMPv3 support
