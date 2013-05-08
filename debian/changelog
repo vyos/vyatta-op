@@ -1,3 +1,9 @@
+vyatta-op (0.13.280) unstable; urgency=low
+
+  * Need iputils-ping package
+
+ -- Stephen Hemminger <shemming@brocade.com>  Wed, 08 May 2013 10:19:00 -0700
+
 vyatta-op (0.13.279) unstable; urgency=low
 
   * Bugfix 8830: Fix empty substitution in list search
