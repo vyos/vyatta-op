@@ -397,9 +397,9 @@ fi
 header DHCP Server 
 if cli-shell-api existsActive service dhcp-server; then
   header DHCP Leases
-  show dhcp leases
+  show dhcp server leases
   header DHCP Statistics
-  show dhcp statistics
+  show dhcp server statistics
 else
   echo "DHCP server is not configured"
 fi
