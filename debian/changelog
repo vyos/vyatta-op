@@ -1,3 +1,9 @@
+vyatta-op (0.13.281) unstable; urgency=low
+
+  * Update DHCP server commands used in "show tech-support"
+
+ -- James Davidson <james.davidson@vyatta.com>  Fri, 24 May 2013 13:49:58 -0700
+
 vyatta-op (0.13.280) unstable; urgency=low
 
   * Need iputils-ping package
