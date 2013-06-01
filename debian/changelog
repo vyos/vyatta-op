@@ -1,3 +1,9 @@
+vyatta-op (0.13.275+daisy7) unstable; urgency=low
+
+  * allow optional dependency on vyatta-unicast
+
+ -- Robert Bays <robert@vyatta.com>  Sat, 01 Jun 2013 16:50:46 -0700
+
 vyatta-op (0.13.275+daisy6) unstable; urgency=low
 
   * Update DHCP server commands used in "show tech-support"
