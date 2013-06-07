@@ -1,3 +1,9 @@
+vyatta-op (0.13.282) unstable; urgency=low
+
+  * Remove unused hidden templates
+
+ -- Stephen Hemminger <shemming@brocade.com>  Fri, 07 Jun 2013 09:21:38 -0700
+
 vyatta-op (0.13.281) unstable; urgency=low
 
   * Update DHCP server commands used in "show tech-support"
