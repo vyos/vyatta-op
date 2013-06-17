@@ -1,3 +1,9 @@
+vyatta-op (0.13.275+daisy8) unstable; urgency=low
+
+  * 8970: Fix for show monitor
+
+ -- Saurabh Mohan <saurabh@vyatta.com>  Mon, 17 Jun 2013 15:00:10 -0700
+
 vyatta-op (0.13.275+daisy7) unstable; urgency=low
 
   * allow optional dependency on vyatta-unicast
