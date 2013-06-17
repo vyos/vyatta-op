@@ -1,2 +1,7 @@
 help: Show RIPNG protocol debugging flags
-run: vtysh -c "show debugging ripng"
+run: if [ ! -e "/usr/sbin/zebra" ]
+     then
+         vtysh -c "show debugging ipv6 rip"
+     else
+         vtysh -c "show debugging ripng"
+     fi
