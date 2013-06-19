@@ -1,3 +1,9 @@
+vyatta-op (0.13.275+daisy9) unstable; urgency=low
+
+  * bz8631: Fix lease file regex to include leases on vif
+
+ -- James Davidson <james.davidson@vyatta.com>  Wed, 19 Jun 2013 14:18:13 -0700
+
 vyatta-op (0.13.275+daisy8) unstable; urgency=low
 
   * 8970: Fix for show monitor
