@@ -11,7 +11,7 @@
 # General Public License for more details.
 # 
 # This code was originally developed by Vyatta, Inc.
-# Portions created by Vyatta are Copyright (C) 2007 Vyatta, Inc.
+# Portions created by Vyatta are Copyright (C) 2007-2013 Vyatta, Inc.
 # All Rights Reserved.
 # 
 # Author: Stephen Hemminger
@@ -25,7 +25,7 @@ use strict;
 opendir (my $dir, "/var/lib/dhcp3");
 my @leases;
 while (my $f = readdir $dir) {
-    ($f =~ /^dhclient_(\w+)_lease$/) && push @leases, $1;
+    ($f =~ /^dhclient_([\w.]+)_lease$/) && push @leases, $1;
 }
 closedir $dir;
 
