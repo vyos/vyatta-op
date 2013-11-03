@@ -1,14 +1,14 @@
+vyatta-op (0.14.0+hydrogen3) unstable; urgency=low
+
+  * Remove fake entry from changelog
+
+ -- Daniil Baturin <daniil@baturin.org>  Sun, 03 Nov 2013 22:20:42 +0100
+
 vyatta-op (0.14.0+hydrogen2) unstable; urgency=low
 
   * Remove "format system-floppy" command.
 
  -- Daniil Baturin <daniil@baturin.org>  Sun, 03 Nov 2013 21:50:22 +0100
-
-vyatta-op (0.14.0+hydrogen1) unstable; urgency=low
-
-  * Fix branch name in version
-
- -- Daniil Baturin <daniil@baturin.org> Sun, 03 Nov 2013 19:00:00 +0100
 
 vyatta-op (0.13.275+daisy9) unstable; urgency=low
 
