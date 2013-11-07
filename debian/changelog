@@ -1,3 +1,9 @@
+vyatta-op (0.14.0+hydrogen5) unstable; urgency=low
+
+  * Add dependencies on usbutils and lsscsi.
+
+ -- Daniil Baturin <daniil@baturin.org>  Fri, 08 Nov 2013 00:02:56 +0100
+
 vyatta-op (0.14.0+hydrogen4) unstable; urgency=low
 
   * Make USB vieweing command more consistent with other hardware
