@@ -1,3 +1,12 @@
+vyatta-op (0.14.0+hydrogen4) unstable; urgency=low
+
+  * Make USB vieweing command more consistent with other hardware
+    commands.
+  * Add command to view SCSI devices (show hardware scsi [detailed).
+  * Fix typo in "show hardware scsi detailed" command.
+
+ -- Daniil Baturin <daniil@baturin.org>  Thu, 07 Nov 2013 23:23:32 +0100
+
 vyatta-op (0.14.0+hydrogen3) unstable; urgency=low
 
   * Remove fake entry from changelog
