@@ -28,7 +28,9 @@ Depends: sed (>= 4.1.5),
  mail-transport-agent,
  at,
  net-tools,
- libtimedate-perl
+ libtimedate-perl,
+ usbutils,
+ lsscsi
 Replaces: vyatta-serial
 Suggests: util-linux (>= 2.13-5),
  ncurses-bin (>= 5.5-5),
