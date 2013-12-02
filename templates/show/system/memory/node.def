@@ -1,2 +1,2 @@
 help: Display system memory usage
-run: free -ot
+run: ${vyatta_bindir}/vyos-show-ram.sh
