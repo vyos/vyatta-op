@@ -1,3 +1,9 @@
+vyatta-op (0.14.0+hydrogen6) unstable; urgency=low
+
+  * Bug #3: Display RAM usage overview in simple total/free/used format.
+
+ -- Daniil Baturin <daniil@baturin.org>  Mon, 02 Dec 2013 02:23:03 +0100
+
 vyatta-op (0.14.0+hydrogen5) unstable; urgency=low
 
   * Add dependencies on usbutils and lsscsi.
