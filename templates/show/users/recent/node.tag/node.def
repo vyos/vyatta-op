@@ -1,0 +1,3 @@
+help: Show specified number of recently logged in users
+allowed: echo -n '<NUMBER>'
+run: last -aF -n $4 | sed -e "s/^wtmp begins/Displaying logins since/"

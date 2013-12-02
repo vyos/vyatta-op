@@ -1,0 +1,2 @@
+help: Show 10 recently logged in users
+run: last -aF -n 10 | sed -e "s/^wtmp begins/Displaying logins since/"
