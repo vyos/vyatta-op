@@ -1,3 +1,9 @@
+vyatta-op (0.14.0+hydrogen7) unstable; urgency=low
+
+  * Bug #24: add a command to display recently logged in users.
+
+ -- Daniil Baturin <daniil@baturin.org>  Mon, 02 Dec 2013 03:36:21 +0100
+
 vyatta-op (0.14.0+hydrogen6) unstable; urgency=low
 
   * Bug #3: Display RAM usage overview in simple total/free/used format.
