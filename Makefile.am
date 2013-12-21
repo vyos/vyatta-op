@@ -48,6 +48,7 @@ bin_SCRIPTS += scripts/vyatta-monitor-list
 bin_SCRIPTS += scripts/vyatta-monitor-cleanup
 bin_SCRIPTS += scripts/vyatta-monitor-background
 bin_SCRIPTS += scripts/vyatta-monitor-background-stop
+bin_SCRIPTS += scripts/vyatta-monitor-check-rule-log
 bin_SCRIPTS += scripts/vyos-show-ram.sh
 
 sbin_SCRIPTS     = scripts/dhcpv6-client-show-leases.pl

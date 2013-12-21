@@ -1,2 +1,3 @@
 help: Monitor destination NAT
-run: ${vyatta_bindir}/vyatta-monitor NAT-DEST "\[NAT-DST-[0-9]*.*\]"
+run: echo "Notice: monitoring information is displayed only for rules with enabled logging"; \
+     ${vyatta_bindir}/vyatta-monitor NAT-DEST "\[NAT-DST-[0-9]*.*\]"

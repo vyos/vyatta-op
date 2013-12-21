@@ -1,2 +1,3 @@
 help: Start background monitoring of the specified firewall
-run: ${vyatta_bindir}/vyatta-monitor-background Firewall-ipv6-$4-rule-$6 "\[$4-$6-[A,D,R]\]"
+run: ${vyatta_bindir}/vyatta-monitor-check-rule-log "firewall ipv6-name $4" $6; \
+     ${vyatta_bindir}/vyatta-monitor-background Firewall-ipv6-$4-rule-$6 "\[$4-$6-[A,D,R]\]"

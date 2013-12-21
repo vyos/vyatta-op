@@ -1,2 +1,3 @@
 help: Start background monitoring of a specified firewall
-run: ${vyatta_bindir}/vyatta-monitor-background Firewall-$4 "\[$4-[0-9]*-[A,D,R]\]"
+run: echo "Notice: monitoring information is displayed only for rules with enabled logging"; \
+     ${vyatta_bindir}/vyatta-monitor-background Firewall-$4 "\[$4-[0-9]*-[A,D,R]\]"

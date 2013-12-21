@@ -1,0 +1,13 @@
+#!/bin/sh
+
+API=/bin/cli-shell-api
+RULE_PATH=$1
+RULE_NUM=$2
+
+LOG=`cli-shell-api returnEffectiveValue $RULE_PATH rule $RULE_NUM log`
+
+if [ "$LOG" != "enable" ]; then
+    echo "Warning: logging is not enabled for rule $RULE_NUM"
+    echo "For proper monitor operation enable logging before issuing this command:"
+    echo "set $RULE_PATH rule $RULE_NUM log enable"
+fi

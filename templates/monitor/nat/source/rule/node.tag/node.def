@@ -2,4 +2,5 @@ help: Monitor a specified source NAT rule
 allowed: local -a ARR
   eval "ARR=($(cli-shell-api listEffectiveNodes nat source rule))"
   echo ${ARR[@]}
-run: ${vyatta_bindir}/vyatta-monitor NAT-SOURCE-RULE-$5 "\[NAT-SRC-$5.*\]"
+run: ${vyatta_bindir}/vyatta-monitor-check-rule-log "nat source" $5; \
+     ${vyatta_bindir}/vyatta-monitor NAT-SOURCE-RULE-$5 "\[NAT-SRC-$5.*\]"
