@@ -1,3 +1,10 @@
+vyatta-op (0.14.0+hydrogen8) unstable; urgency=low
+
+  * Bug #95: Issue warnings on attempts to monitor rules with disabled
+    logging.
+
+ -- Daniil Baturin <daniil@baturin.org>  Sat, 21 Dec 2013 08:38:48 +0100
+
 vyatta-op (0.14.0+hydrogen7) unstable; urgency=low
 
   * Bug #24: add a command to display recently logged in users.
