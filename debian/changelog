@@ -1,3 +1,10 @@
+vyatta-op (0.14.0+hydrogen9) unstable; urgency=low
+
+  * Rename s/detailed/detail/ for consistenct with the rest of the
+    system.
+
+ -- Daniil Baturin <daniil@baturin.org>  Sun, 22 Dec 2013 17:13:14 +0100
+
 vyatta-op (0.14.0+hydrogen8) unstable; urgency=low
 
   * Bug #95: Issue warnings on attempts to monitor rules with disabled
