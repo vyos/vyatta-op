@@ -1,3 +1,9 @@
+vyatta-op (0.14.0+vyos1+helium2) unstable; urgency=low
+
+  * Bug #148: 'ping' does ipv6 too, but help only mentions IPv4
+
+ -- Daniil Baturin <daniil@baturin.org>  Tue, 04 Mar 2014 15:03:12 +0100
+
 vyatta-op (0.14.0+vyos1+helium1) unstable; urgency=low
 
   * New branch
