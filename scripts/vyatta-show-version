@@ -61,7 +61,7 @@ sub get_image_type {
 	return;
     }
 
-    unless ($kernel =~ /^vmlinuz-.*-([^-]*)-vyatta(.*)$/) {
+    unless ($kernel =~ /^vmlinuz-.*-([^-]*)-(vyatta|vyos)(.*)$/) {
 	warn "Unknown kernel version: $kernel\n";
 	return;
     }
@@ -75,7 +75,7 @@ sub get_image_type {
 	$version = $1;
     }
 
-    if ($2 eq '-virt') {
+    if ($3 eq '-virt') {
 	$version .= " Virtual"
     }
 
