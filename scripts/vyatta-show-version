@@ -66,10 +66,11 @@ sub get_image_type {
 	return;
     }
 
+    # XXX: Maybe just check 'uname -m' ?
     if ($1 eq '586') {
-	$version = "Intel 32bit";
+	$version = "x86 32-bit";
     } elsif ($1 eq "amd64") {
-	$version = "Intel 64bit";
+	$version = "x86 64-bit";
     } else {
 	$version = $1;
     }
