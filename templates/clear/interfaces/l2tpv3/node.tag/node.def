@@ -1,0 +1,4 @@
+help: Clear interface information for a given L2TPv3 interface
+allowed: local -a array ;
+	 array=( /sys/class/net/l2tpeth* ) ;
+	 echo  -n ${array[@]##*/}
