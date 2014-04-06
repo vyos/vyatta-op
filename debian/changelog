@@ -1,3 +1,12 @@
+vyatta-op (0.14.0+vyos1+helium5) unstable; urgency=low
+
+  * Replace Vyatta with VyOS in "show license" command help.
+  * Bug #159: add op mode support for dummy interfaces.
+  * Bug #170: add "clear interface" commands for L2TPv3 interfaces.
+  * Bug #170: add L2TPv3 interface type to monitor command generator.
+
+ -- Daniil Baturin <daniil@baturin.org>  Sun, 06 Apr 2014 15:40:11 +0200
+
 vyatta-op (0.14.0+vyos1+helium4) unstable; urgency=low
 
   [ higebu ]
