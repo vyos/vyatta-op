@@ -1,4 +1,4 @@
-help: Show Vyatta license information
+help: Show VyOS license information
 run:  less $_vyatta_less_options \
 	--prompt=".license, page %dt of %D" \
 	-- ${vyatta_sysconfdir}/LICENSE
