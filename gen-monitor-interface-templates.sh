@@ -21,7 +21,8 @@ declare -a types=(
        "tunnel" \
        "vrrp" \
        "vti" \
-       "dummy"
+       "dummy" \
+       "l2tpv3"
 )
 
 TEMPLATE_DIR=generated-templates/monitor/interfaces
