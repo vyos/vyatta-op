@@ -1,3 +1,12 @@
+vyatta-op (0.14.0+vyos1+helium4) unstable; urgency=low
+
+  [ higebu ]
+  * Add support for l2tpv3
+
+  [ Daniil Baturin ]
+
+ -- Daniil Baturin <daniil@baturin.org>  Sun, 06 Apr 2014 13:43:26 +0200
+
 vyatta-op (0.14.0+vyos1+helium3) unstable; urgency=low
 
   * Bug #156: Check for 'vyatta' or 'vyos' kernels.
