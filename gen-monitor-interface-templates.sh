@@ -20,7 +20,8 @@ declare -a types=(
        "pseudo-ethernet" \
        "tunnel" \
        "vrrp" \
-       "vti"
+       "vti" \
+       "dummy"
 )
 
 TEMPLATE_DIR=generated-templates/monitor/interfaces

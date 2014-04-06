@@ -1,0 +1,2 @@
+help: Show dummy interface information
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf-type=dummy --action=show-brief
