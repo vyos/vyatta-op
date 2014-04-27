@@ -1,3 +1,12 @@
+vyatta-op (0.14.0+hydrogen10) unstable; urgency=low
+
+  * Bug #157: Replace 'Intel 32/64bit' with 'x86 32/64-bit' in 'show
+    version'.
+  * Bug #148: 'ping' does ipv6 too, but help only mentions IPv4
+  * Bug #156: Check for 'vyatta' or 'vyos' kernels.
+
+ -- Daniil Baturin <daniil@baturin.org>  Sun, 27 Apr 2014 02:29:36 +0200
+
 vyatta-op (0.14.0+hydrogen9) unstable; urgency=low
 
   * Rename s/detailed/detail/ for consistenct with the rest of the
