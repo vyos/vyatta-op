@@ -1,0 +1,6 @@
+help: Send gratuitous ARP request for specific address
+allowed: local -a vals;
+         vals=($(${vyatta_sbindir}/vyatta-interfaces.pl --show ethernet));
+         vals+=($(${vyatta_sbindir}/vyatta-interfaces.pl --show bridge));
+         vals+=($(${vyatta_sbindir}/vyatta-interfaces.pl --show bonding));
+         echo ${vals[@]};

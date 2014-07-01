@@ -1,0 +1,2 @@
+help: Send gratuitous ARP reply for specified address
+run: sudo arping -I $5 -c 1 -A $7

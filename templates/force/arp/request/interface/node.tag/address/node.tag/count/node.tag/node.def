@@ -1,0 +1,3 @@
+help: Send specified number for ARP requests
+allowed: echo -n '<number> Number of ARP requests'
+run: sudo arping -I $5 -c $9 -U $7

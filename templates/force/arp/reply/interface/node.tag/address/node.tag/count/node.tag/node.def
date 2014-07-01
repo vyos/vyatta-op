@@ -1,0 +1,2 @@
+help: Send specified number of ARP replies
+run: sudo arping -I $5 -c $9 -A $7
