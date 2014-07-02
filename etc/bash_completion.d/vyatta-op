@@ -492,6 +492,11 @@ no-more ()
   cat
 }
 
+strip-private ()
+{
+  ${vyatta_bindir}/vyos-strip-config.pl --strict --stdin 
+}
+
 # pipe command help
 # $1: command
 _vyatta_pipe_help ()
@@ -527,7 +532,7 @@ _vyatta_do_pipe_help ()
 _vyatta_pipe_completion ()
 {
   local -a pipe_cmd=()
-  local -a all_cmds=( 'count' 'match' 'no-match' 'more' 'no-more' )
+  local -a all_cmds=( 'count' 'match' 'no-match' 'more' 'no-more' 'strip-private' )
   local found=0
   _vyatta_pipe_completions=()
   _vyatta_pipe_noncompletions=()
