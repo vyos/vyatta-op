@@ -1,3 +1,10 @@
+vyatta-op (0.14.0+vyos1+helium8) unstable; urgency=low
+
+  * Bug #104: add help text for the strip-private pipe.
+  * Bug #251: add completion and help for the "| commands" filter.
+
+ -- Daniil Baturin <daniil@baturin.org>  Wed, 02 Jul 2014 05:19:48 +0200
+
 vyatta-op (0.14.0+vyos1+helium7) unstable; urgency=low
 
   * Bug #104: add pipe for stripping private information from config.
