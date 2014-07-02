@@ -508,6 +508,7 @@ _vyatta_pipe_help ()
     no-match) help="Only output lines that do not match specified pattern";;
     more) help="Paginate the output";;
     no-more) help="Do not paginate the output";;
+    strip-private) help="Remove private information from the config";;
     '<pattern>') help="Pattern for matching";;
   esac
   echo -n "$help"
