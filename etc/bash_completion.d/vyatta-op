@@ -497,6 +497,11 @@ strip-private ()
   ${vyatta_bindir}/vyos-strip-config.pl --strict --stdin 
 }
 
+commands ()
+{
+  ${vyatta_sbindir}/vyatta-config-gen-sets.pl -
+}
+
 # pipe command help
 # $1: command
 _vyatta_pipe_help ()
@@ -509,6 +514,7 @@ _vyatta_pipe_help ()
     more) help="Paginate the output";;
     no-more) help="Do not paginate the output";;
     strip-private) help="Remove private information from the config";;
+    commands) help="Convert config to set commands";;
     '<pattern>') help="Pattern for matching";;
   esac
   echo -n "$help"
