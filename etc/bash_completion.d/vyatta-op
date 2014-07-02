@@ -539,7 +539,7 @@ _vyatta_do_pipe_help ()
 _vyatta_pipe_completion ()
 {
   local -a pipe_cmd=()
-  local -a all_cmds=( 'count' 'match' 'no-match' 'more' 'no-more' 'strip-private' )
+  local -a all_cmds=( 'count' 'match' 'no-match' 'more' 'no-more' 'strip-private' 'commands' )
   local found=0
   _vyatta_pipe_completions=()
   _vyatta_pipe_noncompletions=()
