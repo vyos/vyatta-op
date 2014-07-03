@@ -1,3 +1,9 @@
+vyatta-op (0.14.0+vyos1+helium10) unstable; urgency=low
+
+  * Add more interface types to "show arp" completion.
+
+ -- Daniil Baturin <daniil@baturin.org>  Thu, 03 Jul 2014 20:22:50 +0200
+
 vyatta-op (0.14.0+vyos1+helium9) unstable; urgency=low
 
   * Bug #251: add "commands" filter to completion list.
