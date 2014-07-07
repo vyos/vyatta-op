@@ -1,0 +1,2 @@
+help: Show UTC date in Maya calendar format
+run: ${vyatta_bindir}/maya-date.py $(date +%s)
