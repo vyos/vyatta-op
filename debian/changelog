@@ -1,3 +1,9 @@
+vyatta-op (0.14.0+vyos1+helium12) unstable; urgency=low
+
+  * Update package maintainer address.
+
+ -- Daniil Baturin <daniil@baturin.org>  Tue, 08 Jul 2014 16:55:12 +0200
+
 vyatta-op (0.14.0+vyos1+helium11) unstable; urgency=low
 
   * Add Maya calendar support to date commands
