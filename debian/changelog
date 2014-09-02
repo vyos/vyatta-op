@@ -1,3 +1,9 @@
+vyatta-op (0.14.0+vyos1+helium14) unstable; urgency=low
+
+  * Bug 300: disallow entering conf mode as root.
+
+ -- Daniil Baturin <daniil@baturin.org>  Tue, 02 Sep 2014 20:44:25 +0200
+
 vyatta-op (0.14.0+vyos1+helium13) unstable; urgency=low
 
   * Boot type check had unionfs hardcoded in it. Now it has overlayfs
