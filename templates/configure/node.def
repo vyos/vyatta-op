@@ -1,7 +1,14 @@
 help: Enter configure mode
-run: history -w
-     export _OFR_CONFIGURE=ok
-     newgrp vyattacfg
-     unset _OFR_CONFIGURE
-     _vyatta_op_do_key_bindings
-     history -r
+run: if [ `id -u` == 0 ]; then
+         echo "You are attempting to enter configuration mode as root."
+         echo "It may have unintended consequences and render your system"
+         echo "unusable until restart."
+         echo "Please do it as an administrator level VyOS user instead."
+     else
+         history -w
+         export _OFR_CONFIGURE=ok
+         newgrp vyattacfg
+         unset _OFR_CONFIGURE
+         _vyatta_op_do_key_bindings
+         history -r
+     fi
