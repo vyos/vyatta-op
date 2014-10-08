@@ -1,2 +1,2 @@
 help: Monitor last lines of messages file
-run: tail --follow=name /var/log/messages
+run: tail ---disable-inotify --follow=name /var/log/messages
