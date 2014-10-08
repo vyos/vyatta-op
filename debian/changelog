@@ -1,3 +1,12 @@
+vyatta-op (0.14.0+vyos1+helium15) unstable; urgency=low
+
+  [ upa ]
+  * Add vxlan support
+
+  [ Daniil Baturin ]
+
+ -- Daniil Baturin <daniil@baturin.org>  Wed, 08 Oct 2014 16:39:50 +0200
+
 vyatta-op (0.14.0+vyos1+helium14) unstable; urgency=low
 
   * Bug 300: disallow entering conf mode as root.
