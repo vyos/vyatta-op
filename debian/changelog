@@ -1,3 +1,13 @@
+vyatta-op (0.14.0+vyos1+helium17) unstable; urgency=low
+
+  [ Alex Harpin ]
+  * vyatta-op: formatting changes for style consistency
+  * vyatta-op: fix for the config file copy via scp failure
+
+  [ Daniil Baturin ]
+
+ -- Daniil Baturin <daniil@baturin.org>  Thu, 09 Oct 2014 22:56:24 +0200
+
 vyatta-op (0.14.0+vyos1+helium16) unstable; urgency=low
 
   * Add an option to disable inotify to fail -f commands.
