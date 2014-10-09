@@ -230,7 +230,9 @@ sub curl_to {
         chomp $fingerprint;
         print "RSA key fingerprint is $fingerprint.\n";
         if (prompt("Are you sure you want to continue connecting (yes/no) [Yes]? ", -tynd=>"y")) {
-            mkdir "~/.ssh/";
+            if (! -d "$ENV{HOME}/.ssh/") {
+                mkdir "$ENV{HOME}/.ssh/";
+            }
             open(my $known_hosts, ">>", "$ENV{HOME}/.ssh/known_hosts")
                 or die "Cannot open known_hosts: $!";
             print $known_hosts "$rsa_key\n";
@@ -257,7 +259,9 @@ sub curl_from {
         chomp $fingerprint;
         print "RSA key fingerprint is $fingerprint.\n";
         if (prompt("Are you sure you want to continue connecting (yes/no) [Yes]? ", -tynd=>"y")) {
-            mkdir "~/.ssh/";
+            if (! -d "$ENV{HOME}/.ssh/") {
+                mkdir "$ENV{HOME}/.ssh/";
+            }
             open(my $known_hosts, ">>", "$ENV{HOME}/.ssh/known_hosts")
                 or die "Cannot open known_hosts: $!";
             print $known_hosts "$rsa_key\n";
