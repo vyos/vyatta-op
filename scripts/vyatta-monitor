@@ -3,5 +3,5 @@ declare awkmatch="$2"
 for i in "${@:3}"; do
   awkmatch+="|$i"
 done
-tail ---disable-inotify -f /var/log/messages \
+tail -f /var/log/messages \
   | awk "/$awkmatch/{ \$5=\"  $1:\"; for (f=5; f<=NF; ++f) {printf(\"%s \", \$f);}; printf(\"\n\") }"
