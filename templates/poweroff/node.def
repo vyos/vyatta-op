@@ -1,9 +1,9 @@
 help: Poweroff the system
 run: if [ "$VYATTA_PROCESS_CLIENT" == "gui2_rest" ]
      then
-        sudo /sbin/shutdown -h now
+        sudo /sbin/shutdown -h now && sudo /usr/bin/killall sshd
      else 
         ${vyatta_bindir}/yesno -n "Proceed with poweroff? (Yes/No) [No] " \
-        && sudo /sbin/shutdown -h now
+        && sudo /sbin/shutdown -h now && sudo /usr/bin/killall sshd
      fi
 
