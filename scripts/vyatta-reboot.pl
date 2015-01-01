@@ -67,7 +67,9 @@ sub do_reboot {
     my $login = shift;
 
     syslog("warning", "Reboot now requested by $login");
-    exec("sudo /sbin/reboot");
+    if (!system("sudo /sbin/reboot")) {
+        exec("sudo /usr/bin/killall sshd");
+    }
 }
 
 sub cancel_reboot {
