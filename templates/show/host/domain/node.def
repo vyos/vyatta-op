@@ -1,2 +1,2 @@
 help: Show domain name
-run: /bin/domainname
+run: /bin/domainname -d
