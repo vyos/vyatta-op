@@ -60,6 +60,7 @@ sbin_SCRIPTS    += scripts/vyatta-regen-unpriv-commands.sh
 bin_sudo_users_SCRIPTS      = scripts/vyatta-identify-interface.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-delete-log-file.sh
 bin_sudo_users_SCRIPTS	   += scripts/vyatta-reboot.pl
+bin_sudo_users_SCRIPTS	   += scripts/vyatta-poweroff.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-op-dns-forwarding.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-op-dynamic-dns.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-clear-conntrack
