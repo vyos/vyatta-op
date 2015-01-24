@@ -159,13 +159,13 @@ if ($action eq "reboot_at") {
 
     print "\nReload scheduled for $time\n\n";
     if (!defined($ENV{VYATTA_PROCESS_CLIENT}) || $ENV{VYATTA_PROCESS_CLIENT} ne 'gui2_rest') {
-	if (! prompt("Proceed with reboot schedule? [confirm]", -y1d=>"y")) {
+	if (! prompt("Proceed with reboot schedule? [confirm] ", -y1d=>"y")) {
 	    print "Reboot canceled\n";
 	    exit 1;
 	}
     }
 
-    @lines = `echo sudo /sbin/reboot | at $at_time 2>&1`;
+    @lines = `echo "sudo /sbin/reboot && sudo /usr/bin/killall sshd" | at $at_time 2>&1`;
     ($err, $job, $time) = parse_at_output(@lines);
     if ($err) {
 	print "Error: unable to schedule reboot\n";
