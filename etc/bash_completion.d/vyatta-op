@@ -499,7 +499,11 @@ strip-private ()
 
 commands ()
 {
-  ${vyatta_sbindir}/vyatta-config-gen-sets.pl -
+  if [ "$_OFR_CONFIGURE" != "" ]; then
+      ${vyatta_sbindir}/vyatta-config-gen-sets.pl -
+  else
+      echo "commands pipe is not supported in operational mode"
+  fi
 }
 
 # pipe command help
