@@ -1,3 +1,9 @@
+vyatta-op (0.14.0+vyos1+helium20) unstable; urgency=low
+
+  * Bug #377: make commands pipe throw an error in op mode.
+
+ -- Daniil Baturin <daniil@baturin.org>  Fri, 27 Feb 2015 20:12:49 +0100
+
 vyatta-op (0.14.0+vyos1+helium19) unstable; urgency=low
 
   [ Alex Harpin ]
