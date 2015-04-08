@@ -183,7 +183,7 @@ my %options = (
 #
 # main
 #
-my $hv = `/opt/vyatta/sbin/hypervisor_vendor`;
+my $hv = `hvinfo`;
 if (defined($hv) && $hv ne "") {
     $versionfile .= "-virt";
 }
