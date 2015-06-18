@@ -140,7 +140,7 @@ $input =~ s/ (([0-9a-f]{1,4}\:){2})(\S+)/ xxxx:xxxx:$3/gi if $stripIP;
 $input =~ s/(host-name|domain-name|domain-search) \S+/$1 xxxxxx/g if $stripHostname;
 
 # Strip user-names
-$input =~ s/(user|username|user-id|login|full-name) \S+/$1 xxxxxx/g if $stripUsernames;
+$input =~ s/(user|username|user-id|full-name) \S+/$1 xxxxxx/g if $stripUsernames;
 
 # Strip DHCP static-mapping and shared network names
 $input =~ s/(shared-network-name|static-mapping) \S+/$1 xxxxxx/g if $stripDHCP;
