@@ -69,6 +69,7 @@ my $stripASN            = undef;
 my $stripLLDP           = undef;
 my $stripSNMP           = undef;
 my $keepPasswords       = undef;
+my $keepKeys            = undef;
 my $input               = undef;
 
 GetOptions(
@@ -85,7 +86,8 @@ GetOptions(
 	"asn"               => \$stripASN,
 	"lldp"              => \$stripLLDP,
 	"snmp"              => \$stripSNMP,
-	"keep-passwords"    => \$keepPasswords
+	"keep-passwords"    => \$keepPasswords,
+	"keep-keys"         => \$keepKeys
 );
 
 $strict = 0 if $loose;
@@ -126,6 +128,11 @@ if ($stdin) {
 
 # Strip passwords
 $input =~ s/password \S+/password xxxxxx/g if !($keepPasswords);
+
+# Strip public key information
+$input =~ s/public-keys \S+/public-keys xxxx\@xxx.xxx/g if !($keepKeys);
+$input =~ s/(type 'ssh-rsa'|type 'ssh-dss')/type ssh-xxx/g if !($keepKeys);
+$input =~ s/ key \S+/ key xxxxxx/g if !($keepKeys);
 
 # Strip MAC addresses
 $input =~ s/([0-9A-F]{2}\:){3}([0-9A-F]{2}((\:{0,1})){3})/XX:XX:XX:$2/gi if $stripMAC;
