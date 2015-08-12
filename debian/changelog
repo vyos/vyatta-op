@@ -1,3 +1,14 @@
+vyatta-op (0.14.0+vyos1+helium22) unstable; urgency=low
+
+  [ Alex Harpin ]
+  * vyatta-op: remove user login public key information with strip-
+    private
+  * vyatta-op: strip-private removes "user" rather than actual username
+
+  [ Daniil Baturin ]
+
+ -- Daniil Baturin <daniil@baturin.org>  Wed, 12 Aug 2015 04:06:47 +0200
+
 vyatta-op (0.14.0+vyos1+helium21) unstable; urgency=low
 
   [ Alex Harpin ]
