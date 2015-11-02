@@ -218,6 +218,9 @@ sub run_show_intf {
     my @intfs = @_;
 
     foreach my $intf (@intfs) {
+        my $interface = new Vyatta::Interface($intf);
+        next unless $interface;
+
         my %clear = get_clear_stats($intf);
         my $description = get_intf_description($intf);
         my $timestamp = $clear{'timestamp'};
@@ -355,6 +358,9 @@ sub run_show_counters {
     printf("%-12s %10s %10s     %10s %10s\n","Interface","Rx Packets","Rx Bytes","Tx Packets","Tx Bytes");
 
     foreach my $intf (@intfs) {
+        my $interface = new Vyatta::Interface($intf);
+        next unless $interface;
+
         my ($state, $link) = get_state_link($intf);
         next if $state ne 'up';
         my %clear = get_clear_stats($intf);
