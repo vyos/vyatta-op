@@ -1,8 +1,8 @@
-help: Restart DNS forwarder
+help: Restart DNS forwarding
 
 run:
-	echo "Restarting DNS forwarder..."
-	sudo /etc/init.d/dnsmasq restart
+	echo "Restarting DNS forwarding..."
+	sudo /opt/vyatta/sbin/vyatta-dns-forwarding.pl --restart-dnsforwarding;
 	if [[ $? -eq 0 ]]; then
 		echo "Success!"
 	fi
