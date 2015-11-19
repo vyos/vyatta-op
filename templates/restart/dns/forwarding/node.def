@@ -1,0 +1,9 @@
+help: Restart DNS forwarder
+
+run:
+	echo "Restarting DNS forwarder..."
+	sudo /etc/init.d/dnsmasq restart
+	if [[ $? -eq 0 ]]; then
+		echo "Success!"
+	fi
+
