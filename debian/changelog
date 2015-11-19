@@ -1,3 +1,13 @@
+vyatta-op (0.14.0+vyos2+lithium12) unstable; urgency=low
+
+  [ Thomas Jepp ]
+  * Implemented a DNS forwarder restart command - "restart dns forwarding"
+
+  [ Alex Harpin ]
+  * vyatta-op: set 'restart dns forwarding' to use vyatta-dns-forwarding.pl
+
+ -- Alex Harpin <development@landsofshadow.co.uk>  Thu, 19 Nov 2015 22:30:51 +0000
+
 vyatta-op (0.14.0+vyos2+lithium11) unstable; urgency=low
 
   [ Alex Harpin]
