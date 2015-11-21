@@ -1,0 +1,12 @@
+help: Restart NTP service
+
+run:
+      if cli-shell-api existsActive system ntp server; then
+          echo "Restarting NTP server..."
+          sudo /usr/sbin/invoke-rc.d ntp force-reload
+          if [[ $? -eq 0 ]]; then
+              echo "Success!"
+          fi
+      else
+          echo "NTP server is not configured"
+      fi
