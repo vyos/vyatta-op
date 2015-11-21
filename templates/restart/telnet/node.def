@@ -1,0 +1,14 @@
+help: Restart Telnet service
+
+run:
+      if cli-shell-api existsActive service telnet; then
+          port="$(cli-shell-api returnActiveValue service telnet port)"
+          listen_address="$(cli-shell-api returnActiveValue service telnet listen-address)"
+          echo "Restarting Telnet..."
+          /opt/vyatta/sbin/vyatta_update_telnet enable $port $listen_address
+          if [[ $? -eq 0 ]]; then
+              echo "Success!"
+          fi
+      else
+          echo "Telnet is not configured"
+      fi
