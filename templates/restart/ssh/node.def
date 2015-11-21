@@ -1,0 +1,9 @@
+help: Restart SSH service
+
+run:
+	echo "Restarting SSH..."
+	sudo /usr/sbin/invoke-rc.d ssh restart
+	if [[ $? -eq 0 ]]; then
+		echo "Success!"
+	fi
+
