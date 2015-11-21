@@ -1,9 +1,12 @@
 help: Restart SSH service
 
 run:
-	echo "Restarting SSH..."
-	sudo /usr/sbin/invoke-rc.d ssh restart
-	if [[ $? -eq 0 ]]; then
-		echo "Success!"
-	fi
-
+      if cli-shell-api existsActive service ssh; then
+          echo "Restarting SSH..."
+          sudo /usr/sbin/invoke-rc.d ssh restart
+          if [[ $? -eq 0 ]]; then
+              echo "Success!"
+          fi
+      else
+          echo "SSH is not configured"
+      fi

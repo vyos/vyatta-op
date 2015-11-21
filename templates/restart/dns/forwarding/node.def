@@ -1,9 +1,12 @@
 help: Restart DNS forwarding
 
 run:
-	echo "Restarting DNS forwarding..."
-	sudo /opt/vyatta/sbin/vyatta-dns-forwarding.pl --restart-dnsforwarding;
-	if [[ $? -eq 0 ]]; then
-		echo "Success!"
-	fi
-
+      if cli-shell-api existsActive service dns forwarding; then
+          echo "Restarting DNS forwarding..."
+          sudo /opt/vyatta/sbin/vyatta-dns-forwarding.pl --restart-dnsforwarding;
+          if [[ $? -eq 0 ]]; then
+              echo "Success!"
+          fi
+      else
+          echo "DNS forwarding is not configured"
+      fi
