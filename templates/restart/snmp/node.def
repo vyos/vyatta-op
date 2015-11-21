@@ -1,0 +1,9 @@
+help: Restart SNMP service
+
+run:
+	echo "Restarting SNMP..."
+	sudo /opt/vyatta/sbin/vyatta-snmp.pl --restart-snmp;
+	if [[ $? -eq 0 ]]; then
+		echo "Success!"
+	fi
+
