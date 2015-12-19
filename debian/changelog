@@ -1,3 +1,10 @@
+vyatta-op (0.14.0+vyos2+lithium14) unstable; urgency=low
+
+  * Remove referenced to Vyatta from 'show version' completion help.
+  * Easter egg: 'show version funny' command that displays limericks
+
+ -- Daniil Baturin <daniil@baturin.org>  Sat, 19 Dec 2015 05:00:49 +0100
+
 vyatta-op (0.14.0+vyos2+lithium13) unstable; urgency=low
 
   [ Alex Harpin ]
