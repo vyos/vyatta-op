@@ -1,0 +1,5 @@
+help: Show VyOS version information plus a funny poem
+run:
+    ${vyatta_bindir}/vyatta-show-version
+    ${vyatta_bindir}/limericks.py
+

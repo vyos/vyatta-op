@@ -52,6 +52,7 @@ bin_SCRIPTS += scripts/vyatta-monitor-check-rule-log
 bin_SCRIPTS += scripts/vyos-show-ram.sh
 bin_SCRIPTS += scripts/vyos-strip-config.pl
 bin_SCRIPTS += scripts/maya-date.py
+bin_SCRIPTS += scripts/limericks.py
 
 sbin_SCRIPTS     = scripts/dhcpv6-client-show-leases.pl
 sbin_SCRIPTS    += scripts/vyatta-image-tools.pl
