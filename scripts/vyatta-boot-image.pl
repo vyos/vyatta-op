@@ -31,7 +31,7 @@ use File::Copy;
 # 
 # Constants
 # 
-my $UNION_BOOT = '/live/image/boot';
+my $UNION_BOOT = '/lib/live/mount/persistence/boot';
 my $UNION_GRUB_CFG = "$UNION_BOOT/grub/grub.cfg";
 my $VER_FILE = '/opt/vyatta/etc/version';
 my $OLD_IMG_VER_STR = 'Old-non-image-installation';
@@ -226,32 +226,31 @@ sub image_vyatta_version {
     my ($image_name) = @_;
 
     my $vers;
-    my $dpkg_path = "var/lib/dpkg";
 
     my $image_path;
     if ($image_name eq $OLD_IMG_VER_STR) {
 	$image_path = "";
     } else {
-	$image_path = "/live/image/boot/$image_name/live-rw";
+	$image_path = "/lib/live/mount/persistence/boot/$image_name/rw";
     }
     
-    $image_path .= "/var/lib/dpkg";
+    $image_path .= "/opt/vyatta/etc/version";
 
     if ( -e $image_path ) {
-	$vers = `dpkg-query --admindir=$image_path --showformat='\${Version}' --show vyatta-version`;
+	$vers = `cat $image_path | awk '{print \$2}'`;
 	return $vers;
     } else {
 	if ($image_name eq $OLD_IMG_VER_STR) {
 	    return "unknown";
 	}
 
-	my @squash_files = glob("/live/image/boot/$image_name/*.squashfs");
+	my @squash_files = glob("/lib/live/mount/persistence/boot/$image_name/*.squashfs");
 	foreach my $squash_file (@squash_files) {
 	    if (-e $squash_file) {
 		system("sudo mkdir /tmp/squash_mount");
 		system("sudo mount -o loop,ro -t squashfs $squash_file /tmp/squash_mount");
-		$image_path = "/tmp/squash_mount/var/lib/dpkg";
-		my $vers = `dpkg-query --admindir=$image_path --showformat='\${Version}' --show vyatta-version`;
+		$image_path = "/tmp/squash_mount/opt/vyatta/etc/version";
+		my $vers = `cat $image_path | awk '{print \$2}'`;
 		system("sudo umount /tmp/squash_mount");
 		system("sudo rmdir /tmp/squash_mount");
 		return $vers;
