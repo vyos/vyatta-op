@@ -38,7 +38,7 @@ my $OLD_IMG_VER_STR = 'Old-non-image-installation';
 my $OLD_GRUB_CFG = '/boot/grub/grub.cfg';
 my $DISK_BOOT = '/boot';
 my $XEN_DEFAULT_IMAGE = "$UNION_BOOT/%%default_image";
-my $LIVE_CD = '/live/image/live';
+my $LIVE_CD = '/lib/live/mount/medium/live';
 
 # 
 # Globals
