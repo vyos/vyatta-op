@@ -1,11 +1,11 @@
 help: Show contents of master log file for image
-allowed: reply=( $(compgen -f /live/image/boot/ | grep -v grub) )
+allowed: reply=( $(compgen -f /lib/live/mount/persistence/boot/ | grep -v grub) )
     for i in `seq 0 $[${#reply[@]}-1]`; do
       file=${reply[$i]}
-      reply[$i]=${file/#\/live\/image\/boot\//}
+      reply[$i]=${file/#\/lib\/live\/mount\/persistence\/boot\//}
     done
     echo "${reply[*]}"
 
 run: less $_vyatta_less_options \
 	--prompt=".log, page %dt of %D" \
-	-- /live/image/boot/$4/live-rw/var/log/messages
+	-- /lib/live/mount/persistence/boot/$4/rw/var/log/messages

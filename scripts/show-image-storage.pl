@@ -40,8 +40,8 @@ sub better_units {
 #
 
 # Figure out where the images live...
-my $imagedir = "/live/image/boot";
-my $livecd = "/live/image/live";
+my $imagedir = "/lib/live/mount/persistence/boot";
+my $livecd = "/lib/live/mount/persistence/live";
 if (! -e $imagedir) {
     if (-d $livecd) {
         die "System running on Live-CD\n";
@@ -73,11 +73,11 @@ foreach my $image (@bootlist_arr) {
 	($total, $garbage) = split(' ', $string);
 	$total = better_units($total);
 
-	$string = `du -s -h $imagedir/$image --exclude live-rw`;
+	$string = `du -s -h $imagedir/$image --exclude rw`;
 	($read_only, $garbage) = split(' ', $string);
 	$read_only = better_units($read_only);
 
-	$string = `du -s -h $imagedir/$image/live-rw`;
+	$string = `du -s -h $imagedir/$image/rw`;
 	($read_write, $garbage) = split(' ', $string);
 	$read_write = better_units($read_write);
 

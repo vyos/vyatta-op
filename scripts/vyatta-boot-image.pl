@@ -409,7 +409,7 @@ sub curVer {
 	# On Xen/pygrub systems, we figure out the running version by
 	# looking at the bind mount of /boot.
 	$vers = `mount | awk '/on \\/boot / { print \$1 }'`;
-	$vers =~ s/\/live\/image\/boot\///;
+	$vers =~ s/\/lib\/live\/mount\/persistence\/boot\///;
 	chomp($vers);
     }
 
