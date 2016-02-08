@@ -29,11 +29,11 @@ _vyatta_image_is_file()
   if [[ $topdir == "running" ]]; then
     cur="/${cur}"
   elif [[ $topdir == "disk-install" ]]; then
-    cur="/live/image/${cur}"
+    cur="/lib/live/mount/persistence/${cur}"
   elif [[ ${cur:0:1} =~ "/" ]]; then
     cur=${cur}
   else
-    cur="/live/image/boot/${topdir}/live-rw/${cur}"
+    cur="/lib/live/mount/persistence/boot/${topdir}/rw/${cur}"
   fi
   if [[ -f ${cur} ]]; then
     return 0;
@@ -75,14 +75,14 @@ _vyatta_image_path_complete()
     return
   fi
   if [[ ${cur} == "" ]]; then
-    reply=( $(compgen -d /live/image/boot/ | grep -v grub) )
+    reply=( $(compgen -d /lib/live/mount/persistence/boot/ | grep -v grub) )
     for i in `seq 0 $[${#reply[@]}-1]`; do
       file=${reply[$i]}
-      reply[$i]=${file/#\/live\/image\/boot\//}
+      reply[$i]=${file/#\/lib\/live\/mount\/persistence\/boot\//}
       reply[$i]="${reply[$i]}://config/"
     done
     reply+=( "running://config/" )
-    if [[ -d /live/image/opt/vyatta/etc/config || -d /live/image/config ]]; then
+    if [[ -d /lib/live/mount/persistence/opt/vyatta/etc/config || -d /lib/live/mount/persistence/config ]]; then
       reply+=( "disk-install://" )
     fi
     _vyatta_op_noncompletions=( "${non_comps[@]}" )
@@ -100,9 +100,9 @@ _vyatta_image_path_complete()
       if [[ $isrunningimg == "running" ]];then
         cur="/"
       elif [[ $isdiskinstall == "disk-install" ]]; then
-        cur="/live/image/"
+        cur="/lib/live/mount/persistence/"
       else
-        cur="/live/image/boot/${cur}"
+        cur="/lib/live/mount/persistence/boot/${cur}"
       fi
       reply=( $(compgen -f ${cur} | grep -v grub) )
       for i in `seq 0 $[${#reply[@]}-1]`; do
@@ -112,8 +112,8 @@ _vyatta_image_path_complete()
         elif [[ $isdiskinstall == "disk-install" ]]; then
           reply[$i]="disk-install://" 
         else
-          reply[$i]=${file/#\/live\/image\/boot\//}
-          if [[ -d /live/image/boot/${reply[$i]} ]]; then
+          reply[$i]=${file/#\/lib\/live\/mount\/persistence\/boot\//}
+          if [[ -d /ib/live/mount/persistence/boot/${reply[$i]} ]]; then
             reply[$i]="${reply[$i]/#\//}://config/"
           fi
         fi
@@ -125,9 +125,9 @@ _vyatta_image_path_complete()
       if [[ $topdir == "running" ]]; then
         cur="/${cur}"
       elif [[ $topdir == "disk-install" ]]; then
-        cur="/live/image/${cur}"
+        cur="/ib/live/mount/persistence/${cur}"
       else
-        cur="/live/image/boot/${topdir}/live-rw/${cur}"
+        cur="/ib/live/mount/persistence/boot/${topdir}/rw/${cur}"
       fi
       reply=( $(compgen -f ${cur}) )
       # for loop from _filedirs() in /etc/bash_completion
@@ -148,10 +148,10 @@ _vyatta_image_path_complete()
         if [[ $topdir == "running" ]]; then
           reply[$i]=${file/#\//"$topdir://"}
         elif [[ $topdir == "disk-install" ]]; then
-          reply[$i]=${file/#\/live\/image\//"$topdir://"} 
+          reply[$i]=${file/#\/lib\/live\/mount\/persistence\//"$topdir://"} 
         else
-          reply[$i]=${file/#\/live\/image\/boot\/$topdir/"$topdir://"}
-          reply[$i]=${reply[$i]/\/live-rw\/}
+          reply[$i]=${file/#\/lib\/live\/mount\/persistence\/boot\/$topdir/"$topdir://"}
+          reply[$i]=${reply[$i]/\/rw\/}
         fi
       done
     fi 
