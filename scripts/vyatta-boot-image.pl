@@ -431,15 +431,15 @@ sub del_non_image_files {
     system("echo Deleting disk-based system files at: `date` >> $logfile");
     system("echo Run by: `whoami` >> $logfile");
 
-    foreach my $entry (glob("/live/image/*")) {
-	if ($entry eq "/live/image/boot") {
-	    print "Skipping $entry.\n";
-	} else {
-	    print "Deleting $entry...";
-	    system ("echo deleting $entry >> $logfile");
-	    system ("rm -rf $entry >> $logfile 2>&1");
-	    print "\n";
-	}
+    foreach my $entry (glob("/lib/live/mount/persistence/*")) {
+        if ($entry eq "/lib/live/mount/persistence/boot") {
+            print "Skipping $entry.\n";
+        } else {
+            print "Deleting $entry...";
+            system ("echo deleting $entry >> $logfile");
+            system ("rm -rf $entry >> $logfile 2>&1");
+            print "\n";
+        }
     }
     system ("echo done at: `date` >> $logfile");
 }
