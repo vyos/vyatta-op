@@ -29,6 +29,6 @@ run:
 
                 echo "Bringing interface $IFNAME down..."
 		echo "`date`: User $USER stopping PPP daemon for $IFNAME by disconnect command" >> $LOGFILE
-                sudo /sbin/poff $IFNAME
+                sudo /usr/bin/poff $IFNAME
 	fi
 
