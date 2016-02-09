@@ -28,7 +28,7 @@ use POSIX;
 use strict;
 use warnings;
 
-my $lease_dir = '/var/lib/dhcp3';
+my $lease_dir = '/var/lib/dhcp';
 
 sub dhclient_get_lease_files {
     my ($intf) = @_;
