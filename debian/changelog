@@ -1,3 +1,9 @@
+vyatta-op (0.14.0+vyos2+current2) unstable; urgency=medium
+
+  * New implementation of "run show version"
+
+ --  <daniil@baturin.org>  Thu, 03 Mar 2016 09:57:48 -0500
+
 vyatta-op (0.14.0+vyos2+current1) unstable; urgency=medium
 
   [ Thomas Jepp ]

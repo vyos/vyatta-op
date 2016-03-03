@@ -1,2 +1,5 @@
 help: Show VyOS version information plus all packages changes
-run: ${vyatta_bindir}/vyatta-show-version all
+run: ${vyatta_bindir}/vyos-show-version
+     echo ""
+     echo "Package versions:"
+     dpkg -l
