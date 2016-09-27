@@ -102,7 +102,7 @@ sub parseGrubCfg {
 		    # old install
 		    $ehash{'ver'} = $OLD_IMG_VER_STR;
 		}
-		if (/console=tty0.*console=ttyS[01]/) {
+		if (/console=tty0.*console=ttyS[0-9]/) {
 		    $ehash{'term'} = 'serial';
 		} else {
 		    $ehash{'term'} = 'kvm';
