@@ -3,4 +3,4 @@ allowed: local -a ARR
          eval "ARR=($(cli-shell-api -- listEffectiveNodes firewall name))"
          echo ${ARR[@]}
 run: echo "Notice: monitoring information is displayed only for rules with enabled logging"; \
-     ${vyatta_bindir}/vyatta-monitor Firewall-$4 "\[$4-[0-9]*-[A,D,R]\]"
+     ${vyatta_bindir}/vyatta-monitor Firewall-$4 "\[$4-([0-9]*|default)-[A,D,R]\]"
