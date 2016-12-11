@@ -122,11 +122,11 @@ header Number of incomplete entries in ARP table
 show arp | grep incomplete | wc -l  
 
 header Bridge
-/usr/sbin/brctl show
+/sbin/brctl show
 for br in $(/opt/vyatta/sbin/vyatta-interfaces.pl --show=bridge)
 do header "Bridge Information for $br"
-    /usr/sbin/brctl showstp $br
-    /usr/sbin/brctl showmacs $br
+    /sbin/brctl showstp $br
+    /sbin/brctl showmacs $br
 done
 
 header Serial
