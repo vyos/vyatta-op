@@ -73,7 +73,7 @@ system_type = "physical"
 try:
     hypervisor = subprocess.check_output('hvinfo', shell=True).strip()
     system_type = "{0} guest".format(hypervisor)
-except CalledProcessError:
+except subprocess.CalledProcessError:
     # hvinfo returns 1 if it cannot detect any hypervisor
     pass
 version_data['system_type'] = system_type
