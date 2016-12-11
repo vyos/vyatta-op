@@ -1,2 +1,2 @@
 help: Show bridge spanning tree information
-run: /usr/sbin/brctl showstp "$3"
+run: /sbin/brctl showstp "$3"
