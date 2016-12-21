@@ -1,2 +1,2 @@
 help: Show VyOS version information
-run: ${vyatta_bindir}/vyos-show-version
+run: sudo ${vyatta_bindir}/vyos-show-version

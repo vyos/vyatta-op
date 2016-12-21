@@ -28,9 +28,14 @@ import pystache
 
 
 def read_file(name):
-    with open (name, "r") as f:
-        data = f.read()
-    return data.strip()
+    try:
+        with open (name, "r") as f:
+            data = f.read()
+        return data.strip()
+    except:
+        # This works since we only read /sys/class/* stuff
+        # with this function
+        return "Unknown"
 
 version_file = '/opt/vyatta/etc/version.json'
 version_data = None
@@ -95,10 +100,10 @@ version_data['boot_via'] = boot_via
 # Get hardware details from DMI
 version_data['hardware_vendor'] = read_file('/sys/class/dmi/id/sys_vendor')
 version_data['hardware_model']  = read_file('/sys/class/dmi/id/product_name')
-# XXX: serial and uuid files are only readable for root, so we cannot just read them
-#      when script is ran by a normal user, hence this ugly fixup
-version_data['hardware_serial'] = subprocess.check_output('sudo cat /sys/class/dmi/id/subsystem/id/product_serial', shell=True).strip()
-version_data['hardware_uuid'] = subprocess.check_output('sudo cat /sys/class/dmi/id/subsystem/id/product_uuid', shell=True).strip()
+
+# These two assume script is run as root, normal users can't access those files
+version_data['hardware_serial'] = read_file('/sys/class/dmi/id/subsystem/id/product_serial')
+version_data['hardware_uuid']   = read_file('/sys/class/dmi/id/subsystem/id/product_uuid')
 
 
 output = pystache.render(version_output_tmpl, version_data).strip()
