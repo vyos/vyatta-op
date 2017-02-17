@@ -57,6 +57,7 @@ bin_SCRIPTS += scripts/limericks.py
 sbin_SCRIPTS     = scripts/dhcpv6-client-show-leases.pl
 sbin_SCRIPTS    += scripts/vyatta-image-tools.pl
 sbin_SCRIPTS    += scripts/vyatta-regen-unpriv-commands.sh
+sbin_SCRIPTS    += scripts/vyos-openvpn-remoteconfig.pl
 
 bin_sudo_users_SCRIPTS      = scripts/vyatta-identify-interface.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-delete-log-file.sh

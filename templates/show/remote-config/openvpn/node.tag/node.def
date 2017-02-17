@@ -1,0 +1,5 @@
+help: Show remote side OpenVPN config
+
+allowed: local -a array ;
+         eval "array=( $(cli-shell-api listEffectiveNodes interfaces openvpn) )" ;
+         echo  -n '<vtunN>' ${array[@]##*/}
