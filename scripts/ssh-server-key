@@ -1,0 +1,15 @@
+regen_host_keys ()
+{
+    sudo /bin/rm -v /etc/ssh/ssh_host_*
+    sudo dpkg-reconfigure openssh-server
+    sudo /etc/init.d/ssh restart
+}
+
+while true; do
+    read -p "Do you really want to remove the existing SSH host keys? " yn
+    case $yn in
+        [Yy]* ) regen_host_keys; break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
