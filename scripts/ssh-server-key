@@ -5,11 +5,10 @@ regen_host_keys ()
     sudo /etc/init.d/ssh restart
 }
 
-while true; do
-    read -p "Do you really want to remove the existing SSH host keys? " yn
-    case $yn in
-        [Yy]* ) regen_host_keys; break;;
-        [Nn]* ) exit;;
-        * ) echo "Please answer yes or no.";;
-    esac
-done
+echo "Do you really want to remove the existing SSH host keys? "
+${vyatta_bindir}/yesno
+
+if [ $? -eq 0 ]
+then
+    regen_host_keys
+fi
