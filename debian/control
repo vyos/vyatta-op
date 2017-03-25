@@ -9,7 +9,7 @@ Standards-Version: 3.9.1
 Package: vyatta-op
 Architecture: all
 Depends: sed (>= 4.1.5),
- console-setup, console-terminus,
+ console-terminus,
  bmon, 
  iftop,
  ethtool,
