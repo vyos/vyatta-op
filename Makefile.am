@@ -53,7 +53,7 @@ bin_SCRIPTS += scripts/vyos-show-ram.sh
 bin_SCRIPTS += scripts/vyos-strip-config.pl
 bin_SCRIPTS += scripts/maya-date.py
 bin_SCRIPTS += scripts/limericks.py
-bin_SCRIPTS += ssh-server-key
+bin_SCRIPTS += scripts/ssh-server-key
 
 sbin_SCRIPTS     = scripts/dhcpv6-client-show-leases.pl
 sbin_SCRIPTS    += scripts/vyatta-image-tools.pl
