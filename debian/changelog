@@ -1,3 +1,11 @@
+vyatta-op (0.14.0+vyos2+current3) unstable; urgency=medium
+
+  * Changed 'show tech-support' implementation to a redacted output, private
+    information is removed.
+  * Added 'show tech-support private' which contains non redacted output
+
+ -- Christian Poessinger <christian@poessinger.com>  Sun Oct 29 15:36:45 2017 +0100
+
 vyatta-op (0.14.0+vyos2+current2) unstable; urgency=medium
 
   * New implementation of "run show version"
