@@ -1,3 +1,9 @@
+vyatta-op (0.14.0+vyos2+current4) unstable; urgency=medium
+
+  * T523: Use new location for dnsmasq config files
+
+ -- Christian Poessinger <christian@poessinger.com>  Sun, 21 Jan 2018 17:10:30 +0100
+
 vyatta-op (0.14.0+vyos2+current3) unstable; urgency=medium
 
   * Changed 'show tech-support' implementation to a redacted output, private

@@ -122,7 +122,7 @@ sub get_dns_nameservers {
     my @use_dhcp_nameservers = $vyatta_config->returnOrigValues("dhcp");
     my @use_nameservers = $vyatta_config->returnOrigValues("name-server");
     my @resolv_conf_nameservers = `grep "^nameserver" /etc/resolv.conf`;
-    my @dnsmasq_conf_nameservers = `grep "server=" /etc/dnsmasq.conf`;
+    my @dnsmasq_conf_nameservers = `grep "server=" /etc/dnsmasq.d/vyos.conf`;
     my @dnsmasq_running = `ps ax | grep dnsmasq | grep -v grep`;
 
     if (!(defined $use_system_nameservers) && (@use_dhcp_nameservers == 0) && (@use_nameservers == 0)) {
