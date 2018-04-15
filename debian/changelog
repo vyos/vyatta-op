@@ -1,3 +1,15 @@
+vyatta-op (0.14.0+vyos2+current6) unstable; urgency=medium
+
+  * T588: Remove DNS forwarder restart command in favor if XML interface definition
+
+ -- Christian Poessinger <christian@poessinger.com>  Wed, 11 Apr 2018 20:33:53 +0200
+
+vyatta-op (0.14.0+vyos2+current5) unstable; urgency=medium
+
+  * T157: Remove "install system" command
+
+ -- Christian Poessinger <christian@poessinger.com>  Sat, 10 Mar 2018 18:29:30 +0100
+
 vyatta-op (0.14.0+vyos2+current4) unstable; urgency=medium
 
   * T523: Use new location for dnsmasq config files
