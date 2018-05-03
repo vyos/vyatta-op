@@ -33,7 +33,7 @@ Depends: sed (>= 4.1.5),
  usbutils,
  lsscsi,
  hvinfo,
- python-pystache
+ python3-pystache
 Suggests: util-linux (>= 2.13-5),
  ncurses-bin (>= 5.5-5),
  dialog
