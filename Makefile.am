@@ -19,7 +19,6 @@ interp_DATA += functions/interpreter/vyatta-image-complete
 
 bin_SCRIPTS	 = scripts/vyatta-show-interfaces
 bin_SCRIPTS	+= scripts/vyatta-show-interfaces.pl
-bin_SCRIPTS	+= scripts/vyos-show-version
 bin_SCRIPTS     += scripts/vyatta-show-dhclient.pl
 bin_SCRIPTS	+= scripts/vyatta-show-dmi
 bin_SCRIPTS	+= scripts/vyatta-tshark-interface-port.pl
@@ -52,7 +51,6 @@ bin_SCRIPTS += scripts/vyatta-monitor-check-rule-log
 bin_SCRIPTS += scripts/vyos-show-ram.sh
 bin_SCRIPTS += scripts/vyos-strip-config.pl
 bin_SCRIPTS += scripts/maya-date.py
-bin_SCRIPTS += scripts/limericks.py
 bin_SCRIPTS += scripts/ssh-server-key
 
 sbin_SCRIPTS     = scripts/dhcpv6-client-show-leases.pl

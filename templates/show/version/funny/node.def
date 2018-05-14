@@ -1,5 +1,0 @@
-help: Show VyOS version information plus a funny poem
-run:
-    sudo ${vyatta_bindir}/vyos-show-version
-    ${vyatta_bindir}/limericks.py
-
