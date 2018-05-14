@@ -1,8 +1,0 @@
-help: Reset DNS forwarding cache
-run:
-        if ps ax | grep dnsmasq | grep -v grep > /dev/null
-        then
-            sudo /opt/vyatta/bin/sudo-users/vyatta-op-dns-forwarding.pl --clear-cache
-        else
-            echo "DNS forwarding not configured"
-        fi
