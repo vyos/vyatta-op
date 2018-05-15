@@ -21,8 +21,6 @@ bin_SCRIPTS	 = scripts/vyatta-show-interfaces
 bin_SCRIPTS	+= scripts/vyatta-show-interfaces.pl
 bin_SCRIPTS     += scripts/vyatta-show-dhclient.pl
 bin_SCRIPTS	+= scripts/vyatta-show-dmi
-bin_SCRIPTS	+= scripts/vyatta-tshark-interface-port.pl
-bin_SCRIPTS	+= scripts/vyatta-tshark.pl
 bin_SCRIPTS	+= scripts/vyatta-show-bonding.pl
 bin_SCRIPTS	+= scripts/vyatta-cpu-summary.pl
 bin_SCRIPTS	+= scripts/yesno
@@ -68,8 +66,6 @@ bin_sudo_users_SCRIPTS     += scripts/vyatta-clear-conntrack
 
 all-local:
 	./gen-unpriv-commands.sh
-	./gen-monitor-interface-templates.sh
-	./gen-monitor-vif-interface-templates.sh
 
 clean-local:
 	$(RM) -r generated-templates
@@ -80,7 +76,6 @@ cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
 install-exec-hook:
 	mkdir -p $(DESTDIR)$(opdir)
 	cd templates; $(cpiop) $(DESTDIR)$(opdir)
-	cd generated-templates && $(cpiop) $(DESTDIR)$(opdir)
 	mkdir -p $(DESTDIR)$(etc_shell_leveldir)
 	cd etc/shell/level; $(cpiop) $(DESTDIR)$(etc_shell_leveldir)
 	mkdir -p $(DESTDIR)/etc/
