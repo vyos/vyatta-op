@@ -1,2 +1,0 @@
-help: Monitor a pseudo-ethernet interface
-run: bmon -p peth*

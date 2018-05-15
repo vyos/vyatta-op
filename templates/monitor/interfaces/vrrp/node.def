@@ -1,2 +1,0 @@
-help: Monitor a vrrp interface
-run: bmon -p eth*v*,bond*v*

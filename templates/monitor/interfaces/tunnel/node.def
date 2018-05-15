@@ -1,2 +1,0 @@
-help: Monitor a tunnel interface
-run: bmon -p tun*

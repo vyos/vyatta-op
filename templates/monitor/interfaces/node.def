@@ -1,2 +1,0 @@
-help: Monitor interfaces
-run: bmon -p  !gre0,!sit0,!tunl0,!ip6tnl0;
