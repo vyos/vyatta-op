@@ -53,19 +53,15 @@ unset _vyatta_extglob
     if test -z "$vyatta_bindir" ; then
 	if test -n "@bindir@" ; then
 	    declare -x -r vyatta_bindir=@bindir@
-            declare -x -r vyos_bindir=@bindir@
 	else
 	    declare -x -r vyatta_bindir=$vyatta_exec_prefix/bin
-            declare -x -r vyos_bindir=$vyatta_exec_prefix/bin
 	fi
     fi
     if test -z "$vyatta_sbindir" ; then
 	if test -n "@sbindir@" ; then
 	    declare -x -r vyatta_sbindir=@sbindir@
-            declare -x -r vyos_sbindir=@sbindir@
 	else
 	    declare -x -r vyatta_sbindir=$vyatta_exec_prefix/sbin
-            declare -x -r vyos_sbindir=$vyatta_exec_prefix/sbin
 	fi
     fi
     if test -z "$vyatta_libdir" ; then
@@ -80,10 +76,8 @@ unset _vyatta_extglob
     if test -z "$vyatta_libexecdir" ; then
 	if test -n "@libexecdir@" ; then
 	    declare -x -r vyatta_libexecdir=@libexecdir@
-            declare -x -r vyos_libexecdir=@libexecdir@
 	else
 	    declare -x -r vyatta_libexecdir=$vyatta_exec_prefix/libexec
-            declare -x -r vyos_libexecdir=$vyatta_exec_prefix/libexec
 	fi
     fi
     if test -z "$vyatta_datadir" ; then
@@ -161,7 +155,27 @@ unset _vyatta_extglob
     for var in prefix exec_prefix datarootdir ; do
 	eval test -n \"\$_vyatta_save_$var\" \&\& $var=\$_vyatta_save_$var
     done
-    
+
+    # It's not like we do, or should support installing VyOS at a different prefix
+    declare -x -r vyos_libexec_dir=/usr/libexec/vyos
+    declare -x -r vyos_bin_dir=/usr/bin
+    declare -x -r vyos_sbin_dir=/usr/sbin
+
+    if test -z "$vyos_conf_scripts_dir" ; then
+        declare -x -r vyos_conf_scripts_dir=$vyos_libexec_dir/conf_mode
+    fi
+
+    if test -z "$vyos_op_scripts_dir" ; then
+        declare -x -r vyos_op_scripts_dir=$vyos_libexec_dir/op_mode
+    fi
+
+    if test -z "$vyos_completion__dir" ; then
+        declare -x -r vyos_completion_dir=$vyos_libexec_dir/completion
+    fi
+
+    if test -z "$vyos_validators_dir" ; then
+        declare -x -r vyos_validators_dir=$vyos_libexec_dir/validators
+    fi
 
 } 2>/dev/null || :
 
