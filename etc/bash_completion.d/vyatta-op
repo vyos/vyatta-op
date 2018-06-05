@@ -500,7 +500,7 @@ strip-private ()
 commands ()
 {
   if [ "$_OFR_CONFIGURE" != "" ]; then
-      ${vyatta_sbindir}/vyatta-config-gen-sets.pl -
+      ${vyos_libexec_dir}/commands-pipe.py
   else
       echo "commands pipe is not supported in operational mode"
   fi
