@@ -1,7 +1,0 @@
-help: Show Address Resolution Protocol (ARP) cache for specified interface
-allowed: local -a vals;
-         vals=($(${vyatta_sbindir}/vyatta-interfaces.pl --show ethernet));
-         vals+=($(${vyatta_sbindir}/vyatta-interfaces.pl --show bridge));
-         vals+=($(${vyatta_sbindir}/vyatta-interfaces.pl --show bonding));
-         echo ${vals[@]};
-run: /usr/sbin/arp -e -n -i "$3"

@@ -1,2 +1,0 @@
-help: Show detailed SCSI device information
-run: lsscsi -vvv
