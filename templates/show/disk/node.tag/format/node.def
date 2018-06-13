@@ -1,7 +1,0 @@
-help: Show disk drive formatting
-run: disk_dev="/dev/$3"
-     if [ ! -b "$disk_dev" ]
-     then echo "$3 is not a disk device"
-          exit 1
-     fi
-     sudo /sbin/fdisk -l "$disk_dev"

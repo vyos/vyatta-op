@@ -1,2 +1,0 @@
-help: Poweroff the system
-run: sudo /opt/vyatta/bin/sudo-users/vyatta-poweroff.pl --action poweroff

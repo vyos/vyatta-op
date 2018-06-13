@@ -48,7 +48,6 @@ bin_SCRIPTS += scripts/vyatta-monitor-background-stop
 bin_SCRIPTS += scripts/vyatta-monitor-check-rule-log
 bin_SCRIPTS += scripts/vyos-show-ram.sh
 bin_SCRIPTS += scripts/vyos-strip-config.pl
-bin_SCRIPTS += scripts/maya-date.py
 bin_SCRIPTS += scripts/ssh-server-key
 
 sbin_SCRIPTS     = scripts/dhcpv6-client-show-leases.pl
@@ -60,7 +59,6 @@ bin_sudo_users_SCRIPTS      = scripts/vyatta-identify-interface.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-delete-log-file.sh
 bin_sudo_users_SCRIPTS	   += scripts/vyatta-reboot.pl
 bin_sudo_users_SCRIPTS	   += scripts/vyatta-poweroff.pl
-bin_sudo_users_SCRIPTS     += scripts/vyatta-op-dns-forwarding.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-op-dynamic-dns.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-clear-conntrack
 

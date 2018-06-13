@@ -1,4 +1,0 @@
-help: Show system CPU details
-run: less $_vyatta_less_options \
-	--prompt=".cpu info" \
-	-- /proc/cpuinfo

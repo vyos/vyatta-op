@@ -1,2 +1,0 @@
-help: Cancel a pending poweroff
-run: sudo /opt/vyatta/bin/sudo-users/vyatta-poweroff.pl --action poweroff_cancel

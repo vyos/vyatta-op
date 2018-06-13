@@ -1,2 +1,0 @@
-help: Show Address Resolution Protocol (ARP) information
-run: /usr/sbin/arp -e -n

@@ -1,2 +1,0 @@
-help: Poweroff the system without confirmation
-run: sudo /opt/vyatta/bin/sudo-users/vyatta-poweroff.pl --action poweroff --now
