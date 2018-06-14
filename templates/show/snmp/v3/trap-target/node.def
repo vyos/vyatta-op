@@ -1,2 +1,0 @@
-help: Show the list of configured targets
-run: /opt/vyatta/bin/vyatta-show-snmp-v3.pl --trap
