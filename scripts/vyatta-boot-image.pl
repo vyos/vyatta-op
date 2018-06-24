@@ -31,14 +31,14 @@ use File::Copy;
 # 
 # Constants
 # 
-my $UNION_BOOT = '/live/image/boot';
+my $UNION_BOOT = '/lib/live/mount/persistence/boot';
 my $UNION_GRUB_CFG = "$UNION_BOOT/grub/grub.cfg";
 my $VER_FILE = '/opt/vyatta/etc/version';
 my $OLD_IMG_VER_STR = 'Old-non-image-installation';
 my $OLD_GRUB_CFG = '/boot/grub/grub.cfg';
 my $DISK_BOOT = '/boot';
 my $XEN_DEFAULT_IMAGE = "$UNION_BOOT/%%default_image";
-my $LIVE_CD = '/live/image/live';
+my $LIVE_CD = '/lib/live/mount/medium/live';
 
 # 
 # Globals
@@ -102,7 +102,7 @@ sub parseGrubCfg {
 		    # old install
 		    $ehash{'ver'} = $OLD_IMG_VER_STR;
 		}
-		if (/console=tty0.*console=ttyS0/) {
+		if (/console=tty0.*console=ttyS[0-9]/) {
 		    $ehash{'term'} = 'serial';
 		} else {
 		    $ehash{'term'} = 'kvm';
@@ -226,32 +226,31 @@ sub image_vyatta_version {
     my ($image_name) = @_;
 
     my $vers;
-    my $dpkg_path = "var/lib/dpkg";
 
     my $image_path;
     if ($image_name eq $OLD_IMG_VER_STR) {
 	$image_path = "";
     } else {
-	$image_path = "/live/image/boot/$image_name/live-rw";
+	$image_path = "/lib/live/mount/persistence/boot/$image_name/rw";
     }
     
-    $image_path .= "/var/lib/dpkg";
+    $image_path .= "/opt/vyatta/etc/version";
 
     if ( -e $image_path ) {
-	$vers = `dpkg-query --admindir=$image_path --showformat='\${Version}' --show vyatta-version`;
+	$vers = `cat $image_path | awk '{print \$2}'`;
 	return $vers;
     } else {
 	if ($image_name eq $OLD_IMG_VER_STR) {
 	    return "unknown";
 	}
 
-	my @squash_files = glob("/live/image/boot/$image_name/*.squashfs");
+	my @squash_files = glob("/lib/live/mount/persistence/boot/$image_name/*.squashfs");
 	foreach my $squash_file (@squash_files) {
 	    if (-e $squash_file) {
 		system("sudo mkdir /tmp/squash_mount");
 		system("sudo mount -o loop,ro -t squashfs $squash_file /tmp/squash_mount");
-		$image_path = "/tmp/squash_mount/var/lib/dpkg";
-		my $vers = `dpkg-query --admindir=$image_path --showformat='\${Version}' --show vyatta-version`;
+		$image_path = "/tmp/squash_mount/opt/vyatta/etc/version";
+		my $vers = `cat $image_path | awk '{print \$2}'`;
 		system("sudo umount /tmp/squash_mount");
 		system("sudo rmdir /tmp/squash_mount");
 		return $vers;
@@ -410,7 +409,7 @@ sub curVer {
 	# On Xen/pygrub systems, we figure out the running version by
 	# looking at the bind mount of /boot.
 	$vers = `mount | awk '/on \\/boot / { print \$1 }'`;
-	$vers =~ s/\/live\/image\/boot\///;
+	$vers =~ s/\/lib\/live\/mount\/persistence\/boot\///;
 	chomp($vers);
     }
 
@@ -432,15 +431,15 @@ sub del_non_image_files {
     system("echo Deleting disk-based system files at: `date` >> $logfile");
     system("echo Run by: `whoami` >> $logfile");
 
-    foreach my $entry (glob("/live/image/*")) {
-	if ($entry eq "/live/image/boot") {
-	    print "Skipping $entry.\n";
-	} else {
-	    print "Deleting $entry...";
-	    system ("echo deleting $entry >> $logfile");
-	    system ("rm -rf $entry >> $logfile 2>&1");
-	    print "\n";
-	}
+    foreach my $entry (glob("/lib/live/mount/persistence/*")) {
+        if ($entry eq "/lib/live/mount/persistence/boot") {
+            print "Skipping $entry.\n";
+        } else {
+            print "Deleting $entry...";
+            system ("echo deleting $entry >> $logfile");
+            system ("rm -rf $entry >> $logfile 2>&1");
+            print "\n";
+        }
     }
     system ("echo done at: `date` >> $logfile");
 }

@@ -1,4 +1,0 @@
-help:  Disk device name
-allowed: awk 'NR > 2 && $4 !~ /[0-9]$/ { print $4 }' </proc/partitions
-
-

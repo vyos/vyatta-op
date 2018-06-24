@@ -1,3 +1,0 @@
-help: Poweroff the system at a future time
-allowed: echo -n '<HH:MM>' '<MMDDYY>' '<midnight>' '<noon>'
-run: sudo /opt/vyatta/bin/sudo-users/vyatta-poweroff.pl --action poweroff_at --at_time "$3"

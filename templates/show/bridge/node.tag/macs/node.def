@@ -1,2 +1,0 @@
-help: Show bridge Media Access Control (MAC) address table
-run: /usr/sbin/brctl showmacs "$3"

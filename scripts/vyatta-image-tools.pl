@@ -50,7 +50,7 @@ sub conv_file {
     if ($topdir eq "running") {
         $file = "/$file";
     } elsif (lc($topdir) eq 'disk-install') {
-        $file = "/live/image/$file";
+        $file = "/lib/live/mount/persistence/$file";
     } elsif (lc($topdir) eq 'tftp') {
         $file = $filein;
         $topdir = 'url';
@@ -64,11 +64,11 @@ sub conv_file {
         $file = $filein;
         $topdir = 'url';
     } else {
-        if (!-d "/live/image/boot/$topdir/live-rw"){
+        if (!-d "/lib/live/mount/persistence/boot/$topdir/rw"){
             print "Image $topdir not found!\n";
             exit 1;
         }
-        $file = "/live/image/boot/$topdir/live-rw/$file";
+        $file = "/lib/live/mount/persistence/boot/$topdir/rw/$file";
     }
     return ($topdir, $file);
 }
@@ -78,9 +78,9 @@ sub conv_file_to_rel {
     if ($topdir eq "running"){
         $filename =~ s?/?$topdir://?;
     } elsif ($topdir eq "disk-install") {
-        $filename =~ s?/live/image/?$topdir://?;
+        $filename =~ s?/lib/live/mount/persistence/?$topdir://?;
     } else {
-        $filename =~ s?/live/image/boot/$topdir/live-rw/?$topdir://?;
+        $filename =~ s?/lib/live/mount/persistence/boot/$topdir/rw/?$topdir://?;
     }
     return $filename;
 }

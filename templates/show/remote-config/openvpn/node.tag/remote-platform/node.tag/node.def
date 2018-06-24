@@ -1,0 +1,9 @@
+help: Show remote side OpenVPN config for specified platform
+allowed: echo -n "vyos openvpn"
+
+run: if [ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/admin" ];
+     then
+         sudo ${vyatta_sbindir}/vyos-openvpn-remoteconfig.pl $4 $6
+     else
+         echo Must be an admin user to run this command.
+     fi

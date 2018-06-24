@@ -2,24 +2,21 @@ Source: vyatta-op
 Section: contrib/net
 Priority: extra
 Maintainer: VyOS Package Maintainers <maintainers@vyos.net>
-Build-Depends: debhelper (>= 5), autotools-dev
+Build-Depends: debhelper (>= 5), autotools-dev, autoconf, automake,
+ cpio
 Standards-Version: 3.9.1
 
 Package: vyatta-op
 Architecture: all
 Depends: sed (>= 4.1.5),
- console-setup, console-terminus,
- bmon, 
- iftop,
+ console-terminus,
  ethtool,
  traceroute,
  ntpdate,
  procps (>= 1:3.2.7-3),
- pciutils,
  vyatta-cfg (>= 0.16.26),
  vyatta-cfg-system (>= 0.19.93),
  vyatta-quagga (>= 0.99.15-26),
- lsof,
  coreutils (>= 5.97-5.3),
  host,
  vyatta-bash | bash (>= 4.1),
@@ -29,9 +26,6 @@ Depends: sed (>= 4.1.5),
  at,
  net-tools,
  libtimedate-perl,
- usbutils,
- lsscsi,
- hvinfo
 Suggests: util-linux (>= 2.13-5),
  ncurses-bin (>= 5.5-5),
  dialog

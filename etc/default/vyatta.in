@@ -26,22 +26,28 @@ unset _vyatta_extglob
     if test -z "$vyatta_prefix" ; then
 	if test -n "@prefix@" ; then
 	    declare -x -r vyatta_prefix=@prefix@
+            declare -x -r vyos_prefix=@prefix@
 	else
 	    declare -x -r vyatta_prefix=/opt/vyatta
+            declare -x -r vyos_prefix=/opt/vyatta
 	fi
     fi
     if test -z "$vyatta_exec_prefix" ; then
 	if test -n "@exec_prefix@" ; then
 	    declare -x -r vyatta_prefix=@exec_prefix@
+            declare -x -r vyos_prefix=@exec_prefix@
 	else
 	    declare -x -r vyatta_prefix=$vyatta_prefix
+            declare -x -r vyos_prefix=$vyatta_prefix
 	fi
     fi
     if test -z "$vyatta_datarootdir" ; then
 	if test -n "@datarootdir@" ; then
 	    declare -x -r vyatta_datarootdir=@datarootdir@
+            declare -x -r vyos_datarootdir=@datarootdir@
 	else
 	    declare -x -r vyatta_datarootdir=$vyatta_prefix/share
+            declare -x -r vyos_datarootdir=$vyatta_prefix/share
 	fi
     fi
     if test -z "$vyatta_bindir" ; then
@@ -61,8 +67,10 @@ unset _vyatta_extglob
     if test -z "$vyatta_libdir" ; then
 	if test -n "@libdir@" ; then
 	    declare -x -r vyatta_libdir=@libdir@
+            declare -x -r vyos_libdir=@libdir@
 	else
 	    declare -x -r vyatta_libdir=$vyatta_exec_prefix/lib
+            declare -x -r vyos_libdir=$vyatta_exec_prefix/lib
 	fi
     fi
     if test -z "$vyatta_libexecdir" ; then
@@ -75,8 +83,10 @@ unset _vyatta_extglob
     if test -z "$vyatta_datadir" ; then
 	if test -n "@datadir@" ; then
 	    declare -x -r vyatta_datadir=@datadir@
+            declare -x -r vyos_datadir=@datadir@
 	else
 	    declare -x -r vyatta_datadir=$vyatta_datarootdir
+            declare -x -r vyos_datadir=$vyatta_datarootdir
 	fi
     fi
     if test -z "$vyatta_htmldir" ; then
@@ -131,18 +141,41 @@ unset _vyatta_extglob
 
     if test -z "$vyatta_op_templates" ; then
 	declare -x -r vyatta_op_templates=$vyatta_datadir/vyatta-op/templates
+        declare -x -r vyos_op_templates=$vyatta_datadir/vyatta-op/templates
     fi
     if test -z "$vyatta_cfg_templates" ; then
 	declare -x -r vyatta_cfg_templates=$vyatta_datadir/vyatta-cfg/templates
+        declare -x -r vyos_cfg_templates=$vyatta_datadir/vyatta-cfg/templates
     fi
     if test -z "$vyatta_configdir" ; then
 	declare -x -r vyatta_configdir=$vyatta_prefix/config
+        declare -x -r vyos_configdir=$vyatta_prefix/config
     fi
 
     for var in prefix exec_prefix datarootdir ; do
 	eval test -n \"\$_vyatta_save_$var\" \&\& $var=\$_vyatta_save_$var
     done
-    
+
+    # It's not like we do, or should support installing VyOS at a different prefix
+    declare -x -r vyos_libexec_dir=/usr/libexec/vyos
+    declare -x -r vyos_bin_dir=/usr/bin
+    declare -x -r vyos_sbin_dir=/usr/sbin
+
+    if test -z "$vyos_conf_scripts_dir" ; then
+        declare -x -r vyos_conf_scripts_dir=$vyos_libexec_dir/conf_mode
+    fi
+
+    if test -z "$vyos_op_scripts_dir" ; then
+        declare -x -r vyos_op_scripts_dir=$vyos_libexec_dir/op_mode
+    fi
+
+    if test -z "$vyos_completion__dir" ; then
+        declare -x -r vyos_completion_dir=$vyos_libexec_dir/completion
+    fi
+
+    if test -z "$vyos_validators_dir" ; then
+        declare -x -r vyos_validators_dir=$vyos_libexec_dir/validators
+    fi
 
 } 2>/dev/null || :
 

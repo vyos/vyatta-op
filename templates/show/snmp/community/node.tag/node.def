@@ -1,3 +1,0 @@
-help: Show status of specified SNMP community
-allowed: ${vyatta_bindir}/vyatta-show-snmp.pl --allowed
-run: ${vyatta_bindir}/vyatta-show-snmp.pl --community="$4"

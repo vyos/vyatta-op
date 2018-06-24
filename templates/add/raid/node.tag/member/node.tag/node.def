@@ -40,7 +40,7 @@ run:
 	    mounted_on_root=0
 	    mounted_on=`mount | grep "^/dev/${raid_set}" | awk '{ print $3 }'`
 	    for dir in $mounted_on ; do
-		if [ "$dir" = "/" -o "$dir" = "/live/image" ]; then
+		if [ "$dir" = "/" -o "$dir" = "/lib/live/mount/persistence" ]; then
 		    mounted_on_root=1
 		fi
 	    done

@@ -40,6 +40,7 @@ use strict;
 use warnings;
 use NetAddr::IP;
 use feature ":5.10";
+use experimental 'smartmatch';
 
 sub get_options {
    my ($opt, $args) = @_;

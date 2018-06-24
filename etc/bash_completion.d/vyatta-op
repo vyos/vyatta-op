@@ -104,14 +104,14 @@ _vyatta_op_default_expand ()
   local wc=${#COMP_WORDS[@]}
   if [[ "${COMP_WORDS[0]}" =~ "/" ]]; then
     # if we are looking for a directory on the first completion then do directory completions
-    _filedir_xspec
+    _filedir_xspec_vyos
   elif (( wc < 2 )) ||
      [[ $COMP_CWORD -eq 0 ]] ||
      [[ $1 == $2 ]]; then
     _vyatta_op_expand "$@"
   else
     # after the first word => cannot be vyatta command so use original default
-    _filedir_xspec
+    _filedir_xspec_vyos
   fi
 }
 
@@ -500,7 +500,7 @@ strip-private ()
 commands ()
 {
   if [ "$_OFR_CONFIGURE" != "" ]; then
-      ${vyatta_sbindir}/vyatta-config-gen-sets.pl -
+      ${vyos_libexec_dir}/commands-pipe.py
   else
       echo "commands pipe is not supported in operational mode"
   fi
@@ -597,6 +597,48 @@ _vyatta_set_comptype ()
       return 1
     fi
   done
+}
+
+_filedir_xspec_vyos()
+{
+    local cur prev words cword
+    _init_completion || return
+
+    _tilde "$cur" || return 0
+
+    local IFS=$'\n' xspec=${_xspec[${1##*/}]} tmp
+    local -a toks
+
+    toks=( $(
+        compgen -d -- "$(quote_readline "$cur")" | {
+        while read -r tmp; do
+            printf '%s\n' $tmp
+        done
+        }
+        ))
+
+    # Munge xspec to contain uppercase version too
+    # http://thread.gmane.org/gmane.comp.shells.bash.bugs/15294/focus=15306
+    eval xspec="${xspec}"
+    local matchop=!
+    if [[ $xspec == !* ]]; then
+        xspec=${xspec#!}
+        matchop=@
+    fi
+    xspec="$matchop($xspec|${xspec^^})"
+
+    toks+=( $(
+        eval compgen -f -X "!$xspec" -- "\$(quote_readline "\$cur")" | {
+        while read -r tmp; do
+            [[ -n $tmp ]] && printf '%s\n' $tmp
+        done
+        }
+        ))
+
+    if [[ ${#toks[@]} -ne 0 ]]; then
+        compopt -o filenames
+        COMPREPLY=( "${toks[@]}" )
+    fi
 }
 
 nullglob_save=$( shopt -p nullglob )

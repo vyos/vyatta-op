@@ -1,3 +1,48 @@
+vyatta-op (0.14.0+vyos2+current6) unstable; urgency=medium
+
+  * T588: Remove DNS forwarder restart command in favor if XML interface definition
+
+ -- Christian Poessinger <christian@poessinger.com>  Wed, 11 Apr 2018 20:33:53 +0200
+
+vyatta-op (0.14.0+vyos2+current5) unstable; urgency=medium
+
+  * T157: Remove "install system" command
+
+ -- Christian Poessinger <christian@poessinger.com>  Sat, 10 Mar 2018 18:29:30 +0100
+
+vyatta-op (0.14.0+vyos2+current4) unstable; urgency=medium
+
+  * T523: Use new location for dnsmasq config files
+
+ -- Christian Poessinger <christian@poessinger.com>  Sun, 21 Jan 2018 17:10:30 +0100
+
+vyatta-op (0.14.0+vyos2+current3) unstable; urgency=medium
+
+  * Changed 'show tech-support' implementation to a redacted output, private
+    information is removed.
+  * Added 'show tech-support private' which contains non redacted output
+
+ -- Christian Poessinger <christian@poessinger.com>  Sun, 29 Oct 2017 15:36:45 +0100
+
+vyatta-op (0.14.0+vyos2+current2) unstable; urgency=medium
+
+  * New implementation of "run show version"
+
+ --  <daniil@baturin.org>  Thu, 03 Mar 2016 09:57:48 -0500
+
+vyatta-op (0.14.0+vyos2+current1) unstable; urgency=medium
+
+  [ Thomas Jepp ]
+  * Add missing build depends for Jessie.
+
+  [ Daniil Baturin ]
+  * Remove referenced to Vyatta from 'show version' completion help.
+  * Easter egg: 'show version funny' command that displays limericks after version information.
+
+  [ Kim Hagen ]
+
+ -- Kim Hagen <kim.sidney@gmail.com>  Sun, 24 Jan 2016 15:19:11 -0500
+
 vyatta-op (0.14.0+vyos2+lithium14) unstable; urgency=low
 
   * Remove referenced to Vyatta from 'show version' completion help.
@@ -15,7 +60,7 @@ vyatta-op (0.14.0+vyos2+lithium13) unstable; urgency=low
   * vyatta-op: add restart cli command for ssh
 
  -- Alex Harpin <development@landsofshadow.co.uk>  Sat, 21 Nov 2015 11:30:24 +0000
- 
+
 vyatta-op (0.14.0+vyos2+lithium12) unstable; urgency=low
 
   [ Thomas Jepp ]

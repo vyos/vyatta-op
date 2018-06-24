@@ -1,2 +1,0 @@
-help: Monitor a loopback interface
-run: bmon -p lo

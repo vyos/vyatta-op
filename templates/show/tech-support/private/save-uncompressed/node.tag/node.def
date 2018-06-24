@@ -1,0 +1,8 @@
+help: Save uncompressed tech-support report to specified path/file (contains private information)
+allowed: echo -n '<file> <scp://<user>:<passwd>@<host>/<file>> <ftp://<user>:<passwd>@<host>/<file>>'
+run: if [ "$VYATTA_USER_LEVEL_DIR" == "/opt/vyatta/etc/shell/level/admin" ];
+     then
+       source ${vyatta_datadir}/vyatta-op/functions/tech-support save-uncompressed $4
+     else
+       echo Must be an admin user to run this command
+     fi

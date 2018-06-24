@@ -26,4 +26,4 @@ libtool
 /etc/shell/level/users/allowed-op
 
 /src/render_xml
-
+generated-templates/*

@@ -71,7 +71,7 @@ header Show Tech-Support Brief
 header CONFIGURATION 
 
 
-header Vyatta Version and Package Changes
+header VyOS Version and Package Changes
 show version all
 
 header Running configuration

@@ -1,4 +1,0 @@
-help: Show system RAM details
-run: less $_vyatta_less_options \
-	--prompt=".mem info" \
-	-- /proc/meminfo

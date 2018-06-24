@@ -1,2 +1,0 @@
-help: Show bridging information
-run:  /usr/sbin/brctl show

@@ -55,7 +55,7 @@ sub log_msg {
 # Main section.
 #
 
-opendir (my $dir, "/var/lib/dhcp3");
+opendir (my $dir, "/var/lib/dhcp");
 my @lease_files;
 while (my $f = readdir $dir) {
     if ($f =~ /^dhclient_v6_(\w+).leases$/) {
@@ -74,7 +74,7 @@ my %ghash = ();
 foreach my $lease_filename (@lease_files) {
     my @lines=();
 
-    open(my $f, '<', "/var/lib/dhcp3/$lease_filename")
+    open(my $f, '<', "/var/lib/dhcp/$lease_filename")
 	or die "Can't open lease file for reading:  $lease_filename\n";
 
     @lines = <$f>;

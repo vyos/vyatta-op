@@ -27,7 +27,7 @@ use File::Temp qw/ tempfile tempdir /;
 use File::Copy;
 use Sys::Syslog qw/:standard :macros/;
 
-my $UNION_BOOT = '/live/image/boot';
+my $UNION_BOOT = '/lib/live/mount/persistence/boot';
 my $XEN_DEFAULT_IMAGE = "$UNION_BOOT/%%default_image";
 
 my $old_name;
@@ -43,7 +43,7 @@ if (!defined($old_name) || !defined($new_name)) {
     exit 1;
 }
 
-my $image_path = "/live/image/boot";
+my $image_path = "/lib/live/mount/persistence/boot";
 
 if (! -e "$image_path") {
     # must be running on old non-image installed system
@@ -80,7 +80,7 @@ if ($cur_name =~ s/BOOT_IMAGE=\/boot\///) {
 	# On Xen/pygrub systems, we figure out the running version by
 	# looking at the bind mount of /boot.
 	$cur_name = `mount | awk '/on \\/boot / { print \$1 }'`;
-	$cur_name =~ s/\/live\/image\/boot\///;
+	$cur_name =~ s/\/lib\/live\/mount\/persistence\/boot\///;
 	chomp($cur_name);
     }
 }

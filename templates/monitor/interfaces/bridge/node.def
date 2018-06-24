@@ -1,2 +1,0 @@
-help: Monitor a bridge interface
-run: bmon -p br*

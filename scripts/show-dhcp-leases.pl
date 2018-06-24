@@ -22,7 +22,7 @@
 
 use strict;
 
-opendir (my $dir, "/var/lib/dhcp3");
+opendir (my $dir, "/var/lib/dhcp");
 my @leases;
 while (my $f = readdir $dir) {
     ($f =~ /^dhclient_([\w.]+)_lease$/) && push @leases, $1;

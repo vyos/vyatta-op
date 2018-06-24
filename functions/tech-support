@@ -75,7 +75,7 @@ header Entitlement
 show entitlement
 fi
 
-header Vyatta Version and Package Changes
+header VyOS Version and Package Changes
 show version all
 
 header Configuration File 
@@ -104,12 +104,12 @@ header Ethernet
 header Interface statistics
 ip -s link show
 
-for eth in $(/opt/vyatta/sbin/vyatta-interfaces.pl --show=ethernet)
+for eth in $(${vyos_completion_dir}/list_interfaces.py --type=ethernet)
 do header "Physical Interface statistics for $eth"
    sudo ethtool -S $eth
 done
 
-for eth in $(/opt/vyatta/sbin/vyatta-interfaces.pl --show=ethernet)
+for eth in $(${vyos_completion_dir}/list_interfaces.py --type=ethernet)
 do header "Physical Interface Details for $eth"
    show interfaces ethernet $eth physical 
    /sbin/ethtool -k $eth
@@ -122,84 +122,13 @@ header Number of incomplete entries in ARP table
 show arp | grep incomplete | wc -l  
 
 header Bridge
-/usr/sbin/brctl show
-for br in $(/opt/vyatta/sbin/vyatta-interfaces.pl --show=bridge)
+/sbin/brctl show
+for br in $(${vyos_completion_dir}/list_interfaces.py --type=bridge)
 do header "Bridge Information for $br"
-    /usr/sbin/brctl showstp $br
-    /usr/sbin/brctl showmacs $br
+    /sbin/brctl showstp $br
+    /sbin/brctl showmacs $br
 done
 
-header Serial
-
-header "WAN Interface Hardware Information (wanrouter hwprobe)" 
-is_sangoma='lspci -n -d '1923:*''
-is_adsl='lspci -n -d '14bc:*''
-if [ -z "$is_sangoma" -a -z "$is_adsl" ]; then
-
- sudo wanrouter hwprobe
-
-header "WAN Interface Software Version (wanrouter version)"
-wanrouter version
-
-header "WAN Interface Debugging Information (wanrouter debug)" 
-wanrouter debug
-
-header "WAN Interface Connection Status Information (wanrouter summary)" 
-wanrouter summary
-
-header "WAN Interface Information Summary (wanrouter status)" 
-wanrouter status
-
-header "WAN Interface Driver Information (wanrouter modules)"
-wanrouter modules
-
-if [ -e /etc/wanpipe/wanrouter.rc ]; then
-   header "WAN Interface Startup Script (/etc/wanpipe/wanrouter.rc)" 
-   cat /etc/wanpipe/wanrouter.rc
-fi
-
-header WAN Interfaces
-wanifs=( /sys/class/net/wan* )
-wanifs=`echo -n ${wanifs[@]##*/}`
-
-echo "wanifs are $wanifs"
-
-for ifname in $wanifs ; do
-    header "wanpipemon -i $ifname -c sc"
-    sudo wanpipemon -i $ifname -c sc
-
-    header "wanpipemon -i $ifname -c so"
-    sudo wanpipemon -i $ifname -c so
-
-    header "wanpipemon -i $ifname -c xcv"
-    sudo wanpipemon -i $ifname -c xcv
-
-    header "wanpipemon -i $ifname -c xru"
-    sudo wanpipemon -i $ifname -c xru
-
-    header "wanpipemon -i $ifname -c xm"
-    sudo wanpipemon -i $ifname -c xm
-
-    header "wanpipemon -i $ifname -c xl"
-    sudo wanpipemon -i $ifname -c xl
-
-    header "wanpipemon -i $ifname -c Ta"
-    sudo wanpipemon -i $ifname -c Ta
-done
-
-for i in /etc/wanpipe/wanpipe*.conf ; do
-    if [ -e $i ]; then
-       header $i
-       cat $i
-    fi
-done
-
-header "WAN Interface Configuration Log (wanrouter conflog)"
-wanrouter conflog
-
-else
-echo "Wanpipe not configured"
-fi
 
 header ROUTING
 
@@ -465,16 +394,6 @@ else
   echo "Firewall is not configured"
 fi
 
-header IPS
-if cli-shell-api existsActive content-inspection; then
-  header IPS log
-  show ips log
-  header IPS Update-Log
-  show ips update-log
-else
-  echo "IPS is not configured"
-fi
-
 header IPSec
 if cli-shell-api existsActive vpn ipsec; then
   header IPSec Status
@@ -498,7 +417,7 @@ else
 fi
 
 header NAT
-if cli-shell-api existsActive service nat; then
+if cli-shell-api existsActive nat; then
   header NAT Rules
   show nat rules
   header NAT Statistics
@@ -510,12 +429,11 @@ else
 fi
 
 
-header NETFLOW
-if cli-shell-api existsActive system flow-accounting netflow; then
-  header NetFlow Accounting
+header FlowAccounting
+if cli-shell-api existsActive system flow-accounting; then
   show flow-accounting 
 else
-  echo "Netflow is not configured"
+  echo "Flow accounting is not configured"
 fi
 
 header OPENVPN
@@ -618,17 +536,8 @@ else
 fi
 
 header VRRP
-found=0
-for eth in $(cd /sys/class/net; echo eth*); do
-  if cli-shell-api existsActive interfaces ethernet $eth vrrp; then
-    header \''show vrrp'\'
-    show vrrp
-    found=1
-  fi
-done
-if [ $found -eq 0 ]; then
-  echo "VRRP is not configured"
-fi
+# XXX: not checking if configured, we'd have to walk all VIFs
+show vrrp detail
 
 header WAN LOAD BALANCING
 if cli-shell-api existsActive load-balancing wan; then

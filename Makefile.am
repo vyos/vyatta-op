@@ -19,11 +19,8 @@ interp_DATA += functions/interpreter/vyatta-image-complete
 
 bin_SCRIPTS	 = scripts/vyatta-show-interfaces
 bin_SCRIPTS	+= scripts/vyatta-show-interfaces.pl
-bin_SCRIPTS	+= scripts/vyatta-show-version
 bin_SCRIPTS     += scripts/vyatta-show-dhclient.pl
 bin_SCRIPTS	+= scripts/vyatta-show-dmi
-bin_SCRIPTS	+= scripts/vyatta-tshark-interface-port.pl
-bin_SCRIPTS	+= scripts/vyatta-tshark.pl
 bin_SCRIPTS	+= scripts/vyatta-show-bonding.pl
 bin_SCRIPTS	+= scripts/vyatta-cpu-summary.pl
 bin_SCRIPTS	+= scripts/yesno
@@ -32,9 +29,6 @@ bin_SCRIPTS     += scripts/show-users.pl
 bin_SCRIPTS     += scripts/show-dhcp-leases.pl
 bin_SCRIPTS     += scripts/vyatta-boot-image.pl
 bin_SCRIPTS	+= scripts/vyatta-sudo
-bin_SCRIPTS	+= scripts/vyatta-show-snmp.pl
-bin_SCRIPTS	+= scripts/vyatta-show-snmp-ifmib
-bin_SCRIPTS	+= scripts/vyatta-show-snmp-v3.pl
 bin_SCRIPTS	+= scripts/rename-image.pl
 bin_SCRIPTS	+= scripts/show-image-storage.pl
 bin_SCRIPTS	+= scripts/vyatta-remote-copy.pl
@@ -51,25 +45,22 @@ bin_SCRIPTS += scripts/vyatta-monitor-background-stop
 bin_SCRIPTS += scripts/vyatta-monitor-check-rule-log
 bin_SCRIPTS += scripts/vyos-show-ram.sh
 bin_SCRIPTS += scripts/vyos-strip-config.pl
-bin_SCRIPTS += scripts/maya-date.py
-bin_SCRIPTS += scripts/limericks.py
+bin_SCRIPTS += scripts/ssh-server-key
 
 sbin_SCRIPTS     = scripts/dhcpv6-client-show-leases.pl
 sbin_SCRIPTS    += scripts/vyatta-image-tools.pl
 sbin_SCRIPTS    += scripts/vyatta-regen-unpriv-commands.sh
+sbin_SCRIPTS    += scripts/vyos-openvpn-remoteconfig.pl
 
 bin_sudo_users_SCRIPTS      = scripts/vyatta-identify-interface.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-delete-log-file.sh
 bin_sudo_users_SCRIPTS	   += scripts/vyatta-reboot.pl
 bin_sudo_users_SCRIPTS	   += scripts/vyatta-poweroff.pl
-bin_sudo_users_SCRIPTS     += scripts/vyatta-op-dns-forwarding.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-op-dynamic-dns.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-clear-conntrack
 
 all-local:
 	./gen-unpriv-commands.sh
-	./gen-monitor-interface-templates.sh
-	./gen-monitor-vif-interface-templates.sh
 
 clean-local:
 	$(RM) -r generated-templates
@@ -80,7 +71,6 @@ cpiop = find  . ! -regex '\(.*~\|.*\.bak\|.*\.swp\|.*\#.*\#\)' -print0 | \
 install-exec-hook:
 	mkdir -p $(DESTDIR)$(opdir)
 	cd templates; $(cpiop) $(DESTDIR)$(opdir)
-	cd generated-templates && $(cpiop) $(DESTDIR)$(opdir)
 	mkdir -p $(DESTDIR)$(etc_shell_leveldir)
 	cd etc/shell/level; $(cpiop) $(DESTDIR)$(etc_shell_leveldir)
 	mkdir -p $(DESTDIR)/etc/
