@@ -1,4 +1,0 @@
-help: Lookup host information for specified name or address
-allowed: echo -n '<hostname> <x.x.x.x> <y:y:y:y:y>'
-
-run: /usr/bin/host $4

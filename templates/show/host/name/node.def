@@ -1,2 +1,0 @@
-help: Show host name
-run: /bin/hostname
