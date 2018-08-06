@@ -1,2 +1,2 @@
 help: show TCP connection without resolving names
-run: /sbin/ss -t -n
+run: ss -t -n

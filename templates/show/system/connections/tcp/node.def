@@ -1,2 +1,2 @@
 help: show TCP connection information
-run: /sbin/ss -t -r
+run: ss -t -r
