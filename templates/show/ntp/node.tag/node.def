@@ -1,3 +1,0 @@
-help: Show date and time of specified NTP server
-allowed: awk '/^server/ { print $2 }'  /etc/ntp.conf
-run: /usr/sbin/ntpdate -q $3

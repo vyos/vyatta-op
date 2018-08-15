@@ -1,2 +1,0 @@
-help: Set system date and time from Network Time Protocol (NTP) server
-run: sudo ntpdate -u 0.vyatta.pool.ntp.org

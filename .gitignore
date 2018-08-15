@@ -27,3 +27,7 @@ libtool
 
 /src/render_xml
 generated-templates/*
+
+# Intellij
+.idea/
+*.iml
