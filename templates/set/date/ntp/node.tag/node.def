@@ -1,6 +1,0 @@
-help: Set system date and time with given NTP server
-allowed: local -a arr 
-         eval "arr=($(cli-shell-api listEffectiveNodes system ntp server))" 
-         echo -n "<hostname> <x.x.x.x>" ${arr[@]}
-run: sudo ntpdate -u $4
-
