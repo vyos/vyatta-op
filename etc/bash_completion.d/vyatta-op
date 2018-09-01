@@ -500,7 +500,11 @@ strip-private ()
 commands ()
 {
   if [ "$_OFR_CONFIGURE" != "" ]; then
-      ${vyos_libexec_dir}/commands-pipe.py
+      if $(cli-shell-api sessionChanged); then
+          echo "You have uncommited changes, please commit them before using the commands pipe"
+      else
+          ${vyos_libexec_dir}/commands-pipe.py
+      fi
   else
       echo "commands pipe is not supported in operational mode"
   fi
