@@ -37,7 +37,7 @@ test -z "$VYATTA_PAGER" && \
 
 _vyatta_op_do_key_bindings ()
 {
-  if [ "$SHELL" != "/bin/vbash" && "$SHELL" != "/sbin/radius_shell" ]; then
+  if [[ "$SHELL" != "/bin/vbash" && "$SHELL" != "/sbin/radius_shell" ]]; then
     # only do bindings if vbash and radius_shell
     return
   fi
