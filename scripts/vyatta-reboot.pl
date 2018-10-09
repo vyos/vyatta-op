@@ -33,7 +33,7 @@ use strict;
 use warnings;
 
 my $reboot_job_file = '/var/run/reboot.job';
-
+my $confirm_job_file = '/var/run/confirm.job';
 
 sub parse_at_output {
     my @lines = @_;
@@ -49,18 +49,50 @@ sub parse_at_output {
 }
 
 sub is_reboot_pending {
-
-    if ( ! -f $reboot_job_file) {
-	return (0, '');
-    }
+  ### that won't exist anymore but may be called somewhere else
+  if ( -f $reboot_job_file )
+  {
     my $job = `cat $reboot_job_file`;
     chomp $job;
     my $line = `atq $job`;
-    if ($line =~ /\d+\s+(.*)\sa root$/) {
-	return (1, $1);
-    } else {
-	return (0, '');
+    if ($line =~ /\d+\s+(.*)\sa root$/) 
+    {
+      return (1, $1);
     }
+    else
+    {
+      return (0, '');
+    }
+  }
+
+  #### comit-confirm creates an at job as well
+  if ( -f $confirm_job_file)
+  { 
+    my $job = `cat $confirm_job_file`;
+    chomp $job;
+    my $line = `atq $job`;
+    if ($line =~ /\d+\s+(.*)\sa root$/)
+    { 
+      return (1, $1);
+    }
+    else
+    { 
+      return (0, '');
+    }
+  }
+  #### an now the systemd job from powrctrl.py
+  my $line = `systemctl status systemd-shutdownd.service`;
+  if ($line =~ /Active: active/)
+  {
+    if($line =~ m/Status:(.*)/)
+    {
+      return (1, $1);
+    }
+  }
+  else
+  {
+    return (0, '');
+  }
 }
 
 sub do_reboot {
