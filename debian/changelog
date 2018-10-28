@@ -1,8 +1,10 @@
-vyatta-op (1.2.0-1) stable; urgency=medium
+vyatta-op (0.14.0+vyos2+current7) unstable; urgency=medium
 
-  * New branch.
+  * T870: Commit-confirm restarts the server even after commit
+    
+    - show reboot now also show if scheduled via commit-confirm or systemd.
 
- -- Daniil Baturin <daniil@baturin.org>  Fri, 28 Sep 2018 22:03:28 +0200
+ -- hagbard <vyosdev@derith.de>  Tue, 09 Oct 2018 16:07:22 -0700 
 
 vyatta-op (0.14.0+vyos2+current6) unstable; urgency=medium
 
