@@ -1,3 +1,10 @@
+vyatta-op (0.14.0+vyos2+current8) unstable; urgency=medium
+  
+  * T963: no authorization logs
+
+
+ -- hagbard <vyosdev@derith.de>  Wed, 07 Nov 2018 12:38:20 -0800
+
 vyatta-op (0.14.0+vyos2+current7) unstable; urgency=medium
 
   * T870: Commit-confirm restarts the server even after commit
