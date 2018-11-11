@@ -158,6 +158,9 @@ $input =~ s/ (peer|remote-host|local-host|server) ([\w-]+\.)+[\w-]+/ $1 xxxxx.tl
 # Strip OpenVPN secrets
 $input =~ s/(shared-secret-key-file|ca-cert-file|cert-file|dh-file|key-file|client) (\S+)/$1 xxxxxx/g if $stripOvpnSecrets;
 
+# Strip IPSEC secrets
+$input =~ s/pre-shared-secret \S+/pre-shared-secret xxxxxx/g if !($keepKeys);
+
 # Strip BGP ASNs
 $input =~ s/(bgp|remote-as) (\d+)/$1 XXXXXX/g if $stripASN;
 
