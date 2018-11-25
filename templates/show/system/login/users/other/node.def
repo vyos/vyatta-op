@@ -1,2 +1,2 @@
-help: Show information about non-Vyatta accounts
+help: Show information about non VyOS user accounts
 run: ${vyatta_bindir}/vyatta-sudo /opt/vyatta/bin/show-users.pl other

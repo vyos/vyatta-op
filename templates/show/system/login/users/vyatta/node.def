@@ -1,2 +1,0 @@
-help: Show information about vyatta accounts
-run: /opt/vyatta/bin/show-users.pl vyatta
