@@ -503,7 +503,7 @@ commands ()
       if $(cli-shell-api sessionChanged); then
           echo "You have uncommited changes, please commit them before using the commands pipe"
       else
-          ${vyos_libexec_dir}/commands-pipe.py
+          vyos-config-to-commands
       fi
   else
       echo "commands pipe is not supported in operational mode"
