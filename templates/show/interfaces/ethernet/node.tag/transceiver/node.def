@@ -1,0 +1,3 @@
+help:  Show transceiver information from plugin modules, e.g SFP+, QSFP
+allowed: ""
+run: /sbin/ethtool -m "$4"
