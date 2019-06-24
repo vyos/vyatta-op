@@ -161,6 +161,9 @@ $input =~ s/(shared-secret-key-file|ca-cert-file|cert-file|dh-file|key-file|clie
 # Strip IPSEC secrets
 $input =~ s/pre-shared-secret \S+/pre-shared-secret xxxxxx/g if !($keepKeys);
 
+# Strip OSPF md5-key
+$input =~ s/md5-key \S+/md5-key xxxxxx/g if !($keepKeys);
+
 # Strip BGP ASNs
 $input =~ s/(bgp|remote-as) (\d+)/$1 XXXXXX/g if $stripASN;
 
