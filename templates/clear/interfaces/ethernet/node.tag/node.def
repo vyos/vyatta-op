@@ -1,4 +1,4 @@
 help: Clear interface information for a given ethernet interface
 allowed: local -a array ;
-	 array=( /sys/class/net/eth* ) ;
+	 array=( /sys/class/net/eth* /sys/class/net/en* ) ;
 	 echo  -n ${array[@]##*/}
