@@ -22,7 +22,7 @@ shopt -s extglob
 shopt -s nullglob
 
 declare progname=${0##*/}
-declare -a full_itfs=( /sys/class/net/+(eth|vmnet|lo|tun|wan|pppoe|pppoa|adsl)* )
+declare -a full_itfs=( /sys/class/net/+(eno|ens|enp|enx|eth|vmnet|lo|tun|wan|pppoe|pppoa|adsl)* )
 declare -a itfs
 declare _do_show=_show_itf_stats
 
@@ -128,7 +128,7 @@ _usage ()
 _add_itfs ()
 {
     for itf ; do
-	if [[ $itf != +(eth|vmnet|lo|tun|wan|pppoe|pppoa|adsl)* ]] ; then
+	if [[ $itf != +(eno|ens|enp|enx|eth|vmnet|lo|tun|wan|pppoe|pppoa|adsl)* ]] ; then
 	    _error 2 \""$itf"\" is not an interface name\!
 	elif [ ! -d /sys/class/net/$itf ] ; then
 	    _error 2 $itf: no such interface\!
@@ -146,7 +146,7 @@ if [ $# -gt 0 ] ; then
 	if [ $# -eq 1 ] ; then
 	    case $1 in
 		ethernet )
-		    full_itfs=( /sys/class/net/+(eth|vmnet)* ) ;;
+		    full_itfs=( /sys/class/net/+(eno|ens|enp|enx|eth|vmnet)* ) ;;
 		loopback )
 		    full_itfs=( /sys/class/net/lo* ) ;;
 		tunnel )

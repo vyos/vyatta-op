@@ -26,7 +26,7 @@ use strict;
 
 my $intf = shift;
 
-if (!($intf =~ /^eth\d+/)) {
+if (!($intf =~ /^(eth\d+|en[ospx])/)) {
   print STDERR "This command only supports Ethernet interfaces\n";
   exit 1;
 }
