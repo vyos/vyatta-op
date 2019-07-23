@@ -257,5 +257,6 @@ while (my $arg = shift @$args) {
 	push @cmdargs, $optarg;
     }
 }
-exec { $cmd } @cmdargs, $host;
+#exec { $cmd } @cmdargs, $host;
+system("sudo"  , @cmdargs, $host)
 
