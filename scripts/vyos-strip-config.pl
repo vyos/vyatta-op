@@ -135,19 +135,22 @@ $input =~ s/(type 'ssh-rsa'|type 'ssh-dss')/type ssh-xxx/g if !($keepKeys);
 $input =~ s/ key \S+/ key xxxxxx/g if !($keepKeys);
 
 # Strip MAC addresses
-$input =~ s/([0-9A-F]{2}\:){3}([0-9A-F]{2}((\:{0,1})){3})/XX:XX:XX:$2/gi if $stripMAC;
+$input =~ s/([0-9a-fA-F]{2}\:){5}([0-9a-fA-F]{2}((\:{0,1})){3})/XX:XX:XX:XX:XX:$2/gi if $stripMAC;
 
 # Strip IPv4 addresses
 $input =~ s/\d+\.\d+\.(\d+)\.(\d+)/xxx.xxx.$1.$2/g if $stripIP;
 
 # Strip IPv6 addresses
-$input =~ s/ (([0-9a-f]{1,4}\:){2})(\S+)/ xxxx:xxxx:$3/gi if $stripIP;
+$input =~ s/(([0-9a-fA-F]{1,4}\:){2})(\S+)/xxxx:xxxx:$3/gi if $stripIP;
 
 # Strip host-name, domain-name, and domain-search
 $input =~ s/(host-name|domain-name|domain-search) \S+/$1 xxxxxx/g if $stripHostname;
 
 # Strip user-names
-$input =~ s/(user|username|user-id|full-name) \S+/$1 xxxxxx/g if $stripUsernames;
+$input =~ s/(user|username|user-id) \S+/$1 xxxxxx/g if $stripUsernames;
+
+# Strip full-name
+$input =~ s/(full-name) [ -_A-Z a-z]+/$1 xxxxxx/g if $stripUsernames;
 
 # Strip DHCP static-mapping and shared network names
 $input =~ s/(shared-network-name|static-mapping) \S+/$1 xxxxxx/g if $stripDHCP;
