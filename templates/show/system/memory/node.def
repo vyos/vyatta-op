@@ -1,2 +1,0 @@
-help: Display system memory usage
-run: ${vyatta_bindir}/vyos-show-ram.sh

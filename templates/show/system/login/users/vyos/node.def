@@ -1,2 +1,0 @@
-help: Show information about VyOS user accounts
-run: /opt/vyatta/bin/show-users.pl vyatta

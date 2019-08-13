@@ -1,2 +1,0 @@
-help: Show information about locked accounts
-run: ${vyatta_bindir}/vyatta-sudo /opt/vyatta/bin/show-users.pl locked
