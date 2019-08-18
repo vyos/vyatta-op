@@ -1,2 +1,0 @@
-help: Show user account information
-run: ${vyatta_bindir}/vyatta-sudo /opt/vyatta/bin/show-users.pl

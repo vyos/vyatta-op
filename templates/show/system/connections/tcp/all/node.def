@@ -1,2 +1,0 @@
-help: show all TCP connections
-run: ss -t -a

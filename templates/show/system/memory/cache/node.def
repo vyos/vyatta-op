@@ -1,2 +1,0 @@
-help: Show kernel cache information
-run: sudo slabtop -o

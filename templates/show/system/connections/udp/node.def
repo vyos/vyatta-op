@@ -1,2 +1,0 @@
-help: show UDP socket information
-run: ss -u -a -r

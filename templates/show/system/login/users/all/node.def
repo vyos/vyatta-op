@@ -1,2 +1,0 @@
-help: Show information about all accounts
-run: /opt/vyatta/bin/show-users.pl all

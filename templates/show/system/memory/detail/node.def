@@ -1,2 +1,0 @@
-help: Report detailed system memory usage
-run: cat /proc/meminfo

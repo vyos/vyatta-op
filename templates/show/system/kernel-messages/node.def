@@ -1,2 +1,0 @@
-help: Show messages in kernel ring buffer
-run: sudo dmesg
