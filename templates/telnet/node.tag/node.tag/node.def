@@ -1,9 +1,0 @@
-help: Telnet to <address> <port>
-allowed: echo -n '<0-65535>'
-run: if [ -x /usr/bin/telnet ] ; then
-     	/usr/bin/$*
-     elif [ -x /bin/busybox ] ; then
-	/bin/busybox $*
-     else
-	echo telnet not found
-     fi
