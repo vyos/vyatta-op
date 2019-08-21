@@ -1,4 +1,0 @@
-#
-# Operational mode template for the "traceroute" command
-#
-help: Track network path to node

@@ -1,8 +1,0 @@
-#
-# Operational mode template for the "traceroute" command
-#
-
-help:   Track network path to specified node
-allowed: echo -n '<hostname> <x.x.x.x> <h:h:h:h:h:h:h:h>'
-
-run: /opt/vyatta/bin/vyatta-traceroute $2
