@@ -1,2 +1,0 @@
-help: Flush the kernel IPv6 route cache
-run: sudo /sbin/ip -f inet6 route flush cache

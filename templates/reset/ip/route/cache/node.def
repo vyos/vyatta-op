@@ -1,2 +1,0 @@
-help: Flush the kernel route cache
-run: sudo /sbin/ip route flush cache
