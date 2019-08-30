@@ -22,8 +22,6 @@ bin_SCRIPTS	+= scripts/vyatta-show-interfaces.pl
 bin_SCRIPTS     += scripts/vyatta-show-dhclient.pl
 bin_SCRIPTS	+= scripts/vyatta-show-dmi
 bin_SCRIPTS	+= scripts/vyatta-show-bonding.pl
-bin_SCRIPTS	+= scripts/vyatta-cpu-summary.pl
-bin_SCRIPTS	+= scripts/yesno
 bin_SCRIPTS     += scripts/vyatta-gettime.pl
 bin_SCRIPTS     += scripts/show-dhcp-leases.pl
 bin_SCRIPTS     += scripts/vyatta-boot-image.pl
@@ -41,7 +39,6 @@ bin_SCRIPTS += scripts/vyatta-monitor-background
 bin_SCRIPTS += scripts/vyatta-monitor-background-stop
 bin_SCRIPTS += scripts/vyatta-monitor-check-rule-log
 bin_SCRIPTS += scripts/vyos-strip-config.pl
-bin_SCRIPTS += scripts/ssh-server-key
 
 sbin_SCRIPTS     = scripts/dhcpv6-client-show-leases.pl
 sbin_SCRIPTS    += scripts/vyatta-image-tools.pl

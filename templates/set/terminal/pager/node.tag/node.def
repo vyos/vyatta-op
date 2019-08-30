@@ -1,3 +1,0 @@
-help: Set terminal pager
-allowed: echo -n '<PROGRAM>'
-run: VYATTA_PAGER=$4

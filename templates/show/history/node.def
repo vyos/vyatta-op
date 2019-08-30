@@ -1,5 +1,0 @@
-help: show command history
-run: HISTTIMEFORMAT='%FT%T%z '
-     HISTFILE="$HOME/.bash_history"
-     \set -o history 
-     history 
