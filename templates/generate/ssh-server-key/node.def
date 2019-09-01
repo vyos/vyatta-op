@@ -1,2 +1,0 @@
-help: Regenerate the host SSH keys and restart the SSH server
-run: ${vyatta_bindir}/ssh-server-key
