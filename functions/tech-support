@@ -1,6 +1,8 @@
 # implement "show tech-support"
 # usage: tech-support [ save [ <filename> ] ]
 # usage: tech-support [ save-uncompressed [ <filename> ] ] 
+# usage: network - all network related stuff
+# usage: system - os related (cpu, memory, file system space, pkgs etc.)
 # NOTE: this file is sourced, NOT executed
 
 function header {
@@ -68,241 +70,256 @@ fi
 export PATH=/sbin:/usr/sbin:$PATH
 
 header Show Tech-Support  
+  
 header CONFIGURATION 
+  
+function show_version { 
+  if cli-shell-api validateTmplPath entitlement; then
+    header Entitlement
+    show entitlement
+  fi
 
-if cli-shell-api validateTmplPath entitlement; then
-header Entitlement
-show entitlement
-fi
+  header VyOS Version and Package Changes
+  show version all
+}
+function show_conf { 
+  header Configuration File 
+  cat /opt/vyatta/etc/config/config.boot
 
-header VyOS Version and Package Changes
-show version all
-
-header Configuration File 
-cat /opt/vyatta/etc/config/config.boot
-
-header Running configuration
-show configuration
-
-header Package Repository Configuration File 
-cat /etc/apt/sources.list
-
-header User Startup Scripts 
-cat /etc/rc.local
-
-header Quagga Configuration
-vtysh -c 'show run'
-
-header INTERFACES
-
-
-header Interfaces
-show interfaces
-
-header Ethernet
-
-header Interface statistics
-ip -s link show
-
-for eth in $(${vyos_completion_dir}/list_interfaces.py --type=ethernet)
-do header "Physical Interface statistics for $eth"
-   sudo ethtool -S $eth
-done
-
-for eth in $(${vyos_completion_dir}/list_interfaces.py --type=ethernet)
-do header "Physical Interface Details for $eth"
-   show interfaces ethernet $eth physical 
-   /sbin/ethtool -k $eth
-done
-
-header "ARP Table (Total entries)"
-show arp
-
-header Number of incomplete entries in ARP table
-show arp | grep incomplete | wc -l  
-
-header Bridge
-/sbin/brctl show
-for br in $(${vyos_completion_dir}/list_interfaces.py --type=bridge)
-do header "Bridge Information for $br"
-    /sbin/brctl showstp $br
-    /sbin/brctl showmacs $br
-done
-
-
-header ROUTING
-
-
-function show_route_limit ()
-{
-   NUM=$(show $1 route $2 | wc -l)
-   # subtract 3 lines of header
-   [ $NUM -gt 3 ] &&  NUM=$[$NUM - 3]
-   OUTPUT=$(echo show $1 route $2 \(total $NUM\))
-   CMD="show $1 route $2"
-   if [ $3 -eq 0 ]
-   then
-      header $OUTPUT
-      vtysh -c "$CMD"
-   else
-      header "$OUTPUT- limit $3"
-      vtysh -c "$CMD" | head -n $3
-   fi
+  header Running configuration
+  show configuration
 }
 
-#
-# show all connected/static, limit the output others and include a total
-#
-show_route_limit ip connected 0
-show_route_limit ip static    0
-show_route_limit ip rip  500
-show_route_limit ip ospf 500
-show_route_limit ip bgp  500
-show_route_limit ip ''   500
+function show_packages {
+  header Package Repository Configuration File 
+  cat /etc/apt/sources.list
+}
 
-show_route_limit ipv6 connected 0
-show_route_limit ipv6 static    0
-show_route_limit ipv6 ripng 500
-show_route_limit ipv6 ospf6 500
-show_route_limit ipv6 bgp   500
-show_route_limit ipv6 ''    500
+function show_rc {
+  header User Startup Scripts 
+  cat /etc/rc.local
+}
 
+function show_all_base_network {
+  header Quagga Configuration
+  vtysh -c 'show run'
 
-header IPTABLES 
+  header INTERFACES
 
 
-header Filter Chain Details 
-sudo /sbin/iptables -L -vn
+  header Interfaces
+  show interfaces
 
-header Nat Chain Details 
-sudo /sbin/iptables -t nat -L -vn
+  header Ethernet
 
-header Mangle Chain Details 
-sudo /sbin/iptables -t mangle -L -vn
+  header Interface statistics
+  ip -s link show
 
-header Raw Chain Details 
-sudo /sbin/iptables -t raw -L -vn
+  for eth in $(${vyos_completion_dir}/list_interfaces.py --type=ethernet)
+  do header "Physical Interface statistics for $eth"
+    sudo ethtool -S $eth
+  done
 
-header Save Iptables Rule-Set
-sudo iptables-save -c
+  for eth in $(${vyos_completion_dir}/list_interfaces.py --type=ethernet)
+  do header "Physical Interface Details for $eth"
+    show interfaces ethernet $eth physical 
+    /sbin/ethtool -k $eth
+  done
 
-header SYSTEM
+  header "ARP Table (Total entries)"
+  show arp
 
-header Show System Image Version 
-show system image version
+  header Number of incomplete entries in ARP table
+  show arp | grep incomplete | wc -l  
 
-header Show System Image Storage
-show system image storage
+  header Bridge
+  /sbin/brctl show
+  for br in $(${vyos_completion_dir}/list_interfaces.py --type=bridge)
+  do header "Bridge Information for $br"
+      /sbin/brctl showstp $br
+      /sbin/brctl showmacs $br
+  done
 
-header Current Time
-date
- 
-header Installed Packages
-dpkg -l
 
-header Loaded Modules
-cat /proc/modules
+  header ROUTING
 
-header CPU
 
-header Installed CPU/s 
-lscpu
+  function show_route_limit ()
+  {
+    NUM=$(show $1 route $2 | wc -l)
+    # subtract 3 lines of header
+    [ $NUM -gt 3 ] &&  NUM=$[$NUM - 3]
+    OUTPUT=$(echo show $1 route $2 \(total $NUM\))
+    CMD="show $1 route $2"
+    if [ $3 -eq 0 ]
+    then
+        header $OUTPUT
+        vtysh -c "$CMD"
+    else
+        header "$OUTPUT- limit $3"
+        vtysh -c "$CMD" | head -n $3
+    fi
+  }
 
-header Cumulative CPU Time Used by Running Processes
-top -n1 -b -S
+  #
+  # show all connected/static, limit the output others and include a total
+  #
+  show_route_limit ip connected 0
+  show_route_limit ip static    0
+  show_route_limit ip rip  500
+  show_route_limit ip ospf 500
+  show_route_limit ip bgp  500
+  show_route_limit ip ''   500
 
-header Hardware Interrupt Counters
-cat /proc/interrupts
- 
-header Load Average
-cat /proc/loadavg
+  show_route_limit ipv6 connected 0
+  show_route_limit ipv6 static    0
+  show_route_limit ipv6 ripng 500
+  show_route_limit ipv6 ospf6 500
+  show_route_limit ipv6 bgp   500
+  show_route_limit ipv6 ''    500
 
-header Running Processes
-ps -ef
 
-header Memory
+  header IPTABLES 
 
-header Installed Memory 
-cat /proc/meminfo
 
-header Memory Usage
-free
+  header Filter Chain Details 
+  sudo /sbin/iptables -L -vn
 
-header Storage
+  header Nat Chain Details 
+  sudo /sbin/iptables -t nat -L -vn
 
-header Devices
-cat /proc/devices
+  header Mangle Chain Details 
+  sudo /sbin/iptables -t mangle -L -vn
 
-header Partitions
-cat /proc/partitions
+  header Raw Chain Details 
+  sudo /sbin/iptables -t raw -L -vn
 
-disks=`cat /proc/partitions | awk '{ if ($4!="name") { print $4 } }' | egrep -v "[0-9]$" | egrep -v "^$"`
+  header Save Iptables Rule-Set
+  sudo iptables-save -c
+}
 
-for disk in $disks; do
-    header "Partitioning for disk $disk"
-    fdisk -l /dev/$disk
-done
+function show_system_info { 
+  header SYSTEM
 
-header Mounts
-cat /proc/mounts
+  header Show System Image Version 
+  show system image version
 
-header Diskstats
-cat /proc/diskstats
+  header Show System Image Storage
+  show system image storage
 
-header Hard Drive Usage 
-df -h -x squashfs
+  header Current Time
+  date
+  
+  header Installed Packages
+  dpkg -l
 
-header General System
+  header Loaded Modules
+  cat /proc/modules
 
-header Boot Messages 
-cat /var/log/dmesg
+  header CPU
 
-header "Recent Kernel messages (dmesg)"
-dmesg
+  header Installed CPU/s 
+  lscpu
 
-header PCI Info
-sudo lspci -vvx
+  header Cumulative CPU Time Used by Running Processes
+  top -n1 -b -S
 
-header PCI Vendor and Device Codes
-sudo lspci -nn
- 
-header System Info
-${vyatta_bindir}/vyatta-show-dmi
+  header Hardware Interrupt Counters
+  cat /proc/interrupts
+  
+  header Load Average
+  cat /proc/loadavg
 
-header GRUB Command line
-cat /proc/cmdline
+  header Running Processes
+  ps -ef
 
-header Open Ports 
-sudo lsof -P -n -i
+  header Memory
 
-header System Startup Files 
-ls -l /etc/rc?.d
+  header Installed Memory 
+  cat /proc/meminfo
 
-header Bash History
-eval "cfg_users=($(cli-shell-api listActiveNodes system login user))"
-for user in "${cfg_users[@]}"; do
-   header "Bash History for $user"; 
-   case $user in 
-      root) file="/root/.bash_history";;
-      *) file="/home/$user/.bash_history";; 
-   esac; 
-  sudo cat $file | gawk '/^#[0-9]*/ {t = substr($0,2); next} {print strftime("%FT%T%z", t) " " $0}' | sort -u
-done
+  header Memory Usage
+  free
 
-header Login History 
-last -ix
+  header Storage
 
-header Recent Log Messages 
-tail -n 250 /var/log/messages
+  header Devices
+  cat /proc/devices
 
-header NTP
-show ntp
+  header Partitions
+  cat /proc/partitions
 
+  disks=`cat /proc/partitions | awk '{ if ($4!="name") { print $4 } }' | egrep -v "[0-9]$" | egrep -v "^$"`
+
+  for disk in $disks; do
+      header "Partitioning for disk $disk"
+      fdisk -l /dev/$disk
+  done
+
+  header Mounts
+  cat /proc/mounts
+
+  header Diskstats
+  cat /proc/diskstats
+
+  header Hard Drive Usage 
+  df -h -x squashfs
+
+}
+
+function show_general_system {
+
+  header General System
+
+  header Boot Messages 
+  cat /var/log/dmesg
+
+  header "Recent Kernel messages (dmesg)"
+  dmesg
+
+  header PCI Info
+  sudo lspci -vvx
+
+  header PCI Vendor and Device Codes
+  sudo lspci -nn
+  
+  header System Info
+  ${vyatta_bindir}/vyatta-show-dmi
+
+  header GRUB Command line
+  cat /proc/cmdline
+
+  header Open Ports 
+  sudo lsof -P -n -i
+
+  header System Startup Files 
+  ls -l /etc/rc?.d
+
+  header Bash History
+  eval "cfg_users=($(cli-shell-api listActiveNodes system login user))"
+  for user in "${cfg_users[@]}"; do
+    header "Bash History for $user"; 
+    case $user in 
+        root) file="/root/.bash_history";;
+        *) file="/home/$user/.bash_history";; 
+    esac; 
+    sudo cat $file | gawk '/^#[0-9]*/ {t = substr($0,2); next} {print strftime("%FT%T%z", t) " " $0}' | sort -u
+  done
+
+  header Login History 
+  last -ix
+
+  header Recent Log Messages 
+  tail -n 250 /var/log/messages
+
+  header NTP
+  show ntp
+}
 ###
 # End of Core section
 ###
 
-
+function show_bgp { 
 header BGP 
 if cli-shell-api existsActive protocols bgp; then
   header BGP Summary
@@ -314,7 +331,9 @@ if cli-shell-api existsActive protocols bgp; then
 else
   echo "BGP is not configured"
 fi
+}
 
+function show_clustering {
 header CLUSTERING
 if cli-shell-api existsActive cluster; then
   header Cluster Status
@@ -322,249 +341,289 @@ if cli-shell-api existsActive cluster; then
 else
   echo "Clustering is not configured"
 fi
+}
 
-header DHCP Server 
-if cli-shell-api existsActive service dhcp-server; then
-  header DHCP Leases
-  show dhcp server leases
-  header DHCP Statistics
-  show dhcp server statistics
-else
-  echo "DHCP server is not configured"
-fi
-
-header DHCP Client
-is_dhcp=`show dhcp client leases | wc -l`
-if [ "$is_dhcp" == "1" ]; then
-echo "DHCP client is not configured"
-else
-header DHCP Client Leases
-show dhcp client leases
-fi
-
-header DHCPV6 Server 
-if cli-shell-api existsActive service dhcpv6-server; then
-  header DHCPV6 Server Status
-  show dhcpv6 server status 
-  header DHCPV6 Server Leases
-  show dhcpv6 server leases
-else
-  echo "DHCPV6 Server is not configured"
-fi
-
-header DHCPV6 Relay 
-if cli-shell-api existsActive service dhcpv6-relay; then
-  header DHCPV6 Relay Status
-  show dhcpv6 relay-agent status 
-else
-  echo "DHCPV6 Relay is not configured"
-fi
-
-header DHCPV6 Client
-is_dhcp=`show dhcpv6 client leases | wc -l`
-if [ "$is_dhcp" == "1" ]; then
-echo "DHCPV6 client is not configured"
-else
-header DHCPV6 Client Leases 
-show dhcpv6 client leases
-fi
-
-header DNS 
-if cli-shell-api existsActive service dns; then
-  header DNS Dynamic Status
-  show dns dynamic status
-  header DNS Forwarding Statistics
-  show dns forwarding statistics
-  header DNS Forwarding Nameservers  
-  show dns forwarding nameservers
-else
-  echo "DNS is not configured"
-fi
-
-
-header FIREWALL 
-if cli-shell-api existsActive firewall; then
-  header Firewall Group
-  show firewall group
-  header Firewall Summary
-  show firewall summary
-  header Firewall Statistics
-  show firewall statistics 
-else
-  echo "Firewall is not configured"
-fi
-
-header IPSec
-if cli-shell-api existsActive vpn ipsec; then
-  header IPSec Status
-  show vpn ipsec status
-  header IPSec sa
-  show vpn ipsec sa
-  header IPSec sa Detail
-  show vpn ipsec sa detail
-  header IPSec sa Statistics
-  show vpn ipsec sa statistics
-   
-  header /etc/ipsec.conf
-  cat /etc/ipsec.conf
-
-  if [ -r /etc/ipsec.secrets ]; then
-    header /etc/ipsec.secrets
-    cat /etc/ipsec.secrets
+function show_dhcp_info { 
+  header DHCP Server 
+  if cli-shell-api existsActive service dhcp-server; then
+    header DHCP Leases
+    show dhcp server leases
+    header DHCP Statistics
+    show dhcp server statistics
+  else
+    echo "DHCP server is not configured"
   fi
-else
-  echo "IPSec is not configured"
-fi
 
-header NAT
-if cli-shell-api existsActive nat; then
-  header NAT Rules
-  show nat rules
-  header NAT Statistics
-  show nat statistics
-  header NAT Translations Detail
-  show nat translations detail
-else
-  echo "NAT is not configured"
-fi
+  header DHCP Client
+  is_dhcp=`show dhcp client leases | wc -l`
+  if [ "$is_dhcp" == "1" ]; then
+  echo "DHCP client is not configured"
+  else
+  header DHCP Client Leases
+  show dhcp client leases
+  fi
+
+  header DHCPV6 Server 
+  if cli-shell-api existsActive service dhcpv6-server; then
+    header DHCPV6 Server Status
+    show dhcpv6 server status 
+    header DHCPV6 Server Leases
+    show dhcpv6 server leases
+  else
+    echo "DHCPV6 Server is not configured"
+  fi
+
+  header DHCPV6 Relay 
+  if cli-shell-api existsActive service dhcpv6-relay; then
+    header DHCPV6 Relay Status
+    show dhcpv6 relay-agent status 
+  else
+    echo "DHCPV6 Relay is not configured"
+  fi
+
+  header DHCPV6 Client
+  is_dhcp=`show dhcpv6 client leases | wc -l`
+  if [ "$is_dhcp" == "1" ]; then
+  echo "DHCPV6 client is not configured"
+  else
+  header DHCPV6 Client Leases 
+  show dhcpv6 client leases
+  fi
+
+}
+
+function show_dns { 
+  header DNS 
+  if cli-shell-api existsActive service dns; then
+    header DNS Dynamic Status
+    show dns dynamic status
+    header DNS Forwarding Statistics
+    show dns forwarding statistics
+    header DNS Forwarding Nameservers  
+    show dns forwarding nameservers
+  else
+    echo "DNS is not configured"
+  fi
+}
+
+function show_additional_network { 
+  header FIREWALL 
+  if cli-shell-api existsActive firewall; then
+    header Firewall Group
+    show firewall group
+    header Firewall Summary
+    show firewall summary
+    header Firewall Statistics
+    show firewall statistics 
+  else
+    echo "Firewall is not configured"
+  fi
+
+  header IPSec
+  if cli-shell-api existsActive vpn ipsec; then
+    header IPSec Status
+    show vpn ipsec status
+    header IPSec sa
+    show vpn ipsec sa
+    header IPSec sa Detail
+    show vpn ipsec sa detail
+    header IPSec sa Statistics
+    show vpn ipsec sa statistics
+    
+    header /etc/ipsec.conf
+    cat /etc/ipsec.conf
+
+    if [ -r /etc/ipsec.secrets ]; then
+      header /etc/ipsec.secrets
+      cat /etc/ipsec.secrets
+    fi
+  else
+    echo "IPSec is not configured"
+  fi
+
+  header NAT
+  if cli-shell-api existsActive nat; then
+    header NAT Rules
+    show nat rules
+    header NAT Statistics
+    show nat statistics
+    header NAT Translations Detail
+    show nat translations detail
+  else
+    echo "NAT is not configured"
+  fi
 
 
-header FlowAccounting
-if cli-shell-api existsActive system flow-accounting; then
-  show flow-accounting 
-else
-  echo "Flow accounting is not configured"
-fi
+  header FlowAccounting
+  if cli-shell-api existsActive system flow-accounting; then
+    show flow-accounting 
+  else
+    echo "Flow accounting is not configured"
+  fi
 
-header OPENVPN
-if cli-shell-api existsActive interfaces openvpn; then
-  header OpenVPN Interfaces
-  show interfaces openvpn detail 
-  header OpenVPN Server Status
-  show openvpn status server
-else
-  echo "OpenVPN is not configured"
-fi
+  header OPENVPN
+  if cli-shell-api existsActive interfaces openvpn; then
+    header OpenVPN Interfaces
+    show interfaces openvpn detail 
+    header OpenVPN Server Status
+    show openvpn status server
+  else
+    echo "OpenVPN is not configured"
+  fi
 
-header OSPF
-if cli-shell-api existsActive protocols ospf; then
-  header OSPF Neighbor
-  show ip ospf neighbor
-  header OSPF Route
-  show ip ospf route
-  header OSPF Debugging Information
-  show monitoring protocols ospf 
-else
-  echo "OSPF is not configured"
-fi
+  header OSPF
+  if cli-shell-api existsActive protocols ospf; then
+    header OSPF Neighbor
+    show ip ospf neighbor
+    header OSPF Route
+    show ip ospf route
+    header OSPF Debugging Information
+    show monitoring protocols ospf 
+  else
+    echo "OSPF is not configured"
+  fi
 
-header OSPFV3
-if cli-shell-api existsActive protocols ospfv3; then
-  header OSPFV3 Debugging Information
-  show monitoring protocols ospfv3
-else
-  echo "OSPFV3 is not configured" 
-fi
+  header OSPFV3
+  if cli-shell-api existsActive protocols ospfv3; then
+    header OSPFV3 Debugging Information
+    show monitoring protocols ospfv3
+  else
+    echo "OSPFV3 is not configured" 
+  fi
 
-header Policy
-if cli-shell-api existsActive policy; then
-  header IP Route Maps
-  show ip protocol 
-  header Route-Map
-  show route-map
-  #header IP Access Lists
-  #show ip access-lists
-  header IP Community List
-  show ip community-list 
-else
-  echo "Policy is not configured"
-fi
- 
-header Traffic Policy 
-if cli-shell-api existsActive traffic-policy; then
-  header Current Traffic Policies
-  show queueing
-else
-  echo "Traffic-Policy is not configured"
-fi
+  header Policy
+  if cli-shell-api existsActive policy; then
+    header IP Route Maps
+    show ip protocol 
+    header Route-Map
+    show route-map
+    #header IP Access Lists
+    #show ip access-lists
+    header IP Community List
+    show ip community-list 
+  else
+    echo "Policy is not configured"
+  fi
+  
+  header Traffic Policy 
+  if cli-shell-api existsActive traffic-policy; then
+    header Current Traffic Policies
+    show queueing
+  else
+    echo "Traffic-Policy is not configured"
+  fi
 
-header RIP
-if cli-shell-api existsActive protocols rip; then
-  header IP RIP
-  show ip rip 
-  header RIP Status
-  show ip rip status
-  header RIP Debugging Information
-  show monitoring protocols rip 
-else
-  echo "RIP is not configured"
-fi
+  header RIP
+  if cli-shell-api existsActive protocols rip; then
+    header IP RIP
+    show ip rip 
+    header RIP Status
+    show ip rip status
+    header RIP Debugging Information
+    show monitoring protocols rip 
+  else
+    echo "RIP is not configured"
+  fi
 
-header RIPNG 
-if cli-shell-api existsActive protocols ripng; then
-  header RIPNG Debugging Information
-  show monitoring protocols ripng
-else
-  echo "RIPNG is not configured"
-fi
+  header RIPNG 
+  if cli-shell-api existsActive protocols ripng; then
+    header RIPNG Debugging Information
+    show monitoring protocols ripng
+  else
+    echo "RIPNG is not configured"
+  fi
 
-header VPN-L2TP 
-if cli-shell-api existsActive vpn l2tp; then
-  header VPN ike secrets
-  show vpn ike secrets
-  header VPN rsa-keys
-  show vpn ike rsa-keys  
-  header VPN ike sa
-  show vpn ike sa
-  header VPN ike Status
-  show vpn ike status
-  header VPN Remote-Access
-  show vpn remote-access
+  header VPN-L2TP 
+  if cli-shell-api existsActive vpn l2tp; then
+    header VPN ike secrets
+    show vpn ike secrets
+    header VPN rsa-keys
+    show vpn ike rsa-keys  
+    header VPN ike sa
+    show vpn ike sa
+    header VPN ike Status
+    show vpn ike status
+    header VPN Remote-Access
+    show vpn remote-access
 
-  header VPN Debug Detail
-  show vpn debug detail
-else
-  echo "VPN L2TP is not configured"
-fi
+    header VPN Debug Detail
+    show vpn debug detail
+  else
+    echo "VPN L2TP is not configured"
+  fi
 
-header VPN-PPTP 
-if cli-shell-api existsActive vpn pptp; then
-  header VPN Remote-Access
-  show vpn remote-access
-else
-  echo "VPN PPTP is not configured"
-fi
+  header VPN-PPTP 
+  if cli-shell-api existsActive vpn pptp; then
+    header VPN Remote-Access
+    show vpn remote-access
+  else
+    echo "VPN PPTP is not configured"
+  fi
 
-header VRRP
-# XXX: not checking if configured, we'd have to walk all VIFs
-show vrrp detail
+  header VRRP
+  # XXX: not checking if configured, we'd have to walk all VIFs
+  show vrrp detail
 
-header WAN LOAD BALANCING
-if cli-shell-api existsActive load-balancing wan; then
-  header Wan Load Balance
-  show wan-load-balance 
-  header Wan Load Balance Status 
-  show wan-load-balance status
-  header Wan Load Balance Connection
-  show wan-load-balance connection
-else
-  echo "Wan Load Balance is not configured"
-fi
+  header WAN LOAD BALANCING
+  if cli-shell-api existsActive load-balancing wan; then
+    header Wan Load Balance
+    show wan-load-balance 
+    header Wan Load Balance Status 
+    show wan-load-balance status
+    header Wan Load Balance Connection
+    show wan-load-balance connection
+  else
+    echo "Wan Load Balance is not configured"
+  fi
 
-header "WEBPROXY/URL-FILTERING" 
-if cli-shell-api existsActive service webproxy url-filtering; then
-  header WebProxy Blacklist Categories
-  show webproxy blacklist categories
-  header WebProxy Blacklist Domains
-  show webproxy blacklist domains
-  header WebProxy Blacklist URLs
-  show webproxy blacklist urls
-  header WebProxy Blacklist Log 
-  show webproxy blacklist log summary
-else
-  echo "Webproxy/URL-filtering is not configured"
-fi
- 
+  header "WEBPROXY/URL-FILTERING" 
+  if cli-shell-api existsActive service webproxy url-filtering; then
+    header WebProxy Blacklist Categories
+    show webproxy blacklist categories
+    header WebProxy Blacklist Domains
+    show webproxy blacklist domains
+    header WebProxy Blacklist URLs
+    show webproxy blacklist urls
+    header WebProxy Blacklist Log 
+    show webproxy blacklist log summary
+  else
+    echo "Webproxy/URL-filtering is not configured"
+  fi
+
+} 
+
+  if [ "$1" == "network" ]; then
+    show_all_base_network
+    show_system_info
+    show_general_system
+    show_bgp
+    show_clustering
+    show_dhcp_info
+    show_dns
+    show_additional_network
+  elif [ "$1" == "system" ]; then
+    show_version
+    show_conf
+    show_packages
+    show_rc
+    show_all_base_network
+    show_system_info
+    show_general_system
+  else
+    show_version
+    show_conf
+    show_packages
+    show_rc
+    show_all_base_network
+    show_system_info
+    show_general_system
+    show_bgp
+    show_clustering
+    show_dhcp_info
+    show_dns
+    show_additional_network
+  fi
+
 header "END OF TECH-SUPPORT FILE"
 ) 1>&$OUT 2>&1
 
