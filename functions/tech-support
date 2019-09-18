@@ -552,7 +552,11 @@ function show_additional_network {
   fi
 
   header VRRP
-  show vrrp detail
+  if cli-shell-api existsActive high-availability vrrp; then
+    show vrrp detail
+  else
+    echo "VRRP is not configured"
+  fi  
 
   header WAN LOAD BALANCING
   if cli-shell-api existsActive load-balancing wan; then
@@ -584,8 +588,6 @@ function show_additional_network {
 
   if [ "$1" == "network" ]; then
     show_all_base_network
-    show_system_info
-    show_general_system
     show_bgp
     show_clustering
     show_dhcp_info
@@ -596,7 +598,6 @@ function show_additional_network {
     show_conf
     show_packages
     show_rc
-    show_all_base_network
     show_system_info
     show_general_system
   else
