@@ -416,10 +416,8 @@ function show_additional_network {
   if cli-shell-api existsActive vpn ipsec; then
     header IPSec Status
     show vpn ipsec status
-    header IPSec sa
-    show vpn ipsec sa detail
-    header IPSec sa Statistics
-    show vpn ipsec sa statistics
+    header IPSec verbose
+    show vpn ipsec sa verbose
     
     header /etc/ipsec.conf
     cat /etc/ipsec.conf
