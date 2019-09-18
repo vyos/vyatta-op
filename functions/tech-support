@@ -74,11 +74,6 @@ header Show Tech-Support
 header CONFIGURATION 
   
 function show_version { 
-  if cli-shell-api validateTmplPath entitlement; then
-    header Entitlement
-    show entitlement
-  fi
-
   header VyOS Version and Package Changes
   show version all
 }
@@ -399,8 +394,6 @@ function show_dns {
     show dns dynamic status
     header DNS Forwarding Statistics
     show dns forwarding statistics
-    header DNS Forwarding Nameservers  
-    show dns forwarding nameservers
   else
     echo "DNS is not configured"
   fi
@@ -424,8 +417,6 @@ function show_additional_network {
     header IPSec Status
     show vpn ipsec status
     header IPSec sa
-    show vpn ipsec sa
-    header IPSec sa Detail
     show vpn ipsec sa detail
     header IPSec sa Statistics
     show vpn ipsec sa statistics
@@ -561,7 +552,6 @@ function show_additional_network {
   fi
 
   header VRRP
-  # XXX: not checking if configured, we'd have to walk all VIFs
   show vrrp detail
 
   header WAN LOAD BALANCING
