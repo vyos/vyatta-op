@@ -1,3 +1,0 @@
-help: Initiate a bandwidth test to specified host (port TCP/5001)
-allowed: echo '<hostname> <x.x.x.x> <h:h:h:h:h:h:h:h>'
-run: iperf -c $4

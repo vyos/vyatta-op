@@ -1,3 +1,0 @@
-help: Reset IPv6 ND cache for interface
-allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show all
-run: sudo /sbin/ip -f inet6 neigh flush dev "$5"

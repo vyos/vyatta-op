@@ -1,3 +1,0 @@
-help: Set terminal to given number of columns
-allowed: echo -n '<NUMBER>'
-run: stty columns $4

@@ -22,8 +22,6 @@ bin_SCRIPTS	+= scripts/vyatta-show-interfaces.pl
 bin_SCRIPTS     += scripts/vyatta-show-dhclient.pl
 bin_SCRIPTS	+= scripts/vyatta-show-dmi
 bin_SCRIPTS	+= scripts/vyatta-show-bonding.pl
-bin_SCRIPTS	+= scripts/vyatta-cpu-summary.pl
-bin_SCRIPTS	+= scripts/yesno
 bin_SCRIPTS     += scripts/vyatta-gettime.pl
 bin_SCRIPTS     += scripts/show-dhcp-leases.pl
 bin_SCRIPTS     += scripts/vyatta-boot-image.pl
@@ -34,7 +32,6 @@ bin_SCRIPTS	+= scripts/vyatta-show-current-user
 bin_SCRIPTS	+= scripts/tech-support-archive
 bin_SCRIPTS	+= scripts/vyatta-op-cmd-wrapper
 bin_SCRIPTS += scripts/ping
-bin_SCRIPTS += scripts/vyatta-traceroute
 bin_SCRIPTS += scripts/vyatta-monitor
 bin_SCRIPTS += scripts/vyatta-monitor-list
 bin_SCRIPTS += scripts/vyatta-monitor-cleanup
@@ -42,7 +39,6 @@ bin_SCRIPTS += scripts/vyatta-monitor-background
 bin_SCRIPTS += scripts/vyatta-monitor-background-stop
 bin_SCRIPTS += scripts/vyatta-monitor-check-rule-log
 bin_SCRIPTS += scripts/vyos-strip-config.pl
-bin_SCRIPTS += scripts/ssh-server-key
 
 sbin_SCRIPTS     = scripts/dhcpv6-client-show-leases.pl
 sbin_SCRIPTS    += scripts/vyatta-image-tools.pl
@@ -53,7 +49,6 @@ bin_sudo_users_SCRIPTS      = scripts/vyatta-identify-interface.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-delete-log-file.sh
 bin_sudo_users_SCRIPTS	   += scripts/vyatta-reboot.pl
 bin_sudo_users_SCRIPTS	   += scripts/vyatta-poweroff.pl
-bin_sudo_users_SCRIPTS     += scripts/vyatta-clear-conntrack
 
 all-local:
 	./gen-unpriv-commands.sh

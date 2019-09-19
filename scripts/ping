@@ -238,7 +238,7 @@ given ($ip->version) {
     }
 }
 
-my @cmdargs = ( 'ping' );
+my @cmdargs = ( $cmd );
 my $args = [ 'ping', $host, @ARGV ];
 $args = expand_args(\%options, $args);
 shift @$args; shift @$args;
