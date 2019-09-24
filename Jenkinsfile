@@ -24,12 +24,17 @@ def getGitRepoURL() {
     return scm.userRemoteConfigs[0].url
 }
 
-// Returns true if this is a custom build launched on any project fork,
-// returns false if this is build from git@github.com:vyos/reponame
+def getGitRepoName() {
+    return getGitRepoURL().split('/').last()
+}
+
+// Returns true if this is a custom build launched on any project fork.
+// Returns false if this is build from git@github.com:vyos/<reponame>.
+// <reponame> can be e.g. vyos-1x.git or vyatta-op.git
 def isCustomBuild() {
     // GitHub organisation base URL
-    def gitURI = 'git@github.com:vyos/vyatta-op.git'
-    def httpURI = 'https://github.com/vyos/vyatta-op.git'
+    def gitURI = 'git@github.com:vyos/' + getGitRepoName()
+    def httpURI = 'https://github.com/vyos/' + getGitRepoName()
 
     return ! ((getGitRepoURL() == gitURI) || (getGitRepoURL() == httpURI))
 }
@@ -39,7 +44,7 @@ def setDescription() {
 
     // build up the main description text
     def description = ""
-    description += "<h2>VyOS individual package build: " + env.JOB_NAME + "</h2>"
+    description += "<h2>VyOS individual package build: " + getGitRepoName().replace('.git', '') + "</h2>"
 
     if (isCustomBuild()) {
         description += "<p style='border: 3px dashed red; width: 50%;'>"
@@ -67,7 +72,6 @@ setDescription()
 pipeline {
     agent {
         docker {
-            label 'Docker'
             args '--sysctl net.ipv6.conf.lo.disable_ipv6=0 -e GOSU_UID=1006 -e GOSU_GID=1006'
             image 'vyos/vyos-build:current'
         }
