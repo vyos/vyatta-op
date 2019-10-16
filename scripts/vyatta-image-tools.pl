@@ -215,8 +215,35 @@ sub rsync {
     return $?;
 }
 
+sub conv_spec_char {
+    my ($inpt_data) = @_;
+    #replace #
+    $inpt_data =~ s/\#/%23/g;
+    #replace @
+    $inpt_data =~ s/\@/%40/g;
+    return $inpt_data;
+}
+
+sub prepare_login_data {
+    my ($uri_data) = @_;
+    # Parse protocol
+    if ($uri_data =~ /ftp\:\/\//){
+        $uri_data = reverse($');
+        # Separate host and username login data
+        $uri_data =~ m/@/;
+        my $host_data = reverse($`);
+        my $login_data = reverse($');
+        $login_data =~ /\:/;
+        my $username = $`;
+        my $password = conv_spec_char($');
+        return "ftp://".$username.":".$password."@".$host_data;
+    }
+    return $uri_data;
+}
+
 sub curl_to {
     my ($from, $to) = @_;
+    $to = prepare_login_data($to);
     my $rc = system("curl -# -T $from $to");
     if ($to =~  /scp/ && ($rc >> 8) == 51){
         $to =~ m/scp:\/\/(.*?)\//;
@@ -246,6 +273,7 @@ sub curl_to {
 
 sub curl_from {
     my ($from, $to) = @_;
+    $from = prepare_login_data($from);
     my $rc = system("curl -# $from > $to");
     if ($from =~ /scp/ && ($rc >> 8) == 51){
         $from =~ m/scp:\/\/(.*?)\//;
