@@ -469,19 +469,21 @@ sub doDelete {
       exit 1;
   }
 
-  print "Are you sure you want to delete the\n\"$del_ver\" image? ";
-  print '(Yes/No) [No]: ';
-  $resp = <STDIN>;
-  if (!defined($resp)) {
-    $resp = 'no';
+  my $process_client = $ENV{'VYOS_HEADLESS_CLIENT'};
+  if (!defined($process_client)) {
+      print "Are you sure you want to delete the\n\"$del_ver\" image? ";
+      print '(Yes/No) [No]: ';
+      $resp = <STDIN>;
+      if (!defined($resp)) {
+          $resp = 'no';
+      }
+      chomp($resp);
+      $resp = lc($resp);
+      if (($resp ne 'yes') && ($resp ne 'y')) {
+          print "Image is NOT deleted. Exiting...\n";
+          exit 1;
+      }
   }
-  chomp($resp);
-  $resp = lc($resp);
-  if (($resp ne 'yes') && ($resp ne 'y')) {
-    print "Image is NOT deleted. Exiting...\n";
-    exit 1;
-  }
-
   if (-d $UNION_BOOT) {
     $boot_dir = $UNION_BOOT;
   } elsif (-d $DISK_BOOT) {
