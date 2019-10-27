@@ -510,6 +510,19 @@ commands ()
   fi
 }
 
+json ()
+{
+  if [ "$_OFR_CONFIGURE" != "" ]; then
+      if $(cli-shell-api sessionChanged); then
+          echo "You have uncommited changes, please commit them before using the JSON pipe"
+      else
+          vyos-config-to-json
+      fi
+  else
+      echo "JSON pipe is not supported in operational mode"
+  fi
+}
+
 # pipe command help
 # $1: command
 _vyatta_pipe_help ()
@@ -523,6 +536,7 @@ _vyatta_pipe_help ()
     no-more) help="Do not paginate the output";;
     strip-private) help="Remove private information from the config";;
     commands) help="Convert config to set commands";;
+    json) help="Convert config to JSON";;
     '<pattern>') help="Pattern for matching";;
   esac
   echo -n "$help"
@@ -547,7 +561,7 @@ _vyatta_do_pipe_help ()
 _vyatta_pipe_completion ()
 {
   local -a pipe_cmd=()
-  local -a all_cmds=( 'count' 'match' 'no-match' 'more' 'no-more' 'strip-private' 'commands' )
+  local -a all_cmds=( 'count' 'match' 'no-match' 'more' 'no-more' 'strip-private' 'commands' 'json' )
   local found=0
   _vyatta_pipe_completions=()
   _vyatta_pipe_noncompletions=()
