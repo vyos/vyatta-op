@@ -54,8 +54,6 @@ sbin_SCRIPTS    += scripts/vyos-openvpn-remoteconfig.pl
 
 bin_sudo_users_SCRIPTS      = scripts/vyatta-identify-interface.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-delete-log-file.sh
-bin_sudo_users_SCRIPTS	   += scripts/vyatta-reboot.pl
-bin_sudo_users_SCRIPTS	   += scripts/vyatta-poweroff.pl
 bin_sudo_users_SCRIPTS     += scripts/vyatta-clear-conntrack
 
 all-local:
