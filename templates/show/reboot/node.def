@@ -1,2 +1,2 @@
 help: Show scheduled reboot
-run: sudo /opt/vyatta/bin/sudo-users/vyatta-reboot.pl --action show_reboot
+run: /usr/libexec/vyos/op_mode/powerctrl.py --check
