@@ -11,6 +11,7 @@ Architecture: all
 Depends: sed (>= 4.1.5),
  console-terminus,
  ethtool,
+ iputils-ping,
  procps (>= 1:3.2.7-3),
  vyatta-cfg (>= 0.16.26),
  vyatta-cfg-system (>= 0.19.93),
