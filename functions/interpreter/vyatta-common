@@ -33,11 +33,11 @@ get_prefix_filtered_list ()
   eval "olist=( \"\${$2[@]}\" )"
   local idx=0
   for elem in "${olist[@]}"; do
-    local sub=${elem#$pfx}
+    local sub="${elem#$pfx}"
     if [[ "$elem" == "$sub" ]] && [[ -n "$pfx" ]]; then
       continue
     fi
-    eval "$3[$idx]=\"$elem\""
+    eval "$3[$idx]=\$elem"
     (( idx++ ))
   done
 }
@@ -59,21 +59,21 @@ get_prefix_filtered_list2 ()
   for (( orig_idx = 0; orig_idx < orig_len; orig_idx++ )); do
     eval "local elem=\${$2[$orig_idx]}"
     eval "local elem2=\${$4[$orig_idx]}"
-    local sub=${elem#$pfx}
+    local sub="${elem#$pfx}"
     if [[ "$elem" == "$sub" ]] && [[ -n "$pfx" ]]; then
       continue
     fi
-    eval "$3[$idx]=\"$elem\""
-    eval "$5[$idx]=\"$elem2\""
+    eval "$3[$idx]=\$elem"
+    eval "$5[$idx]=\$elem2"
     (( idx++ ))
   done
 }
 
 is_elem_of () {
-  local elem=$1
+  local elem="$1"
   local -a olist
   eval "olist=( \"\${$2[@]}\" )"
-  for e in ${olist[*]}; do
+  for e in "${olist[@]}"; do
     if [[ "$e" == "$elem" ]]; then
       return 0
     fi
