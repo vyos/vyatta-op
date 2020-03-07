@@ -136,7 +136,7 @@ options = {
         'help': 'Maximum packet lifetime'
     },
     'vrf': {
-        'ping': 'ip vrf exec {value} {command}',
+        'ping': 'sudo ip vrf exec {value} {command}',
         'type': '<vrf>',
         'help': 'Use specified VRF table'
     },
