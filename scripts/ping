@@ -1,42 +1,17 @@
 #! /usr/bin/env python3
-
-# Wrapper around the base Linux ping command to provide
-#  nicer API (ie no flag arguments)
+# Copyright (C) 2018 VyOS maintainers and contributors
 #
-# **** License ****
 # This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License version 2 as
+# it under the terms of the GNU General Public License version 2 or later as
 # published by the Free Software Foundation.
 #
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
 #
-# This code was originally developed by Vyatta, Inc.
-# Portions created by Vyatta are Copyright (C) 2012 Vyatta, Inc.
-# All Rights Reserved.
-#
-#
-# Syntax
-#   ping HOST
-#           [ audible ]
-#           [ adaptive ]
-#           [ allow-broadcast]
-#           [ count REQUESTS ]
-#           [ mark N ]
-#           [ flow LABEL ]
-#           [ flood ]
-#           [ interval ]
-#           [ pattern PATTERN ]
-#           [ timestamp ]
-#           [ tos VALUE ]
-#           [ quiet ]
-#           [ bypass-routing ]
-#           [ size SIZE ]
-#           [ ttl TTL ]
-#           [ vrf table ]
-#           [ verbose ]
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import sys
