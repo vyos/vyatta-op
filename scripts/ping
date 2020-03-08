@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
-# Copyright (C) 2018 VyOS maintainers and contributors
+
+# Copyright (C) 2020 VyOS maintainers and contributors
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 2 or later as
@@ -114,7 +115,7 @@ options = {
         'help': 'Maximum packet lifetime'
     },
     'vrf': {
-        'ping': 'ip vrf exec {value} {command}',
+        'ping': 'sudo ip vrf exec {value} {command}',
         'type': '<vrf>',
         'help': 'Use specified VRF table'
     },
@@ -136,6 +137,9 @@ class List (list):
 
     def last(self):
         return self.pop() if self else ''
+
+    def prepend(self,value):
+        self.insert(0,value)
 
 
 def expension_failure(option, completions):
@@ -179,21 +183,29 @@ if __name__ == '__main__':
         sys.exit("ping: Missing host")
 
     if host == '--get-options':
-        option = args.first()
-        value = args.first()
+        args.first()  # pop ping
+        args.first()  # pop IP
+        while args:
+            option = args.first()
 
-        matched = complete(option)
+            matched = complete(option)
+            if not args:
+                sys.stdout.write(' '.join(matched))
+                sys.exit(0)
 
-        if not value:
-            sys.stdout.write(' '.join(matched))
-            sys.exit(0)
+            if len(matched) > 1 :
+                sys.stdout.write(' '.join(matched))
+                sys.exit(0)
 
-        if len(matched) != 1:
-            sys.exit(0)
+            if options[matched[0]]['type'] == 'noarg':
+                continue
 
-        sys.stdout.write(options[matched[0]]['type'])
-        sys.exit(0)
-
+            value = args.first()
+            if not args:
+                matched = complete(option)
+                sys.stdout.write(options[matched[0]]['type'])
+                sys.exit(0)
+ 
     try:
         version = ipaddress.ip_address(host).version
     except ValueError:
@@ -203,3 +215,4 @@ if __name__ == '__main__':
 
     # print(f'{command} {host}')
     os.system(f'{command} {host}')
+
