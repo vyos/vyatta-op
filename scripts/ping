@@ -16,6 +16,7 @@
 
 import os
 import sys
+import socket
 import ipaddress
 
 options = {
@@ -205,9 +206,14 @@ if __name__ == '__main__':
                 matched = complete(option)
                 sys.stdout.write(options[matched[0]]['type'])
                 sys.exit(0)
- 
+
     try:
-        version = ipaddress.ip_address(host).version
+        ip = socket.gethostbyname(host)
+    except socket.gaierror:
+        sys.exit(f'ping: Unknown host: {host}')
+
+    try:
+        version = ipaddress.ip_address(ip).version
     except ValueError:
         sys.exit(f'ping: Unknown host: {host}')
 
