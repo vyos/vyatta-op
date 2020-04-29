@@ -36,7 +36,7 @@ sub dhclient_get_lease_files {
 
     if ( $intf eq "all" ) {
         opendir( my $dh, $lease_dir ) or die "Can't open $lease_dir: $!";
-        @lease_files = grep { /^dhclient_.*i.lease$/ } readdir($dh);
+        @lease_files = grep { /^dhclient_.*.lease$/ } readdir($dh);
         closedir $dh;
     }
     else {
