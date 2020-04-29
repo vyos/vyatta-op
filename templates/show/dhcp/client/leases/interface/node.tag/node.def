@@ -1,5 +1,5 @@
 help: Show DHCP client information for interface
 allowed: local -a array ;
-         array=( /sys/class/net/eth* ) ;
+         array=( /sys/class/net/eth* /sys/class/net/bond[0-9]* /sys/class/net/br* ) ;
          echo  -n ${array[@]##*/}
 run: /opt/vyatta/bin/vyatta-show-dhclient.pl "$6"
