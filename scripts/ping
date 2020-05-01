@@ -51,7 +51,7 @@ options = {
         'help': 'Number of seconds before ping exits'
     },
     'flood': {
-        'ping': '{command} -f',
+        'ping': 'sudo {command} -f',
         'type': 'noarg',
         'help': 'Send 100 requests per second'
     },
