@@ -31,7 +31,6 @@ bin_SCRIPTS	+= scripts/vyatta-remote-copy.pl
 bin_SCRIPTS	+= scripts/vyatta-show-current-user
 bin_SCRIPTS	+= scripts/tech-support-archive
 bin_SCRIPTS	+= scripts/vyatta-op-cmd-wrapper
-bin_SCRIPTS += scripts/ping
 bin_SCRIPTS += scripts/vyatta-monitor
 bin_SCRIPTS += scripts/vyatta-monitor-list
 bin_SCRIPTS += scripts/vyatta-monitor-cleanup
