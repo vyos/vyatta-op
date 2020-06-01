@@ -1,2 +1,0 @@
-help: Show log for DNS Forwarding
-run: cat $(printf "%s\n" /var/log/messages* | sort -nr) | grep -e "dnsmasq"
