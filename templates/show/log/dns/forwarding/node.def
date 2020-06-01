@@ -1,2 +1,2 @@
 help: Show log for DNS Forwarding
-run: cat $(printf "%s\n" /var/log/messages* | sort -nr) | grep -e "dnsmasq"
+run: cat $(printf "%s\n" /var/log/messages* | sort -nr) | grep -e "pdns_recursor"
