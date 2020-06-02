@@ -1,0 +1,3 @@
+help: Show physical device offloading capabilities
+allowed: ""
+run: /sbin/ethtool -k "$4"
