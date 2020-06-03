@@ -1,5 +1,0 @@
-help: Show contents of all master log files
-run: eval $(lesspipe)
-     less $_vyatta_less_options \
-	--prompt=".log?m, file %i of %m., page %dt of %D" \
-	-- `printf "%s\n" /var/log/messages* | sort -nr`

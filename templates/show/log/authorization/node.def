@@ -1,2 +1,0 @@
-help: Show listing of authorization attempts
-run: sudo /bin/journalctl -q SYSLOG_FACILITY=10 SYSLOG_FACILITY=4

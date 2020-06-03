@@ -1,3 +1,0 @@
-help: monitor last changes to messages
-allowed: echo -n '<NUMBER>'
-run: tail -n "$4" /var/log/messages | ${VYATTA_PAGER:-cat}

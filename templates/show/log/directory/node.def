@@ -1,4 +1,0 @@
-help: Show listing of user-defined log files
-run: if [ -d /var/log/user ]
-     then ls /var/log/user
-     fi

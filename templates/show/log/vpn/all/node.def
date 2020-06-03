@@ -1,2 +1,0 @@
-help: Show log for ALL
-run: cat $(printf "%s\n" /var/log/messages* | sort -nr) | grep -e charon -e xl2tpd -e pptpd -e ppp

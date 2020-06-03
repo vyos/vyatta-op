@@ -1,2 +1,0 @@
-help: Monitor last lines of messages file
-run: tail /var/log/messages

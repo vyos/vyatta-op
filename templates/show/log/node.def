@@ -1,2 +1,0 @@
-help: Show contents of current master log file
-run: sudo /bin/journalctl

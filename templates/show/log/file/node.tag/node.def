@@ -1,7 +1,0 @@
-help: Show contents of specified user-defined log file
-allowed: local -a array ;
-         array=( /var/log/user/* ) ;
-         [ ${#array[@]} -gt 0 ] && echo  -n ${array[@]##*/} || echo -n none
-run: less $_vyatta_less_options \
-	--prompt=".$4 log, page %dt of %D" \
-	-- /var/log/user/$4

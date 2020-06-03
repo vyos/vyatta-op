@@ -1,3 +1,0 @@
-help: Show log for PPTP
-run: cat $(printf "%s\n" /var/log/messages* | sort -nr) | grep -e pptpd -e ppp
-
