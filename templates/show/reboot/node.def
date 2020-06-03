@@ -1,2 +1,0 @@
-help: Show scheduled reboot
-run: /usr/libexec/vyos/op_mode/powerctrl.py --check
