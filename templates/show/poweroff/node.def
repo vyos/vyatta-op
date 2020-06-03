@@ -1,2 +1,0 @@
-help: Show scheduled poweroff
-run: sudo /usr/libexec/vyos/op_mode/powerctrl.py --check
