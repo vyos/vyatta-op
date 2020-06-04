@@ -1,5 +1,0 @@
-help: Show log for a rule in the specified firewall
-allowed: local -a ARR=$(cli-shell-api -- listEffectiveNodes firewall name ${COMP_WORDS[4]} rule)
-          echo "${ARR[@]//\'/}"
-run: cat $(printf "%s\n" /var/log/messages* | sort -nr) | egrep "\[$5-$7-[ADR]\]"
-

@@ -1,7 +1,0 @@
-help: Show contents of specified user-defined log file for image
-allowed: local -a array ;
-         array=( /lib/live/mount/persistence/boot/${COMP_WORDS[3]}/rw/var/log/user/* ) ;
-         [ ${#array[@]} -gt 0 ] && echo  -n ${array[@]##*/} || echo -n none
-run: less $_vyatta_less_options \
-	--prompt=".$4 log, page %dt of %D" \
-	-- /lib/live/mount/persistence/boot/$4/rw/var/log/user/$6

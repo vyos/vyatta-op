@@ -1,4 +1,0 @@
-help: Show listing of user-defined log files for image
-run: if [ -d /lib/live/mount/persistence/boot/$4/rw/var/log/user ]
-     then ls /lib/live/mount/persistence/boot/$4/rw/var/log/user
-     fi

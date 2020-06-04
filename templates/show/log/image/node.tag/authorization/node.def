@@ -1,4 +1,0 @@
-help: Show listing of authorization attempts for image
-run: less $_vyatta_less_options \
-	--prompt=".log, page %dt of %D" \
-	-- /lib/live/mount/persistence/boot/$4/rw/var/log/auth.log

@@ -1,2 +1,0 @@
-help: Show last lines of messages file
-run: tail /lib/live/mount/persistence/boot/$4/rw/var/log/messages
