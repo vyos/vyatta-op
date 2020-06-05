@@ -1,2 +1,0 @@
-help: Show specified virtual network interface (vif) information
-run:  echo error: Must supply a vif number ;
