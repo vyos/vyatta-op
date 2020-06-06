@@ -1,3 +1,0 @@
-help: Show specified vxlan interface information
-allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show vxlan
-run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf="$4"

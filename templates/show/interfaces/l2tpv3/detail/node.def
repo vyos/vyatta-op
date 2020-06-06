@@ -1,2 +1,0 @@
-help: Show detailed l2tpv3 interface information
-run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf-type=l2tpv3 --action=show

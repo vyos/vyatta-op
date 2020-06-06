@@ -1,3 +1,0 @@
-help: Show specified l2tpv3 interface information
-allowed: ${vyatta_sbindir}/vyatta-interfaces.pl --show l2tpv3
-run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf="$4"
