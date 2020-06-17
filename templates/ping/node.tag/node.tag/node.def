@@ -1,3 +1,3 @@
 help: Ping options
-allowed: ${vyatta_bindir}/ping --get-options "${COMP_WORDS[@]}"
+allowed: ${vyos_op_scripts_dir}/ping.py --get-options "${COMP_WORDS[@]}"
 run: ${vyos_op_scripts_dir}/ping.py ${@:2}
