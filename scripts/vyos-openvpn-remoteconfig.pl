@@ -28,6 +28,11 @@ sub auth_warning
 
 my $config = new Vyatta::Config;
 
+if(!$config->inSession()) {
+    print("This command can only be used from configuration mode!");
+    exit(1);
+}
+
 my $intf = $ARGV[0];
 if(!defined($intf))
 {
