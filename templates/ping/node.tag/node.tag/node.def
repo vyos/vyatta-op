@@ -1,3 +1,0 @@
-help: Ping options
-allowed: ${vyos_op_scripts_dir}/ping.py --get-options "${COMP_WORDS[@]}"
-run: ${vyos_op_scripts_dir}/ping.py ${@:2}
