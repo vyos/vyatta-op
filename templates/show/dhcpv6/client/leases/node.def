@@ -1,3 +1,0 @@
-help: Display DHCPv6 client leases
-
-run: sudo /opt/vyatta/sbin/dhcpv6-client-show-leases.pl
