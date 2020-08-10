@@ -39,8 +39,7 @@ bin_SCRIPTS += scripts/vyatta-monitor-background-stop
 bin_SCRIPTS += scripts/vyatta-monitor-check-rule-log
 bin_SCRIPTS += scripts/vyos-strip-config.pl
 
-sbin_SCRIPTS     = scripts/dhcpv6-client-show-leases.pl
-sbin_SCRIPTS    += scripts/vyatta-image-tools.pl
+sbin_SCRIPTS     = scripts/vyatta-image-tools.pl
 sbin_SCRIPTS    += scripts/vyatta-regen-unpriv-commands.sh
 sbin_SCRIPTS    += scripts/vyos-openvpn-remoteconfig.pl
 
