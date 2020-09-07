@@ -273,22 +273,23 @@ sub displayBootList {
     my $m = '';
 
     if (defined $show_version) {
-	my $vyatta_vers = image_vyatta_version($ver);
-	$m .= " [$vyatta_vers]";
+        my $vyatta_vers = image_vyatta_version($ver);
+        chomp $vyatta_vers;
+        $m .= " [$vyatta_vers]";
     }
 
     if ($didx == $ {$entries}[$i]->{'idx'}) {
       $m .= ' (default boot)';
     }
-    
+
     if ($ {$entries}[$i]->{'running_vers'} == 1) {
-	$m .= ' (running image)';
+        $m .= ' (running image)';
     }
 
     if (defined($brief)) {
-	print "$ver\n";
+        print "$ver\n";
     } else {
-	printf "  %2d: %s%s\n", $di, $ver, $m;
+        printf "  %2d: %s%s\n", $di, $ver, $m;
     }
   }
 }
