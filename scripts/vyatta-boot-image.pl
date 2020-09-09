@@ -459,6 +459,14 @@ sub doDelete {
   }
   my $boot_dir;
 
+  my $del_ver_pure = $del_ver;
+  $del_ver_pure =~ s/["']*//g;
+
+  if(!$del_ver_pure) {
+    print "Version string is empty!\n";
+    exit 1;
+  }
+
   my $cver = curVer();
   if (!defined($cver)) {
       print "Cannot verify current version. Exiting...\n";
@@ -491,7 +499,7 @@ sub doDelete {
     $boot_dir = $DISK_BOOT;
   }
 
-  if (($del_ver ne $OLD_IMG_VER_STR) && (! -d "$boot_dir/$del_ver")) {
+  if (($del_ver ne $OLD_IMG_VER_STR) && (! -d "$boot_dir/$del_ver_pure")) {
     print "Cannot find the target image. Exiting...\n";
     exit 1;
   }
@@ -502,7 +510,7 @@ sub doDelete {
   if ($del_ver eq $OLD_IMG_VER_STR) {
       del_non_image_files();
   } else {
-    system("rm -rf '$boot_dir/$del_ver'");
+    system("rm -rf '$boot_dir/$del_ver_pure'");
     if ($? >> 8) {
       print "Error deleting the image. Exiting...\n";
       exit 1;
