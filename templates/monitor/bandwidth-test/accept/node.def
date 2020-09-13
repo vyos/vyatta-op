@@ -1,2 +1,2 @@
 help: Wait for bandwidth test connections (port TCP/5001)
-run: iperf -s
+run: iperf -V -s
