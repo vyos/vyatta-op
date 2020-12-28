@@ -1,2 +1,0 @@
-help: Stop background monitoring of Webproxy
-run: ${vyatta_bindir}/vyatta-monitor-background-stop Webproxy 
