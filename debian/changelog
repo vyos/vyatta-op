@@ -1,3 +1,9 @@
+vyatta-op (1.2.7) unstable; urgency=medium
+
+  * New release.
+
+ -- VyOS maintainers <maintainers@vyos.io>  Wed, 24 Feb 2021 13:51:10 +0200
+
 vyatta-op (1.2.6) unstable; urgency=low
 
   * New release.
