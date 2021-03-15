@@ -37,7 +37,6 @@ bin_SCRIPTS += scripts/vyatta-monitor-cleanup
 bin_SCRIPTS += scripts/vyatta-monitor-background
 bin_SCRIPTS += scripts/vyatta-monitor-background-stop
 bin_SCRIPTS += scripts/vyatta-monitor-check-rule-log
-bin_SCRIPTS += scripts/vyos-strip-config.pl
 
 sbin_SCRIPTS     = scripts/vyatta-image-tools.pl
 sbin_SCRIPTS    += scripts/vyatta-regen-unpriv-commands.sh
