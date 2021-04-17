@@ -19,54 +19,52 @@ do_rotate ()
 
 HOSTNAME=`hostname`
 CURTIME=`date +%F-%H%M%S`
- 
-  if [ -n "$1" ]; then
-   if [[ "$1" =~ scp:///* ]]; then
-     OUT="$HOSTNAME.tech-support-archive.$CURTIME"
-     REMOTE="1"
-   elif [[ "$1" =~ ftp:///* ]]; then
-     OUT="$HOSTNAME.tech-support-archive.$CURTIME"
-     REMOTE="1"
-   else
-      #file to be save locally
-     OUT="$1.$HOSTNAME.tech-support-archive.$CURTIME"
-   fi
-  else
+if [ -n "$1" ]; then
+  if [[ "$1" =~ scp:///* ]]; then
     OUT="$HOSTNAME.tech-support-archive.$CURTIME"
+    REMOTE="1"
+  elif [[ "$1" =~ ftp:///* ]]; then
+    OUT="$HOSTNAME.tech-support-archive.$CURTIME"
+    REMOTE="1"
+  else
+    # File to be saved locally
+    OUT="$1.$HOSTNAME.tech-support-archive.$CURTIME"
   fi
+else
+  OUT="$HOSTNAME.tech-support-archive.$CURTIME"
+fi
 
- if [[ $OUT != /* ]]; then
-    FILE_NAME=$OUT
-    do_rotate
-    # it's not absolute path. save in default path.
-    OUT="$DEFAULT_PATH/$OUT"
-    mkdir -p $OUT >& /dev/null
-    chgrp $DEFAULT_GROUP $OUT >& /dev/null
-    chmod 775 $OUT >& /dev/null
- else
-    mkdir -p $OUT >& /dev/null
-    chgrp $DEFAULT_GROUP $OUT >& /dev/null
-    chmod 775 $OUT >& /dev/null
-    FILE_NAME=`echo $OUT | sed -e 's/\//\n/g' | tail -1` 
- fi
+if [[ $OUT != /* ]]; then
+  FILE_NAME=$OUT
+  do_rotate
+  # it's not absolute path. save in default path.
+  OUT="$DEFAULT_PATH/$OUT"
+  mkdir -p $OUT >& /dev/null
+  chgrp $DEFAULT_GROUP $OUT >& /dev/null
+  chmod 775 $OUT >& /dev/null
+else
+  mkdir -p $OUT >& /dev/null
+  chgrp $DEFAULT_GROUP $OUT >& /dev/null
+  chmod 775 $OUT >& /dev/null
+  FILE_NAME=`echo $OUT | sed -e 's/\//\n/g' | tail -1`
+fi
+
 builtin cd "$OUT"
-echo "Saving the archivals..."
-sudo tar -zcf config.tgz /opt/vyatta/etc/config --exclude "*tech-support-archive*" >& /dev/null
-sudo tar -zcf etc.tgz /etc >& /dev/null 
-sudo tar -zcf home.tgz /home >& /dev/null
-sudo tar -zcf var-log.tgz /var/log >& /dev/null 
-sudo tar -zcf root.tgz /root >& /dev/null 
-sudo tar -zcf tmp.tgz /tmp >& /dev/null
-sudo tar -zcf core-dump.tgz /var/core >& /dev/null
+echo "Saving the archives..."
+sudo tar zcf config.tgz /opt/vyatta/etc/config --exclude "*tech-support-archive*" >& /dev/null
+sudo tar zcf etc.tgz /etc >& /dev/null
+sudo tar zcf home.tgz /home >& /dev/null
+sudo tar zcf var-log.tgz /var/log >& /dev/null
+sudo tar zcf root.tgz /root >& /dev/null
+sudo tar zcf tmp.tgz /tmp >& /dev/null
+sudo tar zcf core-dump.tgz /var/core >& /dev/null
 
 builtin cd "../"
-sudo tar -zcvf $FILE_NAME.tgz $FILE_NAME >& /dev/null 
+sudo tar zcvf $FILE_NAME.tgz $FILE_NAME >& /dev/null
 sudo rm -r $FILE_NAME
-OUT=$OUT.tgz 
+OUT=$OUT.tgz
 echo "Saved tech-support archival at $OUT"
 
 if [ $REMOTE == "1" ]; then
-  perl /opt/vyatta/bin/vyatta-remote-copy.pl $1 $OUT $FLAG
+  python3 -c "from vyos.remote import upload; upload(\"$OUT\", \"$1\")"
 fi
-
-exit

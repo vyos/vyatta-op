@@ -28,25 +28,25 @@ do_rotate ()
 
 HOSTNAME=`hostname`
 CURTIME=`date +%F-%H%M%S`
-   if [ "$1" == "save-uncompressed" ]; then
-    FLAG="1"
-   elif [ "$1" == "save" ]; then
-    FLAG="0"
-   fi
+if [ "$1" == "save-uncompressed" ]; then
+  FLAG="1"
+elif [ "$1" == "save" ]; then
+  FLAG="0"
+fi
 
- if [ "$1" == "save" ] || [ "$1" == "save-uncompressed" ]; then
+if [ "$1" == "save" ] || [ "$1" == "save-uncompressed" ]; then
   # "save" or save-uncompressed is specified. save output to file.
   OUT="$HOSTNAME.tech-support.$CURTIME.txt"
   if [ -n "$2" ]; then
-    if [[ "$2" =~ scp:///* || "$2" =~ ftp:///* ]]; then  
-      REMOTE="1" 
+    if [[ "$2" =~ scp:///* || "$2" =~ ftp:///* ]]; then
+      REMOTE="1"
     else
       #file to be save locally
       OUT="$2.$OUT"
-    fi  
-  fi  
-  
-if [[ $OUT != /* ]]; then
+    fi
+  fi
+
+  if [[ $OUT != /* ]]; then
     # it's not absolute path. save in default path.
     mkdir -p $DEFAULT_PATH >& /dev/null
     chgrp $DEFAULT_GROUP $DEFAULT_PATH >& /dev/null
@@ -58,17 +58,16 @@ if [[ $OUT != /* ]]; then
     echo "Cannot create tech-support file '$OUT'"
     exit 1
   fi
- if [ $REMOTE != "1" ]; then 
-  echo "Saving output to '$OUT'..."
- fi
-
+  if [ $REMOTE != "1" ]; then
+    echo "Saving output to '$OUT'..."
+  fi
 fi
 
 (
 export PATH=/sbin:/usr/sbin:$PATH
 
-header Show Tech-Support Brief 
-header CONFIGURATION 
+header Show Tech-Support Brief
+header CONFIGURATION
 
 
 header VyOS Version and Package Changes
@@ -86,19 +85,19 @@ header ROUTING
 
 function show_route_limit ()
 {
-   NUM=$(show $1 route $2 | wc -l)
-   # subtract 3 lines of header
-   [ $NUM -gt 3 ] &&  NUM=$[$NUM - 3]
-   OUTPUT=$(echo show $1 route $2 \(total $NUM\))
-   CMD="show $1 route $2"
-   if [ $3 -eq 0 ]
-   then
-      header $OUTPUT
-      vtysh -c "$CMD"
-   else
-      header "$OUTPUT- limit $3"
-      vtysh -c "$CMD" | head -n $3
-   fi
+  NUM=$(show $1 route $2 | wc -l)
+  # subtract 3 lines of header
+  [ $NUM -gt 3 ] &&  NUM=$[$NUM - 3]
+  OUTPUT=$(echo show $1 route $2 \(total $NUM\))
+  CMD="show $1 route $2"
+  if [ $3 -eq 0 ]
+  then
+    header $OUTPUT
+    vtysh -c "$CMD"
+  else
+    header "$OUTPUT- limit $3"
+    vtysh -c "$CMD" | head -n $3
+  fi
 }
 
 #
@@ -119,7 +118,7 @@ show_route_limit ipv6 bgp   500
 show_route_limit ipv6 ''    500
 
 
-header Recent 100 Log Messages 
+header Recent 100 Log Messages
 show log tail 100
 
 header "END OF TECH-SUPPORT BRIEF FILE"
@@ -128,19 +127,19 @@ header "END OF TECH-SUPPORT BRIEF FILE"
 if [ $OUT != "1" ]; then
   chgrp $DEFAULT_GROUP $OUT >& /dev/null
   chmod 664 $OUT >& /dev/null
-  if [ $FLAG == "0" ]; then 
-     gzip $OUT
-     OUT=$OUT.gz
-     if [ $REMOTE != "1" ]; then 
+  if [ $FLAG == "0" ]; then
+    gzip $OUT
+    OUT=$OUT.gz
+    if [ $REMOTE != "1" ]; then
       echo "File $OUT is the compressed file."
-     fi 
+    fi
   fi
 
- if [ $REMOTE != "1" ]; then
-   echo "Done."
- fi 
-fi
-if [ $REMOTE == "1" ]; then
- perl /opt/vyatta/bin/vyatta-remote-copy.pl $2 $OUT $FLAG
+  if [ $REMOTE != "1" ]; then
+    echo "Done."
+  fi
 fi
 
+if [ $REMOTE == "1" ]; then
+  python3 -c "from vyos.remote import upload; upload(\"$OUT\", \"$2\")"
+fi
