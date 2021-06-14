@@ -1,4 +1,4 @@
 help: Clear interface information for a given dummy interface
 allowed: local -a array ;
-	 array=( /sys/class/net/dummy* ) ;
+	 array=( /sys/class/net/dum* ) ;
 	 echo  -n ${array[@]##*/}
