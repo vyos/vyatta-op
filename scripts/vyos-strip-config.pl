@@ -128,6 +128,7 @@ if ($stdin) {
 
 # Strip passwords
 $input =~ s/password \S+/password xxxxxx/g if !($keepPasswords);
+$input =~ s/cisco-authentication \S+/cisco-authentication xxxxxx/g if !($keepPasswords);
 
 # Strip public key information
 $input =~ s/public-keys \S+/public-keys xxxx\@xxx.xxx/g if !($keepKeys);
