@@ -51,16 +51,7 @@ sub conv_file {
         $file = "/$file";
     } elsif (lc($topdir) eq 'disk-install') {
         $file = "/lib/live/mount/persistence/$file";
-    } elsif (lc($topdir) eq 'tftp') {
-        $file = $filein;
-        $topdir = 'url';
-    } elsif (lc($topdir) eq 'http') {
-        $file = $filein;
-        $topdir = 'url';
-    } elsif (lc($topdir) eq 'ftp') {
-        $file = $filein;
-        $topdir = 'url';
-    } elsif (lc($topdir) eq 'scp') {
+    } elsif (grep { lc($topdir) eq $_ } ("ftp", "tftp", "http", "https", "scp", "sftp", "ftps", "ssh")) {
         $file = $filein;
         $topdir = 'url';
     } else {
@@ -123,7 +114,7 @@ sub url_copy {
             print "Cannot upload to http url\n";
             exit 1;
         }
-        curl_to($from, $to);
+        upload($from, $to);
     } elsif ($f_topdir eq 'url') {
         if (-d $to){
             $from =~ /.*\/(.*)/;
@@ -135,7 +126,7 @@ sub url_copy {
                 }
             }
         }
-        curl_from($from, $to);
+        friendly_download($from, $to);
     }
     exit 0;
 }
@@ -215,90 +206,19 @@ sub rsync {
     return $?;
 }
 
-sub conv_spec_char {
-    my ($inpt_data) = @_;
-    #replace #
-    $inpt_data =~ s/\#/%23/g;
-    #replace @
-    $inpt_data =~ s/\@/%40/g;
-    return $inpt_data;
-}
-
-sub prepare_login_data {
-    my ($uri_data) = @_;
-    # Parse protocol
-    if ($uri_data =~ /ftp\:\/\//){
-        $uri_data = reverse($');
-        # Separate host and username login data
-        $uri_data =~ m/@/;
-        my $host_data = reverse($`);
-        my $login_data = reverse($');
-        $login_data =~ /\:/;
-        my $username = $`;
-        my $password = conv_spec_char($');
-        return "ftp://".$username.":".$password."@".$host_data;
-    }
-    return $uri_data;
-}
-
-sub curl_to {
+sub upload {
     my ($from, $to) = @_;
-    $to = prepare_login_data($to);
-    my $rc = system("curl -# -T $from $to");
-    if ($to =~  /scp/ && ($rc >> 8) == 51){
-        $to =~ m/scp:\/\/(.*?)\//;
-        my $host = $1;
-        if ($host =~ m/.*@(.*)/) {
-            $host = $1;
-        }
-        my $rsa_key = `ssh-keyscan -t rsa $host 2>/dev/null`;
-        print "The authenticity of host '$host' can't be established.\n";
-        my $fingerprint = `ssh-keygen -lf /dev/stdin <<< \"$rsa_key\" | awk {' print \$2 '}`;
-        chomp $fingerprint;
-        print "RSA key fingerprint is $fingerprint.\n";
-        if (prompt("Are you sure you want to continue connecting (yes/no) [Yes]? ", -tynd=>"y")) {
-            if (! -d "$ENV{HOME}/.ssh/") {
-                mkdir "$ENV{HOME}/.ssh/";
-            }
-            open(my $known_hosts, ">>", "$ENV{HOME}/.ssh/known_hosts")
-                or die "Cannot open known_hosts: $!";
-            print $known_hosts "$rsa_key\n";
-            close($known_hosts);
-            $rc = system("curl -# -T $from $to");
-            print "\n";
-        }
-    }
-    print "\n";
+    system("python3 -c 'from vyos.remote import upload; upload(\"$from\", \"$to\")'")
 }
 
-sub curl_from {
+sub download {
     my ($from, $to) = @_;
-    $from = prepare_login_data($from);
-    my $rc = system("curl -# $from > $to");
-    if ($from =~ /scp/ && ($rc >> 8) == 51){
-        $from =~ m/scp:\/\/(.*?)\//;
-        my $host = $1;
-        if ($host =~ m/.*@(.*)/) {
-            $host = $1;
-        }
-        my $rsa_key = `ssh-keyscan -t rsa $host 2>/dev/null`;
-        print "The authenticity of host '$host' can't be established.\n";
-        my $fingerprint = `ssh-keygen -lf /dev/stdin <<< \"$rsa_key\" | awk {' print \$2 '}`;
-        chomp $fingerprint;
-        print "RSA key fingerprint is $fingerprint.\n";
-        if (prompt("Are you sure you want to continue connecting (yes/no) [Yes]? ", -tynd=>"y")) {
-            if (! -d "$ENV{HOME}/.ssh/") {
-                mkdir "$ENV{HOME}/.ssh/";
-            }
-            open(my $known_hosts, ">>", "$ENV{HOME}/.ssh/known_hosts")
-                or die "Cannot open known_hosts: $!";
-            print $known_hosts "$rsa_key\n";
-            close($known_hosts);
-            $rc = system("curl -# $from > $to");
-            print "\n";
-        }
-    }
-    print "\n";
+    system("python3 -c 'from vyos.remote import download; download(\"$to\", \"$from\")'");
+}
+
+sub friendly_download {
+    my ($from, $to) = @_;
+    system("python3 -c 'from vyos.remote import friendly_download; friendly_download(\"$to\", \"$from\")'");
 }
 
 sub y_or_n {
