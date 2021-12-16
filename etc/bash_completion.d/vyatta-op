@@ -494,7 +494,7 @@ no-more ()
 
 strip-private ()
 {
-  ${vyatta_bindir}/vyos-strip-config.pl --strict --stdin 
+  ${vyos_libexec_dir}/strip-private.py
 }
 
 commands ()
