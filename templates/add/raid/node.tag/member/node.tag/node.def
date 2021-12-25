@@ -1,12 +1,12 @@
 help: Name of RAID set member to add
 
 allowed:
-        raid_set=${COMP_WORDS[2]}
+	raid_set=${COMP_WORDS[2]}
 	membership=`cat /proc/mdstat | grep $raid_set | sed -e 's/\[.\]//g' | awk '{ print $5 " " $6 }'`
 	membership=`echo $membership | sed -e 's/(F)//g'`
 	partitions=`cat /proc/partitions | awk '{ if ($4!="name") { print $4 } }' | egrep "[0-9]"`
 	for member in $membership; do
-	    partitions=`echo $partitions | sed -e s/$member//g`
+		partitions=`echo $partitions | sed -e s/$member//g`
 	done
 	partitions=`echo $partitions | sed -e 's/md[0-9]*//g'`
 	echo "$partitions"
@@ -22,37 +22,20 @@ run:
 	valid_partition=`echo $partitions | grep $member_to_add`
 
 	if [ -z "$membership" ]; then
-	    echo "$raid_set is not a RAID set"
+		echo "$raid_set is not a RAID set"
 	elif [ -n "$is_in" ]; then
-	    echo "$member_to_add is already a member of RAID set $raid_set"
-	    echo "actual members are:  $membership"
+		echo "$member_to_add is already a member of RAID set $raid_set"
+		echo "actual members are:  $membership"
 	elif [ -z "$valid_partition" ]; then
-	    echo "$member_to_add is not a valid disk partition"
+		echo "$member_to_add is not a valid disk partition"
 	elif [ ! -r /dev/$raid_set ]; then
-            echo "Must be admin or root to add RAID set member"
+		echo "Must be admin or root to add RAID set member"
 	else
-            echo "adding member $member_to_add to RAID set $raid_set"
-	    sudo /sbin/mdadm /dev/$raid_set --add /dev/$member_to_add
-	    if [ $? -ne 0 ]; then
-		echo "Unable to add member to RAID set"
-	    fi
-
-	    mounted_on_root=0
-	    mounted_on=`mount | grep "^/dev/${raid_set}" | awk '{ print $3 }'`
-	    for dir in $mounted_on ; do
-		if [ "$dir" = "/" -o "$dir" = "/lib/live/mount/persistence" ]; then
-		    mounted_on_root=1
+		echo "adding member $member_to_add to RAID set $raid_set"
+		sudo /sbin/mdadm /dev/$raid_set --add /dev/$member_to_add
+		if [ $? -ne 0 ]; then
+			echo "Unable to add member to RAID set"
 		fi
-	    done
-
-	    if [ $mounted_on_root -eq 1 ]; then
-	       	echo
-		echo "Warning: RAID set ${raid_set} holds the root filesystem."
-		echo "To make the new disk bootable, the boot program will be"
-		echo "updated after the RAID rebuild process completes.  Do"
-		echo "not reboot the system until the rebuild has finished."
-		echo "You may run \"show raid ${raid_set}\" to monitor the"
-		echo "status of the rebuild."
-	    fi
+		disk=$(lsblk -ndo pkname /dev/$member_to_add)
+		sudo grub-install /dev/$disk
 	fi
-
