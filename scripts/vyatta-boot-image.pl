@@ -102,7 +102,7 @@ sub parseGrubCfg {
 		    # old install
 		    $ehash{'ver'} = $OLD_IMG_VER_STR;
 		}
-		if (/console=tty0.*console=ttyS[0-9]/) {
+		if (/console=ttyS\d(?!.*console)/) {
 		    $ehash{'term'} = 'serial';
 		} else {
 		    $ehash{'term'} = 'kvm';
@@ -170,7 +170,7 @@ sub deleteGrubEntries {
         @entry = ();
       } else {
 	  if (/^\s+linux/) {
-	      if (/^\s+linux \/boot\/([^\/ ]+)\/.* boot=live /) {
+	      if (/^\s+linux \/boot\/([^\/ ]+)\/.* boot=live/) {
 		  # kernel line
 		  $ver = $1;
 	      } else {
