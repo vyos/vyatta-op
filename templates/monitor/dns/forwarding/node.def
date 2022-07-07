@@ -1,2 +1,0 @@
-help: Monitor DNS forwarding
-run: ${vyatta_bindir}/vyatta-monitor DNS-Forward dnsmasq
