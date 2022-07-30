@@ -125,11 +125,13 @@ _vyatta_op_print_help ()
     elif [ ${#help} -eq 0 ] ; then
       echo -ne "\n  $label"
     elif [ ${#label} -lt 6 ] ; then
-      echo -ne "\n  $label\t\t$help"
+      echo -ne "\n  $label\t\t\t$help"
     elif [ ${#label} -lt 14 ] ; then
+      echo -ne "\n  $label\t\t$help"
+    elif [ ${#label} -lt 21 ] ; then
       echo -ne "\n  $label\t$help"
     else
-      echo -ne "\n  $label\n\t\t$help"
+      echo -ne "\n  $label\n\t\t\t$help"
     fi
 }
 
