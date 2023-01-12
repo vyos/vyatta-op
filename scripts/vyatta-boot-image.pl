@@ -39,6 +39,7 @@ my $OLD_GRUB_CFG = '/boot/grub/grub.cfg';
 my $DISK_BOOT = '/boot';
 my $XEN_DEFAULT_IMAGE = "$UNION_BOOT/%%default_image";
 my $LIVE_CD = '/lib/live/mount/medium/live';
+my $LUKS_DIR = '/lib/live/mount/persistence/luks';
 
 # 
 # Globals
@@ -515,6 +516,10 @@ sub doDelete {
       print "Error deleting the image. Exiting...\n";
       exit 1;
     }
+  }
+
+  if (-e "$LUKS_DIR/$del_ver") {
+    system("rm -f '$LUKS_DIR/$del_ver'");
   }
 
   print "Done\n";
