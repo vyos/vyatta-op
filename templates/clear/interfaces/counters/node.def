@@ -1,2 +1,0 @@
-help: Clear interface counters for all interfaces
-run: sudo ${vyatta_bindir}/sudo-users/vyatta-show-interfaces.pl --action=clear

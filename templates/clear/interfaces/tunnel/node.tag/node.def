@@ -1,4 +1,0 @@
-help: Clear interface information for a given tunnel interface
-allowed: local -a array ;
-	 array=( /sys/class/net/tun* ) ;
-	 echo  -n ${array[@]##*/}
