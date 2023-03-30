@@ -1,2 +1,0 @@
-help: Show network interface information
-run: ${vyos_op_scripts_dir}/show_interfaces.py --action=show-brief
