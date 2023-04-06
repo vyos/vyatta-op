@@ -1,3 +1,0 @@
-help: Show disk space utilization of system images
-
-run: sudo /opt/vyatta/bin/show-image-storage.pl
