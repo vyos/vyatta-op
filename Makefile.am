@@ -21,23 +21,19 @@ bin_SCRIPTS	 = scripts/vyatta-show-interfaces
 bin_SCRIPTS	+= scripts/vyatta-show-interfaces.pl
 bin_SCRIPTS     += scripts/vyatta-show-dhclient.pl
 bin_SCRIPTS	+= scripts/vyatta-show-dmi
-bin_SCRIPTS     += scripts/vyatta-gettime.pl
 bin_SCRIPTS     += scripts/show-dhcp-leases.pl
 bin_SCRIPTS     += scripts/vyatta-boot-image.pl
 bin_SCRIPTS	+= scripts/rename-image.pl
 bin_SCRIPTS	+= scripts/show-image-storage.pl
-bin_SCRIPTS	+= scripts/vyatta-show-current-user
 bin_SCRIPTS	+= scripts/tech-support-archive
 bin_SCRIPTS	+= scripts/vyatta-op-cmd-wrapper
 bin_SCRIPTS += scripts/vyatta-monitor
-bin_SCRIPTS += scripts/vyatta-monitor-list
 bin_SCRIPTS += scripts/vyatta-monitor-cleanup
 bin_SCRIPTS += scripts/vyatta-monitor-background
 bin_SCRIPTS += scripts/vyatta-monitor-background-stop
 bin_SCRIPTS += scripts/vyatta-monitor-check-rule-log
 
 sbin_SCRIPTS     = scripts/vyatta-image-tools.pl
-sbin_SCRIPTS    += scripts/vyatta-regen-unpriv-commands.sh
 sbin_SCRIPTS    += scripts/vyos-openvpn-remoteconfig.pl
 
 bin_sudo_users_SCRIPTS     = scripts/vyatta-delete-log-file.sh
