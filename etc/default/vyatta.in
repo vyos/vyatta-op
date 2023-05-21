@@ -1,4 +1,3 @@
-
 # declare configured Vyatta shell environment variables
 
 # first set vars per args of the "source /etc/default/vyatta VAR=FOO"
@@ -18,7 +17,7 @@ unset _vyatta_extglob
     for var in prefix exec_prefix datarootdir ; do
 	eval test -n \"\$$var\" \&\& _vyatta_save_$var=\$$var
     done
-    
+
     prefix=@prefix@
     exec_prefix=@exec_prefix@
     datarootdir=@datarootdir@
@@ -175,6 +174,11 @@ unset _vyatta_extglob
 
     if test -z "$vyos_validators_dir" ; then
         declare -x -r vyos_validators_dir=$vyos_libexec_dir/validators
+    fi
+
+    if test -z "$VRF" ; then
+        VRF=$(ip vrf identify)
+        [ -n "$VRF" ] && declare -x -r VRF="${VRF}"
     fi
 
 } 2>/dev/null || :
