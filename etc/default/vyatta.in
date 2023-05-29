@@ -180,6 +180,11 @@ unset _vyatta_extglob
         VRF=$(ip vrf identify)
         [ -n "$VRF" ] && declare -x -r VRF="${VRF}"
     fi
+    if test -z "$NETNS" ; then
+        NETNS=$(ip netns identify)
+        [ -n "$NETNS" ] && declare -x -r NETNS="${NETNS}"
+    fi
+
 
 } 2>/dev/null || :
 
