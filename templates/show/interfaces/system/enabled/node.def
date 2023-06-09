@@ -1,0 +1,2 @@
+help: Show network information of all enabled interfaces
+run: ${vyatta_bindir}/vyatta-show-interfaces system enabled

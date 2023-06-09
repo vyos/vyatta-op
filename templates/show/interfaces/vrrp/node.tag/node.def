@@ -1,0 +1,3 @@
+help: Show specified vrrp interface information
+allowed: ${vyatta_bindir}/vyatta-show-interfaces.pl --vrrp --action=allowed
+run: ${vyatta_bindir}/vyatta-show-interfaces.pl --intf="$4"
