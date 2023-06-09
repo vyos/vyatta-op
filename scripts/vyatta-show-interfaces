@@ -92,14 +92,14 @@ _show_itf_stats ()
 	    $collisions
 
 	ip -s addr show ${itf} | sed 's/^[0-9]*: //'
-	cat <<-EOF
+	#cat <<-EOF
 
-    RX:  bytes    packets     errors    dropped    overrun      mcast
-    $rx_stats
-    TX:  bytes    packets     errors    dropped    carrier collisions
-    $tx_stats
+    #RX:  bytes    packets     errors    dropped    overrun      mcast
+    #$rx_stats
+    #TX:  bytes    packets     errors    dropped    carrier collisions
+    #$tx_stats
 
-	EOF
+	#EOF
     done
 }
 
