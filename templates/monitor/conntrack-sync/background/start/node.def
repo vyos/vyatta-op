@@ -1,2 +1,0 @@
-help: Start background monitoring of conntrack-sync
-run: ${vyatta_bindir}/vyatta-monitor-background Conntrack-Sync conntrackd

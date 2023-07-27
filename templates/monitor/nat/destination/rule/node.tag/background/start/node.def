@@ -1,3 +1,0 @@
-help: Start background monitoring of a specified destination NAT rule
-run: ${vyatta_bindir}/vyatta-monitor-check-rule-log "nat destination" $5; \
-     ${vyatta_bindir}/vyatta-monitor-background NAT-DEST-RULE-$5 "\[NAT-DST-$5.*\]"

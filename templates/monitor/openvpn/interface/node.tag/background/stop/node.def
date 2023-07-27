@@ -1,2 +1,0 @@
-help: Stop background monitoring of OpenVPN
-run: ${vyatta_bindir}/vyatta-monitor-background-stop OpenVPN-$4

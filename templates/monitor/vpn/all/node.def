@@ -1,3 +1,0 @@
-help: Monitor VPN 
-run: ${vyatta_bindir}/vyatta-monitor 'VPN-ALL' pluto ipsec charon pptp l2tp ppp
-

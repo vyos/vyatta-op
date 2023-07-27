@@ -1,2 +1,0 @@
-help: Start background monitoring of Dynamic DNS
-run: ${vyatta_bindir}/vyatta-monitor-background Dynamic-DNS ddclient

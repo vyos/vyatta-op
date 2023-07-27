@@ -1,2 +1,0 @@
-help: Monitor Simple Network Management Protocol (SNMP) daemon
-run: ${vyatta_bindir}/vyatta-monitor SNMP snmpd

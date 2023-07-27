@@ -1,2 +1,0 @@
-help: Stop all current background monitoring processes
-run: ${vyatta_bindir}/vyatta-monitor-cleanup LOGOUT

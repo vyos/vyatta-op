@@ -1,2 +1,0 @@
-help: Stop background monitoring of the HTTPS service
-run: ${vyatta_bindir}/vyatta-monitor-background-stop HTTPS

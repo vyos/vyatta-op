@@ -1,2 +1,0 @@
-help: Monitor PPTP VPN 
-run: ${vyatta_bindir}/vyatta-monitor "VPN-PPTP" pptp ppp 

@@ -1,3 +1,0 @@
-help: Start background monitoring of source NAT
-run: echo "Notice: monitoring information is displayed only for rules with enabled logging"; \
-     ${vyatta_bindir}/vyatta-monitor-background NAT-SOURCE "\[NAT-SRC-[0-9]*.*\]"

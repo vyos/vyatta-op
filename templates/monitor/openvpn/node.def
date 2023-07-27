@@ -1,2 +1,0 @@
-help: Monitor OpenVPN
-run: ${vyatta_bindir}/vyatta-monitor OpenVPN openvpn

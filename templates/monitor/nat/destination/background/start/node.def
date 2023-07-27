@@ -1,3 +1,0 @@
-help: Start background destination NAT monitoring
-run:  echo "Notice: monitoring information is displayed only for rules with enabled logging"; \
-      ${vyatta_bindir}/vyatta-monitor-background NAT-DEST "\[NAT-DST-[0-9]*.*\]"

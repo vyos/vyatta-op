@@ -1,2 +1,0 @@
-help: Stop background monitoring for IPSec VPN
-run: ${vyatta_bindir}/vyatta-monitor-background-stop "VPN-IPSEC" pluto

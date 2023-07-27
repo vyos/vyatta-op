@@ -1,2 +1,0 @@
-help: Start background monitoring of OpenVPN
-run: ${vyatta_bindir}/vyatta-monitor-background OpenVPN openvpn
