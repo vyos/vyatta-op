@@ -1,6 +1,0 @@
-help: Monitor a specified destination NAT rule
-allowed: local -a ARR 
-         eval "ARR=($(cli-shell-api listEffectiveNodes nat destination rule))"
-         echo ${ARR[@]}
-run: ${vyatta_bindir}/vyatta-monitor-check-rule-log "nat destination" $5; \
-     ${vyatta_bindir}/vyatta-monitor NAT-DEST-RULE-$5 "\[NAT-DST-$5-*\]"

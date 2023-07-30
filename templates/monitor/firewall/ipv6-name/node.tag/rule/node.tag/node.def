@@ -1,6 +1,0 @@
-help: Monitor a rule in the specified firewall
-allowed: local -a ARR
-         eval "ARR=($(cli-shell-api -- listEffectiveNodes firewall ipv6-name ${COMP_WORDS[3]} rule))"
-         echo ${ARR[@]}
-run: ${vyatta_bindir}/vyatta-monitor-check-rule-log "firewall ipv6-name $4" $6; \
-     ${vyatta_bindir}/vyatta-monitor Firewall-ipv6-$4-rule-$6 "\[$4-$6-[A,D,R]\]"

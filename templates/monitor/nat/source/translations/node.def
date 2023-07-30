@@ -1,4 +1,0 @@
-help: Monitor active source NAT translations events
-run: LESSOPEN=cat
-     echo Type control-C to quit
-     sudo /usr/sbin/conntrack --src-nat --event

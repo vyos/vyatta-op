@@ -20,17 +20,12 @@ interp_DATA += functions/interpreter/vyatta-image-complete
 bin_SCRIPTS	 = scripts/vyatta-show-interfaces
 bin_SCRIPTS	+= scripts/vyatta-show-interfaces.pl
 bin_SCRIPTS	+= scripts/vyatta-show-dmi
-bin_SCRIPTS     += scripts/show-dhcp-leases.pl
-bin_SCRIPTS     += scripts/vyatta-boot-image.pl
+bin_SCRIPTS += scripts/show-dhcp-leases.pl
+bin_SCRIPTS += scripts/vyatta-boot-image.pl
 bin_SCRIPTS	+= scripts/rename-image.pl
 bin_SCRIPTS	+= scripts/show-image-storage.pl
 bin_SCRIPTS	+= scripts/tech-support-archive
 bin_SCRIPTS	+= scripts/vyatta-op-cmd-wrapper
-bin_SCRIPTS += scripts/vyatta-monitor
-bin_SCRIPTS += scripts/vyatta-monitor-cleanup
-bin_SCRIPTS += scripts/vyatta-monitor-background
-bin_SCRIPTS += scripts/vyatta-monitor-background-stop
-bin_SCRIPTS += scripts/vyatta-monitor-check-rule-log
 
 sbin_SCRIPTS     = scripts/vyatta-image-tools.pl
 sbin_SCRIPTS    += scripts/vyos-openvpn-remoteconfig.pl
@@ -51,5 +46,3 @@ install-exec-hook:
 	cd templates; $(cpiop) $(DESTDIR)$(opdir)
 	mkdir -p $(DESTDIR)$(etc_shell_leveldir)
 	cd etc/shell/level; $(cpiop) $(DESTDIR)$(etc_shell_leveldir)
-	mkdir -p $(DESTDIR)/etc/
-	cp etc/bash.bash_logout $(DESTDIR)/etc/

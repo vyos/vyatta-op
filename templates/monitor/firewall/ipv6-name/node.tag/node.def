@@ -1,6 +1,0 @@
-help: Monitor a specified firewall
-allowed: local -a ARR
-         eval "ARR=($(cli-shell-api -- listEffectiveNodes firewall ipv6-name))"
-         echo ${ARR[@]}
-run: echo "Notice: monitoring information is displayed only for rules with enabled logging"; \
-     ${vyatta_bindir}/vyatta-monitor Firewall-ipv6-$4 "\[$4-[0-9]*-[A,D,R]\]"
