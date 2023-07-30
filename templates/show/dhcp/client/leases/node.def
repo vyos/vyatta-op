@@ -1,2 +1,0 @@
-help: Show DHCP client leases 
-run: /opt/vyatta/bin/vyatta-show-dhclient.pl
