@@ -168,12 +168,17 @@ unset _vyatta_extglob
         declare -x -r vyos_op_scripts_dir=$vyos_libexec_dir/op_mode
     fi
 
-    if test -z "$vyos_completion__dir" ; then
+    if test -z "$vyos_completion_dir" ; then
         declare -x -r vyos_completion_dir=$vyos_libexec_dir/completion
     fi
 
     if test -z "$vyos_validators_dir" ; then
         declare -x -r vyos_validators_dir=$vyos_libexec_dir/validators
+    fi
+
+    if test -z "$vyos_rootfs_dir" ; then
+        ROOTFS=$(mount -t squashfs | cut -d' ' -f3)
+        declare -x -r vyos_rootfs_dir="${ROOTFS}"
     fi
 
     if test -z "$VRF" ; then
