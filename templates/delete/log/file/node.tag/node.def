@@ -1,5 +1,0 @@
-help: Delete the specified log file
-allowed: local -a array ;
-         array=( /var/log/user/* ) ;
-         echo  -n ${array[@]##*/}
-run: sudo ${vyatta_bindir}/sudo-users/vyatta-delete-log-file.sh "$4"
