@@ -266,9 +266,6 @@ sudo lspci -vvx
 header PCI Vendor and Device Codes
 sudo lspci -nn
 
-header System Info
-${vyatta_bindir}/vyatta-show-dmi
-
 header GRUB Command line
 cat /proc/cmdline
 
