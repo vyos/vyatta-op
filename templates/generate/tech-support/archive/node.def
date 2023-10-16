@@ -1,2 +1,0 @@
-help: Generate tech-support archive
-run: ${vyatta_bindir}/tech-support-archive 
