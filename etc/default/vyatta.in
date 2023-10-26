@@ -177,8 +177,8 @@ unset _vyatta_extglob
     fi
 
     if test -z "$vyos_rootfs_dir" ; then
-        IMAGE_NAME=$(cat /proc/cmdline | sed -e s+^.*vyos-union=/boot/++ | sed -e 's/ .*$//')
-        declare -x -r vyos_rootfs_dir="/usr/lib/live/mount/rootfs/${IMAGE_NAME}.squashfs"
+        ROOTFS=$(mount -t squashfs | cut -d' ' -f3)
+        declare -x -r vyos_rootfs_dir="${ROOTFS}"
     fi
 
     if test -z "$VRF" ; then
