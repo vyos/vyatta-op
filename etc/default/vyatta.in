@@ -137,7 +137,6 @@ unset _vyatta_extglob
 	    declare -x -r vyatta_sysconfdir=$vyatta_prefix/etc
 	fi
     fi
-
     if test -z "$vyatta_op_templates" ; then
 	declare -x -r vyatta_op_templates=$vyatta_datadir/vyatta-op/templates
         declare -x -r vyos_op_templates=$vyatta_datadir/vyatta-op/templates
@@ -163,24 +162,23 @@ unset _vyatta_extglob
     if test -z "$vyos_conf_scripts_dir" ; then
         declare -x -r vyos_conf_scripts_dir=$vyos_libexec_dir/conf_mode
     fi
-
     if test -z "$vyos_op_scripts_dir" ; then
         declare -x -r vyos_op_scripts_dir=$vyos_libexec_dir/op_mode
     fi
-
     if test -z "$vyos_completion_dir" ; then
         declare -x -r vyos_completion_dir=$vyos_libexec_dir/completion
     fi
-
     if test -z "$vyos_validators_dir" ; then
         declare -x -r vyos_validators_dir=$vyos_libexec_dir/validators
     fi
-
+    if test -z "$vyos_persistence_dir" ; then
+        UNION_NAME=$(cat /proc/cmdline | sed -e s+^.*vyos-union=++ | sed -e 's/ .*$//')
+        declare -x -r vyos_persistence_dir="/usr/lib/live/mount/persistence/${UNION_NAME}"
+    fi
     if test -z "$vyos_rootfs_dir" ; then
-        ROOTFS=$(mount -t squashfs | cut -d' ' -f3)
+        ROOTFS=$(mount -t squashfs | grep loop0 | cut -d' ' -f3)
         declare -x -r vyos_rootfs_dir="${ROOTFS}"
     fi
-
     if test -z "$VRF" ; then
         VRF=$(ip vrf identify)
         [ -n "$VRF" ] && declare -x -r VRF="${VRF}"
@@ -189,7 +187,6 @@ unset _vyatta_extglob
         NETNS=$(ip netns identify)
         [ -n "$NETNS" ] && declare -x -r NETNS="${NETNS}"
     fi
-
 
 } 2>/dev/null || :
 
