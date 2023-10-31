@@ -16,7 +16,6 @@ interp_DATA += functions/interpreter/vyatta-image-complete
 
 
 bin_SCRIPTS = scripts/vyatta-show-interfaces.pl
-bin_SCRIPTS += scripts/show-dhcp-leases.pl
 bin_SCRIPTS += scripts/vyatta-boot-image.pl
 bin_SCRIPTS	+= scripts/rename-image.pl
 bin_SCRIPTS	+= scripts/show-image-storage.pl
