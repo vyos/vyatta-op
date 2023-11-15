@@ -126,7 +126,9 @@ sub url_copy {
                 }
             }
         }
-        friendly_download($from, $to);
+        print "Downloading...\n";
+        download($from, $to);
+        print "Download complete.\n";
     }
     exit 0;
 }
@@ -213,12 +215,7 @@ sub upload {
 
 sub download {
     my ($from, $to) = @_;
-    system("python3 -c 'from vyos.remote import download; download(\"$to\", \"$from\")'");
-}
-
-sub friendly_download {
-    my ($from, $to) = @_;
-    system("python3 -c 'from vyos.remote import friendly_download; friendly_download(\"$to\", \"$from\")'");
+    system("python3 -c 'from vyos.remote import download; download(\"$to\", \"$from\", progressbar=True, check_space=True)'");
 }
 
 sub y_or_n {
