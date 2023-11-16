@@ -1,2 +1,0 @@
-help: Install new system image to hard drive
-run: sudo /opt/vyatta/sbin/install-image

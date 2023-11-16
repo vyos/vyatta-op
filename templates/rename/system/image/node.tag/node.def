@@ -1,6 +1,0 @@
-help: System image to rename.
-
-allowed:
-        local -a images ;
-        images=`/opt/vyatta/bin/vyatta-boot-image.pl --list`
-        echo -n $images
