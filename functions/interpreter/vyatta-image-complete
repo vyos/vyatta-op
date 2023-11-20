@@ -48,12 +48,14 @@ _vyatta_image_file_complete()
     _vyatta_op_completions=( "" " " )
     return 0;
   fi
+
   _vyatta_image_path_complete
 }
 
-declare -a non_comps=( "http://<user>:<passwd>@<host>/<file>" \
+declare -a non_comps=( "http(s)://<user>:<passwd>@<host>/<file>" \
  "scp://<user>:<passwd>@<host>/<file>" \
- "ftp://<user>:<passwd>@<host>/<file>" \
+ "sftp://<user>:<passwd>@<host>/<file>" \
+ "ftp(s)://<user>:<passwd>@<host>/<file>" \
  "tftp://<host>/<file>" )
 
 _vyatta_image_path_complete()
@@ -79,9 +81,9 @@ _vyatta_image_path_complete()
     for i in `seq 0 $[${#reply[@]}-1]`; do
       file=${reply[$i]}
       reply[$i]=${file/#\/lib\/live\/mount\/persistence\/boot\//}
-      reply[$i]="${reply[$i]}://config/"
+      reply[$i]="${reply[$i]}://"
     done
-    reply+=( "running://config/" )
+    reply+=( "running://" )
     if [[ -d /lib/live/mount/persistence/opt/vyatta/etc/config || -d /lib/live/mount/persistence/config ]]; then
       reply+=( "disk-install://" )
     fi
@@ -108,13 +110,13 @@ _vyatta_image_path_complete()
       for i in `seq 0 $[${#reply[@]}-1]`; do
         file=${reply[$i]}
         if [[ $isrunningimg == "running" ]];then
-          reply[$i]="running://config/"
+          reply[$i]="running://"
         elif [[ $isdiskinstall == "disk-install" ]]; then
           reply[$i]="disk-install://" 
         else
           reply[$i]=${file/#\/lib\/live\/mount\/persistence\/boot\//}
-          if [[ -d /ib/live/mount/persistence/boot/${reply[$i]} ]]; then
-            reply[$i]="${reply[$i]/#\//}://config/"
+          if [[ -d /lib/live/mount/persistence/boot/${reply[$i]} ]]; then
+            reply[$i]="${reply[$i]/#\//}://"
           fi
         fi
       done
@@ -125,9 +127,9 @@ _vyatta_image_path_complete()
       if [[ $topdir == "running" ]]; then
         cur="/${cur}"
       elif [[ $topdir == "disk-install" ]]; then
-        cur="/ib/live/mount/persistence/${cur}"
+        cur="/lib/live/mount/persistence/${cur}"
       else
-        cur="/ib/live/mount/persistence/boot/${topdir}/rw/${cur}"
+        cur="/lib/live/mount/persistence/boot/${topdir}/rw/${cur}"
       fi
       reply=( $(compgen -f ${cur}) )
       # for loop from _filedirs() in /etc/bash_completion
