@@ -1,2 +1,0 @@
-help: Show vrrp interface information
-run: ${vyatta_bindir}/vyatta-show-interfaces.pl --vrrp --action=show-brief
