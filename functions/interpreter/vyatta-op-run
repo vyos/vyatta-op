@@ -218,7 +218,9 @@ _vyatta_op_run ()
     local run_cmd=$(_vyatta_op_get_node_def_field $tpath/node.def run)
     run_cmd=$(_vyatta_op_conv_run_cmd "$run_cmd") # convert the positional parameters
     local ret=0
-    local cmd_regex="^(LESSOPEN=|less|pager|tail|/opt/vyatta/bin/vyatta-tshark-interface-port.pl).*"
+    # Exception for the `show file` command
+    local file_cmd='\$\{vyos_op_scripts_dir\}\/file\.py'
+    local cmd_regex="^(LESSOPEN=|less|pager|tail|(sudo )?$file_cmd).*"
     if [ -n "$run_cmd" ]; then
       eval $restore_shopts
       if [[ -t 1 &&  "${args[1]}" == "show" && ! $run_cmd =~ $cmd_regex ]] ; then

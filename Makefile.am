@@ -21,7 +21,6 @@ bin_SCRIPTS	+= scripts/rename-image.pl
 bin_SCRIPTS	+= scripts/show-image-storage.pl
 bin_SCRIPTS	+= scripts/vyatta-op-cmd-wrapper
 
-sbin_SCRIPTS     = scripts/vyatta-image-tools.pl
 
 all-local:
 	./gen-unpriv-commands.sh

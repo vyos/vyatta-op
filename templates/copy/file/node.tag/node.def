@@ -1,3 +1,0 @@
-help: Copy files from specified source
-comptype: imagefiles
-allowed: echo -n "<imagefiles>"
